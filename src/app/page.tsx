@@ -203,21 +203,21 @@ export default function Home() {
           
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-sm">
             <div className="flex flex-col gap-4">
-              <div className="font-bold uppercase tracking-widest text-xs text-white/40">Services</div>
-              <Link href="#" className="hover:text-primary transition-colors">Surprise Calls</Link>
-              <Link href="#" className="hover:text-primary transition-colors">Digital Letters</Link>
-              <Link href="#" className="hover:text-primary transition-colors">Corporate</Link>
+              <div className="font-bold uppercase tracking-widest text-[10px] text-muted-foreground opacity-60">Services</div>
+              <Link href="/surprise-calls" className="hover:text-primary transition-colors">Surprise Calls</Link>
+              <Link href="/digital-letters" className="hover:text-primary transition-colors">Digital Letters</Link>
+              <Link href="/corporate" className="hover:text-primary transition-colors">Corporate</Link>
             </div>
             <div className="flex flex-col gap-4">
-              <div className="font-bold uppercase tracking-widest text-xs text-white/40">Company</div>
-              <Link href="#" className="hover:text-primary transition-colors">About Us</Link>
-              <Link href="#" className="hover:text-primary transition-colors">Contact</Link>
-              <Link href="#" className="hover:text-primary transition-colors">FAQs</Link>
+              <div className="font-bold uppercase tracking-widest text-[10px] text-muted-foreground opacity-60">Company</div>
+              <Link href="/about" className="hover:text-primary transition-colors">About Us</Link>
+              <Link href="/support" className="hover:text-primary transition-colors">Contact</Link>
+              <Link href="/support" className="hover:text-primary transition-colors">FAQs</Link>
             </div>
             <div className="flex flex-col gap-4">
-              <div className="font-bold uppercase tracking-widest text-xs text-white/40">Legal</div>
-              <Link href="#" className="hover:text-primary transition-colors">Privacy Policy</Link>
-              <Link href="#" className="hover:text-primary transition-colors">Terms of Service</Link>
+              <div className="font-bold uppercase tracking-widest text-[10px] text-muted-foreground opacity-60">Legal</div>
+              <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
+              <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
             </div>
           </div>
         </div>
