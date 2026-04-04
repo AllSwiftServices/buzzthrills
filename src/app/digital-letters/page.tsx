@@ -21,8 +21,8 @@ export default function DigitalLettersPage() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tight leading-[1]">
-              Letters That <br />
+            <h1 className="text-4xl sm:text-5xl md:text-8xl font-black mb-8 tracking-tight leading-none">
+              Letters That <br className="hidden sm:block" />
               <span className="gradient-text">Come Alive</span>.
             </h1>
           </Reveal>
@@ -97,10 +97,10 @@ export default function DigitalLettersPage() {
           </Reveal>
 
           <Reveal direction="right">
-            <div className="relative p-6 glass border border-border rounded-[48px] shadow-2xl overflow-hidden group">
+            <div className="relative p-4 sm:p-6 glass border border-border rounded-[48px] shadow-2xl overflow-hidden group">
               <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity" />
-              <div className="aspect-[3/4] rounded-[32px] bg-foreground/5 border border-border flex flex-col items-center justify-center p-12 text-center">
-                <div className="w-20 h-20 bg-accent/20 backdrop-blur-xl rounded-full flex items-center justify-center mb-8 animate-bounce">
+              <div className="aspect-[3/4] rounded-[32px] bg-foreground/5 border border-border flex flex-col items-center justify-center p-6 sm:p-12 text-center">
+                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-accent/20 backdrop-blur-xl rounded-full flex items-center justify-center mb-8 animate-bounce">
                   <Volume2 size={32} className="text-accent" />
                 </div>
                 <div className="text-2xl font-black mb-4">Letter Demo</div>
@@ -142,10 +142,10 @@ export default function DigitalLettersPage() {
       {/* CTA */}
       <section className="py-24 px-6 text-center">
         <Reveal>
-          <div className="max-w-3xl mx-auto p-16 rounded-[48px] glass border border-border shadow-2xl relative overflow-hidden group">
+          <div className="max-w-3xl mx-auto p-8 sm:p-16 rounded-[48px] glass border border-border shadow-2xl relative overflow-hidden group">
             <div className="absolute bottom-0 right-0 w-64 h-64 bg-accent/10 blur-[100px] rounded-full -mr-32 -mb-32" />
-            <h2 className="text-4xl md:text-5xl font-black mb-8 relative z-10 group-hover:scale-105 transition-transform duration-500">Words Last <br />Forever.</h2>
-            <Link href="/book?plan=letter" className="inline-block px-12 py-6 gradient-bg text-white font-black text-xl rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl relative z-10">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-8 relative z-10 group-hover:scale-105 transition-transform duration-500">Words Last <br className="hidden sm:block" />Forever.</h2>
+            <Link href="/book" className="inline-block px-12 py-6 gradient-bg text-white font-black text-xl rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-xl relative z-10">
               Pick Your Theme
             </Link>
           </div>

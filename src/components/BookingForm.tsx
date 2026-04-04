@@ -33,17 +33,20 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
   return (
     <div className="w-full max-w-4xl mx-auto glass p-8 md:p-12 min-h-[600px] flex flex-col border border-border">
       {/* Progress Stepper */}
-      <div className="flex items-center justify-between mb-12 relative">
-        <div className="absolute top-1/2 left-0 w-full h-[2px] bg-border -translate-y-1/2 z-0" />
+      <div className="flex items-center justify-between mb-8 md:mb-12 relative px-2">
+        <div className="absolute top-1/2 left-0 w-full h-[1px] bg-border -translate-y-1/2 z-0" />
         {["subscriber", "recipients", "preferences", "payment"].map((s, i) => (
           <div 
             key={s} 
-            className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all border-2 ${
+            className={`relative z-10 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-bold text-xs md:text-sm transition-all border-2 ${
               step === s ? 'gradient-bg border-transparent text-white scale-110 shadow-lg shadow-primary/20' : 
               i < ["subscriber", "recipients", "preferences", "payment"].indexOf(step) ? 'bg-primary border-primary text-white' : 'bg-muted border-border text-muted-foreground'
             }`}
           >
-            {i < ["subscriber", "recipients", "preferences", "payment"].indexOf(step) ? <Check size={18} /> : i + 1}
+            {i < ["subscriber", "recipients", "preferences", "payment"].indexOf(step) ? <Check size={14} className="md:w-[18px] md:h-[18px]" /> : i + 1}
+            
+            {/* Step Label - Mobile Only (Hidden for space, but used for accessibility) */}
+            <span className="sr-only">{s}</span>
           </div>
         ))}
       </div>

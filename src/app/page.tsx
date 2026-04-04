@@ -29,8 +29,8 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h1 className="text-5xl md:text-8xl font-black mb-6 tracking-tight leading-[1.1]">
-              Never Forget Any <br />
+            <h1 className="text-4xl sm:text-5xl md:text-8xl font-black mb-6 tracking-tight leading-[1.1]">
+              Never Forget Any <br className="hidden sm:block" />
               <span className="gradient-text">Special Day</span> Again.
             </h1>
           </Reveal>
@@ -136,7 +136,7 @@ export default function Home() {
               <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6 text-xs font-bold text-accent uppercase tracking-widest">
                 Exclusive Product
               </div>
-              <h2 className="text-5xl font-black mb-6 tracking-tight leading-[1.1]">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 tracking-tight leading-[1.1]">
                 The <span className="gradient-text">Digital Scroll</span> Letter.
               </h2>
               <p className="text-xl text-muted-foreground mb-10 leading-relaxed">

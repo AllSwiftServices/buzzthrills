@@ -28,8 +28,8 @@ export default function SurpriseCallsPage() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tight leading-[1]">
-              The Magic of a <br />
+            <h1 className="text-4xl sm:text-5xl md:text-8xl font-black mb-8 tracking-tight leading-none">
+              The Magic of a <br className="hidden sm:block" />
               <span className="gradient-text">Surprise Call</span>.
             </h1>
           </Reveal>
@@ -135,9 +135,9 @@ export default function SurpriseCallsPage() {
       {/* Footer CTA */}
       <section className="py-24 px-6 text-center">
         <Reveal>
-          <div className="max-w-3xl mx-auto p-16 rounded-[48px] gradient-bg text-white shadow-2xl shadow-primary/20 relative overflow-hidden">
+          <div className="max-w-3xl mx-auto p-8 sm:p-16 rounded-[48px] gradient-bg text-white shadow-2xl shadow-primary/20 relative overflow-hidden">
             <div className="absolute top-0 left-0 w-64 h-64 bg-white/10 blur-[100px] rounded-full -ml-32 -mt-32" />
-            <h2 className="text-4xl md:text-5xl font-black mb-8 relative z-10">Make Someone Smile <br />Today.</h2>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-8 relative z-10">Make Someone Smile <br className="hidden sm:block" />Today.</h2>
             <Link href="/book" className="inline-block px-12 py-6 bg-white text-black font-black text-xl rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-2xl relative z-10">
               Pick Your Plan
             </Link>

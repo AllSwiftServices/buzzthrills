@@ -34,10 +34,10 @@ export default function SupportPage() {
       {/* Hero */}
       <section className="pt-40 pb-20 px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <Reveal>
-            <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tight">
-              How Can We <br />
-              <span className="gradient-text">Help You</span>?
+          <Reveal delay={0.1}>
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-8 tracking-tight leading-none">
+              How Can We <br className="hidden sm:block" />
+              <span className="gradient-text">Help?</span>
             </h1>
           </Reveal>
         </div>

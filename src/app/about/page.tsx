@@ -27,9 +27,8 @@ export default function AboutPage() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h1 className="text-5xl md:text-7xl font-black mb-8 tracking-tight leading-[1.1]">
-              The People Who <br />
-              <span className="gradient-text">Never Forget</span>.
+            <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-8 tracking-tight leading-none">
+              Our <span className="gradient-text">Superhero</span> Story.
             </h1>
           </Reveal>
           <Reveal delay={0.2}>

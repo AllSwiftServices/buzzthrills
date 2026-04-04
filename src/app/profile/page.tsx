@@ -37,7 +37,7 @@ export default function ProfilePage() {
               <motion.h1 
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-4xl md:text-5xl font-black mb-2"
+                className="text-3xl sm:text-4xl md:text-5xl font-black mb-2"
               >
                 Welcome Back, <span className="gradient-text">{user.user_metadata?.full_name || "Superhero"}</span>!
               </motion.h1>

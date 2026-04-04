@@ -28,9 +28,9 @@ export default function CorporatePage() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h1 className="text-5xl md:text-8xl font-black mb-8 tracking-tight leading-[1]">
-              Culture Is Your <br />
-              <span className="gradient-text">Greatest Spark</span>.
+            <h1 className="text-4xl sm:text-5xl md:text-8xl font-black mb-8 tracking-tight leading-none">
+              Buzz for <br className="hidden sm:block" />
+              <span className="gradient-text">Business</span>.
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
