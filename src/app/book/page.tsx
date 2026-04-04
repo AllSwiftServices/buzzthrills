@@ -11,7 +11,7 @@ function BookingContent() {
   const plan = searchParams.get("plan") || "one-off";
 
   return (
-    <main className="min-h-screen bg-black text-white pt-32 pb-20 px-6">
+    <main className="min-h-screen bg-background text-foreground pt-32 pb-20 px-6 transition-colors duration-500">
       <Header />
       
       <div className="max-w-4xl mx-auto text-center mb-12">
@@ -62,7 +62,7 @@ function BookingContent() {
 
 export default function BookPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-black flex items-center justify-center">Loading...</div>}>
+    <Suspense fallback={<div className="min-h-screen bg-background flex items-center justify-center">Loading...</div>}>
       <BookingContent />
     </Suspense>
   );

@@ -31,16 +31,16 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto glass p-8 md:p-12 min-h-[600px] flex flex-col">
+    <div className="w-full max-w-4xl mx-auto glass p-8 md:p-12 min-h-[600px] flex flex-col border border-border">
       {/* Progress Stepper */}
       <div className="flex items-center justify-between mb-12 relative">
-        <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white/10 -translate-y-1/2 z-0" />
+        <div className="absolute top-1/2 left-0 w-full h-[2px] bg-border -translate-y-1/2 z-0" />
         {["subscriber", "recipients", "preferences", "payment"].map((s, i) => (
           <div 
             key={s} 
             className={`relative z-10 w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm transition-all border-2 ${
               step === s ? 'gradient-bg border-transparent text-white scale-110 shadow-lg shadow-primary/20' : 
-              i < ["subscriber", "recipients", "preferences", "payment"].indexOf(step) ? 'bg-primary border-primary text-white' : 'bg-black border-white/20 text-white/40'
+              i < ["subscriber", "recipients", "preferences", "payment"].indexOf(step) ? 'bg-primary border-primary text-white' : 'bg-muted border-border text-muted-foreground'
             }`}
           >
             {i < ["subscriber", "recipients", "preferences", "payment"].indexOf(step) ? <Check size={18} /> : i + 1}
@@ -60,32 +60,32 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
             <h2 className="text-3xl font-black mb-8">Subscriber <span className="gradient-text">Information</span></h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="text-sm font-bold text-white/60">Full Name</label>
+                <label className="text-sm font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Full Name</label>
                 <div className="relative">
-                  <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-                  <input type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-primary transition-colors outline-none" placeholder="John Doe" />
+                  <User size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input type="text" className="w-full bg-foreground/5 border border-border rounded-2xl py-4 pl-12 pr-4 focus:border-primary transition-colors outline-none" placeholder="John Doe" />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-white/60">Email Address</label>
+                <label className="text-sm font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Email Address</label>
                 <div className="relative">
-                  <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-                  <input type="email" className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-primary transition-colors outline-none" placeholder="john@example.com" />
+                  <Mail size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input type="email" className="w-full bg-foreground/5 border border-border rounded-2xl py-4 pl-12 pr-4 focus:border-primary transition-colors outline-none" placeholder="john@example.com" />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-white/60">Phone Number</label>
+                <label className="text-sm font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Phone Number</label>
                 <div className="relative">
-                  <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-                  <input type="tel" className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 pl-12 pr-4 focus:border-primary transition-colors outline-none" placeholder="+234 ..." />
+                  <Phone size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                  <input type="tel" className="w-full bg-foreground/5 border border-border rounded-2xl py-4 pl-12 pr-4 focus:border-primary transition-colors outline-none" placeholder="+234 ..." />
                 </div>
               </div>
               <div className="space-y-2">
-                <label className="text-sm font-bold text-white/60">Preferred Contact</label>
-                <select className="w-full bg-white/5 border border-white/10 rounded-2xl py-4 px-6 focus:border-primary transition-colors outline-none appearance-none">
-                  <option className="bg-black">WhatsApp</option>
-                  <option className="bg-black">Email</option>
-                  <option className="bg-black">Phone Call</option>
+                <label className="text-sm font-bold text-muted-foreground uppercase tracking-widest text-[10px]">Preferred Contact</label>
+                <select className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary transition-colors outline-none appearance-none">
+                  <option className="bg-background text-foreground">WhatsApp</option>
+                  <option className="bg-background text-foreground">Email</option>
+                  <option className="bg-background text-foreground">Phone Call</option>
                 </select>
               </div>
             </div>
@@ -123,15 +123,15 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                     </button>
                   )}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" className="bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:border-primary outline-none" placeholder="Recipient Name" />
-                    <input type="tel" className="bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:border-primary outline-none" placeholder="Phone Number" />
-                    <select className="bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:border-primary outline-none">
-                      <option className="bg-black">Birthday</option>
-                      <option className="bg-black">Anniversary</option>
-                      <option className="bg-black">Appreciation</option>
-                      <option className="bg-black">Prank</option>
+                    <input type="text" className="bg-foreground/5 border border-border rounded-xl py-3 px-4 focus:border-primary outline-none text-sm" placeholder="Recipient Name" />
+                    <input type="tel" className="bg-foreground/5 border border-border rounded-xl py-3 px-4 focus:border-primary outline-none text-sm" placeholder="Phone Number" />
+                    <select className="bg-foreground/5 border border-border rounded-xl py-3 px-4 focus:border-primary outline-none text-sm">
+                      <option className="bg-background text-foreground">Birthday</option>
+                      <option className="bg-background text-foreground">Anniversary</option>
+                      <option className="bg-background text-foreground">Appreciation</option>
+                      <option className="bg-background text-foreground">Prank</option>
                     </select>
-                    <input type="date" className="bg-white/5 border border-white/10 rounded-xl py-3 px-4 focus:border-primary outline-none" />
+                    <input type="date" className="bg-foreground/5 border border-border rounded-xl py-3 px-4 focus:border-primary outline-none text-sm" />
                   </div>
                 </div>
               ))}
@@ -153,7 +153,7 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                 <label className="text-sm font-bold text-white/60 uppercase tracking-widest">Call Anonymity</label>
                 <div className="flex gap-4">
                   {["Anonymous", "Mention my name"].map(opt => (
-                    <button key={opt} className="px-6 py-4 rounded-2xl glass border-white/10 flex-1 font-bold hover:border-primary transition-all">
+                    <button key={opt} className="px-6 py-4 rounded-2xl glass border-border flex-1 font-bold hover:border-primary transition-all">
                       {opt}
                     </button>
                   ))}
@@ -162,12 +162,12 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
               <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 flex items-center justify-between">
                 <div>
                   <div className="font-black text-lg text-primary">Express Delivery ✨</div>
-                  <div className="text-sm text-white/40">Deliver your surprise immediately.</div>
+                  <div className="text-sm text-muted-foreground italic">Deliver your surprise immediately.</div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="font-bold">+₦2,000</span>
-                  <div className="w-12 h-6 bg-white/10 rounded-full cursor-pointer relative">
-                    <div className="absolute top-1 left-1 w-4 h-4 rounded-full bg-white transition-all shadow-lg" />
+                  <span className="font-bold text-primary">+₦2,000</span>
+                  <div className="w-12 h-6 bg-foreground/10 rounded-full cursor-pointer relative">
+                    <div className="absolute top-1 left-1 w-4 h-4 rounded-full bg-background transition-all shadow-lg" />
                   </div>
                 </div>
               </div>
@@ -190,12 +190,12 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
             <p className="text-muted-foreground mb-12 max-w-md">
               Secure payment via Paystack. You'll receive a confirmation email immediately after payment is successful.
             </p>
-            <div className="w-full p-8 rounded-[40px] glass border-white/20 mb-8 max-w-sm">
+            <div className="w-full p-8 rounded-[40px] glass border border-border mb-8 max-w-sm">
               <div className="flex justify-between mb-4">
-                <span className="text-white/60">Subscription ({planType})</span>
+                <span className="text-muted-foreground">Subscription ({planType})</span>
                 <span className="font-bold">₦15,000</span>
               </div>
-              <div className="flex justify-between text-xl font-bold border-t border-white/10 pt-4">
+              <div className="flex justify-between text-xl font-bold border-t border-border pt-4">
                 <span>Total</span>
                 <span className="gradient-text tracking-tighter">₦15,000</span>
               </div>
@@ -208,7 +208,7 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
         <button 
           onClick={prevStep}
           disabled={step === "subscriber"}
-          className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${step === "subscriber" ? 'opacity-0 pointer-events-none' : 'glass hover:bg-white/10'}`}
+          className={`flex items-center gap-2 px-6 py-3 rounded-2xl font-bold transition-all ${step === "subscriber" ? 'opacity-0 pointer-events-none' : 'glass hover:bg-foreground/5 border-border'}`}
         >
           <ChevronLeft size={20} />
           Back
