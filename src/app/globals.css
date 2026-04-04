@@ -1,27 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  /* Premium Dark Palette */
-  --color-background: #050505;
-  --color-foreground: #ffffff;
-  --color-primary: #8b5cf6; /* Buzz Thrills Purple */
-  --color-secondary: #fbbf24; /* Prime Gold */
-  --color-accent: #ec4899; /* Vibrant Pink */
-  --color-muted: #1e1e1e;
-  --color-muted-foreground: #a1a1aa;
+  /* Default Light Palette */
+  --color-background: #ffffff;
+  --color-foreground: #050505;
+  --color-primary: #8b5cf6;
+  --color-secondary: #fbbf24;
+  --color-accent: #ec4899;
+  --color-muted: #f4f4f5;
+  --color-muted-foreground: #71717a;
   
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
   --radius-3xl: 2rem;
   --radius-4xl: 2.5rem;
+}
 
-  /* Custom Glass & Blurs */
-  --backdrop-blur-glass: 16px;
+/* Dark Mode Overrides */
+.dark {
+  --color-background: #050505;
+  --color-foreground: #ffffff;
+  --color-muted: #1e1e1e;
+  --color-muted-foreground: #a1a1aa;
 }
 
 @layer base {
   * {
-    @apply border-white/10;
+    @apply border-foreground/10;
   }
   
   body {
@@ -35,7 +40,7 @@
 
 @layer components {
   .glass {
-    @apply bg-white/3 backdrop-blur-[10px] border border-white/10;
+    @apply bg-foreground/5 backdrop-blur-[10px] border border-foreground/10;
     /* Hardware acceleration hints - localized for stability */
     -webkit-backdrop-filter: blur(10px);
     -webkit-transform: translateZ(0);

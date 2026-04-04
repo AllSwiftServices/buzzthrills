@@ -12,13 +12,13 @@ export default function Home() {
   ];
 
   return (
-    <main className="min-h-screen bg-black text-white selection:bg-primary/30 antialiased overflow-x-hidden">
+    <main className="min-h-screen bg-background text-foreground selection:bg-primary/30 antialiased overflow-x-hidden transition-colors duration-300">
       <Header />
 
       {/* Hero Section */}
       <section className="relative pt-40 pb-20 px-6 overflow-hidden isolate">
-        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/20 blur-[120px] rounded-full gpu-accelerated opacity-60" />
-        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-accent/20 blur-[120px] rounded-full gpu-accelerated opacity-60" />
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-primary/10 blur-[120px] rounded-full gpu-accelerated opacity-60 dark:bg-primary/20" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-accent/10 blur-[120px] rounded-full gpu-accelerated opacity-60 dark:bg-accent/20" />
 
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
           <Reveal>
@@ -65,7 +65,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {plans.map((plan, i) => (
               <Reveal key={plan.name} delay={i * 0.1}>
-                <div className={`relative p-8 rounded-3xl glass border-white/10 h-full flex flex-col ${plan.recommended ? 'ring-2 ring-primary ring-offset-4 ring-offset-black' : ''}`}>
+                <div className={`relative p-8 rounded-3xl glass border-border h-full flex flex-col ${plan.recommended ? 'ring-2 ring-primary ring-offset-4 ring-offset-background' : ''}`}>
                   {plan.recommended && (
                     <div className="absolute top-[-15px] left-1/2 -translate-x-1/2 px-4 py-1 gradient-bg rounded-full text-xs font-bold uppercase tracking-widest text-white shadow-lg">
                       Recommended
@@ -78,7 +78,7 @@ export default function Home() {
                     <span className="text-4xl font-black">₦{plan.price}</span>
                     <span className="text-muted-foreground text-sm">/month</span>
                   </div>
-                  <div className="flex items-center gap-2 mb-8 p-3 rounded-2xl bg-white/5 border border-white/5">
+                  <div className="flex items-center gap-2 mb-8 p-3 rounded-2xl bg-foreground/5 border border-foreground/5">
                     <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
                       <Phone className="text-white" size={20} />
                     </div>
@@ -109,11 +109,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* BookingSection (Client Component) */}
+      {/* One-off Booking Section */}
       <BookingSection />
 
-      {/* Digital Letter Feature Teaser */}
-      <section id="digital-letter" className="py-24 px-6">
+      {/* Digital Letter Feature Teaser Section - Light background contrast */}
+      <section id="digital-letter" className="py-24 px-6 bg-muted/30">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
           <div className="flex-1">
             <Reveal direction="left">
@@ -154,7 +154,7 @@ export default function Home() {
                     <div className="w-6 h-6 rounded-lg gradient-bg flex items-center justify-center flex-shrink-0">
                       <Check size={14} className="text-white" />
                     </div>
-                    <span>{item}</span>
+                    <span className="text-foreground/80">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -187,7 +187,7 @@ export default function Home() {
       </section>
 
       {/* Footer Teaser */}
-      <footer className="py-20 px-6 border-t border-white/5 bg-black">
+      <footer className="py-20 px-6 border-t border-foreground/5 bg-background">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
           <div className="max-w-sm">
             <div className="flex items-center gap-2 mb-6 text-2xl font-black">

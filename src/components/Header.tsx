@@ -3,13 +3,12 @@
 import { motion } from "framer-motion";
 import { Phone, BookOpen, User, Gift } from "lucide-react";
 import Link from "next/link";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Header() {
   return (
-    <motion.header 
-      initial={{ y: -100, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      style={{ translateZ: 0 }}
+    <header 
+      style={{ transform: 'translate3d(0, 0, 0)' } as any}
       className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex items-center justify-between glass mx-4 mt-4"
     >
       <Link href="/" className="flex items-center gap-2">
@@ -28,14 +27,15 @@ export default function Header() {
       </nav>
 
       <div className="flex items-center gap-4">
-        <button className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full glass hover:bg-white/10 transition-all text-sm">
+        <ThemeToggle />
+        <button className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-foreground/5 transition-all text-sm font-semibold">
           <User size={16} />
           Login
         </button>
-        <button className="px-5 py-2 rounded-full gradient-bg text-white font-semibold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+        <button className="px-5 py-2 rounded-xl gradient-bg text-white font-bold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
           Get Started
         </button>
       </div>
-    </motion.header>
+    </header>
   );
 }

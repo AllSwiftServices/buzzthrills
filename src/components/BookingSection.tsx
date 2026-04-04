@@ -19,9 +19,9 @@ export default function BookingSection() {
   const [selectedCall, setSelectedCall] = useState<string | null>(null);
 
   return (
-    <section id="one-off" className="py-24 px-6 bg-black">
-      <div className="max-w-6xl mx-auto rounded-[40px] p-12 glass border-white/10 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent/20 blur-[100px] rounded-full" />
+    <section id="one-off" className="py-24 px-6 bg-background">
+      <div className="max-w-6xl mx-auto rounded-[40px] p-12 glass border-foreground/10 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 blur-[100px] rounded-full dark:bg-accent/20" />
         
         <div className="text-center mb-12">
           <h2 className="text-4xl font-black mb-4">Book a <span className="gradient-text">One-off Call</span></h2>
@@ -34,7 +34,7 @@ export default function BookingSection() {
               key={call.type}
               onClick={() => setSelectedCall(call.type)}
               className={`p-6 rounded-3xl text-left transition-all duration-300 transform active:scale-95 ${
-                selectedCall === call.type ? 'gradient-bg text-white' : 'glass border-white/5 hover:bg-white/10'
+                selectedCall === call.type ? 'gradient-bg text-white' : 'glass border-foreground/5 hover:bg-foreground/10'
               }`}
             >
               <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${
@@ -55,7 +55,7 @@ export default function BookingSection() {
             key={selectedCall}
             initial={{ height: 0, opacity: 0, scale: 0.95 }}
             animate={{ height: 'auto', opacity: 1, scale: 1 }}
-            className="mt-12 p-8 rounded-3xl bg-white/5 border border-white/10 overflow-hidden"
+            className="mt-12 p-8 rounded-3xl bg-foreground/5 border border-foreground/10 overflow-hidden"
           >
             <div className="flex flex-col md:flex-row justify-between items-center gap-8">
               <div>
