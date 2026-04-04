@@ -22,8 +22,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${outfit.variable} scroll-smooth`} suppressHydrationWarning>
-      <body className="antialiased bg-background text-foreground transition-colors duration-300">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+      <body className="antialiased bg-background text-foreground transition-colors duration-500">
+        <ThemeProvider 
+          attribute="class" 
+          defaultTheme="light" 
+          enableSystem={false}
+          enableColorScheme={false}
+        >
           {children}
         </ThemeProvider>
       </body>

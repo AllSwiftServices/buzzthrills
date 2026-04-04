@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-  /* Default Light Palette */
-  --color-background: #ffffff;
-  --color-foreground: #050505;
-  --color-primary: #8b5cf6;
-  --color-secondary: #fbbf24;
-  --color-accent: #ec4899;
-  --color-muted: #f4f4f5;
-  --color-muted-foreground: #71717a;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-secondary: var(--secondary);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
   
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
@@ -16,17 +16,28 @@
   --radius-4xl: 2.5rem;
 }
 
-/* Dark Mode Overrides */
+:root {
+  --background: #ffffff;
+  --foreground: #050505;
+  --primary: #8b5cf6;
+  --secondary: #fbbf24;
+  --accent: #ec4899;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --border: rgba(5, 5, 5, 0.1);
+}
+
 .dark {
-  --color-background: #050505;
-  --color-foreground: #ffffff;
-  --color-muted: #1e1e1e;
-  --color-muted-foreground: #a1a1aa;
+  --background: #050505;
+  --foreground: #ffffff;
+  --muted: #1e1e1e;
+  --muted-foreground: #a1a1aa;
+  --border: rgba(255, 255, 255, 0.1);
 }
 
 @layer base {
   * {
-    @apply border-foreground/10;
+    @apply border-border;
   }
   
   body {
@@ -40,7 +51,7 @@
 
 @layer components {
   .glass {
-    @apply bg-foreground/5 backdrop-blur-[10px] border border-foreground/10;
+    @apply bg-foreground/5 backdrop-blur-[10px] border border-border;
     /* Hardware acceleration hints - localized for stability */
     -webkit-backdrop-filter: blur(10px);
     -webkit-transform: translateZ(0);

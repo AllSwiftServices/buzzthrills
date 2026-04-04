@@ -43,10 +43,10 @@ export default function Home() {
 
           <Reveal delay={0.3}>
             <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 rounded-2xl bg-white text-black font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-xl shadow-white/10">
+              <button className="px-8 py-4 rounded-2xl bg-foreground text-background font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-xl shadow-foreground/10">
                 Get Started Now
               </button>
-              <Link href="#one-off" className="px-8 py-4 rounded-2xl glass font-bold text-lg hover:bg-white/10 transition-all border border-white/10 flex items-center justify-center">
+              <Link href="#one-off" className="px-8 py-4 rounded-2xl glass font-bold text-lg hover:bg-foreground/5 transition-all border border-border flex items-center justify-center">
                 Book One-off Call
               </Link>
             </div>
@@ -99,7 +99,7 @@ export default function Home() {
                     ))}
                   </ul>
 
-                  <button className={`w-full py-4 rounded-2xl font-bold transition-all ${plan.recommended ? 'gradient-bg text-white shadow-lg shadow-primary/20' : 'bg-white text-black hover:shadow-xl hover:scale-[1.02]'}`}>
+                  <button className={`w-full py-4 rounded-2xl font-bold transition-all ${plan.recommended ? 'gradient-bg text-white shadow-lg shadow-primary/20' : 'bg-foreground text-background hover:shadow-xl hover:scale-[1.02]'}`}>
                     Subscribe Now
                   </button>
                 </div>
@@ -117,10 +117,10 @@ export default function Home() {
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
           <div className="flex-1">
             <Reveal direction="left">
-              <div className="relative p-1 glass border-white/20 rounded-[40px] aspect-[4/5] overflow-hidden group shadow-2xl">
+              <div className="relative p-1 glass border-border rounded-[40px] aspect-[4/5] overflow-hidden group shadow-2xl">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 text-center z-20">
-                  <div className="w-20 h-20 bg-white/10 backdrop-blur-xl rounded-full flex items-center justify-center mx-auto mb-6 border border-white/20 group-hover:bg-primary/20 transition-all cursor-pointer">
+                  <div className="w-20 h-20 bg-foreground/10 backdrop-blur-xl rounded-full flex items-center justify-center mx-auto mb-6 border border-foreground/20 group-hover:bg-primary/20 transition-all cursor-pointer">
                     <Volume2 className="text-white" size={32} />
                   </div>
                   <div className="text-sm font-bold tracking-widest uppercase text-white/60 mb-2">Digital Experience</div>
@@ -159,7 +159,7 @@ export default function Home() {
                 ))}
               </ul>
 
-              <button className="px-10 py-5 rounded-3xl glass font-bold text-xl hover:bg-white/10 transition-all border border-white/20">
+              <button className="px-10 py-5 rounded-3xl glass font-bold text-xl hover:bg-foreground/5 transition-all border border-border">
                 Create Your Letter
               </button>
             </Reveal>
@@ -168,7 +168,7 @@ export default function Home() {
       </section>
 
       {/* Social Proof Stats */}
-      <section className="py-24 px-6 glass border-y border-white/5">
+      <section className="py-24 px-6 glass border-y border-border">
         <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
           {[
             { value: "1,250+", label: "Calls Delivered" },
@@ -221,7 +221,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto mt-20 pt-8 border-t border-white/5 text-center text-xs text-muted-foreground">
+        <div className="max-w-6xl mx-auto mt-20 pt-8 border-t border-border text-center text-xs text-muted-foreground">
           © 2026 BuzzThrills Prime. All rights reserved. Made with ❤️ in Nigeria.
         </div>
       </footer>
