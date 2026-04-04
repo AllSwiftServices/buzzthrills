@@ -23,6 +23,18 @@ export default function Header() {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Scroll lock implementation
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   const navLinks = [
     { href: "/about", label: "About Us" },
     { href: "/surprise-calls", label: "Surprise Calls" },
@@ -30,119 +42,160 @@ export default function Header() {
     { href: "/book", label: "Book Now" },
   ];
 
+  const menuVariants = {
+    closed: { opacity: 0, scale: 0.95 },
+    open: { 
+      opacity: 1, 
+      scale: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    closed: { opacity: 0, y: 10 },
+    open: { opacity: 1, y: 0 }
+  };
+
   return (
-    <header 
-      style={{ transform: 'translate3d(0, 0, 0)' } as any}
-      className="fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 flex items-center justify-between glass mx-2 md:mx-4 mt-2 md:mt-4 overflow-visible"
-    >
-      <Link href="/" className="flex items-center gap-2 relative z-50">
-        <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-          <Phone size={18} className="text-white" />
-        </div>
-        <span className="text-xl font-extrabold tracking-tight">
-          BUZZ<span className="gradient-text">THRILLS</span>
-        </span>
-      </Link>
+    <>
+      <header 
+        style={{ transform: 'translate3d(0, 0, 0)' } as any}
+        className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 flex items-center justify-between transition-all duration-500 ${
+          isOpen ? 'bg-transparent border-transparent' : 'glass mx-2 md:mx-4 mt-2 md:mt-4 border-border'
+        } overflow-visible`}
+      >
+        <Link href="/" className="flex items-center gap-2 relative z-[60]">
+          <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
+            <Phone size={18} className="text-white" />
+          </div>
+          <span className="text-xl font-extrabold tracking-tight">
+            BUZZ<span className="gradient-text">THRILLS</span>
+          </span>
+        </Link>
 
-      <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
-        {navLinks.map((link) => (
-          <Link key={link.href} href={link.href} className="hover:text-primary transition-colors">
-            {link.label}
-          </Link>
-        ))}
-      </nav>
+        {/* Desktop Nav */}
+        <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+          {navLinks.map((link) => (
+            <Link key={link.href} href={link.href} className="hover:text-primary transition-colors">
+              {link.label}
+            </Link>
+          ))}
+        </nav>
 
-      <div className="flex items-center gap-2 md:gap-4 relative z-50">
-        <ThemeToggle />
-        <div className="hidden sm:flex items-center gap-4">
-          {user ? (
+        <div className="flex items-center gap-2 md:gap-4 relative z-[60]">
+          <ThemeToggle />
+          <div className="hidden sm:flex items-center gap-4">
+            {user ? (
+              <Link 
+                href="/profile"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-foreground/5 transition-all text-sm font-semibold"
+              >
+                <User size={16} />
+                Profile
+              </Link>
+            ) : (
+              <Link 
+                href="/auth"
+                className="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-foreground/5 transition-all text-sm font-semibold"
+              >
+                <User size={16} />
+                Login
+              </Link>
+            )}
             <Link 
-              href="/profile"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-foreground/5 transition-all text-sm font-semibold"
+              href={user ? "/profile" : "/auth"}
+              className="px-5 py-2 rounded-xl gradient-bg text-white font-bold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
             >
-              <User size={16} />
-              Profile
+              {user ? <ShoppingBag size={16} /> : null}
+              {user ? "My Dashboard" : "Get Started"}
             </Link>
-          ) : (
-            <Link 
-              href="/auth"
-              className="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-foreground/5 transition-all text-sm font-semibold"
-            >
-              <User size={16} />
-              Login
-            </Link>
-          )}
-          <Link 
-            href={user ? "/profile" : "/auth"}
-            className="px-5 py-2 rounded-xl gradient-bg text-white font-bold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button 
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 rounded-xl glass hover:bg-foreground/10 transition-all border border-border/20 shadow-lg"
           >
-            {user ? <ShoppingBag size={16} /> : null}
-            {user ? "My Dashboard" : "Get Started"}
-          </Link>
+            {isOpen ? <X size={20} className="text-primary" /> : <Menu size={20} />}
+          </button>
         </div>
+      </header>
 
-        {/* Mobile Menu Button */}
-        <button 
-          onClick={() => setIsOpen(!isOpen)}
-          className="md:hidden p-2 rounded-xl glass hover:bg-foreground/5 transition-all"
-        >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
-      </div>
-
-      {/* Mobile Sidebar Overlay */}
+      {/* Mobile Sidebar Overlay (Outside Header Bar) */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            className="absolute top-[calc(100%+12px)] left-0 right-0 p-6 glass border border-border md:hidden flex flex-col gap-6 shadow-2xl rounded-[32px]"
-          >
-            <div className="flex flex-col gap-4">
-              {navLinks.map((link) => (
-                <Link 
-                  key={link.href} 
-                  href={link.href} 
-                  onClick={() => setIsOpen(false)}
-                  className="text-lg font-bold hover:text-primary transition-colors py-2"
-                >
-                  {link.label}
-                </Link>
-              ))}
-            </div>
-            <div className="h-px bg-border my-2" />
-            <div className="flex flex-col gap-4">
-              {user ? (
-                <Link 
-                  href="/profile"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 text-lg font-bold py-2"
-                >
-                  <User className="text-primary" size={24} />
-                  Mission Control
-                </Link>
-              ) : (
-                <Link 
-                  href="/auth"
-                  onClick={() => setIsOpen(false)}
-                  className="flex items-center gap-3 text-lg font-bold py-2"
-                >
-                  <User className="text-primary" size={24} />
-                  Join the Squad
-                </Link>
-              )}
-              <Link 
-                href={user ? "/profile" : "/auth"}
-                onClick={() => setIsOpen(false)}
-                className="w-full py-4 rounded-2xl gradient-bg text-white font-black text-center shadow-xl shadow-primary/20"
-              >
-                {user ? "Go to Dashboard" : "Get Started Now"}
-              </Link>
-            </div>
-          </motion.div>
+          <>
+            {/* Full Screen Blur Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 z-40 bg-background/90 backdrop-blur-3xl md:hidden"
+            />
+
+            {/* Centered Menu Container */}
+            <motion.div
+              variants={menuVariants}
+              initial="closed"
+              animate="open"
+              exit="closed"
+              className="fixed inset-0 z-[45] flex flex-col items-center justify-center p-6 md:hidden pointer-events-none"
+            >
+              <div className="w-full max-w-sm flex flex-col items-center gap-12 pointer-events-auto">
+                <motion.div variants={itemVariants} className="flex flex-col items-center gap-6 w-full">
+                  {navLinks.map((link) => (
+                    <Link 
+                      key={link.href} 
+                      href={link.href} 
+                      onClick={() => setIsOpen(false)}
+                      className="text-4xl font-black hover:text-primary transition-all py-2 text-center gradient-h-hover block w-full hover:scale-105"
+                    >
+                      {link.label}
+                    </Link>
+                  ))}
+                </motion.div>
+
+                <motion.div variants={itemVariants} className="w-full flex flex-col items-center gap-8">
+                  <div className="w-24 h-px bg-primary/20" />
+                  
+                  <div className="flex flex-col items-center gap-6 w-full">
+                    {user ? (
+                      <Link 
+                        href="/profile"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-3 text-2xl font-bold py-2 group"
+                      >
+                        <User className="text-primary group-hover:scale-110 transition-transform" size={28} />
+                        Mission Control
+                      </Link>
+                    ) : (
+                      <Link 
+                        href="/auth"
+                        onClick={() => setIsOpen(false)}
+                        className="flex items-center gap-3 text-2xl font-bold py-2 group"
+                      >
+                        <User className="text-primary group-hover:scale-110 transition-transform" size={28} />
+                        Join the Squad
+                      </Link>
+                    )}
+                    <Link 
+                      href={user ? "/profile" : "/auth"}
+                      onClick={() => setIsOpen(false)}
+                      className="w-full max-w-xs py-5 rounded-3xl gradient-bg text-white font-black text-2xl text-center shadow-2xl shadow-primary/30 active:scale-95 transition-all"
+                    >
+                      {user ? "Dashboard" : "Get Started Now"}
+                    </Link>
+                  </div>
+                </motion.div>
+              </div>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
-    </header>
+    </>
   );
 }
