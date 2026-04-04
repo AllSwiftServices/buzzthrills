@@ -19,8 +19,8 @@ export default function BookingSection() {
   const [selectedCall, setSelectedCall] = useState<string | null>(null);
 
   return (
-    <section id="one-off" className="py-24 px-6 bg-background">
-      <div className="max-w-6xl mx-auto rounded-[40px] p-12 glass border-foreground/10 relative overflow-hidden">
+    <section id="one-off" className="py-24 px-4 sm:px-6 bg-background">
+      <div className="max-w-6xl mx-auto rounded-[40px] p-6 sm:p-12 glass border-foreground/10 relative overflow-hidden">
         <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 blur-[100px] rounded-full dark:bg-accent/20" />
         
         <div className="text-center mb-12">
