@@ -29,7 +29,7 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative pt-24 pb-12 overflow-hidden border-t border-white/5 bg-black/40 backdrop-blur-3xl">
+    <footer className="relative pt-24 pb-12 overflow-hidden border-t border-border bg-background/80 backdrop-blur-3xl">
       {/* Background Decor */}
       <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full pointer-events-none z-0">
         <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-primary/5 blur-[120px] rounded-full translate-y-1/2" />
@@ -48,7 +48,7 @@ export default function Footer() {
                 BUZZ<span className="gradient-text italic">THRILLS</span>
               </span>
             </Link>
-            <p className="text-white/60 font-bold text-lg md:text-xl tracking-tight leading-relaxed max-w-sm mb-10 italic">
+            <p className="text-foreground/60 font-bold text-lg md:text-xl tracking-tight leading-relaxed max-w-sm mb-10 italic">
               Hyper-human connection for the digital-first generation. Deploying thrills since 2024.
             </p>
             
@@ -60,7 +60,7 @@ export default function Footer() {
               ].map((social, i) => (
                 <button 
                   key={i}
-                  className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-primary hover:border-primary/50 hover:bg-primary/10 transition-all shadow-xl"
+                  className="w-12 h-12 rounded-2xl bg-foreground/5 border border-border flex items-center justify-center text-foreground/40 hover:text-primary hover:border-primary/50 hover:bg-primary/10 transition-all shadow-xl"
                 >
                   {social.icon}
                 </button>
@@ -71,7 +71,7 @@ export default function Footer() {
           {/* Links Columns */}
           {footerLinks.map((column, i) => (
             <div key={i} className="lg:col-span-3">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-white/20 mb-8 font-mono italic">
+              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-foreground/20 mb-8 font-mono italic">
                 {column.title}
               </h4>
               <ul className="space-y-4">
@@ -79,7 +79,7 @@ export default function Footer() {
                   <li key={j}>
                     <Link 
                       href={link.href} 
-                      className="group flex items-center gap-2 text-white/60 hover:text-white font-bold tracking-tight transition-all"
+                      className="group flex items-center gap-2 text-foreground/60 hover:text-foreground font-bold tracking-tight transition-all"
                     >
                       {link.label}
                       <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-primary" />
@@ -91,24 +91,24 @@ export default function Footer() {
           ))}
 
           {/* Location / Status Column */}
-          <div className="lg:col-span-1 border-l border-white/5 lg:pl-8 flex flex-col justify-between items-center lg:items-end">
+          <div className="lg:col-span-1 border-l border-border lg:pl-8 flex flex-col justify-between items-center lg:items-end">
              <div className="flex flex-col items-center lg:items-end gap-1">
                 <div className="text-[10px] font-black text-green-500 uppercase tracking-widest flex items-center gap-2">
                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                    System Online
                 </div>
-                <div className="text-[9px] font-black text-white/10 uppercase tracking-widest italic">Global Cluster active</div>
+                 <div className="text-[9px] font-black text-foreground/10 uppercase tracking-widest italic">Global Cluster active</div>
              </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4">
-          <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em] italic">
-            &copy; {currentYear} BUZZ<span className="text-white/5">THRILLS</span> PLATFORM. ALL RIGHTS SECURED.
+        <div className="pt-12 border-t border-border flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4">
+          <div className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em] italic">
+            &copy; {currentYear} BUZZ<span className="text-foreground/5">THRILLS</span> PLATFORM. ALL RIGHTS SECURED.
           </div>
           
-          <div className="flex items-center gap-12 text-[9px] font-black text-white/10 uppercase tracking-widest italic">
+          <div className="flex items-center gap-12 text-[9px] font-black text-foreground/10 uppercase tracking-widest italic">
              <div className="flex items-center gap-2">
                 <ShieldCheck size={12} className="text-primary/20" />
                 No Cookies Detected

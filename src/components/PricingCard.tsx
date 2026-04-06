@@ -32,8 +32,8 @@ export default function PricingCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay }}
-      className={`relative group rounded-[48px] p-8 md:p-10 flex flex-col h-full bg-black/20 glass border transition-all duration-500 overflow-hidden ${
-        isPopular ? "border-primary/50 shadow-huge shadow-primary/10 ring-1 ring-primary/20 scale-[1.02] z-10" : "border-white/10 hover:border-white/20"
+      className={`relative group rounded-[48px] p-8 md:p-10 flex flex-col h-full glass border transition-all duration-500 overflow-hidden ${
+        isPopular ? "border-primary/50 shadow-huge shadow-primary/10 ring-1 ring-primary/20 scale-[1.02] z-10" : "border-border hover:border-foreground/20"
       }`}
     >
       {/* Background Glow */}
@@ -51,7 +51,7 @@ export default function PricingCard({
 
       {/* Header */}
       <div className="mb-10 relative z-10">
-        <div className={`w-16 h-16 rounded-3xl bg-white/5 flex items-center justify-center mb-6 shadow-xl ${isPopular ? "text-primary" : "text-white/40"}`}>
+        <div className={`w-16 h-16 rounded-3xl bg-foreground/5 flex items-center justify-center mb-6 shadow-xl ${isPopular ? "text-primary" : "text-foreground/40"}`}>
           {icon}
         </div>
         <h3 className="text-3xl font-black mb-3 tracking-tighter uppercase italic">{name}</h3>
@@ -70,10 +70,10 @@ export default function PricingCard({
       <div className="space-y-4 mb-12 flex-1 relative z-10">
         {features.map((feature, i) => (
           <div key={i} className="flex items-start gap-4">
-            <div className={`mt-1.5 w-4 h-4 rounded-full flex items-center justify-center ${isPopular ? "bg-primary/20 text-primary" : "bg-white/5 text-white/20"}`}>
+            <div className={`mt-1.5 w-4 h-4 rounded-full flex items-center justify-center ${isPopular ? "bg-primary/20 text-primary" : "bg-foreground/5 text-foreground/20"}`}>
               <Check size={10} strokeWidth={4} />
             </div>
-            <span className="text-white/80 font-bold text-sm tracking-tight">{feature}</span>
+            <span className="text-foreground/80 font-bold text-sm tracking-tight">{feature}</span>
           </div>
         ))}
       </div>
@@ -83,7 +83,7 @@ export default function PricingCard({
         <Link 
           href="/auth" 
           className={`w-full py-5 rounded-[28px] font-black italic uppercase tracking-[0.15em] text-sm shadow-huge active:scale-95 transition-all flex items-center justify-center gap-3 group/btn ${
-            isPopular ? "gradient-bg text-white" : "bg-white/5 text-white hover:bg-white/10"
+            isPopular ? "gradient-bg text-white" : "bg-foreground/5 text-foreground hover:bg-foreground/10"
           }`}
         >
           {name === "Corporate" ? "Inquire Mission" : "Deploy Perks"}

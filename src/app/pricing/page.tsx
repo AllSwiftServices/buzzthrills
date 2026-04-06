@@ -79,7 +79,7 @@ export default function PricingPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-white/10 text-primary text-[10px] font-black uppercase tracking-[0.4em] mb-8"
+              className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-black uppercase tracking-[0.4em] mb-8"
             >
               <Zap size={14} className="fill-current" />
               Service Options
@@ -108,15 +108,15 @@ export default function PricingPage() {
               transition={{ delay: 0.3 }}
               className="flex items-center justify-center gap-6 mb-16"
             >
-              <span className={`text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-white/40'}`}>Monthly</span>
+              <span className={`text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'monthly' ? 'text-foreground' : 'text-foreground/40'}`}>Monthly</span>
               <button 
                 onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
-                className="w-16 h-8 rounded-full glass border border-white/20 p-1 relative group cursor-pointer transition-all hover:border-primary/50"
+                className="w-16 h-8 rounded-full glass border border-border p-1 relative group cursor-pointer transition-all hover:border-primary/50"
               >
                 <div className={`w-6 h-6 rounded-full gradient-bg transition-all duration-300 shadow-xl ${billingCycle === 'annual' ? 'translate-x-8' : 'translate-x-0'}`} />
               </button>
               <div className="flex items-center gap-3">
-                 <span className={`text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'annual' ? 'text-white' : 'text-white/40'}`}>Annual Billing</span>
+                 <span className={`text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'annual' ? 'text-foreground' : 'text-foreground/40'}`}>Annual Billing</span>
                  <div className="px-2 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[9px] font-black uppercase tracking-widest rounded-md animate-bounce">
                     Save 20%
                  </div>
@@ -136,12 +136,12 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-12 md:p-16 rounded-[64px] glass border border-white/10 shadow-huge bg-black/40 flex flex-col lg:flex-row items-center justify-between gap-12 mb-24 relative overflow-hidden group"
+            className="p-12 md:p-16 rounded-[64px] glass border border-border shadow-huge bg-background/40 flex flex-col lg:flex-row items-center justify-between gap-12 mb-24 relative overflow-hidden group"
           >
              <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none group-hover:scale-110 transition-transform duration-[2s]" />
              
              <div className="relative z-10 text-center lg:text-left">
-                <div className="w-16 h-16 rounded-3xl bg-white/5 flex items-center justify-center mx-auto lg:mx-0 mb-8 text-primary shadow-xl">
+                <div className="w-16 h-16 rounded-3xl bg-foreground/5 flex items-center justify-center mx-auto lg:mx-0 mb-8 text-primary shadow-xl">
                    <Users size={32} />
                 </div>
                 <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase italic leading-none">Buzz <span className="gradient-text italic">Corporate</span></h2>
@@ -149,7 +149,7 @@ export default function PricingPage() {
              </div>
 
              <div className="relative z-10 w-full lg:w-auto">
-                <button className="w-full lg:w-auto px-12 py-6 bg-white text-black font-black rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3 uppercase text-sm tracking-widest italic">
+                <button className="w-full lg:w-auto px-12 py-6 bg-foreground text-background font-black rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3 uppercase text-sm tracking-widest italic">
                    Contact Sales
                    <ArrowRight size={20} />
                 </button>
@@ -166,9 +166,9 @@ export default function PricingPage() {
                   { q: "How are calls scheduled?", a: "You select a delivery window (Morning, Afternoon, Evening) and our agents coordinate the communication." },
                   { q: "What is the Cancellation policy?", a: "Unused calls roll over if cancelled 48h before the scheduled window." }
                 ].map((item, i) => (
-                  <div key={i} className="p-8 rounded-[32px] bg-white/5 border border-white/5 hover:border-primary/20 transition-all">
-                    <div className="font-black text-white mb-3 text-sm uppercase tracking-wide italic">{item.q}</div>
-                    <p className="text-white/60 font-bold text-sm tracking-tight leading-relaxed">{item.a}</p>
+                  <div key={i} className="p-8 rounded-[32px] bg-foreground/5 border border-border hover:border-primary/20 transition-all">
+                    <div className="font-black text-foreground mb-3 text-sm uppercase tracking-wide italic">{item.q}</div>
+                    <p className="text-foreground/60 font-bold text-sm tracking-tight leading-relaxed">{item.a}</p>
                   </div>
                 ))}
              </div>
