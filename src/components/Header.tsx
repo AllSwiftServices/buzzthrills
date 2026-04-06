@@ -26,6 +26,7 @@ export default function Header() {
 
   const navLinks = [
     { href: "/about", label: "About Us" },
+    { href: "/pricing", label: "Pricing & Perks" },
     { href: "/surprise-calls", label: "Surprise Calls" },
     { href: "/digital-letters", label: "Digital Letters" },
     { href: "/book", label: "Book Now" },

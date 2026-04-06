@@ -18,10 +18,8 @@ export default function AdminBottomTabNav() {
 
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-[100] lg:hidden">
-      <div className="absolute inset-x-0 bottom-0 h-24 bg-linear-to-t from-background via-background/80 to-transparent pointer-events-none" />
-      
       <div className="mx-4 mb-4 relative z-10">
-        <div className="glass border border-primary/20 rounded-[32px] p-2 flex items-center justify-around shadow-2xl backdrop-blur-3xl bg-primary/5">
+        <div className="glass border border-primary/20 rounded-[32px] p-2 flex items-center justify-around shadow-2xl backdrop-blur-3xl bg-black/40">
           {tabs.map((tab) => {
             const isActive = pathname === tab.href;
             return (

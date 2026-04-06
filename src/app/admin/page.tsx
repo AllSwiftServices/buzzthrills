@@ -32,38 +32,28 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     async function fetchStats() {
-      if (authLoading || !user || user.role !== 'admin' || !accessToken) return;
+      if (authLoading || !user || user.role !== 'admin') return;
       
-      const authenticatedSupabase = getSupabase(accessToken);
+      try {
+        const res = await fetch("/api/admin/dashboard");
+        if (!res.ok) throw new Error("Dashboard Intelligence Failure");
+        
+        const data = await res.json();
+        const { analytics, calls: recentCalls, pendingCount: pCount } = data;
 
-      // 1. Fetch Stats from View
-      const { data: analytics } = await authenticatedSupabase
-        .from('analytics_summary')
-        .select('*')
-        .single();
+        const stats = [
+          { label: "Total Deliveries", value: analytics?.total_calls_delivered || "1,242", icon: <PhoneCall size={20} />, color: "text-primary", trend: "+12%" },
+          { label: "Squad Members", value: analytics?.total_users || "842", icon: <Users size={20} />, color: "text-secondary", trend: "+5%" },
+          { label: "Unfinished Missions", value: analytics?.unfinished_bookings || "18", icon: <ShoppingCart size={20} />, color: "text-amber-400", trend: "-2%" },
+          { label: "Churned Clients", value: analytics?.churned_clients || "4", icon: <UserMinus size={20} />, color: "text-red-400", trend: "0%" },
+        ];
 
-      // 2. Fetch Recent Calls
-      const { data: calls } = await authenticatedSupabase
-        .from('calls')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(6);
-
-      // 3. Pending Count
-      const { count: pendingCount } = await authenticatedSupabase
-        .from('calls')
-        .select('*', { count: 'exact', head: true })
-        .eq('status', 'pending');
-
-      const stats = [
-        { label: "Total Deliveries", value: analytics?.total_calls_delivered || "1,242", icon: <PhoneCall size={20} />, color: "text-primary", trend: "+12%" },
-        { label: "Squad Members", value: analytics?.total_users || "842", icon: <Users size={20} />, color: "text-secondary", trend: "+5%" },
-        { label: "Unfinished Missions", value: analytics?.unfinished_bookings || "18", icon: <ShoppingCart size={20} />, color: "text-amber-400", trend: "-2%" },
-        { label: "Churned Clients", value: analytics?.churned_clients || "4", icon: <UserMinus size={20} />, color: "text-red-400", trend: "0%" },
-      ];
-
-      setData({ stats, calls: calls || [], pendingCount: pendingCount || 0 });
-      setLoading(false);
+        setData({ stats, calls: recentCalls || [], pendingCount: pCount || 0 });
+      } catch (error) {
+        console.error("Dashboard Data Failure:", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchStats();

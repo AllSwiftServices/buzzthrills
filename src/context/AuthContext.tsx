@@ -35,6 +35,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const refresh = async () => {
     try {
       const res = await fetch("/api/auth/refresh", { method: "POST" });
+      
+      if (res.status === 401) {
+        setAuth(null, null);
+        return;
+      }
+
       const data = await res.json();
       if (data.accessToken) {
         setAuth(data.user, data.accessToken);

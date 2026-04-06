@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 const SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "super-secret-buzz-thrills-key-12345"
+  process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET || "super-secret-buzz-thrills-key-12345"
 );
 
 export const ACCESS_TOKEN_EXPIRES = "15m";

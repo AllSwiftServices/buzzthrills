@@ -29,38 +29,32 @@ export default function ProfilePage() {
   const [subscription, setSubscription] = useState<any>(null);
 
   useEffect(() => {
-    async function fetchDashboardData() {
-      if (authLoading || !user || !accessToken) return;
-
-      const authenticatedSupabase = getSupabase(accessToken);
+    async function fetchProfileData() {
+      if (authLoading || !user) return;
       
-      // 1. Fetch History
-      const { data: calls } = await authenticatedSupabase
-        .from('calls')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(5);
-
-      // 2. Fetch Active Subscription
-      const { data: sub } = await authenticatedSupabase
-        .from('subscriptions')
-        .select('*')
-        .eq('status', 'active')
-        .maybeSingle();
-
-      if (calls) setHistory(calls);
-      if (sub) setSubscription(sub);
-      setLoading(false);
+      try {
+        setLoading(true);
+        const res = await fetch("/api/user/profile");
+        if (!res.ok) throw new Error("Profile Intelligence Failure");
+        
+        const data = await res.json();
+        setHistory(data.history || []);
+        setSubscription(data.subscription || null);
+      } catch (error) {
+        console.error("Profile Data Failure:", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
-    fetchDashboardData();
-  }, [user, authLoading, accessToken]);
+    fetchProfileData();
+  }, [user, authLoading]);
 
   if (authLoading || loading) {
     return (
       <DashboardLayout>
         <div className="flex flex-col items-center justify-center h-[60vh] gap-6">
-           <Loader2 className="animate-spin text-primary" size={48} />
+           <div className="w-16 h-16 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
            <div className="text-sm font-black uppercase tracking-[0.4em] animate-pulse">Syncing Identity...</div>
         </div>
       </DashboardLayout>
