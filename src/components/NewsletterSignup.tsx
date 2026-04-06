@@ -40,16 +40,16 @@ export default function NewsletterSignup() {
     <>
       <AnimatePresence>
         {isVisible && (
-          <div className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-black/60 backdrop-blur-xl">
+          <div className="fixed inset-0 z-100 flex items-center justify-center p-6 bg-background/80 backdrop-blur-xl">
              <motion.div
                initial={{ opacity: 0, scale: 0.9, y: 20 }}
                animate={{ opacity: 1, scale: 1, y: 0 }}
                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-               className="w-full max-w-lg glass p-10 md:p-14 rounded-[56px] border border-white/10 shadow-huge relative overflow-hidden text-center"
+               className="w-full max-w-lg glass p-10 md:p-14 rounded-[56px] border border-border shadow-huge relative overflow-hidden text-center"
              >
                 <button 
                   onClick={() => setIsVisible(false)}
-                  className="absolute top-8 right-8 text-white/20 hover:text-white transition-all p-2 rounded-xl"
+                  className="absolute top-8 right-8 text-foreground/20 hover:text-foreground transition-all p-2 rounded-xl"
                 >
                   <X size={20} />
                 </button>
@@ -105,7 +105,7 @@ export default function NewsletterSignup() {
                      </form>
                    )}
 
-                   <div className="mt-12 flex items-center justify-center gap-4 text-[10px] font-black text-white/20 uppercase tracking-[0.2em] whitespace-nowrap">
+                   <div className="mt-12 flex items-center justify-center gap-4 text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em] whitespace-nowrap">
                       <ShieldCheck size={14} />
                       Tactical Encryption Active
                       <div className="flex gap-1.5 ml-2">
@@ -122,7 +122,7 @@ export default function NewsletterSignup() {
 
       {/* Static Section Version (Non-Popup) */}
       <section className="py-24 max-w-6xl mx-auto px-6">
-         <div className="p-12 md:p-20 rounded-[64px] glass border border-white/10 shadow-huge relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12 bg-black/20 group hover:border-primary/20 transition-all">
+         <div className="p-12 md:p-20 rounded-[64px] glass border border-border shadow-huge relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12 bg-background/40 group hover:border-primary/20 transition-all">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[120px] rounded-full -mr-48 -mt-48" />
             
             <div className="max-w-xl relative z-10 text-center md:text-left">
@@ -155,7 +155,7 @@ export default function NewsletterSignup() {
                     <Zap size={16} />
                   </button>
                </form>
-               <div className="mt-4 text-[10px] font-black text-white/20 uppercase tracking-widest text-center">No Spam. Pure Thrill.</div>
+                <div className="mt-4 text-[10px] font-black text-foreground/20 uppercase tracking-widest text-center">No Spam. Pure Thrill.</div>
             </div>
          </div>
       </section>

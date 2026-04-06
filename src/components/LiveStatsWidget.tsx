@@ -40,7 +40,7 @@ export default function LiveStatsWidget() {
   ];
 
   return (
-    <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12 py-8 px-8 glass border border-white/10 rounded-[48px] shadow-2xl relative overflow-hidden bg-black/20 group hover:border-primary/20 transition-all">
+    <div className="flex flex-wrap items-center justify-center gap-6 md:gap-12 py-8 px-8 glass border border-border rounded-[48px] shadow-2xl relative overflow-hidden bg-background/40 group hover:border-primary/20 transition-all">
       <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[40px] rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-all" />
       
       {items.map((item, i) => (
@@ -51,25 +51,25 @@ export default function LiveStatsWidget() {
           transition={{ delay: i * 0.1 }}
           className="flex items-center gap-4 relative z-10"
         >
-          <div className={`w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center ${item.color} shadow-lg shadow-white/5`}>
+          <div className={`w-12 h-12 rounded-2xl bg-foreground/5 flex items-center justify-center ${item.color} shadow-lg shadow-foreground/5`}>
              {item.icon}
           </div>
           <div>
              <div className="text-2xl font-black tracking-tighter tabular-nums">{item.value}+</div>
-             <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.2em]">{item.label}</div>
+             <div className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em]">{item.label}</div>
           </div>
           {i < items.length - 1 && (
-            <div className="hidden lg:block w-px h-8 bg-white/10 ml-8" />
+            <div className="hidden lg:block w-px h-8 bg-foreground/10 ml-8" />
           )}
         </motion.div>
       ))}
 
-      <div className="flex items-center gap-2 pl-4 lg:pl-12 border-l border-white/10">
+      <div className="flex items-center gap-2 pl-4 lg:pl-12 border-l border-foreground/10">
          <div className="relative">
             <div className="w-2.5 h-2.5 rounded-full bg-green-500 shadow-lg shadow-green-500/40 animate-pulse" />
             <div className="absolute inset-0 bg-green-500 rounded-full animate-ping opacity-20" />
          </div>
-         <span className="text-[10px] font-black text-white/40 uppercase tracking-widest whitespace-nowrap">Live Network Active</span>
+         <span className="text-[10px] font-black text-foreground/40 uppercase tracking-widest whitespace-nowrap">Live Network Active</span>
       </div>
     </div>
   );

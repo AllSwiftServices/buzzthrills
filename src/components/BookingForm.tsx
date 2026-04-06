@@ -134,11 +134,11 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
 
             <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
               {recipients.map((r, i) => (
-                <div key={i} className="p-8 rounded-[40px] bg-white/[0.03] border border-white/10 relative group hover:border-primary/20 transition-all">
+                <div key={i} className="p-8 rounded-[40px] bg-foreground/5 border border-border relative group hover:border-primary/20 transition-all">
                   {recipients.length > 1 && (
                     <button 
                       onClick={() => removeRecipient(i)}
-                      className="absolute top-6 right-6 text-white/20 hover:text-red-400 transition-all p-2 rounded-xl hover:bg-red-400/10"
+                      className="absolute top-6 right-6 text-foreground/20 hover:text-red-400 transition-all p-2 rounded-xl hover:bg-red-400/10"
                     >
                       <Trash2 size={20} />
                     </button>
@@ -198,16 +198,16 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                       key={slot.id}
                       onClick={() => setRecipients(recipients.map(r => ({ ...r, time: slot.id })))}
                       className={`p-6 rounded-3xl border-2 transition-all text-left group ${
-                        recipients[0].time === slot.id ? 'bg-primary/10 border-primary shadow-xl shadow-primary/10 scale-105' : 'glass border-border hover:border-white/20'
+                        recipients[0].time === slot.id ? 'bg-primary/10 border-primary shadow-xl shadow-primary/10 scale-105' : 'glass border-border hover:border-foreground/20'
                       }`}
                     >
-                      <Clock size={20} className={recipients[0].time === slot.id ? 'text-primary' : 'text-white/20'} />
+                      <Clock size={20} className={recipients[0].time === slot.id ? 'text-primary' : 'text-foreground/20'} />
                       <div className="mt-4 font-black text-sm uppercase tracking-tighter">{slot.label}</div>
                       <div className="text-[10px] text-muted-foreground font-bold italic">{slot.note}</div>
                     </button>
                   ))}
                 </div>
-                <div className="text-[10px] text-muted-foreground font-bold italic bg-white/5 p-4 rounded-2xl inline-block px-6">
+                <div className="text-[10px] text-muted-foreground font-bold italic bg-foreground/5 p-4 rounded-2xl inline-block px-6">
                    💡 Note: We recommend booking at least 48 hours in advance for guaranteed service delivery.
                 </div>
               </div>
@@ -215,11 +215,11 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
               <div 
                 onClick={() => setIsExpress(!isExpress)}
                 className={`p-8 rounded-[40px] border-2 cursor-pointer transition-all flex items-center justify-between group ${
-                  isExpress ? 'bg-primary/10 border-primary shadow-2xl shadow-primary/20' : 'glass border-white/5 hover:border-white/10'
+                  isExpress ? 'bg-primary/10 border-primary shadow-2xl shadow-primary/20' : 'glass border-border hover:border-foreground/10'
                 }`}
               >
                 <div className="flex items-center gap-6">
-                   <div className={`w-16 h-16 rounded-[32px] flex items-center justify-center transition-all ${isExpress ? 'bg-primary text-white scale-110 rotate-12' : 'bg-white/5 text-white/20'}`}>
+                   <div className={`w-16 h-16 rounded-[32px] flex items-center justify-center transition-all ${isExpress ? 'bg-primary text-white scale-110 rotate-12' : 'bg-foreground/5 text-foreground/20'}`}>
                       <Zap size={32} />
                    </div>
                    <div>
@@ -228,7 +228,7 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                    </div>
                 </div>
                 <div className="flex items-center gap-6">
-                   <span className={`text-xl font-black italic transition-colors ${isExpress ? 'text-primary' : 'text-white/20'}`}>+₦2,000</span>
+                   <span className={`text-xl font-black italic transition-colors ${isExpress ? 'text-primary' : 'text-foreground/20'}`}>+₦2,000</span>
                    <div className={`w-14 h-8 rounded-full transition-all relative p-1 ${isExpress ? 'bg-primary' : 'bg-foreground/10'}`}>
                       <motion.div 
                         animate={{ x: isExpress ? 24 : 0 }}
@@ -258,7 +258,7 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
               Redirecting to Paystack for secure payment. You will receive an order confirmation email instantly.
             </p>
             
-            <div className="w-full max-w-md p-10 rounded-[56px] glass border border-white/10 shadow-3xl relative overflow-hidden">
+            <div className="w-full max-w-md p-10 rounded-[56px] glass border border-border shadow-3xl relative overflow-hidden">
                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] rounded-full -mr-16 -mt-16" />
                
                <div className="space-y-6 relative z-10">
@@ -272,7 +272,7 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                       <span className="font-black text-lg">+₦2,000</span>
                     </div>
                   )}
-                  <div className="pt-6 border-t border-white/5 flex justify-between items-center">
+                  <div className="pt-6 border-t border-border flex justify-between items-center">
                     <span className="text-sm font-black uppercase tracking-[0.2em] italic">Total Amount</span>
                     <span className="text-3xl font-black gradient-text tracking-tighter">₦{totalPrice.toLocaleString()}</span>
                   </div>
@@ -282,11 +282,11 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
         )}
       </AnimatePresence>
 
-      <div className="mt-12 flex justify-between items-center pt-8 border-t border-white/5">
+      <div className="mt-12 flex justify-between items-center pt-8 border-t border-border">
           <button 
             onClick={prevStep}
             disabled={step === "subscriber"}
-            className={`flex items-center gap-3 px-8 py-5 rounded-[32px] font-black text-[10px] uppercase tracking-widest transition-all ${step === "subscriber" ? 'opacity-0 pointer-events-none' : 'glass border border-white/10 hover:border-white/20 text-white/60 hover:text-white hover:scale-105 active:scale-95'}`}
+            className={`flex items-center gap-3 px-8 py-5 rounded-[32px] font-black text-[10px] uppercase tracking-widest transition-all ${step === "subscriber" ? 'opacity-0 pointer-events-none' : 'glass border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground hover:scale-105 active:scale-95'}`}
           >
             <ChevronLeft size={20} />
             Previous Step

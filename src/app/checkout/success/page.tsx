@@ -23,13 +23,13 @@ export default function CheckoutSuccess() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]">
+    <div className="min-h-screen bg-background flex items-center justify-center p-6 bg-[url('/grid.svg')] bg-center mask-[linear-gradient(180deg,white,rgba(255,255,255,0))]">
       <div className="absolute inset-x-0 h-px w-full bg-linear-to-r from-transparent via-primary/50 to-transparent top-0" />
       
       <motion.div 
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="w-full max-w-2xl glass p-10 md:p-16 rounded-[64px] border border-white/10 shadow-huge text-center relative overflow-hidden"
+        className="w-full max-w-2xl glass p-10 md:p-16 rounded-[64px] border border-border shadow-huge text-center relative overflow-hidden"
       >
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -mr-32 -mt-32" />
         
@@ -49,12 +49,12 @@ export default function CheckoutSuccess() {
            </p>
 
            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
-              <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-left group hover:border-primary/20 transition-all">
-                 <div className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Order Pulse</div>
+              <div className="p-6 rounded-3xl bg-foreground/5 border border-border text-left group hover:border-primary/20 transition-all">
+                 <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mb-1">Order Pulse</div>
                  <div className="font-black text-lg font-mono text-primary group-hover:scale-105 transition-transform origin-left">{orderRef}</div>
               </div>
-              <div className="p-6 rounded-3xl bg-white/5 border border-white/5 text-left group hover:border-secondary/20 transition-all">
-                 <div className="text-[10px] font-black text-white/40 uppercase tracking-widest mb-1">Status</div>
+              <div className="p-6 rounded-3xl bg-foreground/5 border border-border text-left group hover:border-secondary/20 transition-all">
+                 <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mb-1">Status</div>
                  <div className="font-black text-lg flex items-center gap-2 group-hover:translate-x-2 transition-transform">
                     <Zap size={18} className="text-secondary animate-pulse" />
                     Tactical Setup
@@ -70,14 +70,14 @@ export default function CheckoutSuccess() {
                 Track In Dashboard
                 <ArrowRight size={18} />
               </Link>
-              <button className="px-8 py-5 rounded-[32px] glass border border-white/10 text-white/60 hover:text-white font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+              <button className="px-8 py-5 rounded-[32px] glass border border-border text-foreground/60 hover:text-foreground font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
                 <Download size={18} />
                 Mission Receipt
               </button>
            </div>
 
-           <div className="mt-12 pt-12 border-t border-white/5 flex flex-col items-center gap-4">
-              <div className="flex items-center gap-2 text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">
+           <div className="mt-12 pt-12 border-t border-border flex flex-col items-center gap-4">
+              <div className="flex items-center gap-2 text-[10px] font-black text-foreground/20 uppercase tracking-[0.3em]">
                  <ShieldCheck size={14} />
                  End-to-End Tactical Encryption
               </div>

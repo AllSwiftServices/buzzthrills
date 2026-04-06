@@ -48,10 +48,10 @@ export default function AdminCalls() {
         
         <div className="flex items-center gap-4 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-            <input type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm outline-none focus:border-primary transition-all font-bold" placeholder="Search call history..." />
+            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/40" />
+            <input type="text" className="w-full bg-foreground/5 border border-border rounded-2xl py-3 pl-12 pr-4 text-sm outline-none focus:border-primary transition-all font-bold" placeholder="Search call history..." />
           </div>
-          <button className="p-3.5 rounded-2xl glass border border-white/10 text-white/40 hover:text-primary transition-all">
+          <button className="p-3.5 rounded-2xl glass border border-border text-foreground/40 hover:text-primary transition-all">
             <Filter size={20} />
           </button>
         </div>
@@ -64,7 +64,7 @@ export default function AdminCalls() {
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="p-8 rounded-[40px] glass border border-white/10 hover:border-primary/20 transition-all group relative overflow-hidden"
+            className="p-8 rounded-[40px] glass border border-border hover:border-primary/20 transition-all group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-[50px] rounded-full group-hover:bg-primary/10 transition-all -mr-24 -mt-24" />
             
@@ -85,33 +85,33 @@ export default function AdminCalls() {
                          {call.status}
                       </div>
                    </div>
-                   <div className="flex flex-wrap items-center gap-6 text-sm">
-                      <div className="flex items-center gap-2 text-white/40 font-bold">
-                         <Phone size={14} className="text-primary" />
-                         {call.recipient_phone}
-                      </div>
-                      <div className="flex items-center gap-2 text-white/40 font-bold border-l border-white/10 pl-6">
-                         <Calendar size={14} className="text-secondary" />
-                         {new Date(call.occasion_date).toLocaleDateString()}
-                      </div>
-                      <div className="flex items-center gap-2 text-white/40 font-bold border-l border-white/10 pl-6">
-                         <Clock size={14} className="text-primary" />
-                         {call.scheduled_slot} Slot
-                      </div>
-                   </div>
+                    <div className="flex flex-wrap items-center gap-6 text-sm">
+                       <div className="flex items-center gap-2 text-foreground/40 font-bold">
+                          <Phone size={14} className="text-primary" />
+                          {call.recipient_phone}
+                       </div>
+                       <div className="flex items-center gap-2 text-foreground/40 font-bold border-l border-border pl-6">
+                          <Calendar size={14} className="text-secondary" />
+                          {new Date(call.occasion_date).toLocaleDateString()}
+                       </div>
+                       <div className="flex items-center gap-2 text-foreground/40 font-bold border-l border-border pl-6">
+                          <Clock size={14} className="text-primary" />
+                          {call.scheduled_slot} Slot
+                       </div>
+                    </div>
                 </div>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-4">
-                 <div className="w-full sm:w-auto p-4 rounded-2xl bg-white/5 border border-white/5 flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white shrink-0">
-                       <User size={18} />
-                    </div>
-                    <div>
-                       <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Assigned Caller</div>
-                       <div className="text-xs font-black">Support Agent #104</div>
-                    </div>
-                 </div>
+               <div className="flex flex-col sm:flex-row items-center gap-4">
+                  <div className="w-full sm:w-auto p-4 rounded-2xl bg-foreground/5 border border-border flex items-center gap-4">
+                     <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center text-white shrink-0">
+                        <User size={18} />
+                     </div>
+                     <div>
+                        <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">Assigned Caller</div>
+                        <div className="text-xs font-black">Support Agent #104</div>
+                     </div>
+                  </div>
                  <button className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-primary text-white font-black shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
                     Manage Call
                     <ChevronRight size={18} />

@@ -70,23 +70,23 @@ export default function AdminAnalytics() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="p-8 rounded-[48px] glass border border-white/10 shadow-huge bg-black/20 group hover:border-primary/20 transition-all relative overflow-hidden"
+            className="p-8 rounded-[48px] glass border border-border shadow-huge bg-background/40 group hover:border-primary/20 transition-all relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[40px] rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-all" />
             
             <div className="flex justify-between items-start mb-6 relative z-10">
-              <div className={`w-14 h-14 rounded-2xl bg-white/5 flex items-center justify-center ${metric.color} shadow-lg shadow-white/5`}>
+              <div className={`w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center ${metric.color} shadow-lg shadow-foreground/5`}>
                 {metric.icon}
               </div>
               <div className="flex flex-col items-end">
                 <div className="text-green-500 font-black text-xs italic tracking-widest">{metric.trend}</div>
-                <div className="text-[8px] text-white/20 font-black uppercase tracking-widest leading-none mt-1">Status: Stable</div>
+                 <div className="text-[8px] text-foreground/20 font-black uppercase tracking-widest leading-none mt-1">Status: Stable</div>
               </div>
             </div>
             
             <div className="relative z-10">
                <div className="text-4xl font-black mb-1 tabular-nums group-hover:scale-110 transition-transform origin-left">{metric.value}</div>
-               <div className="text-[10px] font-black text-white/20 uppercase tracking-[0.3em]">{metric.label}</div>
+                <div className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.3em]">{metric.label}</div>
                {metric.sub && (
                  <div className="mt-2 text-[10px] font-black text-primary/40 uppercase tracking-widest italic">{metric.sub}</div>
                )}
@@ -97,7 +97,7 @@ export default function AdminAnalytics() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Geographic Segmentation */}
-        <div className="lg:col-span-12 p-10 rounded-[64px] glass border border-white/10 shadow-huge bg-black/20 relative overflow-hidden">
+        <div className="lg:col-span-12 p-10 rounded-[64px] glass border border-border shadow-huge bg-background/40 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/5 blur-[120px] rounded-full -mr-48 -mt-48" />
           
           <div className="flex justify-between items-center mb-10 relative z-10">
@@ -117,10 +117,10 @@ export default function AdminAnalytics() {
                { city: 'Nairobi', reach: '7%' },
                { city: 'Other', reach: '12%' }
              ].map((geo, i) => (
-               <div key={geo.city} className="p-6 rounded-3xl bg-white/5 border border-white/5 group hover:border-secondary/20 transition-all text-center">
-                  <div className="text-xl font-black mb-1">{geo.reach}</div>
-                  <div className="text-[10px] font-black text-white/20 uppercase tracking-widest">{geo.city}</div>
-                  <div className="mt-4 w-full h-1 bg-white/5 rounded-full overflow-hidden">
+                <div key={geo.city} className="p-6 rounded-3xl bg-foreground/5 border border-border group hover:border-secondary/20 transition-all text-center">
+                   <div className="text-xl font-black mb-1">{geo.reach}</div>
+                   <div className="text-[10px] font-black text-foreground/20 uppercase tracking-widest">{geo.city}</div>
+                   <div className="mt-4 w-full h-1 bg-foreground/5 rounded-full overflow-hidden">
                      <motion.div 
                        initial={{ width: 0 }}
                        animate={{ width: geo.reach }}
@@ -134,17 +134,17 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Detailed Insights */}
-        <div className="lg:col-span-8 p-10 rounded-[48px] glass border border-white/10 shadow-huge bg-black/20 h-full">
+        <div className="lg:col-span-8 p-10 rounded-[48px] glass border border-border shadow-huge bg-background/40 h-full">
             <div className="flex items-center gap-4 mb-10">
                <TrendingUp className="text-primary" size={24} />
                <h2 className="text-2xl font-black italic uppercase tracking-tighter">Service <span className="gradient-text">Engagement</span></h2>
             </div>
-            <div className="h-64 flex items-center justify-center border border-white/5 rounded-[32px] bg-white/[0.02] text-white/10 font-bold italic tracking-widest uppercase">
+            <div className="h-64 flex items-center justify-center border border-border rounded-[32px] bg-foreground/2 text-foreground/10 font-bold italic tracking-widest uppercase">
                Engagement Metrics Chart [Visual Placeholder]
             </div>
         </div>
 
-        <div className="lg:col-span-4 p-10 rounded-[48px] glass border border-white/10 shadow-huge bg-black/20 h-full">
+        <div className="lg:col-span-4 p-10 rounded-[48px] glass border border-border shadow-huge bg-background/40 h-full">
            <div className="flex items-center gap-4 mb-10">
               <Shield className="text-secondary" size={24} />
               <h2 className="text-2xl font-black italic uppercase tracking-tighter">Network <span className="text-secondary">Security</span></h2>
@@ -155,8 +155,8 @@ export default function AdminAnalytics() {
                  { label: 'Encryption', value: 'AES-256' },
                  { label: 'Verified Accounts', value: '94%' }
                ].map(stat => (
-                <div key={stat.label} className="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group hover:border-secondary/40 transition-all">
-                   <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">{stat.label}</div>
+                 <div key={stat.label} className="p-4 rounded-2xl bg-foreground/5 border border-border flex justify-between items-center group hover:border-secondary/40 transition-all">
+                    <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">{stat.label}</div>
                    <div className="font-black text-secondary">{stat.value}</div>
                 </div>
               ))}

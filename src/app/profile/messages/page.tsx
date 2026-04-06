@@ -49,7 +49,7 @@ export default function MessagesPage() {
 
         <div className="flex-1 rounded-[40px] glass border border-border overflow-hidden flex flex-col md:flex-row shadow-2xl">
           {/* Sidebar */}
-          <div className="w-full md:w-80 border-r border-border bg-foreground/[0.02]">
+          <div className="w-full md:w-80 border-r border-border bg-foreground/2">
             <div className="p-6 border-b border-border font-bold italic tracking-tight">Active Channels</div>
             <div className="p-2 space-y-2">
               {[
@@ -78,7 +78,7 @@ export default function MessagesPage() {
           </div>
 
           {/* Chat Area */}
-          <div className="flex-1 flex flex-col bg-background/20 relative">
+          <div className="flex-1 flex flex-col bg-background/40 relative">
             <div className="p-6 border-b border-border flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-black text-xs ring-4 ring-primary/10">DT</div>
@@ -94,9 +94,9 @@ export default function MessagesPage() {
 
             <div className="flex-1 p-8 overflow-y-auto space-y-6">
                <div className="flex justify-start">
-                  <div className="max-w-[80%] p-5 rounded-3xl rounded-tl-none bg-foreground/10 text-sm italic font-bold">
+                  <div className="max-w-[80%] p-5 rounded-3xl rounded-tl-none bg-foreground/5 text-sm italic font-bold">
                     Hello! Your scheduled "Magic Morning" call for Mom is locked in for 10:00 AM tomorrow. Any last-minute details we should add? 
-                    <div className="text-[10px] text-muted-foreground font-black mt-2 uppercase tracking-widest">Delivery Team • 10:04 AM</div>
+                    <div className="text-[10px] text-foreground/40 font-black mt-2 uppercase tracking-widest">Delivery Team • 10:04 AM</div>
                   </div>
                </div>
 

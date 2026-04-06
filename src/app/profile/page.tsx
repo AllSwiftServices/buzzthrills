@@ -93,7 +93,7 @@ export default function ProfilePage() {
               await fetch("/api/auth/logout", { method: "POST" });
               window.location.href = "/auth";
             }}
-            className="px-6 py-4 rounded-3xl glass border border-white/10 text-red-500 font-bold text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-red-500/10 transition-all"
+            className="px-6 py-4 rounded-3xl glass border border-border text-red-500 font-bold text-xs uppercase tracking-widest flex items-center gap-2 hover:bg-red-500/10 transition-all"
           >
             <LogOut size={16} />
             Logout Session
@@ -143,7 +143,7 @@ export default function ProfilePage() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: i * 0.1 }}
-                    className="flex items-center justify-between p-6 rounded-[32px] bg-white/5 hover:bg-accent/10 transition-all border border-white/5 group cursor-pointer relative z-10"
+                    className="flex items-center justify-between p-6 rounded-[32px] bg-foreground/5 hover:bg-accent/10 transition-all border border-border group cursor-pointer relative z-10"
                   >
                     <div className="flex gap-6 items-center">
                       <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center text-white shadow-xl shadow-primary/20">
@@ -151,21 +151,21 @@ export default function ProfilePage() {
                       </div>
                       <div>
                         <div className="font-black text-lg tracking-tight group-hover:text-primary transition-colors">{thrill.occasion_type}</div>
-                        <div className="text-[10px] text-white/40 font-bold uppercase tracking-widest mt-1">To: {thrill.recipient_name} • {new Date(thrill.created_at).toLocaleDateString()}</div>
+                        <div className="text-[10px] text-foreground/40 font-bold uppercase tracking-widest mt-1">To: {thrill.recipient_name} • {new Date(thrill.created_at).toLocaleDateString()}</div>
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                       <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-white/5 ${
+                       <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-border ${
                          thrill.status === 'delivered' ? 'bg-green-500/10 text-green-500' : 'bg-amber-500/10 text-amber-500'
                        }`}>
                           {thrill.status}
                        </div>
-                       <ChevronRight size={18} className="text-white/20 group-hover:translate-x-1 group-hover:text-white transition-all" />
+                       <ChevronRight size={18} className="text-foreground/20 group-hover:translate-x-1 group-hover:text-foreground transition-all" />
                     </div>
                   </motion.div>
                 )) : (
-                  <div className="flex-1 rounded-[40px] border-2 border-dashed border-white/5 flex flex-col items-center justify-center p-8 text-center bg-white/2">
-                    <Phone size={48} className="text-white/5 mb-4" />
+                  <div className="flex-1 rounded-[40px] border-2 border-dashed border-border flex flex-col items-center justify-center p-8 text-center bg-foreground/2">
+                    <Phone size={48} className="text-foreground/5 mb-4" />
                     <div className="text-sm font-black uppercase tracking-[0.2em] opacity-10">No History recorded.</div>
                   </div>
                 )}
@@ -179,11 +179,11 @@ export default function ProfilePage() {
                 <div className="absolute top-0 right-0 w-48 h-48 bg-primary/10 blur-[60px] rounded-full -mr-24 -mt-24" />
                 <h3 className="text-xl font-black italic uppercase tracking-tighter mb-8 relative z-10">Activity <span className="gradient-text italic">Stats</span></h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-6 rounded-[32px] bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
+                  <div className="p-6 rounded-[32px] bg-foreground/5 border border-border flex flex-col items-center justify-center text-center">
                     <div className="text-4xl font-black italic mb-1">{history.length}</div>
                     <div className="text-[10px] font-black uppercase tracking-widest opacity-20">Total Calls</div>
                   </div>
-                  <div className="p-6 rounded-[32px] bg-white/5 border border-white/5 flex flex-col items-center justify-center text-center">
+                  <div className="p-6 rounded-[32px] bg-foreground/5 border border-border flex flex-col items-center justify-center text-center">
                     <div className="text-4xl font-black italic mb-1">5.0</div>
                     <div className="text-[10px] font-black uppercase tracking-widest opacity-20">Satisfaction</div>
                   </div>
@@ -202,10 +202,10 @@ export default function ProfilePage() {
                   <Link 
                     key={i}
                     href={item.href}
-                    className="w-full p-6 rounded-[28px] bg-white/5 border border-white/5 flex items-center justify-between group hover:bg-white/10 transition-all"
+                    className="w-full p-6 rounded-[28px] bg-foreground/5 border border-border flex items-center justify-between group hover:bg-foreground/10 transition-all"
                   >
                     <div className="flex items-center gap-4 font-black uppercase tracking-widest text-[10px]">
-                      <div className="text-white/20 group-hover:text-primary transition-colors">
+                      <div className="text-foreground/20 group-hover:text-primary transition-colors">
                         {item.icon}
                       </div>
                       {item.label}

@@ -61,10 +61,10 @@ export default function TestimonialCarousel() {
            </div>
            
            <div className="flex gap-4">
-              <button onClick={prev} className="w-14 h-14 rounded-full glass border border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90 shadow-xl">
+              <button onClick={prev} className="w-14 h-14 rounded-full glass border border-border flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90 shadow-xl">
                  <ChevronLeft size={24} />
               </button>
-              <button onClick={next} className="w-14 h-14 rounded-full glass border border-white/10 flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90 shadow-xl">
+              <button onClick={next} className="w-14 h-14 rounded-full glass border border-border flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90 shadow-xl">
                  <ChevronRight size={24} />
               </button>
            </div>
@@ -82,9 +82,9 @@ export default function TestimonialCarousel() {
               >
                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center h-full">
                    {/* Feedback Content */}
-                   <div className="lg:col-span-12 p-8 md:p-12 rounded-[56px] glass border border-white/10 shadow-huge relative flex flex-col justify-center overflow-hidden group">
+                   <div className="lg:col-span-12 p-8 md:p-12 rounded-[56px] glass border border-border shadow-huge relative flex flex-col justify-center overflow-hidden group">
                       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[60px] rounded-full -mr-32 -mt-32" />
-                      <Quote size={80} className="absolute top-12 left-12 text-white/[0.03] scale-150 rotate-12" />
+                      <Quote size={80} className="absolute top-12 left-12 text-foreground/3 scale-150 rotate-12" />
                       
                       <div className="relative z-10">
                          <div className="flex items-center gap-2 mb-8">
@@ -102,7 +102,7 @@ export default function TestimonialCarousel() {
                          
                          <div className="flex items-center gap-4">
                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary p-0.5 shadow-xl">
-                               <div className="w-full h-full rounded-[14px] bg-[#111] flex items-center justify-center font-black text-xl gradient-text">
+                               <div className="w-full h-full rounded-[14px] bg-background flex items-center justify-center font-black text-xl gradient-text">
                                   {testimonials[index].name.charAt(0)}
                                </div>
                             </div>
@@ -128,7 +128,7 @@ export default function TestimonialCarousel() {
              <button 
                key={i} 
                onClick={() => setIndex(i)}
-               className={`h-1.5 rounded-full transition-all duration-500 ${i === index ? 'w-12 bg-primary shadow-lg shadow-primary/40' : 'w-4 bg-white/10 hover:bg-white/20'}`} 
+               className={`h-1.5 rounded-full transition-all duration-500 ${i === index ? 'w-12 bg-primary shadow-lg shadow-primary/40' : 'w-4 bg-foreground/10 hover:bg-foreground/20'}`} 
              />
            ))}
         </div>
