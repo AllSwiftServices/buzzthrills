@@ -15,6 +15,8 @@ export const metadata: Metadata = {
   description: "Surprise calls, emotional messages, and corporate engagement. Never forget any special moment again.",
 };
 
+import { AuthProvider } from "@/context/AuthContext";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -23,14 +25,16 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${outfit.variable} scroll-smooth`} suppressHydrationWarning>
       <body className="antialiased bg-background text-foreground transition-colors duration-500">
-        <ThemeProvider 
-          attribute="class" 
-          defaultTheme="light" 
-          enableSystem={false}
-          enableColorScheme={false}
-        >
-          {children}
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider 
+            attribute="class" 
+            defaultTheme="light" 
+            enableSystem={false}
+            enableColorScheme={false}
+          >
+            {children}
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

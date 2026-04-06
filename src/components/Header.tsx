@@ -5,23 +5,12 @@ import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import { useEffect, useState, useRef } from "react";
 import { supabase } from "@/lib/supabase";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
-  const [user, setUser] = useState<any>(null);
+  const { user } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
-
-  useEffect(() => {
-    supabase.auth.getUser().then(({ data: { user } }) => {
-      setUser(user);
-    });
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setUser(session?.user || null);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   // Scroll lock implementation
   useEffect(() => {
@@ -67,7 +56,7 @@ export default function Header() {
           isOpen ? 'bg-transparent border-transparent' : 'glass mx-2 md:mx-4 mt-2 md:mt-4 border-border'
         } overflow-visible`}
       >
-        <Link href="/" className="flex items-center gap-2 relative z-[60]">
+        <Link href="/" className="flex items-center gap-2 relative z-60">
           <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
             <Phone size={18} className="text-white" />
           </div>
@@ -85,7 +74,7 @@ export default function Header() {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2 md:gap-4 relative z-[60]">
+        <div className="flex items-center gap-2 md:gap-4 relative z-60">
           <ThemeToggle />
           <div className="hidden sm:flex items-center gap-4">
             {user ? (
@@ -143,7 +132,7 @@ export default function Header() {
               initial="closed"
               animate="open"
               exit="closed"
-              className="fixed inset-0 z-[45] flex flex-col items-center justify-center p-6 md:hidden pointer-events-none"
+              className="fixed inset-0 z-45 flex flex-col items-center justify-center p-6 md:hidden pointer-events-none"
             >
               <div className="w-full max-w-sm flex flex-col items-center gap-12 pointer-events-auto">
                 <motion.div variants={itemVariants} className="flex flex-col items-center gap-6 w-full">

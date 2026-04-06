@@ -90,7 +90,7 @@ CREATE POLICY "Users can view own letters" ON digital_letters FOR SELECT USING (
 CREATE POLICY "Admins can view all profiles" ON profiles FOR SELECT USING (
   (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
 );
-CREATE POLICY "Admins can manage calls" ON calls ALL USING (
+CREATE POLICY "Admins can manage calls" ON calls FOR ALL USING (
   (SELECT role FROM profiles WHERE id = auth.uid()) = 'admin'
 );
 

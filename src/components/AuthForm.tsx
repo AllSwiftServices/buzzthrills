@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, Lock, User, ArrowRight, Globe, Loader2 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { Mail, Lock, User, ArrowRight, Globe, Loader2, Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AuthForm() {
-  const [isLogin, setIsLogin] = useState(true);
+  const { setAuth } = useAuth();
+  const [mode, setMode] = useState<'login' | 'signup' | 'forgot' | 'verify'>('login');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const router = useRouter();
@@ -15,8 +16,42 @@ export default function AuthForm() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-    fullName: ""
+    fullName: "",
+    otp: ""
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  const startResendCooldown = () => {
+    setResendCooldown(60);
+    const interval = setInterval(() => {
+      setResendCooldown((prev) => {
+        if (prev <= 1) {
+          clearInterval(interval);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+  };
+
+  const handleResendOTP = async () => {
+    if (resendCooldown > 0) return;
+    try {
+      const res = await fetch("/api/auth/resend-otp", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: formData.email }),
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+      
+      setMessage({ type: 'success', text: "New magic code sent! ✨" });
+      startResendCooldown();
+    } catch (error: any) {
+      setMessage({ type: 'error', text: error.message });
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,25 +59,64 @@ export default function AuthForm() {
     setMessage(null);
 
     try {
-      if (isLogin) {
-        const { error } = await supabase.auth.signInWithPassword({
-          email: formData.email,
-          password: formData.password,
+      if (mode === 'login') {
+        const res = await fetch("/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email, password: formData.password }),
         });
-        if (error) throw error;
-        router.push("/profile");
+        const data = await res.json();
+        if (data.error) {
+          if (data.unverified) {
+             setMode('verify');
+             setMessage({ type: 'success', text: "Please verify your email to continue." });
+          } else {
+             throw new Error(data.error);
+          }
+        } else {
+           // Success!
+           setAuth(data.user, data.accessToken);
+           if (data.user.role === 'admin') {
+             router.push("/admin");
+           } else {
+             router.push("/profile");
+           }
+        }
+      } else if (mode === 'signup') {
+        const res = await fetch("/api/auth/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ 
+            email: formData.email, 
+            password: formData.password, 
+            fullName: formData.fullName 
+          }),
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+        
+        setMode('verify');
+        setMessage({ type: 'success', text: "Verification code sent! Check your inbox." });
+
+      } else if (mode === 'verify') {
+        const res = await fetch("/api/auth/verify-otp", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email, code: formData.otp }),
+        });
+        const data = await res.json();
+        if (data.error) throw new Error(data.error);
+
+        setAuth(data.user, data.accessToken);
+        if (data.user.role === 'admin') {
+          router.push("/admin");
+        } else {
+          router.push("/profile");
+        }
+
       } else {
-        const { error } = await supabase.auth.signUp({
-          email: formData.email,
-          password: formData.password,
-          options: {
-            data: {
-              full_name: formData.fullName,
-            },
-          },
-        });
-        if (error) throw error;
-        setMessage({ type: 'success', text: "Verification email sent! Please check your inbox." });
+        // Forgot password placeholder
+        setMessage({ type: 'success', text: "Password reset link sent to your email!" });
       }
     } catch (error: any) {
       setMessage({ type: 'error', text: error.message });
@@ -58,60 +132,125 @@ export default function AuthForm() {
         
         <div className="text-center mb-8 relative z-10">
           <h2 className="text-3xl font-black mb-2">
-            {isLogin ? "Welcome Back" : "Join the Squad"}
+            {mode === 'login' ? "Welcome Back" : mode === 'signup' ? "Join the Squad" : mode === 'forgot' ? "Recover Account" : "Verify Email"}
           </h2>
           <p className="text-muted-foreground text-sm">
-            {isLogin ? "Your Superheroes are waiting to thrill you." : "Start sending surprises that people never forget."}
+            {mode === 'login' 
+              ? "Your Superheroes are waiting to thrill you." 
+              : mode === 'signup' 
+                ? "Start sending surprises that people never forget."
+                : mode === 'verify'
+                  ? `Enter the magic code we sent to ${formData.email}`
+                  : "Enter your email to receive a magic recovery link."
+            }
           </p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4 relative z-10">
           <AnimatePresence mode="wait">
-            {!isLogin && (
+            {mode === 'signup' && (
               <motion.div
+                key="signup-fields"
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
                 exit={{ height: 0, opacity: 0 }}
                 className="overflow-hidden"
               >
-                <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+                <div className="relative group mb-4">
+                  <User className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={18} />
                   <input
                     type="text"
-                    required={!isLogin}
+                    required
                     placeholder="Full Name"
-                    className="w-full bg-foreground/5 border border-border rounded-2xl py-3.5 pl-12 pr-4 outline-none focus:border-primary transition-all text-sm"
+                    className="w-full bg-foreground/5 border border-border rounded-2xl py-3.5 pl-12 pr-4 outline-none focus:border-primary focus:bg-background transition-all text-sm"
                     value={formData.fullName}
                     onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
                   />
                 </div>
               </motion.div>
             )}
+
+            {mode === 'verify' && (
+              <motion.div
+                key="verify-fields"
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="overflow-hidden"
+              >
+                <div className="relative group mb-4">
+                  <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={18} />
+                  <input
+                    type="text"
+                    maxLength={6}
+                    required
+                    placeholder="6-Digit Magic Code"
+                    className="w-full bg-foreground/5 border border-border rounded-2xl py-3.5 pl-12 pr-4 outline-none focus:border-primary focus:bg-background transition-all text-center text-2xl font-black tracking-[1em]"
+                    onChange={(e) => setFormData({ ...formData, otp: e.target.value })}
+                  />
+                </div>
+                <div className="text-center mb-4">
+                  <button
+                    type="button"
+                    disabled={resendCooldown > 0}
+                    onClick={handleResendOTP}
+                    className={`text-xs font-bold transition-all ${
+                      resendCooldown > 0 ? "text-muted-foreground opacity-50" : "text-primary hover:underline hover:scale-105 active:scale-95"
+                    }`}
+                  >
+                    {resendCooldown > 0 ? `Resend Code in ${resendCooldown}s` : "Didn't get it? Resend Code"}
+                  </button>
+                </div>
+              </motion.div>
+            )}
           </AnimatePresence>
 
-          <div className="relative">
-            <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-            <input
-              type="email"
-              required
-              placeholder="Email Address"
-              className="w-full bg-foreground/5 border border-border rounded-2xl py-3.5 pl-12 pr-4 outline-none focus:border-primary transition-all text-sm"
-              value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-            />
-          </div>
+          {(mode === 'login' || mode === 'signup' || mode === 'forgot') && (
+            <div className="relative group">
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={18} />
+              <input
+                type="email"
+                required
+                placeholder="Email Address"
+                className="w-full bg-foreground/5 border border-border rounded-2xl py-3.5 pl-12 pr-4 outline-none focus:border-primary focus:bg-background transition-all text-sm"
+                value={formData.email}
+                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+              />
+            </div>
+          )}
 
-          <div className="relative">
-            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
-            <input
-              type="password"
-              required
-              placeholder="Password"
-              className="w-full bg-foreground/5 border border-border rounded-2xl py-3.5 pl-12 pr-4 outline-none focus:border-primary transition-all text-sm"
-              value={formData.password}
-              onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-            />
-          </div>
+          {(mode === 'login' || mode === 'signup') && (
+            <div className="relative group">
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" size={18} />
+              <input
+                type={showPassword ? "text" : "password"}
+                required
+                placeholder="Password"
+                className="w-full bg-foreground/5 border border-border rounded-2xl py-3.5 pl-12 pr-12 outline-none focus:border-primary focus:bg-background transition-all text-sm"
+                value={formData.password}
+                onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-primary transition-colors"
+              >
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
+          )}
+
+          {mode === 'login' && (
+            <div className="flex justify-end">
+              <button 
+                type="button"
+                onClick={() => setMode('forgot')}
+                className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors"
+              >
+                Forgot Password?
+              </button>
+            </div>
+          )}
 
           {message && (
             <motion.div
@@ -128,46 +267,40 @@ export default function AuthForm() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-4 rounded-2xl gradient-bg text-white font-black text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 group"
+            className="w-full py-4 rounded-2xl gradient-bg text-white font-black text-lg shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2 group disabled:opacity-50 disabled:hover:scale-100"
           >
             {loading ? (
               <Loader2 className="animate-spin" size={20} />
             ) : (
               <>
-                {isLogin ? "Login Now" : "Create Account"}
+                {mode === 'login' ? "Login Now" : mode === 'signup' ? "Create Account" : mode === 'verify' ? "Verify & Activate" : "Reset Password"}
                 <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </>
             )}
           </button>
         </form>
 
-        <div className="mt-8 relative z-10">
-          <div className="flex items-center gap-4 mb-6">
-            <div className="h-px grow bg-border" />
-            <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest leading-none">Or continue with</span>
-            <div className="h-px grow bg-border" />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <button className="flex items-center justify-center gap-2 py-3 rounded-2xl border border-border hover:bg-foreground/5 transition-all text-sm font-bold">
-              <Globe size={18} />
-              Google
-            </button>
-            <button className="flex items-center justify-center gap-2 py-3 rounded-2xl border border-border hover:bg-foreground/5 transition-all text-sm font-bold">
-              <Globe size={18} />
-              Outlook
-            </button>
-          </div>
-        </div>
+        {/* Social logins removed as per request */}
 
         <div className="mt-8 text-center text-sm text-muted-foreground relative z-10">
-          {isLogin ? "New to the squad?" : "Already a Superhero?"}{" "}
-          <button
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-primary font-bold hover:underline"
-          >
-            {isLogin ? "Sign Up" : "Log In"}
-          </button>
+          {mode === 'forgot' ? (
+            <button
+              onClick={() => setMode('login')}
+              className="text-primary font-bold hover:underline"
+            >
+              Back to Login
+            </button>
+          ) : (
+            <>
+              {mode === 'login' ? "New to the squad?" : "Already a Superhero?"}{" "}
+              <button
+                onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
+                className="text-primary font-bold hover:underline"
+              >
+                {mode === 'login' ? "Sign Up" : "Log In"}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </div>
