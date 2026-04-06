@@ -59,8 +59,8 @@ export default function AdminAnalytics() {
   return (
     <div className="space-y-12">
       <header>
-        <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase italic">Analytics <span className="gradient-text">Overview</span></h1>
-        <p className="text-muted-foreground font-semibold tracking-tight">Real-time performance tracking for platform engagements.</p>
+        <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter uppercase italic">Analytics <span className="gradient-text">Overview</span></h1>
+        <p className="text-muted-foreground text-sm sm:text-base font-semibold tracking-tight">Real-time performance tracking for platform engagements.</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -70,7 +70,7 @@ export default function AdminAnalytics() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="p-8 rounded-[48px] glass border border-border shadow-huge bg-background/40 group hover:border-primary/20 transition-all relative overflow-hidden"
+            className="p-6 sm:p-8 rounded-[40px] sm:rounded-[48px] glass border border-border shadow-huge bg-background/40 group hover:border-primary/20 transition-all relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[40px] rounded-full -mr-16 -mt-16 group-hover:bg-primary/10 transition-all" />
             
@@ -97,8 +97,8 @@ export default function AdminAnalytics() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Geographic Segmentation */}
-        <div className="lg:col-span-12 p-10 rounded-[64px] glass border border-border shadow-huge bg-background/40 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/5 blur-[120px] rounded-full -mr-48 -mt-48" />
+        <div className="lg:col-span-12 p-8 sm:p-10 rounded-[48px] sm:rounded-[64px] glass border border-border shadow-huge bg-background/40 relative overflow-hidden">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-secondary/5 blur-[100px] sm:blur-[120px] rounded-full -mr-48 -mt-48" />
           
           <div className="flex justify-between items-center mb-10 relative z-10">
              <div>
@@ -108,7 +108,7 @@ export default function AdminAnalytics() {
              <Globe className="text-secondary/20" size={32} />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6 relative z-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 sm:gap-6 relative z-10">
              {[
                { city: 'Lagos', reach: '42%' },
                { city: 'Abuja', reach: '18%' },
@@ -134,7 +134,7 @@ export default function AdminAnalytics() {
         </div>
 
         {/* Detailed Insights */}
-        <div className="lg:col-span-8 p-10 rounded-[48px] glass border border-border shadow-huge bg-background/40 h-full">
+        <div className="lg:col-span-8 p-8 sm:p-10 rounded-[40px] sm:rounded-[48px] glass border border-border shadow-huge bg-background/40 h-full">
             <div className="flex items-center gap-4 mb-10">
                <TrendingUp className="text-primary" size={24} />
                <h2 className="text-2xl font-black italic uppercase tracking-tighter">Service <span className="gradient-text">Engagement</span></h2>
@@ -144,7 +144,7 @@ export default function AdminAnalytics() {
             </div>
         </div>
 
-        <div className="lg:col-span-4 p-10 rounded-[48px] glass border border-border shadow-huge bg-background/40 h-full">
+        <div className="lg:col-span-4 p-8 sm:p-10 rounded-[40px] sm:rounded-[48px] glass border border-border shadow-huge bg-background/40 h-full">
            <div className="flex items-center gap-4 mb-10">
               <Shield className="text-secondary" size={24} />
               <h2 className="text-2xl font-black italic uppercase tracking-tighter">Network <span className="text-secondary">Security</span></h2>

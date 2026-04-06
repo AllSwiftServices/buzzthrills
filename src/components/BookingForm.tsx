@@ -40,7 +40,7 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto glass p-8 md:p-12 min-h-[600px] flex flex-col border border-border shadow-2xl relative overflow-hidden">
+    <div className="w-full max-w-4xl mx-auto glass p-6 sm:p-8 md:p-12 min-h-[500px] sm:min-h-[600px] flex flex-col border border-border shadow-2xl relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-1 gradient-bg opacity-50" />
       
       {/* Progress Stepper */}
@@ -72,8 +72,8 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
             className="flex-grow space-y-8"
           >
             <div>
-              <h2 className="text-4xl font-black mb-2">Client <span className="gradient-text">Profile</span></h2>
-              <p className="text-muted-foreground font-bold tracking-tight uppercase text-[10px] tracking-widest">Enter the details of the person placing this order.</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Client <span className="gradient-text italic">Profile</span></h2>
+              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Enter the details of the person placing this order.</p>
             </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -100,7 +100,7 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Preferred Frequency</label>
-                <select className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 px-8 focus:border-primary transition-all outline-none appearance-none font-bold cursor-pointer">
+                <select className="w-full bg-foreground/5 border border-border rounded-[24px] py-4 sm:py-5 px-6 sm:px-8 focus:border-primary transition-all outline-none appearance-none font-bold cursor-pointer text-sm">
                   <option className="bg-background text-foreground">WhatsApp Channel</option>
                   <option className="bg-background text-foreground">Direct Email</option>
                   <option className="bg-background text-foreground">Phone Call</option>
@@ -120,8 +120,8 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
           >
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               <div>
-                <h2 className="text-4xl font-black mb-2">Recipient <span className="gradient-text">Details</span></h2>
-                <p className="text-muted-foreground font-bold tracking-tight uppercase text-[10px] tracking-widest">Who are we celebrating today?</p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Recipient <span className="gradient-text italic">Details</span></h2>
+                <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Who are we celebrating today?</p>
               </div>
               <button 
                 onClick={addRecipient}
@@ -134,11 +134,11 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
 
             <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
               {recipients.map((r, i) => (
-                <div key={i} className="p-8 rounded-[40px] bg-foreground/5 border border-border relative group hover:border-primary/20 transition-all">
+                <div key={i} className="p-6 sm:p-8 rounded-[32px] sm:rounded-[40px] bg-foreground/5 border border-border relative group hover:border-primary/20 transition-all">
                   {recipients.length > 1 && (
                     <button 
                       onClick={() => removeRecipient(i)}
-                      className="absolute top-6 right-6 text-foreground/20 hover:text-red-400 transition-all p-2 rounded-xl hover:bg-red-400/10"
+                      className="absolute top-4 right-4 sm:top-6 sm:right-6 text-foreground/20 hover:text-red-400 transition-all p-2 rounded-xl hover:bg-red-400/10"
                     >
                       <Trash2 size={20} />
                     </button>
@@ -181,8 +181,8 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
             className="flex-grow space-y-12"
           >
             <div>
-              <h2 className="text-4xl font-black mb-2">Service <span className="gradient-text">Preferences</span></h2>
-              <p className="text-muted-foreground font-bold tracking-tight uppercase text-[10px] tracking-widest">Customize the timing and delivery details.</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Service <span className="gradient-text italic">Preferences</span></h2>
+              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Customize the timing and delivery details.</p>
             </div>
 
             <div className="grid grid-cols-1 gap-10">
@@ -214,17 +214,17 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
 
               <div 
                 onClick={() => setIsExpress(!isExpress)}
-                className={`p-8 rounded-[40px] border-2 cursor-pointer transition-all flex items-center justify-between group ${
+                className={`p-6 sm:p-8 rounded-[32px] sm:rounded-[40px] border-2 cursor-pointer transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 group ${
                   isExpress ? 'bg-primary/10 border-primary shadow-2xl shadow-primary/20' : 'glass border-border hover:border-foreground/10'
                 }`}
               >
-                <div className="flex items-center gap-6">
-                   <div className={`w-16 h-16 rounded-[32px] flex items-center justify-center transition-all ${isExpress ? 'bg-primary text-white scale-110 rotate-12' : 'bg-foreground/5 text-foreground/20'}`}>
-                      <Zap size={32} />
+                <div className="flex items-center gap-4 sm:gap-6">
+                   <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[32px] flex items-center justify-center transition-all ${isExpress ? 'bg-primary text-white scale-110 sm:rotate-12' : 'bg-foreground/5 text-foreground/20'}`}>
+                      <Zap size={24} className="sm:w-8 sm:h-8" />
                    </div>
                    <div>
-                      <div className={`font-black text-xl mb-1 transition-colors ${isExpress ? 'text-primary' : 'text-foreground'}`}>Priority Express Delivery ✨</div>
-                      <div className="text-xs text-muted-foreground font-bold tracking-tight uppercase tracking-widest text-[10px]">Skip the queue. Recipient contacted within 4 hours.</div>
+                      <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight uppercase italic ${isExpress ? 'text-primary' : 'text-foreground'}`}>Priority <span className="gradient-text italic">Express</span>Delivery ✨</div>
+                      <div className="text-muted-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Skip the queue. Recipient contacted within 4 hours.</div>
                    </div>
                 </div>
                 <div className="flex items-center gap-6">
@@ -253,12 +253,12 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                <div className="absolute inset-0 bg-primary blur-[40px] opacity-20" />
                <CreditCard size={36} className="text-white relative z-10" />
             </div>
-            <h2 className="text-4xl font-black mb-4 tracking-tighter uppercase italic">Ready to <span className="gradient-text italic">Proceed?</span></h2>
-            <p className="text-muted-foreground font-bold tracking-tight mb-12 max-w-sm leading-relaxed uppercase text-[10px] tracking-[0.2em]">
+            <h2 className="text-3xl sm:text-4xl font-black mb-4 tracking-tighter uppercase italic">Ready to <span className="gradient-text italic">Proceed?</span></h2>
+            <p className="text-muted-foreground font-bold tracking-tight mb-8 sm:mb-12 max-w-sm leading-relaxed uppercase text-[9px] sm:text-[10px] tracking-widest sm:tracking-[0.2em]">
               Redirecting to Paystack for secure payment. You will receive an order confirmation email instantly.
             </p>
             
-            <div className="w-full max-w-md p-10 rounded-[56px] glass border border-border shadow-3xl relative overflow-hidden">
+            <div className="w-full max-w-md p-6 sm:p-10 rounded-[48px] sm:rounded-[56px] glass border border-border shadow-3xl relative overflow-hidden text-left">
                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] rounded-full -mr-16 -mt-16" />
                
                <div className="space-y-6 relative z-10">
@@ -272,9 +272,9 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                       <span className="font-black text-lg">+₦2,000</span>
                     </div>
                   )}
-                  <div className="pt-6 border-t border-border flex justify-between items-center">
-                    <span className="text-sm font-black uppercase tracking-[0.2em] italic">Total Amount</span>
-                    <span className="text-3xl font-black gradient-text tracking-tighter">₦{totalPrice.toLocaleString()}</span>
+                  <div className="pt-6 border-t border-border flex justify-between items-center bg-foreground/2 -mx-6 -mb-6 p-6 sm:p-10 sm:-mx-10 sm:-mb-10 mt-8">
+                    <span className="text-xs sm:text-sm font-black uppercase tracking-[0.2em] italic">Total Amount</span>
+                    <span className="text-2xl sm:text-3xl font-black gradient-text tracking-tighter">₦{totalPrice.toLocaleString()}</span>
                   </div>
                </div>
             </div>
@@ -282,21 +282,22 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
         )}
       </AnimatePresence>
 
-      <div className="mt-12 flex justify-between items-center pt-8 border-t border-border">
+      <div className="mt-8 sm:mt-12 flex justify-between items-center pt-6 sm:pt-8 border-t border-border">
           <button 
             onClick={prevStep}
             disabled={step === "subscriber"}
-            className={`flex items-center gap-3 px-8 py-5 rounded-[32px] font-black text-[10px] uppercase tracking-widest transition-all ${step === "subscriber" ? 'opacity-0 pointer-events-none' : 'glass border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground hover:scale-105 active:scale-95'}`}
+            className={`flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-4 sm:py-5 rounded-[32px] font-black text-[9px] sm:text-[10px] uppercase tracking-widest transition-all ${step === "subscriber" ? 'opacity-0 pointer-events-none' : 'glass border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground hover:scale-105 active:scale-95'}`}
           >
-            <ChevronLeft size={20} />
-            Previous Step
+            <ChevronLeft size={18} className="sm:w-5 sm:h-5" />
+            <span className="hidden xs:inline">Previous Step</span>
+            <span className="xs:hidden">Back</span>
           </button>
           <button 
             onClick={nextStep}
-            className="flex items-center gap-3 px-12 py-5 rounded-[32px] gradient-bg text-white font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group"
+            className="flex items-center gap-2 sm:gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-[32px] gradient-bg text-white font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group"
           >
             <span className="group-hover:mr-2 transition-all">{step === "payment" ? "Complete Payment" : "Next Step"}</span>
-            {step !== "payment" ? <ChevronRight size={20} /> : <Zap size={20} className="animate-pulse" />}
+            {step !== "payment" ? <ChevronRight size={18} className="sm:w-5 sm:h-5" /> : <Zap size={18} className="sm:w-5 sm:h-5 animate-pulse" />}
           </button>
       </div>
     </div>

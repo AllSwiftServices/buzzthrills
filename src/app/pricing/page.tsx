@@ -72,7 +72,7 @@ export default function PricingPage() {
         <div className="absolute top-[40%] right-[10%] w-[30vw] h-[30vw] bg-secondary/10 blur-[100px] rounded-full" />
       </div>
 
-      <section className="pt-40 pb-24 px-4 relative z-10">
+      <section className="pt-24 sm:pt-32 md:pt-40 pb-12 sm:pb-24 px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-16 px-4">
@@ -88,7 +88,7 @@ export default function PricingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter italic uppercase leading-none"
+              className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 tracking-tighter italic uppercase leading-none"
             >
               Choose Your <span className="gradient-text italic">Plan</span>
             </motion.h1>
@@ -96,7 +96,7 @@ export default function PricingPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-muted-foreground text-lg md:text-xl font-bold max-w-2xl mx-auto tracking-tight leading-relaxed mb-12"
+              className="text-muted-foreground text-base sm:text-lg md:text-xl font-bold max-w-2xl mx-auto tracking-tight leading-relaxed mb-8 sm:mb-12"
             >
               Choose the service tier that matches your requirements. From personal celebrations to corporate gifting, we've optimized your experience.
             </motion.p>
@@ -106,18 +106,18 @@ export default function PricingPage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3 }}
-              className="flex items-center justify-center gap-6 mb-16"
+              className="flex items-center justify-center gap-4 sm:gap-6 mb-8 sm:mb-16"
             >
-              <span className={`text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'monthly' ? 'text-foreground' : 'text-foreground/40'}`}>Monthly</span>
+              <span className={`text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'monthly' ? 'text-foreground' : 'text-foreground/40'}`}>Monthly</span>
               <button 
                 onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
-                className="w-16 h-8 rounded-full glass border border-border p-1 relative group cursor-pointer transition-all hover:border-primary/50"
+                className="w-14 sm:w-16 h-7 sm:h-8 rounded-full glass border border-border p-1 relative group cursor-pointer transition-all hover:border-primary/50"
               >
-                <div className={`w-6 h-6 rounded-full gradient-bg transition-all duration-300 shadow-xl ${billingCycle === 'annual' ? 'translate-x-8' : 'translate-x-0'}`} />
+                <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full gradient-bg transition-all duration-300 shadow-xl ${billingCycle === 'annual' ? 'translate-x-7 sm:translate-x-8' : 'translate-x-0'}`} />
               </button>
-              <div className="flex items-center gap-3">
-                 <span className={`text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'annual' ? 'text-foreground' : 'text-foreground/40'}`}>Annual Billing</span>
-                 <div className="px-2 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[9px] font-black uppercase tracking-widest rounded-md animate-bounce">
+              <div className="flex items-center gap-2 sm:gap-3">
+                 <span className={`text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'annual' ? 'text-foreground' : 'text-foreground/40'}`}>Annual <span className="hidden xs:inline">Billing</span></span>
+                 <div className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[8px] sm:text-[9px] font-black uppercase tracking-widest rounded-md animate-bounce">
                     Save 20%
                  </div>
               </div>
@@ -136,7 +136,7 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-12 md:p-16 rounded-[64px] glass border border-border shadow-huge bg-background/40 flex flex-col lg:flex-row items-center justify-between gap-12 mb-24 relative overflow-hidden group"
+            className="p-8 sm:p-12 md:p-16 rounded-[48px] sm:rounded-[64px] glass border border-border shadow-huge bg-background/40 flex flex-col lg:flex-row items-center justify-between gap-12 mb-16 sm:mb-24 relative overflow-hidden group"
           >
              <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none group-hover:scale-110 transition-transform duration-[2s]" />
              
@@ -166,9 +166,9 @@ export default function PricingPage() {
                   { q: "How are calls scheduled?", a: "You select a delivery window (Morning, Afternoon, Evening) and our agents coordinate the communication." },
                   { q: "What is the Cancellation policy?", a: "Unused calls roll over if cancelled 48h before the scheduled window." }
                 ].map((item, i) => (
-                  <div key={i} className="p-8 rounded-[32px] bg-foreground/5 border border-border hover:border-primary/20 transition-all">
+                  <div key={i} className="p-6 sm:p-8 rounded-[32px] bg-foreground/5 border border-border hover:border-primary/20 transition-all">
                     <div className="font-black text-foreground mb-3 text-sm uppercase tracking-wide italic">{item.q}</div>
-                    <p className="text-foreground/60 font-bold text-sm tracking-tight leading-relaxed">{item.a}</p>
+                    <p className="text-muted-foreground font-bold text-sm tracking-tight leading-relaxed">{item.a}</p>
                   </div>
                 ))}
              </div>

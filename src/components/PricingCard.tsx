@@ -32,8 +32,8 @@ export default function PricingCard({
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay }}
-      className={`relative group rounded-[48px] p-8 md:p-10 flex flex-col h-full glass border transition-all duration-500 overflow-hidden ${
-        isPopular ? "border-primary/50 shadow-huge shadow-primary/10 ring-1 ring-primary/20 scale-[1.02] z-10" : "border-border hover:border-foreground/20"
+      className={`relative group rounded-[40px] sm:rounded-[48px] p-6 sm:p-8 md:p-10 flex flex-col h-full glass border transition-all duration-500 overflow-hidden ${
+        isPopular ? "border-primary/50 shadow-huge shadow-primary/10 ring-1 ring-primary/20 scale-[1.02] sm:scale-[1.03] z-10" : "border-border hover:border-foreground/20"
       }`}
     >
       {/* Background Glow */}
@@ -51,29 +51,27 @@ export default function PricingCard({
 
       {/* Header */}
       <div className="mb-10 relative z-10">
-        <div className={`w-16 h-16 rounded-3xl bg-foreground/5 flex items-center justify-center mb-6 shadow-xl ${isPopular ? "text-primary" : "text-foreground/40"}`}>
+        <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-foreground/5 flex items-center justify-center mb-4 sm:mb-6 shadow-xl ${isPopular ? "text-primary" : "text-foreground/40"}`}>
           {icon}
         </div>
-        <h3 className="text-3xl font-black mb-3 tracking-tighter uppercase italic">{name}</h3>
-        <p className="text-muted-foreground font-bold text-sm tracking-tight leading-relaxed">{description}</p>
+        <h3 className="text-2xl sm:text-3xl font-black mb-2 sm:mb-3 tracking-tighter uppercase italic">{name}</h3>
+        <p className="text-muted-foreground font-bold text-xs sm:text-sm tracking-tight leading-relaxed">{description}</p>
       </div>
 
       {/* Pricing */}
       <div className="mb-10 relative z-10">
         <div className="flex items-baseline gap-1">
-          <span className="text-5xl font-black tracking-tighter italic">₦{price}</span>
-          <span className="text-muted-foreground font-black text-xs uppercase tracking-widest">/ Month</span>
+          <span className="text-4xl sm:text-5xl font-black tracking-tighter italic">₦{price}</span>
+          <span className="text-muted-foreground font-black text-[10px] sm:text-xs uppercase tracking-widest">/ Month</span>
         </div>
       </div>
 
       {/* Features */}
-      <div className="space-y-4 mb-12 flex-1 relative z-10">
+      <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12 flex-1 relative z-10">
         {features.map((feature, i) => (
           <div key={i} className="flex items-start gap-4">
-            <div className={`mt-1.5 w-4 h-4 rounded-full flex items-center justify-center ${isPopular ? "bg-primary/20 text-primary" : "bg-foreground/5 text-foreground/20"}`}>
-              <Check size={10} strokeWidth={4} />
-            </div>
-            <span className="text-foreground/80 font-bold text-sm tracking-tight">{feature}</span>
+              <Check strokeWidth={4} className="w-[9px] h-[9px] sm:w-2.5 sm:h-2.5" />
+            <span className="text-foreground/80 font-bold text-xs sm:text-sm tracking-tight">{feature}</span>
           </div>
         ))}
       </div>

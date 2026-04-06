@@ -29,7 +29,7 @@ export default function Home() {
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h1 className="text-4xl sm:text-5xl md:text-8xl font-black mb-6 tracking-tight leading-[1.1]">
+            <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight leading-[1.1]">
               Never Forget Any <br className="hidden sm:block" />
               <span className="gradient-text">Special Day</span> Again.
             </h1>
@@ -55,11 +55,11 @@ export default function Home() {
       </section>
 
       {/* Subscriptions Section */}
-      <section id="plans" className="py-24 px-6 relative z-10">
+      <section id="plans" className="py-12 sm:py-24 px-6 relative z-10">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold mb-4">Choose Your <span className="gradient-text">Buzz Plan</span></h2>
-            <p className="text-muted-foreground">Select a plan that keeps you connected with your loved ones.</p>
+          <div className="text-center mb-10 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Choose Your <span className="gradient-text">Buzz Plan</span></h2>
+            <p className="text-muted-foreground text-sm sm:text-base">Select a plan that keeps you connected with your loved ones.</p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -113,8 +113,8 @@ export default function Home() {
       <BookingSection />
 
       {/* Digital Letter Feature Teaser Section - Light background contrast */}
-      <section id="digital-letter" className="py-24 px-6 bg-muted/30">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-16">
+      <section id="digital-letter" className="py-12 sm:py-24 px-6 bg-muted/30">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 sm:gap-16">
           <div className="flex-1">
             <Reveal direction="left">
               <div className="relative p-1 glass border-border rounded-[40px] aspect-[4/5] overflow-hidden group shadow-2xl">
@@ -151,8 +151,8 @@ export default function Home() {
                   "Beautiful premium scroll animation"
                 ].map(item => (
                   <li key={item} className="flex items-center gap-4 text-lg">
-                    <div className="w-6 h-6 rounded-lg gradient-bg flex items-center justify-center flex-shrink-0">
-                      <Check size={14} className="text-white" />
+                    <div className={`mt-1 sm:mt-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center bg-primary/20 text-primary`}>
+                      <Check size={10} strokeWidth={4} />
                     </div>
                     <span className="text-foreground/80">{item}</span>
                   </li>
