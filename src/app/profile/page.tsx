@@ -21,7 +21,7 @@ import {
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getSupabase } from "@/lib/supabase";
+
 
 export default function ProfilePage() {
   const { user, logout, accessToken, loading: authLoading } = useAuth();

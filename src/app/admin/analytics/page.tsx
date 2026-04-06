@@ -16,10 +16,10 @@ import {
   Shield 
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
-import { getSupabase } from "@/lib/supabase";
+
 
 export default function AdminAnalytics() {
-  const { user, accessToken, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
 
@@ -27,18 +27,27 @@ export default function AdminAnalytics() {
     async function fetchStats() {
       if (authLoading || !user || user.role !== 'admin') return;
       
-      const authenticatedSupabase = getSupabase(accessToken);
-      const { data, error } = await authenticatedSupabase
-        .from('analytics_summary')
-        .select('*')
-        .single();
-      
-      if (data) setStats(data);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/admin/analytics");
+        if (!res.ok) throw new Error("Failed to fetch analytics");
+        const data = await res.json();
+        // Merge analytics view with live counts as fallback
+        setStats({
+          total_calls_delivered: data.analytics?.total_calls_delivered ?? data.totalCalls,
+          total_users: data.analytics?.total_users ?? data.totalUsers,
+          pending_calls: data.analytics?.pending_calls ?? data.pendingCalls,
+          active_subs: data.analytics?.active_subs ?? data.activeSubs,
+          ...data.analytics,
+        });
+      } catch (err) {
+        console.error("Analytics fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchStats();
-  }, [user, authLoading, accessToken]);
+  }, [user, authLoading]);
 
   const metrics = [
     { label: "Total Engagements", value: stats?.total_calls_delivered || 0, icon: <PhoneCall size={24} />, trend: "+12%", color: "text-primary" },

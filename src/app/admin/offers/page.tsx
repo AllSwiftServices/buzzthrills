@@ -15,10 +15,10 @@ import {
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getSupabase } from "@/lib/supabase";
+
 
 export default function AdminOffers() {
-  const { user, accessToken, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
   const [offers, setOffers] = useState<any[]>([]);
 
@@ -26,19 +26,20 @@ export default function AdminOffers() {
     async function fetchOffers() {
       if (authLoading || !user || user.role !== 'admin') return;
       
-      const authenticatedSupabase = getSupabase(accessToken);
-
-      const { data, error } = await authenticatedSupabase
-        .from('special_offers')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (data) setOffers(data);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/admin/offers");
+        if (!res.ok) throw new Error("Failed to fetch offers");
+        const data = await res.json();
+        setOffers(data.offers || []);
+      } catch (err) {
+        console.error("Offers fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchOffers();
-  }, [user, authLoading, accessToken]);
+  }, [user, authLoading]);
 
   return (
     <div className="space-y-12">

@@ -4,10 +4,10 @@ import { motion } from "framer-motion";
 import { PhoneCall, Search, Filter, Calendar, Clock, ChevronRight, CheckCircle2, XCircle, AlertCircle, User, Phone } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getSupabase } from "@/lib/supabase";
+
 
 export default function AdminCalls() {
-  const { user, accessToken, loading: authLoading } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(true);
   const [calls, setCalls] = useState<any[]>([]);
 
@@ -15,19 +15,20 @@ export default function AdminCalls() {
     async function fetchCalls() {
       if (authLoading || !user || user.role !== 'admin') return;
       
-      const authenticatedSupabase = getSupabase(accessToken);
-
-      const { data, error } = await authenticatedSupabase
-        .from('calls')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (data) setCalls(data);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/admin/calls");
+        if (!res.ok) throw new Error("Failed to fetch calls");
+        const data = await res.json();
+        setCalls(data.calls || []);
+      } catch (err) {
+        console.error("Calls fetch error:", err);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchCalls();
-  }, [user, authLoading, accessToken]);
+  }, [user, authLoading]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {
