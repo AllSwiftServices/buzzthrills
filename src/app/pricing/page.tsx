@@ -16,7 +16,7 @@ export default function PricingPage() {
       id: "lite",
       name: "Lite",
       price: billingCycle === 'monthly' ? "15,000" : "12,000",
-      description: "Ideal for superheroes initiating their first mission.",
+      description: "Ideal for individuals sending their first surprise.",
       features: [
         "5 Surprise Calls / month",
         "Unlimited Digital Letters",
@@ -31,7 +31,7 @@ export default function PricingPage() {
       id: "plus",
       name: "Plus",
       price: billingCycle === 'monthly' ? "45,000" : "36,000",
-      description: "The tactical choice for squad leaders seeking maximum impact.",
+      description: "The standard choice for personal celebrations and small groups.",
       features: [
         "15 Surprise Calls / month",
         "Holographic Digital Letters",
@@ -48,12 +48,12 @@ export default function PricingPage() {
       id: "orbit",
       name: "Orbit",
       price: billingCycle === 'monthly' ? "120,000" : "98,000",
-      description: "Galactic-scale impact for the most dedicated superheroes.",
+      description: "Unlimited access for high-volume personal or business requirements.",
       features: [
         "Unlimited Surprise Calls",
         "Video Digital Letters",
-        "Bypass All Scheduling Locks",
-        "Dedicated Squad Leader Support",
+        "Bypass All Scheduling Restrictions",
+        "Dedicated Account Support Agent",
         "Custom Recording Studio Access",
         "Exclusive Merch Early Access"
       ],
@@ -82,7 +82,7 @@ export default function PricingPage() {
               className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-white/10 text-primary text-[10px] font-black uppercase tracking-[0.4em] mb-8"
             >
               <Zap size={14} className="fill-current" />
-              Economic Hub
+              Service Options
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ export default function PricingPage() {
               transition={{ delay: 0.1 }}
               className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 tracking-tighter italic uppercase leading-none"
             >
-              Deploy Your <span className="gradient-text italic">Gear</span>
+              Choose Your <span className="gradient-text italic">Plan</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -98,7 +98,7 @@ export default function PricingPage() {
               transition={{ delay: 0.2 }}
               className="text-muted-foreground text-lg md:text-xl font-bold max-w-2xl mx-auto tracking-tight leading-relaxed mb-12"
             >
-              Choose the tactical tier that matches your mission profile. From solo scouts to galactic squads, we've optimized your thrills.
+              Choose the service tier that matches your requirements. From personal celebrations to corporate gifting, we've optimized your experience.
             </motion.p>
 
             {/* Billing Toggle */}
@@ -116,7 +116,7 @@ export default function PricingPage() {
                 <div className={`w-6 h-6 rounded-full gradient-bg transition-all duration-300 shadow-xl ${billingCycle === 'annual' ? 'translate-x-8' : 'translate-x-0'}`} />
               </button>
               <div className="flex items-center gap-3">
-                 <span className={`text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'annual' ? 'text-white' : 'text-white/40'}`}>Annual Squad</span>
+                 <span className={`text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'annual' ? 'text-white' : 'text-white/40'}`}>Annual Billing</span>
                  <div className="px-2 py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[9px] font-black uppercase tracking-widest rounded-md animate-bounce">
                     Save 20%
                  </div>
@@ -144,13 +144,13 @@ export default function PricingPage() {
                 <div className="w-16 h-16 rounded-3xl bg-white/5 flex items-center justify-center mx-auto lg:mx-0 mb-8 text-primary shadow-xl">
                    <Users size={32} />
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase italic leading-none">Epic <span className="gradient-text italic">Enterprise</span></h2>
-                <p className="text-muted-foreground font-bold text-lg max-w-xl tracking-tight leading-relaxed">Bulk employee birthdays, corporate rewards, and custom mission branding. Designed for high-fidelity squad coordination.</p>
+                <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase italic leading-none">Buzz <span className="gradient-text italic">Corporate</span></h2>
+                <p className="text-muted-foreground font-bold text-lg max-w-xl tracking-tight leading-relaxed uppercase text-[10px] tracking-widest">Bulk employee birthdays, corporate rewards, and custom company branding. Designed for professional high-fidelity engagement.</p>
              </div>
 
              <div className="relative z-10 w-full lg:w-auto">
                 <button className="w-full lg:w-auto px-12 py-6 bg-white text-black font-black rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3 uppercase text-sm tracking-widest italic">
-                   Contact Command Center
+                   Contact Sales
                    <ArrowRight size={20} />
                 </button>
              </div>
@@ -158,13 +158,13 @@ export default function PricingPage() {
 
           {/* FAQ Section Placeholder */}
           <div className="max-w-4xl mx-auto text-center">
-             <h3 className="text-2xl font-black mb-12 italic uppercase tracking-tighter">Tactical <span className="gradient-text">Q&A</span></h3>
+             <h3 className="text-2xl font-black mb-12 italic uppercase tracking-tighter">Frequent <span className="gradient-text">Questions</span></h3>
              <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
                 {[
-                  { q: "Can I upgrade mid-mission?", a: "Yes, superheroes can upgrade gear anytime. The new perks manifest instantly." },
-                  { q: "What is Express Delivery?", a: "Missions initiated with Express are prioritized by our tactical squad for sub-12h delivery." },
-                  { q: "How are calls scheduled?", a: "You select a mission window (Morning, Afternoon, Night) and our agents coordinate the thrill." },
-                  { q: "Mission Abort policy?", a: "Unused calls roll over if archived 48h before the scheduled window." }
+                  { q: "Can I upgrade mid-billing cycle?", a: "Yes, clients can upgrade their service plan anytime. The new perks manifest instantly." },
+                  { q: "What is Express Delivery?", a: "Orders placed with Express are prioritized by our operations team for priority delivery." },
+                  { q: "How are calls scheduled?", a: "You select a delivery window (Morning, Afternoon, Evening) and our agents coordinate the communication." },
+                  { q: "What is the Cancellation policy?", a: "Unused calls roll over if cancelled 48h before the scheduled window." }
                 ].map((item, i) => (
                   <div key={i} className="p-8 rounded-[32px] bg-white/5 border border-white/5 hover:border-primary/20 transition-all">
                     <div className="font-black text-white mb-3 text-sm uppercase tracking-wide italic">{item.q}</div>

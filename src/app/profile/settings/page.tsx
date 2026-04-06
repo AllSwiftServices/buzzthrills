@@ -19,9 +19,9 @@ export default function SettingsPage() {
   };
 
   const menuItems = [
-    { id: 'profile', label: 'Identity & Info', icon: <User size={18} /> },
-    { id: 'security', label: 'Shield & Security', icon: <Shield size={18} /> },
-    { id: 'billing', label: 'Credit & Billing', icon: <CreditCard size={18} /> }
+    { id: 'profile', label: 'Account Profile', icon: <User size={18} /> },
+    { id: 'security', label: 'Login & Security', icon: <Shield size={18} /> },
+    { id: 'billing', label: 'Billing & Plans', icon: <CreditCard size={18} /> }
   ];
 
   return (
@@ -32,11 +32,11 @@ export default function SettingsPage() {
             <motion.h1 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-black mb-2"
+              className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 italic uppercase tracking-tighter"
             >
-              Superhero <span className="gradient-text">Identity</span>
+              Account <span className="gradient-text italic">Settings</span>
             </motion.h1>
-            <p className="text-muted-foreground text-lg">Manage your mission credentials.</p>
+            <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest pl-1">Manage your account credentials.</p>
           </div>
           
           <button 
@@ -89,24 +89,24 @@ export default function SettingsPage() {
                     exit={{ opacity: 0, y: -10 }}
                     className="space-y-8 relative z-10"
                   >
-                    <div className="flex items-center gap-6 mb-12">
-                       <div className="w-24 h-24 rounded-[32px] gradient-bg flex items-center justify-center text-white text-3xl font-black ring-8 ring-primary/5 shadow-2xl">
-                          {user.fullName?.[0] || 'S'}
-                       </div>
-                       <button className="text-xs font-black uppercase tracking-widest text-primary hover:underline">Change Superhero Avatar</button>
-                    </div>
+                     <div className="flex items-center gap-6 mb-12">
+                        <div className="w-24 h-24 rounded-[32px] gradient-bg flex items-center justify-center text-white text-3xl font-black ring-8 ring-primary/5 shadow-2xl">
+                           {user.fullName?.[0] || 'S'}
+                        </div>
+                        <button className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Change Profile Avatar</button>
+                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                       <div className="space-y-2">
-                          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Full Superhero Name</label>
+                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Full Legal Name</label>
                           <input 
                             type="text" 
                             defaultValue={user.fullName} 
                             className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 outline-none focus:border-primary transition-all text-sm font-bold"
                           />
                        </div>
-                       <div className="space-y-2">
-                          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Heroic Email</label>
+                        <div className="space-y-2">
+                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Registered Email</label>
                           <input 
                             type="email" 
                             defaultValue={user.email} 
@@ -114,8 +114,8 @@ export default function SettingsPage() {
                             className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 outline-none opacity-50 cursor-not-allowed text-sm font-bold"
                           />
                        </div>
-                       <div className="space-y-2">
-                          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">Phone Pulse</label>
+                        <div className="space-y-2">
+                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Phone Number</label>
                           <input 
                             type="tel" 
                             placeholder="+234 ..." 
@@ -135,13 +135,13 @@ export default function SettingsPage() {
                     className="space-y-8 relative z-10"
                   >
                     <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 flex items-center justify-between mb-8">
-                       <div className="flex items-center gap-4">
-                          <Shield size={24} className="text-primary" />
-                          <div>
-                             <div className="font-black text-sm uppercase italic tracking-tight">Encryption Active</div>
-                             <div className="text-xs text-muted-foreground">Your heroic data is secured with AES-256.</div>
-                          </div>
-                       </div>
+                        <div className="flex items-center gap-4">
+                           <Shield size={24} className="text-primary" />
+                           <div>
+                              <div className="font-black text-[10px] uppercase italic tracking-tight">Encryption Active</div>
+                              <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Your account data is secured with AES-256.</div>
+                           </div>
+                        </div>
                     </div>
 
                     <div className="space-y-6">
@@ -153,14 +153,14 @@ export default function SettingsPage() {
                             className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 outline-none focus:border-primary transition-all text-sm font-bold"
                           />
                        </div>
-                       <div className="space-y-2">
-                          <label className="text-xs font-black uppercase tracking-widest text-muted-foreground">New Access Code</label>
-                          <input 
-                            type="password" 
-                            placeholder="New Shield Key" 
-                            className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 outline-none focus:border-primary transition-all text-sm font-bold"
-                          />
-                       </div>
+                        <div className="space-y-2">
+                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">New Password</label>
+                           <input 
+                             type="password" 
+                             placeholder="New Password" 
+                             className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 outline-none focus:border-primary transition-all text-sm font-bold"
+                           />
+                        </div>
                     </div>
                   </motion.div>
                 )}

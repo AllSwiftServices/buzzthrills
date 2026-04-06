@@ -18,7 +18,7 @@ export async function GET() {
     }
 
     if (!supabaseAdmin) {
-      throw new Error("Administrative Client Mission Failure");
+      throw new Error("Admin client initialization failure");
     }
 
     // 1. Fetch Analytics View
@@ -29,7 +29,7 @@ export async function GET() {
 
     if (analyticsError) console.error("Analytics Fetch Failure:", analyticsError);
 
-    // 2. Fetch Recent Missions (Calls)
+    // 2. Fetch Recent Engagements (Calls)
     const { data: calls, error: callsError } = await supabaseAdmin
       .from("calls")
       .select("*")
@@ -38,7 +38,7 @@ export async function GET() {
 
     if (callsError) console.error("Calls Fetch Failure:", callsError);
 
-    // 3. Pending Mission Count
+    // 3. Pending Engagement Count
     const { count: pendingCount, error: pendingError } = await supabaseAdmin
       .from("calls")
       .select("*", { count: "exact", head: true })
@@ -52,7 +52,7 @@ export async function GET() {
       pendingCount: pendingCount || 0,
     });
   } catch (error) {
-    console.error("Dashboard Intelligence Failure:", error);
+    console.error("Admin dashboard data fetch error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

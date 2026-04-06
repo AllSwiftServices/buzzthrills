@@ -41,14 +41,14 @@ export default function AdminCalls() {
     <div className="space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-4xl font-black mb-2">Thrill <span className="gradient-text">Operations</span></h1>
-          <p className="text-muted-foreground font-bold tracking-tight">Coordinating the delivery of high-fidelity surprises.</p>
+          <h1 className="text-4xl font-black mb-2 italic">Call <span className="gradient-text italic">Management</span></h1>
+          <p className="text-muted-foreground font-semibold tracking-tight uppercase text-[10px] tracking-[0.2em]">Managing the lifecycle of scheduled platform engagements.</p>
         </div>
         
         <div className="flex items-center gap-4 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
             <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
-            <input type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm outline-none focus:border-primary transition-all font-bold" placeholder="Search mission..." />
+            <input type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm outline-none focus:border-primary transition-all font-bold" placeholder="Search call history..." />
           </div>
           <button className="p-3.5 rounded-2xl glass border border-white/10 text-white/40 hover:text-primary transition-all">
             <Filter size={20} />
@@ -107,12 +107,12 @@ export default function AdminCalls() {
                        <User size={18} />
                     </div>
                     <div>
-                       <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Assigned Agent</div>
-                       <div className="text-xs font-black">Agent Alpha-9</div>
+                       <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Assigned Caller</div>
+                       <div className="text-xs font-black">Support Agent #104</div>
                     </div>
                  </div>
                  <button className="w-full sm:w-auto px-10 py-4 rounded-2xl bg-primary text-white font-black shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
-                    Manage Mission
+                    Manage Call
                     <ChevronRight size={18} />
                  </button>
               </div>

@@ -27,7 +27,7 @@ export default function DigitalLettersPage() {
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12">
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12 uppercase text-[10px] tracking-widest leading-none">
               The modern way to say something timeless. Combine beautiful typography, animated scroll technology, and personal voice recordings into a single digital gift.
             </p>
           </Reveal>
@@ -131,7 +131,7 @@ export default function DigitalLettersPage() {
                 <div className="w-16 h-16 rounded-full bg-accent/10 flex items-center justify-center mb-6 text-accent">
                   <QrCode size={24} />
                 </div>
-                <h4 className="text-xl font-bold mb-2">Superhero QR Card</h4>
+                <h4 className="text-xl font-bold mb-2 uppercase tracking-tighter italic">Premium <span className="gradient-text italic">QR</span> Card</h4>
                 <p className="text-sm text-muted-foreground">We deliver a physical card with a custom QR code that unlocks the letter experience.</p>
               </div>
             </div>

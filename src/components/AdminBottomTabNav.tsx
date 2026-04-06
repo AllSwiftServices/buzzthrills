@@ -11,9 +11,9 @@ export default function AdminBottomTabNav() {
   const tabs = [
     { href: "/admin", icon: <LayoutDashboard size={20} />, label: "Overview" },
     { href: "/admin/calls", icon: <PhoneCall size={20} />, label: "Calls" },
-    { href: "/admin/crm", icon: <Users size={20} />, label: "CRM" },
-    { href: "/profile", icon: <User size={20} />, label: "Hero" },
-    { href: "/admin/analytics", icon: <BarChart3 size={20} />, label: "Stats" },
+    { href: "/admin/crm", icon: <Users size={20} />, label: "Directory" },
+    { href: "/profile", icon: <User size={20} />, label: "Profile" },
+    { href: "/admin/analytics", icon: <BarChart3 size={20} />, label: "Analytics" },
   ];
 
   return (

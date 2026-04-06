@@ -8,7 +8,7 @@ import { useState } from "react";
 
 export default function MessagesPage() {
   const { user } = useAuth();
-  const [activeTab, setActiveTab] = useState<'squad' | 'support'>('squad');
+  const [activeTab, setActiveTab] = useState<'agents' | 'support'>('agents');
 
   if (!user) return null;
 
@@ -20,29 +20,29 @@ export default function MessagesPage() {
             <motion.h1 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-black mb-2"
+              className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 italic uppercase tracking-tighter"
             >
-              Squad <span className="gradient-text">Comms</span>
+              Support <span className="gradient-text italic">Channels</span>
             </motion.h1>
-            <p className="text-muted-foreground text-lg">Direct link to your heroic support team.</p>
+            <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest pl-1 leading-none">Direct link to your dedicated support team.</p>
           </div>
           
           <div className="flex p-1.5 bg-foreground/5 rounded-2xl border border-border">
             <button 
-              onClick={() => setActiveTab('squad')}
-              className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
-                activeTab === 'squad' ? 'bg-background shadow-lg text-primary' : 'text-muted-foreground hover:text-foreground'
+              onClick={() => setActiveTab('agents')}
+              className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
+                activeTab === 'agents' ? 'bg-background shadow-lg text-primary' : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              The Squad
+              Service Team
             </button>
             <button 
               onClick={() => setActiveTab('support')}
-              className={`px-6 py-2.5 rounded-xl text-xs font-black uppercase tracking-widest transition-all ${
+              className={`px-6 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${
                 activeTab === 'support' ? 'bg-background shadow-lg text-primary' : 'text-muted-foreground hover:text-foreground'
               }`}
             >
-              Support
+              Billing
             </button>
           </div>
         </div>
@@ -53,9 +53,9 @@ export default function MessagesPage() {
             <div className="p-6 border-b border-border font-bold italic tracking-tight">Active Channels</div>
             <div className="p-2 space-y-2">
               {[
-                { name: "Alpha Squad", msg: "Call scheduled for Mom 🎁", time: "2m", active: true, icon: <ShieldCheck size={18} /> },
-                { name: "Gift Masters", msg: "Digital scroll delivered!", time: "1h", active: false, icon: <Zap size={18} /> },
-                { name: "Billing Help", msg: "Invoice BT-2938 processed.", time: "yesterday", active: false, icon: <Phone size={18} /> }
+                { name: "Delivery Team", msg: "Call scheduled for Mom 🎁", time: "2m", active: true, icon: <ShieldCheck size={18} /> },
+                { name: "Digital Services", msg: "Digital scroll delivered!", time: "1h", active: false, icon: <Zap size={18} /> },
+                { name: "Billing & Plans", msg: "Invoice BT-2938 processed.", time: "yesterday", active: false, icon: <Phone size={18} /> }
               ].map((channel, i) => (
                 <div key={i} className={`p-4 rounded-3xl flex items-center gap-4 cursor-pointer transition-all ${
                   channel.active ? 'bg-primary/10 border border-primary/20' : 'hover:bg-foreground/5'
@@ -81,9 +81,9 @@ export default function MessagesPage() {
           <div className="flex-1 flex flex-col bg-background/20 relative">
             <div className="p-6 border-b border-border flex items-center justify-between">
               <div className="flex items-center gap-4">
-                <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-black text-xs ring-4 ring-primary/10">AS</div>
+                <div className="w-10 h-10 rounded-full gradient-bg flex items-center justify-center text-white font-black text-xs ring-4 ring-primary/10">DT</div>
                 <div>
-                  <div className="font-bold text-sm">Alpha Squad Support</div>
+                  <div className="font-bold text-sm">Delivery Support Team</div>
                   <div className="text-[10px] text-green-500 font-black uppercase tracking-widest flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
                     Operational
@@ -94,9 +94,9 @@ export default function MessagesPage() {
 
             <div className="flex-1 p-8 overflow-y-auto space-y-6">
                <div className="flex justify-start">
-                  <div className="max-w-[80%] p-5 rounded-3xl rounded-tl-none bg-foreground/10 text-sm">
-                    Hey Hero! Your scheduled "Magic Morning" call for Mom is locked in for 10:00 AM tomorrow. Any last-minute details we should add? 🦸‍♂️
-                    <div className="text-[10px] text-muted-foreground font-bold mt-2 uppercase tracking-widest">Alpha Squad • 10:04 AM</div>
+                  <div className="max-w-[80%] p-5 rounded-3xl rounded-tl-none bg-foreground/10 text-sm italic font-bold">
+                    Hello! Your scheduled "Magic Morning" call for Mom is locked in for 10:00 AM tomorrow. Any last-minute details we should add? 
+                    <div className="text-[10px] text-muted-foreground font-black mt-2 uppercase tracking-widest">Delivery Team • 10:04 AM</div>
                   </div>
                </div>
 
@@ -112,7 +112,7 @@ export default function MessagesPage() {
               <div className="relative">
                 <input 
                   type="text" 
-                  placeholder="Type a message to the Squad..." 
+                  placeholder="Type a message to the team..." 
                   className="w-full bg-foreground/5 border border-border rounded-2xl py-4 pl-6 pr-16 outline-none focus:border-primary transition-all text-sm font-bold"
                 />
                 <button className="absolute right-2 top-1/2 -translate-y-1/2 w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-lg shadow-primary/20">

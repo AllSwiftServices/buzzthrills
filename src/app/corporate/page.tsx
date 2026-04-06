@@ -8,8 +8,8 @@ import Link from "next/link";
 export default function CorporatePage() {
   const corporateBenefits = [
     { title: "Boost Morale", desc: "Show your team they're seen with personalized affirmation calls.", icon: <Zap size={24} /> },
-    { title: "Bulk Onboarding", desc: "Automated 'Welcome Squad' calls for new hires across the country.", icon: <Users size={24} /> },
-    { title: "Retention Strategy", desc: "Unique 'Thrills' linked to performance milestones and anniversaries.", icon: <TrendingUp size={24} /> },
+    { title: "Bulk Onboarding", desc: "Automated 'Welcome Team' calls for new hires across the country.", icon: <Users size={24} /> },
+    { title: "Retention Strategy", desc: "Unique 'Engagements' linked to performance milestones and anniversaries.", icon: <TrendingUp size={24} /> },
     { title: "B2B Gifting", desc: "Elevate your client gifts with a voice that speaks your brand.", icon: <Sparkles size={24} /> }
   ];
 
@@ -34,7 +34,7 @@ export default function CorporatePage() {
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12">
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12 uppercase text-[10px] tracking-widest leading-none">
               Scale the human touch in your organization. From team-wide affirmations to client surprises, we help businesses create emotional stickiness.
             </p>
           </Reveal>
@@ -78,7 +78,7 @@ export default function CorporatePage() {
             <div className="space-y-8">
               <h2 className="text-4xl font-black mb-8 leading-tight">Scale Your <span className="gradient-text">Human Resource</span> Engagement.</h2>
               <p className="text-lg text-muted-foreground leading-relaxed">
-                Traditional perks like gym memberships and fruit bowls are common. What isn't common is a personalized call from a "Superhero" thanking an employee for their hard work on a project launch.
+                Traditional perks like gym memberships and fruit bowls are common. What isn't common is a personalized call from a professional agent thanking an employee for their hard work on a project launch.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 pt-4">

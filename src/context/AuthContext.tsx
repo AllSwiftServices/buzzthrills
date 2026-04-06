@@ -38,6 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       if (res.status === 401) {
         setAuth(null, null);
+        router.push("/auth?error=expired");
         return;
       }
 
@@ -46,6 +47,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAuth(data.user, data.accessToken);
       } else {
         setAuth(null, null);
+        if (window.location.pathname.startsWith('/profile') || window.location.pathname.startsWith('/admin')) {
+          router.push("/auth");
+        }
       }
     } catch (error) {
       setAuth(null, null);

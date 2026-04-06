@@ -34,8 +34,8 @@ export default function SurpriseCallsPage() {
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12">
-              Transform those missed moments into lasting core memories with a voice that cares. Our Superheroes deliver emotions, not just messages.
+            <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12 uppercase text-[10px] tracking-widest leading-none">
+              Transform those missed moments into lasting core memories with a voice that cares. Our expert team delivers emotions, not just messages.
             </p>
           </Reveal>
           <Reveal delay={0.3}>
@@ -82,20 +82,20 @@ export default function SurpriseCallsPage() {
               </div>
               <div className="absolute top-8 left-8 right-8 p-6 glass rounded-3xl border-border">
                 <div className="text-xs font-bold uppercase tracking-widest text-primary mb-2">Live Demo</div>
-                <div className="text-lg font-bold">Listen to a Sample Superhero Welcome</div>
+                <div className="text-lg font-bold">Listen to a Sample Professional Greeting</div>
               </div>
             </div>
           </Reveal>
           
           <div className="space-y-12">
             <Reveal direction="right">
-              <h2 className="text-4xl font-black mb-8">The <span className="gradient-text">Superhero</span> Process</h2>
+              <h2 className="text-4xl font-black mb-8 italic uppercase tracking-tighter">The <span className="gradient-text italic">Service</span> Process</h2>
               <div className="space-y-8">
                 {[
                   { step: "01", title: "Schedule Your Slot", desc: "Choose a date and time that would mean the most to your recipient." },
-                  { step: "02", title: "Pick Your Archetype", desc: "From high-energy hype hosts to warm, soothing voices—pick the perfect match." },
+                  { step: "02", title: "Select Voice Tone", desc: "From high-energy hype hosts to warm, soothing voices—pick the perfect match." },
                   { step: "03", title: "Custom Scripting", desc: "Give us the details. We'll handle the professional formatting and delivery." },
-                  { step: "04", title: "Live Execution", desc: "Our Superhero makes the call live, ensuring a unique and emotional result." }
+                  { step: "04", title: "Professional Delivery", desc: "Our account agents make the call live, ensuring a unique and emotional result." }
                 ].map((step, i) => (
                   <div key={i} className="flex gap-6 items-start">
                     <div className="text-3xl font-black text-primary/30 group-hover:text-primary transition-colors">{step.step}</div>
@@ -119,7 +119,7 @@ export default function SurpriseCallsPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {[
                 { label: "Successful Calls", value: "98.4%" },
-                { label: "Hearts Buzzed", value: "24k+" },
+                { label: "Engagements Delivered", value: "24k+" },
                 { label: "Average Rating", value: "4.9/5" }
               ].map((stat, i) => (
                 <div key={i}>

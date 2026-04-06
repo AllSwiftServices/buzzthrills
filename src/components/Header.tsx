@@ -26,7 +26,7 @@ export default function Header() {
 
   const navLinks = [
     { href: "/about", label: "About Us" },
-    { href: "/pricing", label: "Pricing & Perks" },
+    { href: "/pricing", label: "Pricing Plans" },
     { href: "/surprise-calls", label: "Surprise Calls" },
     { href: "/digital-letters", label: "Digital Letters" },
     { href: "/book", label: "Book Now" },
@@ -160,7 +160,7 @@ export default function Header() {
                         className="flex items-center gap-3 text-2xl font-bold py-2 group"
                       >
                         <User className="text-primary group-hover:scale-110 transition-transform" size={28} />
-                        Mission Control
+                        My Dashboard
                       </Link>
                     ) : (
                       <Link 
@@ -169,7 +169,7 @@ export default function Header() {
                         className="flex items-center gap-3 text-2xl font-bold py-2 group"
                       >
                         <User className="text-primary group-hover:scale-110 transition-transform" size={28} />
-                        Join the Squad
+                        Get Started
                       </Link>
                     )}
                     <Link 

@@ -29,9 +29,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const menuItems = [
     { href: "/admin", icon: <LayoutDashboard size={18} />, label: "Overview" },
-    { href: "/admin/calls", icon: <PhoneCall size={18} />, label: "Manage Calls" },
-    { href: "/admin/crm", icon: <Users size={18} />, label: "CRM & Data" },
-    { href: "/admin/offers", icon: <Tag size={18} />, label: "Special Offers" },
+    { href: "/admin/calls", icon: <PhoneCall size={18} />, label: "Call History" },
+    { href: "/admin/crm", icon: <Users size={18} />, label: "Client Directory" },
+    { href: "/admin/offers", icon: <Tag size={18} />, label: "Promotions" },
     { href: "/admin/analytics", icon: <BarChart3 size={18} />, label: "Analytics" },
   ];
 
@@ -43,7 +43,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
            <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg shadow-primary/20">
               <ShieldCheck className="text-white" size={24} />
            </div>
-           <div className="text-xl font-black tracking-tighter gradient-text">BUZZ ADMIN</div>
+           <div className="text-xl font-black tracking-tighter gradient-text">BUZZ OPERATIONS</div>
         </div>
         
         <nav className="flex flex-col gap-2">
@@ -68,18 +68,18 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         <div className="mt-auto space-y-6">
            <div className="p-6 rounded-[32px] glass border border-primary/20 bg-primary/5">
-              <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2">Platform Pulse</div>
+              <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2">System Status</div>
               <p className="text-xs text-white/40 leading-relaxed font-bold tracking-tight">
-                All systems functional. Admin privilege active.
+                All systems operational. Administrative access confirmed.
               </p>
            </div>
            
            <button 
              onClick={() => router.push("/profile")}
-             className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl border border-primary/20 text-primary hover:bg-primary/10 transition-all font-bold text-sm"
+             className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl border border-primary/20 text-primary hover:bg-primary/10 transition-all font-black text-sm uppercase tracking-widest text-[10px]"
            >
              <User size={18} />
-             Superhero View
+             Switch to Client View
            </button>
 
            <button 

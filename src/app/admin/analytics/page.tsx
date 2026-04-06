@@ -41,17 +41,17 @@ export default function AdminAnalytics() {
   }, [user, authLoading, accessToken]);
 
   const metrics = [
-    { label: "Total Thrills", value: stats?.total_calls_delivered || 0, icon: <PhoneCall size={24} />, trend: "+12%", color: "text-primary" },
-    { label: "Squad Members", value: stats?.total_users || 0, icon: <Users size={24} />, trend: "+5%", color: "text-secondary" },
-    { label: "Unfinished Missions", value: stats?.pending_calls || 42, icon: <Zap size={24} />, trend: "-3%", color: "text-amber-400", sub: "Unfinished Carts" },
-    { label: "Tactical Churn", value: "2.4%", icon: <LogOut size={24} />, trend: "-0.8%", color: "text-red-400", sub: "Inactive Superheroes" },
+    { label: "Total Engagements", value: stats?.total_calls_delivered || 0, icon: <PhoneCall size={24} />, trend: "+12%", color: "text-primary" },
+    { label: "Registered Users", value: stats?.total_users || 0, icon: <Users size={24} />, trend: "+5%", color: "text-secondary" },
+    { label: "Pending Checkouts", value: stats?.pending_calls || 42, icon: <Zap size={24} />, trend: "-3%", color: "text-amber-400", sub: "Unfinished Bookings" },
+    { label: "User Churn", value: "2.4%", icon: <LogOut size={24} />, trend: "-0.8%", color: "text-red-400", sub: "Inactive Accounts" },
   ];
 
   return (
     <div className="space-y-12">
       <header>
-        <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase italic">Mission <span className="gradient-text">Pulse</span></h1>
-        <p className="text-muted-foreground font-bold tracking-tight">Real-time performance tracking for high-fidelity thrills.</p>
+        <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase italic">Analytics <span className="gradient-text">Overview</span></h1>
+        <p className="text-muted-foreground font-semibold tracking-tight">Real-time performance tracking for platform engagements.</p>
       </header>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -94,7 +94,7 @@ export default function AdminAnalytics() {
           <div className="flex justify-between items-center mb-10 relative z-10">
              <div>
                 <h2 className="text-2xl font-black mb-1 italic">Geographic <span className="gradient-text">Reach</span></h2>
-                <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Global tactical mission trends.</p>
+                <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Global engagement and regional trends.</p>
              </div>
              <Globe className="text-secondary/20" size={32} />
           </div>
@@ -126,13 +126,13 @@ export default function AdminAnalytics() {
 
         {/* Detailed Insights */}
         <div className="lg:col-span-8 p-10 rounded-[48px] glass border border-white/10 shadow-huge bg-black/20 h-full">
-           <div className="flex items-center gap-4 mb-10">
-              <TrendingUp className="text-primary" size={24} />
-              <h2 className="text-2xl font-black italic uppercase tracking-tighter">Mission <span className="gradient-text">Engagement</span></h2>
-           </div>
-           <div className="h-64 flex items-center justify-center border border-white/5 rounded-[32px] bg-white/[0.02] text-white/10 font-bold italic tracking-widest uppercase">
-              Tactical Engagement Chart [Visual Placeholder]
-           </div>
+            <div className="flex items-center gap-4 mb-10">
+               <TrendingUp className="text-primary" size={24} />
+               <h2 className="text-2xl font-black italic uppercase tracking-tighter">Service <span className="gradient-text">Engagement</span></h2>
+            </div>
+            <div className="h-64 flex items-center justify-center border border-white/5 rounded-[32px] bg-white/[0.02] text-white/10 font-bold italic tracking-widest uppercase">
+               Engagement Metrics Chart [Visual Placeholder]
+            </div>
         </div>
 
         <div className="lg:col-span-4 p-10 rounded-[48px] glass border border-white/10 shadow-huge bg-black/20 h-full">
@@ -141,11 +141,11 @@ export default function AdminAnalytics() {
               <h2 className="text-2xl font-black italic uppercase tracking-tighter">Network <span className="text-secondary">Security</span></h2>
            </div>
            <div className="space-y-6">
-              {[
-                { label: 'Uptime', value: '99.9%' },
-                { label: 'Encryption', value: 'AES-256' },
-                { label: 'Verified Heroes', value: '94%' }
-              ].map(stat => (
+               {[
+                 { label: 'Uptime', value: '99.9%' },
+                 { label: 'Encryption', value: 'AES-256' },
+                 { label: 'Verified Accounts', value: '94%' }
+               ].map(stat => (
                 <div key={stat.label} className="p-4 rounded-2xl bg-white/5 border border-white/5 flex justify-between items-center group hover:border-secondary/40 transition-all">
                    <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">{stat.label}</div>
                    <div className="font-black text-secondary">{stat.value}</div>

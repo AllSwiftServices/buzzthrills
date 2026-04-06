@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
+import { AuthProvider } from "@/context/AuthContext";
+import Script from "next/script";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -15,8 +17,6 @@ export const metadata: Metadata = {
   description: "Surprise calls, emotional messages, and corporate engagement. Never forget any special moment again.",
 };
 
-import { AuthProvider } from "@/context/AuthContext";
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -24,11 +24,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${outfit.variable} scroll-smooth`} suppressHydrationWarning>
+      <head>
+        {/* Unregister any stale service workers — prevents workbox from blocking navigation */}
+        <Script id="sw-unregister" strategy="beforeInteractive">{`
+          if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+              for (var i = 0; i < registrations.length; i++) {
+                registrations[i].unregister();
+              }
+            });
+            if (window.caches) {
+              caches.keys().then(function(names) {
+                for (var i = 0; i < names.length; i++) caches.delete(names[i]);
+              });
+            }
+          }
+        `}</Script>
+      </head>
       <body className="antialiased bg-background text-foreground transition-colors duration-500">
         <AuthProvider>
-          <ThemeProvider 
-            attribute="class" 
-            defaultTheme="light" 
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
             enableSystem={false}
             enableColorScheme={false}
           >

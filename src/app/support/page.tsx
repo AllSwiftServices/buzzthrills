@@ -11,7 +11,7 @@ const faqs = [
     category: "General",
     questions: [
       { q: "What is BuzzThrills?", a: "BuzzThrills is a premium surprise service that sends emotional calls, messages, and digital products to your loved ones on your behalf." },
-      { q: "Is it a recording or a real person?", a: "For our 'Surprise Calls', a real human Superhero host makes the call to ensure a genuine emotional connection." },
+      { q: "Is it a recording or a real person?", a: "For our 'Surprise Calls', a real human service agent makes the call to ensure a genuine emotional connection." },
       { q: "Can I schedule calls in advance?", a: "Yes, you can schedule calls months in advance using our dashboard." }
     ]
   },
@@ -125,8 +125,8 @@ export default function SupportPage() {
             <Reveal direction="right">
               <div className="p-10 rounded-[40px] glass border border-border shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -mr-32 -mt-32" />
-                <h3 className="text-2xl font-black mb-2 relative z-10">Send us a <span className="gradient-text">Message</span></h3>
-                <p className="text-muted-foreground mb-8 text-sm relative z-10">Our Superheroes respond faster than a speeding bullet.</p>
+                <h3 className="text-2xl font-black mb-2 relative z-10 italic uppercase tracking-tighter italic">Send us a <span className="gradient-text italic">Message</span></h3>
+                <p className="text-muted-foreground mb-8 text-[10px] font-black uppercase tracking-widest relative z-10">Our support team responds promptly to all inquiries.</p>
                 
                 <form className="space-y-6 relative z-10">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

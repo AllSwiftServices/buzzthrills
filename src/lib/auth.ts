@@ -47,7 +47,7 @@ export function setAccessTokenCookie(res: NextResponse, token: string) {
   res.cookies.set("access_token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: 15 * 60, // 15 minutes (match access token expiry)
     path: "/",
   });
@@ -57,7 +57,7 @@ export function setRefreshTokenCookie(res: NextResponse, token: string) {
   res.cookies.set("refresh_token", token, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: REFRESH_TOKEN_EXPIRES / 1000,
     path: "/",
   });

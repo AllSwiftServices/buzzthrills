@@ -13,7 +13,7 @@ export async function POST(req: Request) {
     }
 
     if (!supabaseAdmin) {
-       throw new Error("Administrative Client Mission Failure: Check SUPABASE_SERVICE_ROLE_KEY");
+       throw new Error("Admin client initialization failure: Check SUPABASE_SERVICE_ROLE_KEY");
     }
 
     // 1. Find Account

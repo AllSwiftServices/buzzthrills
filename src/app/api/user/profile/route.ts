@@ -18,10 +18,10 @@ export async function GET() {
     }
 
     if (!supabaseAdmin) {
-      throw new Error("Administrative Client Mission Failure");
+      throw new Error("Admin Client initialization failure");
     }
 
-    // 1. Fetch User's Recent Missions (Calls)
+    // 1. Fetch User's Recent Engagements
     const { data: calls, error: callsError } = await supabaseAdmin
       .from("calls")
       .select("*")
@@ -48,7 +48,7 @@ export async function GET() {
       subscription: subscription || null,
     });
   } catch (error) {
-    console.error("Profile Intelligence Failure:", error);
+    console.error("Profile data fetch error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

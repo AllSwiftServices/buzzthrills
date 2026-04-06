@@ -74,13 +74,9 @@ export default function AuthForm() {
              throw new Error(data.error);
           }
         } else {
-           // Success!
+           // Success — hard navigate to bypass stale service worker
            setAuth(data.user, data.accessToken);
-           if (data.user.role === 'admin') {
-             router.push("/admin");
-           } else {
-             router.push("/profile");
-           }
+           window.location.href = data.user.role === 'admin' ? '/admin' : '/profile';
         }
       } else if (mode === 'signup') {
         const res = await fetch("/api/auth/signup", {
@@ -108,11 +104,7 @@ export default function AuthForm() {
         if (data.error) throw new Error(data.error);
 
         setAuth(data.user, data.accessToken);
-        if (data.user.role === 'admin') {
-          router.push("/admin");
-        } else {
-          router.push("/profile");
-        }
+        window.location.href = data.user.role === 'admin' ? '/admin' : '/profile';
 
       } else {
         // Forgot password placeholder
@@ -131,17 +123,17 @@ export default function AuthForm() {
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] rounded-full -mr-16 -mt-16" />
         
         <div className="text-center mb-8 relative z-10">
-          <h2 className="text-3xl font-black mb-2">
-            {mode === 'login' ? "Welcome Back" : mode === 'signup' ? "Join the Squad" : mode === 'forgot' ? "Recover Account" : "Verify Email"}
+          <h2 className="text-3xl font-black mb-2 italic uppercase tracking-tighter">
+            {mode === 'login' ? <><span className="gradient-text italic">Sign</span> In</> : mode === 'signup' ? <>Create <span className="gradient-text italic">Account</span></> : mode === 'forgot' ? <>Recover <span className="gradient-text italic">Account</span></> : <>Verify <span className="gradient-text italic">Email</span></>}
           </h2>
           <p className="text-muted-foreground text-sm">
             {mode === 'login' 
-              ? "Your Superheroes are waiting to thrill you." 
+              ? "Sign in to continue sending surprises." 
               : mode === 'signup' 
                 ? "Start sending surprises that people never forget."
                 : mode === 'verify'
-                  ? `Enter the magic code we sent to ${formData.email}`
-                  : "Enter your email to receive a magic recovery link."
+                  ? `Enter the verification code we sent to ${formData.email}`
+                  : "Enter your email to receive a recovery link."
             }
           </p>
         </div>
@@ -292,7 +284,7 @@ export default function AuthForm() {
             </button>
           ) : (
             <>
-              {mode === 'login' ? "New to the squad?" : "Already a Superhero?"}{" "}
+              {mode === 'login' ? "New here?" : "Already have an account?"}{" "}
               <button
                 onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
                 className="text-primary font-bold hover:underline"

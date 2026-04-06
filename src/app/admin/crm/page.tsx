@@ -31,12 +31,12 @@ export default function AdminCRM() {
       
       try {
         const res = await fetch("/api/admin/users");
-        if (!res.ok) throw new Error("Identity Index Failure");
+        if (!res.ok) throw new Error("Failed to fetch users");
         
         const data = await res.json();
         setProfiles(data);
       } catch (error) {
-        console.error("CRM Data Failure:", error);
+        console.error("Client directory data error:", error);
       } finally {
         setLoading(false);
       }
@@ -63,7 +63,7 @@ export default function AdminCRM() {
   };
 
   const handleDeleteUser = async (userId: string) => {
-    if (!confirm("Identity Termination: Proceed with permanent deletion?")) return;
+    if (!confirm("Account Deletion: Proceed with permanent deletion?")) return;
     
     try {
       const res = await fetch("/api/admin/users", {
@@ -84,20 +84,20 @@ export default function AdminCRM() {
     <div className="space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase italic">Squad <span className="gradient-text">Identity</span></h1>
-          <p className="text-muted-foreground font-bold tracking-tight">Managing 12,000+ verified platform superheroes.</p>
+          <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase italic">Member <span className="gradient-text italic">Directory</span></h1>
+          <p className="text-muted-foreground font-bold tracking-tight uppercase text-[10px] tracking-widest">Managing your verified platform members and engagement history.</p>
         </div>
         
         <div className="flex flex-wrap gap-4">
            {/* Advanced Filters */}
            <select 
              onChange={(e) => setFilters({ ...filters, role: e.target.value })}
-             className="px-6 py-4 rounded-2xl glass border border-white/10 text-xs font-black uppercase tracking-widest outline-none cursor-pointer hover:border-primary/40 transition-all appearance-none"
+             className="px-6 py-4 rounded-2xl glass border border-white/10 text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer hover:border-primary/40 transition-all appearance-none"
            >
               <option className="bg-background text-foreground" value="all">Every Role</option>
-              <option className="bg-background text-foreground" value="user">Superheroes</option>
-              <option className="bg-background text-foreground" value="caller">Tactical Callers</option>
-              <option className="bg-background text-foreground" value="admin">Squad Leaders</option>
+              <option className="bg-background text-foreground" value="user">Clients</option>
+              <option className="bg-background text-foreground" value="caller">Service Agents</option>
+              <option className="bg-background text-foreground" value="admin">Administrators</option>
            </select>
 
            <select className="px-6 py-4 rounded-2xl glass border border-white/10 text-xs font-black uppercase tracking-widest outline-none cursor-pointer hover:border-secondary/40 transition-all appearance-none">
@@ -107,8 +107,8 @@ export default function AdminCRM() {
               <option className="bg-background text-foreground">Port-Harcourt (South)</option>
            </select>
 
-           <button className="px-10 py-4 rounded-2xl gradient-bg text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
-              Export Mission Data (.csv)
+           <button className="px-10 py-4 rounded-2xl gradient-bg text-white font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+              Export Member Data (.csv)
            </button>
         </div>
       </header>
@@ -120,11 +120,11 @@ export default function AdminCRM() {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.02]">
-                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Superhero Identity</th>
-                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Status & Role</th>
-                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Location & Segment</th>
+                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Member Details</th>
+                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Member Status</th>
+                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Region & Plan</th>
                 <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Joined On</th>
-                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Tactical Pulse</th>
+                <th className="px-10 py-8 text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Management</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5 font-bold">
@@ -162,10 +162,10 @@ export default function AdminCRM() {
                      <div className="flex flex-col gap-1.5">
                         <div className="text-sm flex items-center gap-2">
                            <Globe size={14} className="text-white/40" />
-                           {profile.location || 'Unknown Sector'}
+                           {profile.location || 'Lagos Region'}
                         </div>
                         <div className="text-[10px] font-black uppercase tracking-widest text-primary/60 italic">
-                           {profile.age_grade || 'Hero Class Undefined'}
+                           {profile.subscriptions?.[0]?.plan ? `${profile.subscriptions[0].plan} Plan` : 'Single Order Client'}
                         </div>
                      </div>
                   </td>
@@ -179,8 +179,8 @@ export default function AdminCRM() {
                          onChange={(e) => handleUpdateUser(profile.id, { role: e.target.value })}
                          className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase outline-none hover:border-primary/20 transition-all cursor-pointer"
                        >
-                          <option className="bg-background" value="user">User</option>
-                          <option className="bg-background" value="caller">Caller</option>
+                          <option className="bg-background" value="user">Client</option>
+                          <option className="bg-background" value="caller">Agent</option>
                           <option className="bg-background" value="admin">Admin</option>
                        </select>
                        
@@ -191,7 +191,7 @@ export default function AdminCRM() {
                            ? 'bg-amber-500/20 text-amber-500 border-amber-500/20 shadow-lg shadow-amber-500/10' 
                            : 'bg-white/5 text-white/20 border-transparent hover:text-white hover:bg-white/10'
                          }`}
-                         title={profile.is_suspended ? 'Resume Identity' : 'Lockdown Identity'}
+                         title={profile.is_suspended ? 'Resume Account' : 'Lockdown Account'}
                        >
                           <Zap size={18} className={profile.is_suspended ? '' : 'opacity-20'} />
                        </button>
@@ -199,7 +199,7 @@ export default function AdminCRM() {
                        <button 
                          onClick={() => handleDeleteUser(profile.id)}
                          className="p-3.5 rounded-2xl bg-red-400/5 text-red-400/20 hover:text-red-400 hover:bg-red-400/10 hover:scale-110 active:scale-95 transition-all border border-transparent hover:border-red-400/20"
-                         title="Terminate Identity"
+                         title="Terminate Account"
                        >
                           <Trash2 size={18} />
                        </button>
@@ -214,15 +214,15 @@ export default function AdminCRM() {
         {loading && (
           <div className="p-32 flex flex-col items-center justify-center gap-6">
             <Loader2 className="animate-spin text-primary" size={64} />
-            <div className="text-sm font-black uppercase tracking-[0.4em] animate-pulse">Scanning Identities...</div>
+            <div className="text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">Syncing Directory...</div>
           </div>
         )}
 
         {!loading && profiles.length === 0 && (
           <div className="p-40 text-center flex flex-col items-center justify-center">
              <Users size={80} className="text-white/5 mb-8 rotate-12" />
-             <div className="text-2xl font-black mb-2 opacity-20">No Superheroes Found.</div>
-             <div className="text-sm font-bold text-white/10 uppercase tracking-widest italic font-mono uppercase">Mission Empty.</div>
+             <div className="text-2xl font-black mb-2 opacity-20">No Members Found.</div>
+             <div className="text-[10px] font-bold text-white/10 uppercase tracking-widest italic font-mono uppercase">Directory Empty.</div>
           </div>
         )}
       </div>

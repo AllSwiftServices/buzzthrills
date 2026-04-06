@@ -44,8 +44,8 @@ export default function AdminOffers() {
     <div className="space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase italic">Campaign <span className="gradient-text">Master</span></h1>
-          <p className="text-muted-foreground font-bold tracking-tight">Activating high-fidelity holiday magic and deals.</p>
+          <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase italic">Promotion <span className="gradient-text">Manager</span></h1>
+          <p className="text-muted-foreground font-bold tracking-tight uppercase text-[10px] tracking-widest">Manage platform-wide promotions and seasonal packages.</p>
         </div>
         
         <button className="w-full md:w-auto px-8 py-4 rounded-2xl gradient-bg text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
@@ -87,7 +87,7 @@ export default function AdminOffers() {
                     offer.is_active ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'
                   }`}>
                     <Zap size={12} className={offer.is_active ? 'animate-pulse' : ''} />
-                    {offer.is_active ? 'Live Network' : 'Tactical Draft'}
+                    {offer.is_active ? 'Active' : 'Draft'}
                   </div>
                </div>
             </div>
@@ -107,11 +107,11 @@ export default function AdminOffers() {
                   <div className="flex flex-wrap items-center gap-4 mb-8">
                      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/60 bg-primary/5 px-4 py-2 rounded-xl border border-primary/10 transition-all group-hover:scale-105">
                         <Calendar size={14} />
-                        Holiday Pulse
+                        Seasonal
                      </div>
                      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-white/20 px-4 py-2 rounded-xl border border-white/5">
                         <Zap size={14} />
-                        High-Fidelity
+                        Premium
                      </div>
                   </div>
 
@@ -125,7 +125,7 @@ export default function AdminOffers() {
                         </button>
                      </div>
                      <button className="px-8 py-4 rounded-2xl border border-primary/40 text-primary hover:bg-primary hover:text-white font-black text-xs uppercase tracking-widest transition-all scale-95 group-hover:scale-100 shadow-huge shadow-primary/5 flex items-center gap-3">
-                        Tactical Analytics
+                        Performance
                         <ChevronRight size={16} />
                      </button>
                   </div>
@@ -136,9 +136,9 @@ export default function AdminOffers() {
 
         {!loading && offers.length === 0 && (
           <div className="lg:col-span-2 p-24 rounded-[48px] glass border border-dashed border-white/10 flex flex-col items-center justify-center text-center group hover:border-primary/40 transition-all cursor-pointer bg-black/10">
-             <Tag size={64} className="text-white/10 mb-6 group-hover:scale-110 transition-transform group-hover:text-primary/40" />
-             <h3 className="text-2xl font-black mb-2 opacity-40 italic uppercase tracking-tighter">No Campaigns Active</h3>
-             <p className="text-white/20 font-bold italic tracking-widest text-xs uppercase underline underline-offset-8">Initiate magic for the squad now.</p>
+              <Tag size={64} className="text-white/10 mb-6 group-hover:scale-110 transition-transform group-hover:text-primary/40" />
+              <h3 className="text-2xl font-black mb-2 opacity-40 italic uppercase tracking-tighter">No Promotions Active</h3>
+              <p className="text-white/20 font-black italic tracking-widest text-[9px] uppercase">Create your first promotion now.</p>
           </div>
         )}
       </div>
