@@ -9,11 +9,12 @@ const SECRET = new TextEncoder().encode(
 export const ACCESS_TOKEN_EXPIRES = "15m";
 export const REFRESH_TOKEN_EXPIRES = 30 * 24 * 60 * 60 * 1000; // 30 days
 
-export async function signAccessToken(payload: { id: string; email: string; role: string }) {
+export async function signAccessToken(payload: { id: string; email: string; role: string; is_suspended?: boolean }) {
   return await new SignJWT({
     ...payload,
-    sub: payload.id, // Supabase standard for User ID
-    role: payload.role, // Supabase standard for User Role
+    sub: payload.id, 
+    role: payload.role,
+    is_suspended: payload.is_suspended || false,
   })
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
@@ -24,6 +25,12 @@ export async function signAccessToken(payload: { id: string; email: string; role
 export async function verifyToken(token: string) {
   try {
     const { payload } = await jwtVerify(token, SECRET);
+    
+    // Suspension Check
+    if (payload.is_suspended) {
+      return null;
+    }
+
     return payload;
   } catch (error) {
     return null;

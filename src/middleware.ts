@@ -31,6 +31,11 @@ export async function middleware(req: NextRequest) {
     try {
       const { payload } = await jwtVerify(token, SECRET);
       
+      // Suspension Check
+      if (payload.is_suspended) {
+        return NextResponse.redirect(new URL("/auth?error=suspended", req.url));
+      }
+
       // Admin Role Check
       if (isAdminRoute && payload.role !== "admin") {
         return NextResponse.redirect(new URL("/profile", req.url));

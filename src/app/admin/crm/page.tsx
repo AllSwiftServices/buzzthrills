@@ -29,19 +29,56 @@ export default function AdminCRM() {
     async function fetchProfiles() {
       if (authLoading || !user || user.role !== 'admin') return;
       
-      const authenticatedSupabase = getSupabase(accessToken);
-      let query = authenticatedSupabase.from('profiles').select('*');
-
-      if (filters.role !== 'all') query = query.eq('role', filters.role);
-      
-      const { data, error } = await query.order('created_at', { ascending: false });
-
-      if (data) setProfiles(data);
-      setLoading(false);
+      try {
+        const res = await fetch("/api/admin/users");
+        if (!res.ok) throw new Error("Identity Index Failure");
+        
+        const data = await res.json();
+        setProfiles(data);
+      } catch (error) {
+        console.error("CRM Data Failure:", error);
+      } finally {
+        setLoading(false);
+      }
     }
 
     fetchProfiles();
-  }, [user, authLoading, accessToken, filters]);
+  }, [user, authLoading]);
+
+  const handleUpdateUser = async (userId: string, updates: any) => {
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, updates }),
+      });
+
+      if (res.ok) {
+        const updatedUser = await res.json();
+        setProfiles(prev => prev.map(u => u.id === userId ? { ...u, ...updatedUser } : u));
+      }
+    } catch (error) {
+      console.error("User Update Failure:", error);
+    }
+  };
+
+  const handleDeleteUser = async (userId: string) => {
+    if (!confirm("Identity Termination: Proceed with permanent deletion?")) return;
+    
+    try {
+      const res = await fetch("/api/admin/users", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+
+      if (res.ok) {
+        setProfiles(prev => prev.filter(u => u.id !== userId));
+      }
+    } catch (error) {
+      console.error("User Deletion Failure:", error);
+    }
+  };
 
   return (
     <div className="space-y-12">
@@ -137,10 +174,33 @@ export default function AdminCRM() {
                   </td>
                   <td className="px-10 py-6">
                     <div className="flex gap-2">
-                       <button className="p-3.5 rounded-2xl bg-white/5 text-white/40 hover:text-white hover:bg-white/10 hover:scale-110 active:scale-95 transition-all">
-                          <Edit3 size={18} />
+                       <select 
+                         value={profile.role}
+                         onChange={(e) => handleUpdateUser(profile.id, { role: e.target.value })}
+                         className="px-3 py-2 rounded-xl bg-white/5 border border-white/10 text-[10px] font-black uppercase outline-none hover:border-primary/20 transition-all cursor-pointer"
+                       >
+                          <option className="bg-background" value="user">User</option>
+                          <option className="bg-background" value="caller">Caller</option>
+                          <option className="bg-background" value="admin">Admin</option>
+                       </select>
+                       
+                       <button 
+                         onClick={() => handleUpdateUser(profile.id, { is_suspended: !profile.is_suspended })}
+                         className={`p-3.5 rounded-2xl border transition-all hover:scale-105 active:scale-95 ${
+                           profile.is_suspended 
+                           ? 'bg-amber-500/20 text-amber-500 border-amber-500/20 shadow-lg shadow-amber-500/10' 
+                           : 'bg-white/5 text-white/20 border-transparent hover:text-white hover:bg-white/10'
+                         }`}
+                         title={profile.is_suspended ? 'Resume Identity' : 'Lockdown Identity'}
+                       >
+                          <Zap size={18} className={profile.is_suspended ? '' : 'opacity-20'} />
                        </button>
-                       <button className="p-3.5 rounded-2xl bg-red-400/5 text-red-400/20 hover:text-red-400 hover:bg-red-400/10 hover:scale-110 active:scale-95 transition-all border border-transparent hover:border-red-400/20">
+
+                       <button 
+                         onClick={() => handleDeleteUser(profile.id)}
+                         className="p-3.5 rounded-2xl bg-red-400/5 text-red-400/20 hover:text-red-400 hover:bg-red-400/10 hover:scale-110 active:scale-95 transition-all border border-transparent hover:border-red-400/20"
+                         title="Terminate Identity"
+                       >
                           <Trash2 size={18} />
                        </button>
                     </div>
