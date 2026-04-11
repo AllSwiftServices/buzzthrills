@@ -4,13 +4,20 @@ import { Phone, User, ShoppingBag, Menu, X } from "lucide-react";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import { useEffect, useState, useRef } from "react";
+import { useTheme } from "next-themes";
 import { supabase } from "@/lib/supabase";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuth } from "@/context/AuthContext";
 
 export default function Header() {
   const { user } = useAuth();
+  const { resolvedTheme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Scroll lock implementation
   useEffect(() => {
@@ -49,13 +56,20 @@ export default function Header() {
     open: { opacity: 1, y: 0 }
   };
 
+  const isDark = mounted && resolvedTheme === "dark";
+
   return (
     <>
       <header 
         style={{ transform: 'translate3d(0, 0, 0)' } as any}
-        className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 flex items-center justify-between transition-all duration-500 ${
-          isOpen ? 'bg-transparent border-transparent' : 'glass mx-2 md:mx-4 mt-2 md:mt-4 border-border'
-        } overflow-visible`}
+        className={`fixed top-0 left-0 right-0 z-50 px-4 md:px-6 py-4 flex items-center justify-between transition-all duration-500 overflow-visible ${
+          !mounted ? 'bg-white' : 
+          isOpen 
+            ? (isDark ? 'bg-black/95 border-transparent' : 'bg-white border-transparent')
+            : (isDark 
+                ? 'bg-black/20 backdrop-blur-xl border-white/10 mx-2 md:mx-4 mt-2 md:mt-4 rounded-2xl border shadow-2xl' 
+                : 'bg-white border-border mx-2 md:mx-4 mt-2 md:mt-4 rounded-2xl border shadow-xl')
+        }`}
       >
         <Link href="/" className="flex items-center gap-2 relative z-60">
           <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
@@ -81,7 +95,11 @@ export default function Header() {
             {user ? (
               <Link 
                 href="/profile"
-                className="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-foreground/5 transition-all text-sm font-semibold"
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all text-sm font-semibold border ${
+                  isDark 
+                    ? 'bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10' 
+                    : 'bg-foreground/5 border-transparent hover:bg-foreground/10 backdrop-blur-none'
+                }`}
               >
                 <User size={16} />
                 Profile
@@ -89,7 +107,11 @@ export default function Header() {
             ) : (
               <Link 
                 href="/auth"
-                className="flex items-center gap-2 px-4 py-2 rounded-xl glass hover:bg-foreground/5 transition-all text-sm font-semibold"
+                className={`flex items-center gap-2 px-4 py-2 rounded-xl transition-all text-sm font-semibold border ${
+                  isDark 
+                    ? 'bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10' 
+                    : 'bg-foreground/5 border-transparent hover:bg-foreground/10 backdrop-blur-none'
+                }`}
               >
                 <User size={16} />
                 Login
@@ -107,7 +129,11 @@ export default function Header() {
           {/* Mobile Menu Button */}
           <button 
             onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden p-2 rounded-xl glass hover:bg-foreground/10 transition-all border border-border/20 shadow-lg"
+            className={`md:hidden p-2 rounded-xl transition-all border shadow-lg ${
+              isDark 
+                ? 'bg-white/5 backdrop-blur-md border-white/10 hover:bg-white/10' 
+                : 'bg-foreground/5 border-border/20 hover:bg-foreground/10 backdrop-blur-none'
+            }`}
           >
             {isOpen ? <X size={20} className="text-primary" /> : <Menu size={20} />}
           </button>
