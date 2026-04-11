@@ -38,7 +38,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       if (res.status === 401) {
         setAuth(null, null);
-        router.push("/auth?error=expired");
+        const isProtectedRoute = window.location.pathname.startsWith('/profile') || window.location.pathname.startsWith('/admin');
+        if (isProtectedRoute) {
+          router.push("/auth?error=expired");
+        }
         return;
       }
 

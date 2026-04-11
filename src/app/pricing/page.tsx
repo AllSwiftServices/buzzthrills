@@ -15,7 +15,7 @@ export default function PricingPage() {
     {
       id: "lite",
       name: "Lite",
-      price: billingCycle === 'monthly' ? "15,000" : "12,000",
+      price: billingCycle === 'monthly' ? "15,000" : "14,250",
       description: "Ideal for individuals sending their first surprise.",
       features: [
         "5 Surprise Calls / month",
@@ -30,7 +30,7 @@ export default function PricingPage() {
     {
       id: "plus",
       name: "Plus",
-      price: billingCycle === 'monthly' ? "45,000" : "36,000",
+      price: billingCycle === 'monthly' ? "45,000" : "42,750",
       description: "The standard choice for personal celebrations and small groups.",
       features: [
         "15 Surprise Calls / month",
@@ -47,7 +47,7 @@ export default function PricingPage() {
     {
       id: "orbit",
       name: "Orbit",
-      price: billingCycle === 'monthly' ? "120,000" : "98,000",
+      price: billingCycle === 'monthly' ? "120,000" : "114,000",
       description: "Unlimited access for high-volume personal or business requirements.",
       features: [
         "Unlimited Surprise Calls",
@@ -118,7 +118,7 @@ export default function PricingPage() {
               <div className="flex items-center gap-2 sm:gap-3">
                  <span className={`text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'annual' ? 'text-foreground' : 'text-foreground/40'}`}>Annual <span className="hidden xs:inline">Billing</span></span>
                  <div className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[8px] sm:text-[9px] font-black uppercase tracking-widest rounded-md animate-bounce">
-                    Save 20%
+                    Save 5%
                  </div>
               </div>
             </motion.div>
@@ -127,7 +127,7 @@ export default function PricingPage() {
           {/* Pricing Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 px-4 items-stretch">
             {plans.map((plan, i) => (
-              <PricingCard key={plan.id} {...plan} delay={0.4 + (i * 0.1)} />
+              <PricingCard key={plan.id} {...plan} cycle={billingCycle} delay={0.4 + (i * 0.1)} />
             ))}
           </div>
 

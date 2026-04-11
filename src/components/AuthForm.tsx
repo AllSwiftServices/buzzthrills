@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Mail, Lock, User, ArrowRight, Globe, Loader2, Eye, EyeOff } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/context/AuthContext";
 
 export default function AuthForm() {
@@ -12,6 +12,13 @@ export default function AuthForm() {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  
+  const redirectParams = {
+    mode: searchParams.get('redirect'),
+    plan: searchParams.get('plan'),
+    cycle: searchParams.get('cycle')
+  };
 
   const [formData, setFormData] = useState({
     email: "",
@@ -76,7 +83,12 @@ export default function AuthForm() {
         } else {
            // Success — hard navigate to bypass stale service worker
            setAuth(data.user, data.accessToken);
-           window.location.href = data.user.role === 'admin' ? '/admin' : '/profile';
+           
+           if (redirectParams.mode === 'checkout' && redirectParams.plan) {
+             window.location.href = `/checkout?plan=${redirectParams.plan}&cycle=${redirectParams.cycle || 'monthly'}`;
+           } else {
+             window.location.href = data.user.role === 'admin' ? '/admin' : '/profile';
+           }
         }
       } else if (mode === 'signup') {
         const res = await fetch("/api/auth/signup", {
@@ -104,7 +116,12 @@ export default function AuthForm() {
         if (data.error) throw new Error(data.error);
 
         setAuth(data.user, data.accessToken);
-        window.location.href = data.user.role === 'admin' ? '/admin' : '/profile';
+        
+        if (redirectParams.mode === 'checkout' && redirectParams.plan) {
+          window.location.href = `/checkout?plan=${redirectParams.plan}&cycle=${redirectParams.cycle || 'monthly'}`;
+        } else {
+          window.location.href = data.user.role === 'admin' ? '/admin' : '/profile';
+        }
 
       } else {
         // Forgot password placeholder

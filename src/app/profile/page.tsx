@@ -106,9 +106,9 @@ export default function ProfilePage() {
             {/* Active Subscription Summary */}
             <div className="p-6 sm:p-10 rounded-[40px] sm:rounded-[56px] gradient-bg text-white shadow-huge relative overflow-hidden group">
               <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 blur-[100px] rounded-full group-hover:scale-125 transition-transform duration-1000" />
-              <div className="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8 sm:gap-12">
-                <div className="text-center md:text-left">
-                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] italic flex items-center justify-center md:justify-start gap-2">
+              <div className="relative z-10 flex flex-wrap justify-between items-center gap-8 w-full">
+                <div className="text-left w-full sm:w-auto flex-1 min-w-[280px]">
+                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] italic flex items-center justify-start gap-2">
                     <Zap size={10} className="text-primary animate-pulse" />
                     Subscription Status
                   </span>
@@ -116,15 +116,24 @@ export default function ProfilePage() {
                     {subscription?.plan || 'Standard'} <span className="text-white/20">Plus</span>
                   </h2>
                   <p className="font-bold text-xs sm:text-sm md:text-lg opacity-80 italic">
-                    {subscription?.calls_made || 0}/{subscription?.total_calls || 1} Engagements remaining this month
+                    {subscription?.calls_made || 0}/{subscription?.total_calls || (subscription?.plan === 'Orbit' ? '∞' : subscription?.plan === 'Plus' ? 15 : 5)} Engagements remaining this month
                   </p>
                 </div>
-                <Link 
-                  href="/pricing"
-                  className="w-full md:w-auto px-6 py-4 rounded-2xl sm:rounded-3xl bg-white text-black font-black text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-huge shrink-0 text-center"
-                >
-                  Upgrade Plan 🎁
-                </Link>
+                <div className="flex flex-row flex-wrap gap-4 w-full sm:w-auto shrink-0 justify-start sm:justify-end">
+                  <Link 
+                    href="/book"
+                    className="flex-1 sm:flex-none px-6 sm:px-8 py-4 rounded-2xl sm:rounded-3xl bg-white text-black font-black text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-2 whitespace-nowrap"
+                  >
+                    <Star size={18} className="text-primary" />
+                    Book a Surprise ✨
+                  </Link>
+                  <Link 
+                    href="/pricing"
+                    className="flex-1 sm:flex-none px-6 py-4 rounded-2xl sm:rounded-3xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all backdrop-blur-md flex items-center justify-center whitespace-nowrap"
+                  >
+                    Upgrade Plan
+                  </Link>
+                </div>
               </div>
             </div>
 

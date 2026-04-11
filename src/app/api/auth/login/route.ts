@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import bcrypt from "bcryptjs";
 import { signAccessToken, setRefreshTokenCookie, setAccessTokenCookie } from "@/lib/auth";
 import { v4 as uuidv4 } from "uuid";
+import { getLocationFromIP } from "@/lib/geo";
 
 export async function POST(req: Request) {
   try {
@@ -59,6 +60,26 @@ export async function POST(req: Request) {
       });
 
     if (sessionError) throw sessionError;
+    
+    // 6. Update User Location
+    try {
+      const forwarded = req.headers.get("x-forwarded-for");
+      const ip = forwarded ? forwarded.split(",")[0] : "127.0.0.1";
+      const geo = await getLocationFromIP(ip);
+      
+      if (geo) {
+        const locationStr = `${geo.city}, ${geo.country}`;
+        await supabaseAdmin
+          .from("profiles")
+          .update({ 
+            location: locationStr,
+            last_login_at: new Date().toISOString()
+          })
+          .eq("id", account.id);
+      }
+    } catch (e) {
+      console.error("Location Tracking Error:", e);
+    }
 
     // 5. Build Response
     const response = NextResponse.json({

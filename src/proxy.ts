@@ -5,7 +5,7 @@ const SECRET = new TextEncoder().encode(
   process.env.SUPABASE_JWT_SECRET || process.env.JWT_SECRET || "super-secret-buzz-thrills-key-12345"
 );
 
-export async function middleware(req: NextRequest) {
+export async function proxy(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
   // 1. Define Protected Routes

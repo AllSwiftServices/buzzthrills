@@ -195,33 +195,38 @@ export default function AdminDashboard() {
            </div>
            
            <div className="space-y-10 relative z-10 px-4">
-            {[
-              { label: "Lagos Territory", count: "1,242", reach: "82%", icon: <MapPin size={18} />, color: "bg-primary" },
-              { label: "London Region", count: "412", reach: "42%", icon: <Globe size={18} />, color: "bg-secondary" },
-              { label: "New York Hub", count: "356", reach: "28%", icon: <MapPin size={18} />, color: "bg-amber-400" },
-              { label: "Corporate HQ", count: "84", reach: "18%", icon: <Zap size={18} />, color: "bg-green-500" },
-            ].map((seg, i) => (
-              <div key={i} className="group cursor-pointer">
-                <div className="flex justify-between items-center mb-4">
-                  <div className="flex items-center gap-4 text-sm font-black uppercase tracking-[0.2em] text-white/80 group-hover:text-white transition-colors">
-                    {seg.icon}
-                    {seg.label}
+            {(analytics.geoSummary && analytics.geoSummary.length > 0 ? analytics.geoSummary : [
+              { label: "Lagos Territory", count: 0 },
+              { label: "London Region", count: 0 },
+              { label: "New York Hub", count: 0 },
+              { label: "Corporate HQ", count: 0 },
+            ]).map((seg: any, i: number) => {
+              const total = analytics.total_users || 1;
+              const reach = Math.round((seg.count / total) * 100);
+              
+              return (
+                <div key={i} className="group cursor-pointer">
+                  <div className="flex justify-between items-center mb-4">
+                    <div className="flex items-center gap-4 text-sm font-black uppercase tracking-[0.2em] text-white/80 group-hover:text-white transition-colors">
+                      {i === 0 ? <Globe size={18} /> : <MapPin size={18} />}
+                      {seg.label}
+                    </div>
+                    <div className="flex items-center gap-4">
+                       <span className="text-[10px] text-white/20 font-black tracking-widest">{seg.count} CLIENTS</span>
+                       <span className="text-xs font-black text-secondary tabular-nums italic">{reach}%</span>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                     <span className="text-[10px] text-white/20 font-black tracking-widest">{seg.count} CLIENTS</span>
-                     <span className="text-xs font-black text-secondary tabular-nums italic">{seg.reach}</span>
+                  <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/5 group-hover:border-secondary/20 transition-all">
+                    <motion.div 
+                      initial={{ width: 0 }}
+                      whileInView={{ width: `${reach}%` }}
+                      transition={{ duration: 1.5, ease: "easeOut", delay: i * 0.1 }}
+                      className={`h-full ${i % 2 === 0 ? 'bg-primary' : 'bg-secondary'} shadow-huge opacity-80 group-hover:opacity-100 transition-opacity`}
+                    />
                   </div>
                 </div>
-                <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden border border-white/5 group-hover:border-secondary/20 transition-all">
-                  <motion.div 
-                    initial={{ width: 0 }}
-                    whileInView={{ width: seg.reach }}
-                    transition={{ duration: 1.5, ease: "easeOut", delay: i * 0.1 }}
-                    className={`h-full ${seg.color} shadow-huge opacity-80 group-hover:opacity-100 transition-opacity`}
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 

@@ -1,5 +1,6 @@
 "use client";
 
+import { Suspense } from "react";
 import AuthForm from "@/components/AuthForm";
 import Header from "@/components/Header";
 import Reveal from "@/components/Reveal";
@@ -23,7 +24,17 @@ export default function AuthPage() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <AuthForm />
+          <Suspense fallback={
+            <div className="w-full max-w-md mx-auto p-8 rounded-[48px] glass border border-border shadow-3xl text-center">
+              <div className="animate-pulse flex flex-col items-center">
+                <div className="w-12 h-12 rounded-full gradient-bg opacity-50 mb-4" />
+                <div className="h-4 bg-muted w-32 rounded-full mb-2" />
+                <div className="h-8 bg-muted w-48 rounded-full" />
+              </div>
+            </div>
+          }>
+            <AuthForm />
+          </Suspense>
         </Reveal>
 
        

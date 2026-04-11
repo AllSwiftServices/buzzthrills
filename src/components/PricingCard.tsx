@@ -2,7 +2,8 @@
 
 import { motion } from "framer-motion";
 import { Check, Zap, Star, Shield, ArrowRight } from "lucide-react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/context/AuthContext";
 
 interface PricingCardProps {
   id: string;
@@ -13,10 +14,12 @@ interface PricingCardProps {
   isPopular?: boolean;
   icon: React.ReactNode;
   gradient: string;
+  cycle: 'monthly' | 'annual';
   delay?: number;
 }
 
 export default function PricingCard({ 
+  id,
   name, 
   price, 
   description, 
@@ -24,8 +27,12 @@ export default function PricingCard({
   isPopular, 
   icon, 
   gradient,
+  cycle,
   delay = 0 
 }: PricingCardProps) {
+  const router = useRouter();
+  const { user } = useAuth();
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -78,15 +85,22 @@ export default function PricingCard({
 
       {/* CTA */}
       <div className="relative z-10 pt-4">
-        <Link 
-          href="/auth" 
+        <button 
+          onClick={() => {
+            const checkoutUrl = `/checkout?plan=${id}&cycle=${cycle}`;
+            if (user) {
+              router.push(checkoutUrl);
+            } else {
+              router.push(`/auth?redirect=checkout&plan=${id}&cycle=${cycle}`);
+            }
+          }}
           className={`w-full py-5 rounded-[28px] font-black italic uppercase tracking-[0.15em] text-sm shadow-huge active:scale-95 transition-all flex items-center justify-center gap-3 group/btn ${
             isPopular ? "gradient-bg text-white" : "bg-foreground/5 text-foreground hover:bg-foreground/10"
           }`}
         >
           {name === "Corporate" ? "Inquire Mission" : "Deploy Perks"}
           <ArrowRight size={18} className="group-hover/btn:translate-x-2 transition-transform" />
-        </Link>
+        </button>
       </div>
     </motion.div>
   );

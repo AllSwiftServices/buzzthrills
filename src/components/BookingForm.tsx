@@ -1,19 +1,62 @@
 "use client";
 
-import { useState } from "react";
+import { useState, Suspense, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Zap } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Zap, Loader2 } from "lucide-react";
+import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
+import { useAuth } from "@/context/AuthContext";
+
+declare global {
+  interface Window {
+    PaystackPop: any;
+  }
+}
 
 type Step = "subscriber" | "recipients" | "preferences" | "payment";
 
-export default function BookingForm({ planType = "one-off" }: { planType?: string }) {
+function BookingContent({ planType = "one-off" }: { planType?: string }) {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const cycle = searchParams.get("cycle") || "monthly";
+  const { user } = useAuth();
   const [step, setStep] = useState<Step>("subscriber");
   const [isExpress, setIsExpress] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [subscription, setSubscription] = useState<any>(null);
+  const [clientData, setClientData] = useState({ name: "", email: "", phone: "" });
   const [recipients, setRecipients] = useState([{ name: "", phone: "", occasion: "Birthday", date: "", time: "morning" }]);
 
-  const basePrice = planType === "plus" ? 25000 : planType === "orbit" ? 45000 : planType === "corporate" ? 100000 : 15000;
+  useEffect(() => {
+    async function checkSubscription() {
+      if (!user) return;
+      try {
+        const res = await fetch("/api/user/profile");
+        const data = await res.json();
+        if (data.subscription?.status === 'active') {
+          setSubscription(data.subscription);
+        }
+      } catch (e) {
+        console.error("Sub check failure", e);
+      }
+    }
+    checkSubscription();
+  }, [user]);
+
+  const isSubscriber = subscription?.status === 'active';
+
+  const prices = {
+    lite: { monthly: 15000, annual: 14250 },
+    plus: { monthly: 45000, annual: 42750 },
+    orbit: { monthly: 120000, annual: 114000 },
+    corporate: { monthly: 250000, annual: 250000 },
+    "one-off": { monthly: 15000, annual: 15000 }
+  };
+
+  const selectedPlan = (planType.toLowerCase() as keyof typeof prices) || "one-off";
+  const planBasePrice = prices[selectedPlan]?.[cycle as 'monthly' | 'annual'] || 15000;
   const expressCharge = isExpress ? 2000 : 0;
-  const totalPrice = basePrice + expressCharge;
+  const totalPrice = planBasePrice + expressCharge;
 
   const addRecipient = () => {
     setRecipients([...recipients, { name: "", phone: "", occasion: "Birthday", date: "", time: "morning" }]);
@@ -23,13 +66,90 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
     setRecipients(recipients.filter((_, i) => i !== index));
   };
 
+  const handlePaystackPayment = () => {
+    if (!window.PaystackPop) {
+      alert("Payment gateway is loading, please try again in a moment.");
+      return;
+    }
+
+    if (!clientData.email) {
+      alert("Please provide a valid email address.");
+      setStep("subscriber");
+      return;
+    }
+
+    const handler = window.PaystackPop.setup({
+      key: PAYSTACK_PUBLIC_KEY,
+      email: clientData.email,
+      amount: totalPrice * 100, // Amount in kobo
+      metadata: {
+        plan: selectedPlan,
+        cycle: cycle,
+        user_id: user?.id,
+        is_express: isExpress,
+        client_name: clientData.name,
+      },
+      callback: function(response: any) {
+        // Verify payment on server
+        fetch(`/api/payments/verify?reference=${response.reference}`)
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              router.push("/checkout/success");
+            } else {
+              alert("Payment verification failed. Please contact support.");
+            }
+          })
+          .catch(err => {
+            console.error(err);
+            alert("An error occurred during verification.");
+          });
+      },
+      onClose: function() {
+        alert("Payment cancelled.");
+      }
+    });
+
+    handler.openIframe();
+  };
+
+  const handleSubscriberBooking = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch("/api/bookings/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipients,
+          preferences: recipients.map(r => ({ time: r.time })),
+          isExpress,
+          plan_id: subscription.id
+        })
+      });
+      if (res.ok) {
+        router.push("/checkout/success");
+      } else {
+        alert("Booking failed. Please try again.");
+      }
+    } catch (e) {
+      alert("An error occurred.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const nextStep = () => {
     if (step === "subscriber") setStep("recipients");
     else if (step === "recipients") setStep("preferences");
-    else if (step === "preferences") setStep("payment");
+    else if (step === "preferences") {
+      if (isSubscriber) {
+        handleSubscriberBooking();
+      } else {
+        setStep("payment");
+      }
+    }
     else if (step === "payment") {
-       // Simulate redirect to Success Page
-       window.location.href = "/checkout/success";
+       handlePaystackPayment();
     }
   };
 
@@ -46,15 +166,15 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
       {/* Progress Stepper */}
       <div className="flex items-center justify-between mb-8 md:mb-12 relative px-2">
         <div className="absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2 z-0" />
-        {["subscriber", "recipients", "preferences", "payment"].map((s, i) => (
+        {(isSubscriber ? ["subscriber", "recipients", "preferences"] : ["subscriber", "recipients", "preferences", "payment"]).map((s, i, arr) => (
           <div 
             key={s} 
             className={`relative z-10 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-black text-xs md:text-sm transition-all border-2 ${
               step === s ? 'gradient-bg border-transparent text-white scale-110 shadow-lg shadow-primary/20' : 
-              i < ["subscriber", "recipients", "preferences", "payment"].indexOf(step) ? 'bg-primary border-primary text-white' : 'bg-muted border-border text-muted-foreground'
+              i < arr.indexOf(step) ? 'bg-primary border-primary text-white' : 'bg-muted border-border text-muted-foreground'
             }`}
           >
-            {i < ["subscriber", "recipients", "preferences", "payment"].indexOf(step) ? <Check size={14} className="md:w-[18px] md:h-[18px]" /> : i + 1}
+            {i < arr.indexOf(step) ? <Check size={14} className="md:w-[18px] md:h-[18px]" /> : i + 1}
             
             {/* Step Label - Mobile Only (Hidden for space, but used for accessibility) */}
             <span className="sr-only">{s}</span>
@@ -81,21 +201,39 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                 <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Full Name</label>
                 <div className="relative group">
                   <User size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                  <input type="text" className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold" placeholder="Hero Name" />
+                  <input 
+                    type="text" 
+                    value={clientData.name}
+                    onChange={(e) => setClientData({ ...clientData, name: e.target.value })}
+                    className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold" 
+                    placeholder="Hero Name" 
+                  />
                 </div>
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Email Address</label>
                 <div className="relative group">
                   <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                  <input type="email" className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold" placeholder="hero@buzzthrills.com" />
+                  <input 
+                    type="email" 
+                    value={clientData.email}
+                    onChange={(e) => setClientData({ ...clientData, email: e.target.value })}
+                    className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold" 
+                    placeholder="hero@buzzthrills.com" 
+                  />
                 </div>
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Phone Number</label>
                 <div className="relative group">
                   <Phone size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                  <input type="tel" className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold" placeholder="+234 ..." />
+                  <input 
+                    type="tel" 
+                    value={clientData.phone}
+                    onChange={(e) => setClientData({ ...clientData, phone: e.target.value })}
+                    className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold" 
+                    placeholder="+234 ..." 
+                  />
                 </div>
               </div>
               <div className="space-y-3">
@@ -264,7 +402,7 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
                <div className="space-y-6 relative z-10">
                   <div className="flex justify-between items-center group">
                     <span className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">Service Package ({planType})</span>
-                    <span className="font-black text-lg">₦{basePrice.toLocaleString()}</span>
+                    <span className="font-black text-lg">₦{planBasePrice.toLocaleString()}</span>
                   </div>
                   {isExpress && (
                     <div className="flex justify-between items-center text-primary">
@@ -294,12 +432,23 @@ export default function BookingForm({ planType = "one-off" }: { planType?: strin
           </button>
           <button 
             onClick={nextStep}
-            className="flex items-center gap-2 sm:gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-[32px] gradient-bg text-white font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group"
+            disabled={loading}
+            className="flex items-center gap-2 sm:gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-[32px] gradient-bg text-white font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group disabled:opacity-50"
           >
-            <span className="group-hover:mr-2 transition-all">{step === "payment" ? "Complete Payment" : "Next Step"}</span>
-            {step !== "payment" ? <ChevronRight size={18} className="sm:w-5 sm:h-5" /> : <Zap size={18} className="sm:w-5 sm:h-5 animate-pulse" />}
+            <span className="group-hover:mr-2 transition-all">
+              {loading ? "Processing..." : step === "payment" ? "Complete Payment" : isSubscriber && step === "preferences" ? "Confirm Surprise ✨" : "Next Step"}
+            </span>
+            {loading ? <Loader2 className="animate-spin" size={16} /> : (step !== "payment" && !(isSubscriber && step === "preferences") ? <ChevronRight size={18} className="sm:w-5 sm:h-5" /> : <Zap size={18} className="sm:w-5 sm:h-5 animate-pulse" />)}
           </button>
       </div>
     </div>
+  );
+}
+
+export default function BookingForm(props: { planType?: string }) {
+  return (
+    <Suspense fallback={<div className="p-12 text-center font-black animate-pulse uppercase tracking-widest text-primary">Initializing Gear...</div>}>
+      <BookingContent {...props} />
+    </Suspense>
   );
 }

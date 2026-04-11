@@ -21,7 +21,7 @@ export async function GET() {
       throw new Error("Admin client initialization failure");
     }
 
-    // 1. Fetch Analytics View
+    // 1. Fetch Analytics View (Fallback/Existing)
     const { data: analytics, error: analyticsError } = await supabaseAdmin
       .from("analytics_summary")
       .select("*")
@@ -29,7 +29,29 @@ export async function GET() {
 
     if (analyticsError) console.error("Analytics Fetch Failure:", analyticsError);
 
-    // 2. Fetch Recent Engagements (Calls)
+    // 2. Fetch Real-time Client Count
+    const { count: totalUsers } = await supabaseAdmin
+      .from("profiles")
+      .select("*", { count: "exact", head: true });
+
+    // 3. Fetch Geographic Distribution
+    const { data: locations, error: geoError } = await supabaseAdmin
+      .from("profiles")
+      .select("location");
+    
+    // Process locations into a summary
+    const locationCounts: Record<string, number> = {};
+    (locations || []).forEach(p => {
+      const loc = p.location || "Unknown Location";
+      locationCounts[loc] = (locationCounts[loc] || 0) + 1;
+    });
+
+    const geoSummary = Object.entries(locationCounts)
+      .map(([label, count]) => ({ label, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 4); // Top 4 locations
+
+    // 4. Fetch Recent Engagements (Calls)
     const { data: calls, error: callsError } = await supabaseAdmin
       .from("calls")
       .select("*")
@@ -38,7 +60,7 @@ export async function GET() {
 
     if (callsError) console.error("Calls Fetch Failure:", callsError);
 
-    // 3. Pending Engagement Count
+    // 5. Pending Engagement Count
     const { count: pendingCount, error: pendingError } = await supabaseAdmin
       .from("calls")
       .select("*", { count: "exact", head: true })
@@ -47,7 +69,11 @@ export async function GET() {
     if (pendingError) console.error("Pending Count Failure:", pendingError);
 
     return NextResponse.json({
-      analytics: analytics || {},
+      analytics: {
+        ...analytics,
+        total_users: totalUsers || 0,
+        geoSummary
+      },
       calls: calls || [],
       pendingCount: pendingCount || 0,
     });

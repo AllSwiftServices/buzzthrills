@@ -33,15 +33,10 @@ export default function RootLayout({
                 registrations[i].unregister();
               }
             });
-            if (window.caches) {
-              caches.keys().then(function(names) {
-                for (var i = 0; i < names.length; i++) caches.delete(names[i]);
-              });
-            }
-          }
         `}</Script>
       </head>
       <body className="antialiased bg-background text-foreground transition-colors duration-500">
+        <Script src="https://js.paystack.co/v1/inline.js" strategy="lazyOnload" />
         <AuthProvider>
           <ThemeProvider
             attribute="class"

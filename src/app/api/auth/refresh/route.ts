@@ -14,7 +14,10 @@ export async function POST(req: Request) {
     }
 
     if (!refreshToken) {
-      return NextResponse.json({ error: "No refresh token" }, { status: 401 });
+      const res = NextResponse.json({ error: "No refresh token" }, { status: 401 });
+      res.cookies.delete("access_token");
+      res.cookies.delete("refresh_token");
+      return res;
     }
 
     // 1. Find Session
@@ -26,8 +29,9 @@ export async function POST(req: Request) {
       .single();
 
     if (sessionError || !session) {
-       // Clear invalid cookie
+       // Clear invalid cookies
        const res = NextResponse.json({ error: "Invalid session" }, { status: 401 });
+       res.cookies.delete("access_token");
        res.cookies.delete("refresh_token");
        return res;
     }
