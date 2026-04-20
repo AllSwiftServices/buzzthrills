@@ -19,31 +19,46 @@ export async function GET(request: Request) {
 
     const data = await response.json();
 
-    if (data.status && data.data.status === 'success') {
-      const metadata = data.data.metadata;
-      const { plan, cycle, user_id } = metadata || {};
+      if (data.status && data.data.status === 'success') {
+        const metadata = data.data.metadata;
+        const { plan, cycle, user_id } = metadata || {};
+        const customerEmail = data.data.customer.email;
+        const amount = (data.data.amount / 100).toLocaleString();
 
-      if (plan && user_id && typeof window === 'undefined') {
-        const { supabaseAdmin } = await import('@/lib/supabase');
-        
-        if (supabaseAdmin) {
-          const daysToAdd = cycle === 'annual' ? 365 : 30;
-          const nextBillingDate = new Date();
-          nextBillingDate.setDate(nextBillingDate.getDate() + daysToAdd);
+        if (plan && user_id && typeof window === 'undefined') {
+          const { supabaseAdmin } = await import('@/lib/supabase');
+          
+          if (supabaseAdmin) {
+            // ... subscription logic ...
+            const daysToAdd = cycle === 'annual' ? 365 : 30;
+            const nextBillingDate = new Date();
+            nextBillingDate.setDate(nextBillingDate.getDate() + daysToAdd);
 
-          await supabaseAdmin
-            .from('subscriptions')
-            .upsert({
-              user_id: user_id,
-              plan: plan,
-              status: 'active',
-              next_billing_date: nextBillingDate.toISOString(),
-            }, { onConflict: 'user_id' });
+            await supabaseAdmin
+              .from('subscriptions')
+              .upsert({
+                user_id: user_id,
+                plan: plan,
+                status: 'active',
+                next_billing_date: nextBillingDate.toISOString(),
+              }, { onConflict: 'user_id' });
+          }
         }
-      }
 
-      return NextResponse.json({ success: true, data: data.data });
-    }
+        // Trigger Confirmation Email via Brevo
+        try {
+          const { sendBookingConfirmation } = await import('@/lib/email');
+          await sendBookingConfirmation(customerEmail, {
+            serviceName: plan || "BuzzThrills Service",
+            price: amount
+          });
+        } catch (emailError) {
+          console.error("Post-payment email failed:", emailError);
+          // Don't fail the verification if email fails
+        }
+
+        return NextResponse.json({ success: true, data: data.data });
+      }
 
     return NextResponse.json({ success: false, message: data.message || 'Verification failed' }, { status: 400 });
   } catch (error) {
