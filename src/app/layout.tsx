@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Outfit } from "next/font/google";
+import { Outfit, Lora } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import Script from "next/script";
@@ -12,6 +12,14 @@ const outfit = Outfit({
   display: "swap",
 });
 
+const lora = Lora({
+  subsets: ["latin"],
+  variable: "--font-lora",
+  weight: ["400", "500", "600", "700"],
+  display: "swap",
+});
+
+
 export const metadata: Metadata = {
   title: "BuzzThrills Prime — Never Forget Any Special Day Again",
   description: "Surprise calls, emotional messages, and corporate engagement. Never forget any special moment again.",
@@ -23,8 +31,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${outfit.variable} scroll-smooth`} suppressHydrationWarning>
-      <head>
+    <html lang="en" className={`${outfit.variable} ${lora.variable} scroll-smooth`} suppressHydrationWarning>
+      <body className="antialiased bg-background text-foreground transition-colors duration-500">
         {/* Unregister any stale service workers — prevents workbox from blocking navigation */}
         <Script id="sw-unregister" strategy="beforeInteractive">{`
           if ('serviceWorker' in navigator) {
@@ -33,9 +41,8 @@ export default function RootLayout({
                 registrations[i].unregister();
               }
             });
+          }
         `}</Script>
-      </head>
-      <body className="antialiased bg-background text-foreground transition-colors duration-500">
         <Script src="https://js.paystack.co/v1/inline.js" strategy="lazyOnload" />
         <AuthProvider>
           <ThemeProvider

@@ -1,16 +1,14 @@
-import { Phone, Check, Volume2, Star } from "lucide-react";
+"use client";
+
+import { Phone, Check, Volume2, Star, ArrowRight, Heart, Sparkles, MessageCircle, Sun } from "lucide-react";
 import Header from "@/components/Header";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import BookingSection from "@/components/BookingSection";
+import WallOfJoy from "@/components/WallOfJoy";
+import TestimonialCarousel from "@/components/TestimonialCarousel";
 
 export default function Home() {
-  const plans = [
-    { name: "Buzz Lite", price: "15,000", calls: "12", features: ["Custom messages", "Priority booking", "Thoughtful automation"], recommended: false },
-    { name: "Buzz Plus", price: "25,000", calls: "20", features: ["Affirmations & Apologies", "Faster processing", "Custom messages"], recommended: true },
-    { name: "Buzz Orbit", price: "50,000", calls: "30+", features: ["Voice notes", "Preferred caller", "VIP support", "Bonus calls"], recommended: false }
-  ];
-
   return (
     <main className="min-h-screen bg-background text-foreground selection:bg-primary/30 antialiased overflow-x-hidden transition-colors duration-300">
       <Header />
@@ -22,89 +20,75 @@ export default function Home() {
 
         <div className="max-w-6xl mx-auto flex flex-col items-center text-center relative z-10">
           <Reveal>
-            <div className="flex items-center gap-2 px-4 py-1.5 rounded-full glass border-primary/20 mb-8 text-sm font-semibold text-primary">
-              <Star size={14} className="fill-current" />
-              <span>BUZZTHRILLS PRIME — 1,250+ CUSTOMERS THRILLED</span>
+            <div className="flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+              <Sparkles size={14} className="fill-current" />
+              <span>HEARTFELT CONNECTIONS — 1,250+ FAMILIES CONNECTED</span>
             </div>
           </Reveal>
 
           <Reveal delay={0.1}>
-            <h1 className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 tracking-tight leading-[1.1]">
-              Never Forget Any <br className="hidden sm:block" />
-              <span className="gradient-text">Special Day</span> Again.
+            <h1 className="text-4xl sm:text-6xl md:text-8xl font-medium mb-8 tracking-tight font-serif leading-none">
+              Never Forget a <br className="hidden sm:block" />
+              <span className="gradient-text italic">Heartfelt Moment</span> Again.
             </h1>
           </Reveal>
 
           <Reveal delay={0.2}>
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mb-10 leading-relaxed">
-              You never forget, because we never let you. Experience the magic of surprise calls, emotional messages, and corporate connections.
+            <p className="text-lg md:text-2xl text-muted-foreground max-w-2xl mb-12 italic font-serif leading-relaxed">
+              We help you bridge the distance with the magic of surprise calls, genuine moments of connection, and timeless digital artifacts.
             </p>
           </Reveal>
 
           <Reveal delay={0.3}>
-            <div className="flex flex-col sm:flex-row gap-4">
-              <button className="px-8 py-4 rounded-2xl bg-foreground text-background font-bold text-lg hover:scale-105 active:scale-95 transition-all shadow-xl shadow-foreground/10">
-                Get Started Now
-              </button>
-              <Link href="#one-off" className="px-8 py-4 rounded-2xl glass font-bold text-lg hover:bg-foreground/5 transition-all border border-border flex items-center justify-center">
-                Book One-off Call
+            <div className="flex flex-col sm:flex-row gap-6">
+              <Link href="/book" className="px-12 py-6 rounded-3xl gradient-bg text-white font-bold text-xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3">
+                Send a Surprise
+                <ArrowRight size={24} />
+              </Link>
+              <Link href="/pricing" className="px-12 py-6 rounded-3xl glass font-bold text-xl hover:bg-foreground/5 transition-all border border-border flex items-center justify-center">
+                Explore 13+ Services
               </Link>
             </div>
           </Reveal>
         </div>
       </section>
 
-      {/* Subscriptions Section */}
-      <section id="plans" className="py-12 sm:py-24 px-6 relative z-10">
+      {/* Featured Services Section */}
+      <section className="py-24 px-6 relative z-10 bg-muted/20 border-y border-border">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-10 sm:mb-16">
-            <h2 className="text-3xl sm:text-4xl font-bold mb-4">Choose Your <span className="gradient-text">Buzz Plan</span></h2>
-            <p className="text-muted-foreground text-sm sm:text-base">Select a plan that keeps you connected with your loved ones.</p>
+          <div className="text-center mb-20 px-4">
+            <h2 className="text-4xl sm:text-6xl font-medium mb-6 font-serif italic tracking-tight">Nurturing <span className="gradient-text italic">Connections</span></h2>
+            <p className="text-muted-foreground text-lg font-medium max-w-xl mx-auto">From one-off celebrations to ongoing care, choose the perfect path to show you care.</p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {plans.map((plan, i) => (
-              <Reveal key={plan.name} delay={i * 0.1}>
-                <div className={`relative p-8 rounded-3xl glass border-border h-full flex flex-col ${plan.recommended ? 'ring-2 ring-primary ring-offset-4 ring-offset-background' : ''}`}>
-                  {plan.recommended && (
-                    <div className="absolute top-[-15px] left-1/2 -translate-x-1/2 px-4 py-1 gradient-bg rounded-full text-xs font-bold uppercase tracking-widest text-white shadow-lg">
-                      Recommended
-                    </div>
-                  )}
-                  <div className="mb-6 font-bold text-muted-foreground uppercase text-xs tracking-widest">
-                    {plan.name}
-                  </div>
-                  <div className="flex items-baseline gap-1 mb-6">
-                    <span className="text-4xl font-black">₦{plan.price}</span>
-                    <span className="text-muted-foreground text-sm">/month</span>
-                  </div>
-                  <div className="flex items-center gap-2 mb-8 p-3 rounded-2xl bg-foreground/5 border border-foreground/5">
-                    <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center">
-                      <Phone className="text-white" size={20} />
-                    </div>
-                    <div>
-                      <div className="font-bold text-sm">{plan.calls} Surprise Calls</div>
-                      <div className="text-xs text-muted-foreground">Monthly allocation</div>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+             {[
+               { title: "Celebratory", icon: <Star />, color: "bg-primary/10 text-primary", desc: "Birthdays, anniversaries, and milestones." },
+               { title: "Royal Check-up", icon: <Heart />, color: "bg-red-500/10 text-red-500", desc: "Monthly wellness calls for aged parents." },
+               { title: "Appreciatory", icon: <Sparkles />, color: "bg-amber-500/10 text-amber-500", desc: "Simply saying thank you to those who matter." },
+               { title: "Period Care", icon: <Sun />, color: "bg-pink-500/10 text-pink-500", desc: "Supportive calls during her monthly cycle." }
+             ].map((serv, i) => (
+               <Reveal key={serv.title} delay={i * 0.1}>
+                 <div className="p-10 rounded-[48px] glass border border-border h-full flex flex-col group hover:border-primary/20 transition-all duration-500 bg-background/40">
+                   <div className={`w-16 h-16 rounded-2xl ${serv.color} flex items-center justify-center mb-8 shadow-lg group-hover:scale-110 transition-transform`}>
+                      {serv.icon}
+                   </div>
+                   <h3 className="text-2xl font-bold mb-4 tracking-tight">{serv.title}</h3>
+                   <p className="text-muted-foreground text-sm font-medium leading-relaxed mb-8 flex-grow">{serv.desc}</p>
+                   <Link href={`/book?type=${serv.title.toLowerCase().replace(' ', '_')}`} className="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary hover:gap-3 transition-all">
+                      Choose Service
+                      <ArrowRight size={14} />
+                   </Link>
+                 </div>
+               </Reveal>
+             ))}
+          </div>
 
-                  <ul className="space-y-4 mb-10 flex-grow">
-                    {plan.features.map(feature => (
-                      <li key={feature} className="flex items-center gap-3 text-sm">
-                        <div className="w-5 h-5 rounded-full bg-primary/20 flex items-center justify-center flex-shrink-0">
-                          <Check size={12} className="text-primary" />
-                        </div>
-                        <span className="text-muted-foreground">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <button className={`w-full py-4 rounded-2xl font-bold transition-all ${plan.recommended ? 'gradient-bg text-white shadow-lg shadow-primary/20' : 'bg-foreground text-background hover:shadow-xl hover:scale-[1.02]'}`}>
-                    Subscribe Now
-                  </button>
-                </div>
-              </Reveal>
-            ))}
+          <div className="mt-16 text-center">
+             <Link href="/pricing" className="inline-flex items-center gap-3 px-10 py-5 rounded-3xl glass border-primary/20 text-primary font-black uppercase tracking-[0.2em] text-xs hover:scale-105 active:scale-95 transition-all">
+                View All 13 Services
+                <ArrowRight size={16} />
+             </Link>
           </div>
         </div>
       </section>
@@ -113,116 +97,124 @@ export default function Home() {
       <BookingSection />
 
       {/* Digital Letter Feature Teaser Section - Light background contrast */}
-      <section id="digital-letter" className="py-12 sm:py-24 px-6 bg-muted/30">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-10 sm:gap-16">
+      <section id="digital-letter" className="py-24 px-6 relative bg-background overflow-hidden border-t border-border">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%] bg-accent/5 blur-[120px] rounded-full pointer-events-none" />
+        
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-20">
           <div className="flex-1">
             <Reveal direction="left">
-              <div className="relative p-1 glass border-border rounded-[40px] aspect-[4/5] overflow-hidden group shadow-2xl">
+              <div className="relative p-2 glass border border-border rounded-[64px] aspect-[4/5] overflow-hidden group shadow-huge bg-background/40">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60 z-10" />
                 <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 text-center z-20">
-                  <div className="w-20 h-20 bg-foreground/10 backdrop-blur-xl rounded-full flex items-center justify-center mx-auto mb-6 border border-foreground/20 group-hover:bg-primary/20 transition-all cursor-pointer">
-                    <Volume2 className="text-white" size={32} />
+                  <div className="w-24 h-24 bg-white/10 backdrop-blur-2xl rounded-full flex items-center justify-center mx-auto mb-8 border border-white/20 group-hover:bg-primary/20 transition-all cursor-pointer shadow-huge">
+                    <Volume2 className="text-white" size={40} />
                   </div>
-                  <div className="text-sm font-bold tracking-widest uppercase text-white/60 mb-2">Digital Experience</div>
-                  <div className="text-3xl font-black text-white">Animated Scroll & <br />Voice Message</div>
+                  <div className="text-[10px] font-black tracking-[0.4em] uppercase text-white/80 mb-4">Digital Experience</div>
+                  <div className="text-4xl font-medium font-serif italic text-white leading-tight">Animated Scroll & <br />Voice Message</div>
                 </div>
-                <div className="w-full h-full gradient-bg opacity-20" />
+                <div className="w-full h-full gradient-bg opacity-10" />
               </div>
             </Reveal>
           </div>
           
           <div className="flex-1 text-center md:text-left">
             <Reveal direction="right">
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-accent/10 border border-accent/20 mb-6 text-xs font-bold text-accent uppercase tracking-widest">
-                Exclusive Product
+              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full bg-accent/10 border border-accent/20 mb-8 text-[10px] font-bold text-accent uppercase tracking-[0.4em]">
+                <Sparkles size={14} />
+                Exclusive Artifact
               </div>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black mb-6 tracking-tight leading-[1.1]">
-                The <span className="gradient-text">Digital Scroll</span> Letter.
+              <h2 className="text-4xl md:text-6xl font-medium mb-8 tracking-tight leading-none font-serif italic">
+                The <span className="gradient-text italic">Digital Scroll</span> Artifact.
               </h2>
-              <p className="text-xl text-muted-foreground mb-10 leading-relaxed">
-                Book a letter, and we'll arrange your words on a beautiful animated scroll. Include your own voice or let our professional hosts record it for you.
+              <p className="text-xl text-muted-foreground mb-12 leading-relaxed font-serif italic">
+                Write from the heart, and we&apos;ll arrange your words on a beautiful animated scroll. Include your own voice or let our professional narrators bring your message to life.
               </p>
               
-              <ul className="space-y-6 mb-10">
+              <ul className="space-y-6 mb-12">
                 {[
-                  "Generated custom QR code/link",
-                  "Optional professional voiceover",
-                  "Instant WhatsApp/Email delivery",
-                  "Beautiful premium scroll animation"
+                  "Generated custom QR code/link artifact",
+                  "Professional voiceover integration",
+                  "Instant delivery via WhatsApp/Email",
+                  "Permanent digital hosting for keepsakes"
                 ].map(item => (
-                  <li key={item} className="flex items-center gap-4 text-lg">
-                    <div className={`mt-1 sm:mt-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full flex items-center justify-center bg-primary/20 text-primary`}>
-                      <Check size={10} strokeWidth={4} />
+                  <li key={item} className="flex items-center gap-6 group">
+                    <div className="w-6 h-6 rounded-full flex items-center justify-center bg-primary/10 text-primary group-hover:scale-110 transition-transform">
+                      <Check size={12} strokeWidth={4} />
                     </div>
-                    <span className="text-foreground/80">{item}</span>
+                    <span className="text-foreground/80 font-medium italic font-serif">{item}</span>
                   </li>
                 ))}
               </ul>
 
-              <button className="px-10 py-5 rounded-3xl glass font-bold text-xl hover:bg-foreground/5 transition-all border border-border">
-                Create Your Letter
-              </button>
+              <Link href="/digital-letters" className="inline-flex px-12 py-6 rounded-3xl gradient-bg text-white font-bold text-xl hover:scale-105 active:scale-95 transition-all shadow-huge">
+                Create Your Artifact
+              </Link>
             </Reveal>
           </div>
         </div>
       </section>
 
+      <WallOfJoy />
+
       {/* Social Proof Stats */}
-      <section className="py-24 px-6 glass border-y border-border">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+      <section className="py-24 px-6 glass border-y border-border bg-background/50">
+        <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
           {[
             { value: "1,250+", label: "Calls Delivered" },
-            { value: "24k+", label: "Hearts Touched" },
-            { value: "98%", label: "Happy Recipients" },
-            { value: "24/7", label: "Always Buzzing" }
+            { value: "24.5k+", label: "Hearts Touched" },
+            { value: "98%", label: "Happy Families" },
+            { value: "24/7", label: "Professional Care" }
           ].map((stat, i) => (
             <Reveal key={stat.label} delay={i * 0.1}>
-              <div>
-                <div className="text-4xl lg:text-5xl font-black gradient-text mb-2">{stat.value}</div>
-                <div className="text-sm font-bold text-muted-foreground uppercase tracking-widest">{stat.label}</div>
+              <div className="relative">
+                <div className="text-5xl font-medium font-serif gradient-text mb-2 tracking-tighter italic">{stat.value}</div>
+                <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest italic">{stat.label}</div>
+                {i < 3 && <div className="hidden lg:block absolute top-1/2 right-[-24px] w-px h-10 bg-border -translate-y-1/2 opacity-50" />}
               </div>
             </Reveal>
           ))}
         </div>
       </section>
 
-      {/* Footer Teaser */}
-      <footer className="py-20 px-6 border-t border-foreground/5 bg-background">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-12">
+      {/* Footer */}
+      <footer className="py-24 px-6 border-t border-border bg-background relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16 relative z-10">
           <div className="max-w-sm">
-            <div className="flex items-center gap-2 mb-6 text-2xl font-black">
-              <div className="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center">
-                <Phone size={20} />
+            <div className="flex items-center gap-3 mb-8 text-3xl font-black italic tracking-tighter">
+              <div className="w-12 h-12 gradient-bg rounded-2xl flex items-center justify-center text-white shadow-lg">
+                <Phone size={24} />
               </div>
-              BUZZ<span className="gradient-text">THRILLS</span>
+              BUZZ<span className="gradient-text italic">THRILLS</span>
             </div>
-            <p className="text-muted-foreground leading-relaxed">
-              The number one surprise call and emotional message subscription service in Nigeria. We help you never forget any special moment.
+            <p className="text-muted-foreground leading-relaxed font-medium">
+              The number one surprise call and emotional message service in Nigeria. We help you stay connected with the people who matter most.
             </p>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-12 text-sm">
-            <div className="flex flex-col gap-4">
-              <div className="font-bold uppercase tracking-widest text-[10px] text-muted-foreground opacity-60">Services</div>
-              <Link href="/surprise-calls" className="hover:text-primary transition-colors">Surprise Calls</Link>
-              <Link href="/digital-letters" className="hover:text-primary transition-colors">Digital Letters</Link>
-              <Link href="/corporate" className="hover:text-primary transition-colors">Corporate</Link>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-16 text-sm">
+            <div className="flex flex-col gap-6">
+              <div className="font-black uppercase tracking-[0.2em] text-[10px] text-primary">Services</div>
+              <Link href="/surprise-calls" className="font-medium hover:text-primary transition-colors">Surprise Calls</Link>
+              <Link href="/digital-letters" className="font-medium hover:text-primary transition-colors">Digital Artifacts</Link>
+              <Link href="/corporate" className="font-medium hover:text-primary transition-colors">Business Solutions</Link>
             </div>
-            <div className="flex flex-col gap-4">
-              <div className="font-bold uppercase tracking-widest text-[10px] text-muted-foreground opacity-60">Company</div>
-              <Link href="/about" className="hover:text-primary transition-colors">About Us</Link>
-              <Link href="/support" className="hover:text-primary transition-colors">Contact</Link>
-              <Link href="/support" className="hover:text-primary transition-colors">FAQs</Link>
+            <div className="flex flex-col gap-6">
+              <div className="font-black uppercase tracking-[0.2em] text-[10px] text-primary">Company</div>
+              <Link href="/about" className="font-medium hover:text-primary transition-colors">Our Story</Link>
+              <Link href="/support" className="font-medium hover:text-primary transition-colors">Help Center</Link>
+              <Link href="/pricing" className="font-medium hover:text-primary transition-colors">Price List</Link>
             </div>
-            <div className="flex flex-col gap-4">
-              <div className="font-bold uppercase tracking-widest text-[10px] text-muted-foreground opacity-60">Legal</div>
-              <Link href="/privacy" className="hover:text-primary transition-colors">Privacy Policy</Link>
-              <Link href="/terms" className="hover:text-primary transition-colors">Terms of Service</Link>
+            <div className="flex flex-col gap-6">
+              <div className="font-black uppercase tracking-[0.2em] text-[10px] text-primary">Legal</div>
+              <Link href="/privacy" className="font-medium hover:text-primary transition-colors">Privacy</Link>
+              <Link href="/terms" className="font-medium hover:text-primary transition-colors">Terms</Link>
             </div>
           </div>
         </div>
-        <div className="max-w-6xl mx-auto mt-20 pt-8 border-t border-border text-center text-xs text-muted-foreground">
-          © 2026 BuzzThrills Prime. All rights reserved. Made with ❤️ in Nigeria.
+        <div className="max-w-6xl mx-auto mt-24 pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-6 text-[10px] font-bold text-muted-foreground uppercase tracking-widest italic text-center sm:text-left">
+          <span>© 2026 BuzzThrills Prime. All rights reserved.</span>
+          <span>Designed with ❤️ for genuine connection.</span>
         </div>
       </footer>
     </main>

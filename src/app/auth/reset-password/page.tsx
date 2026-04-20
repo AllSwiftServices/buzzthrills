@@ -47,7 +47,7 @@ export default function ResetPasswordPage() {
             </div>
             <h2 className="text-3xl font-black mb-2 text-center">Set New Password</h2>
             <p className="text-muted-foreground text-sm text-center">
-              Almost there! Type in your new superhero password.
+              Almost there! Type in your new secure password.
             </p>
           </div>
         </Reveal>

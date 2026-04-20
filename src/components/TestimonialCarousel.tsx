@@ -50,68 +50,68 @@ export default function TestimonialCarousel() {
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
-           <div className="max-w-xl">
-              <h2 className="text-[10px] font-black text-primary uppercase tracking-[0.4em] mb-4">Community Feedback</h2>
-              <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-6">
-                 What the <span className="gradient-text">Squad</span> says.
-              </h3>
-              <p className="text-muted-foreground font-bold text-lg tracking-tight">
-                 Real stories from real heroes who've experienced the high-fidelity thrill.
-              </p>
-           </div>
-           
-           <div className="flex gap-4">
-              <button onClick={prev} className="w-14 h-14 rounded-full glass border border-border flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90 shadow-xl">
-                 <ChevronLeft size={24} />
-              </button>
-              <button onClick={next} className="w-14 h-14 rounded-full glass border border-border flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90 shadow-xl">
-                 <ChevronRight size={24} />
-              </button>
-           </div>
-        </div>
+            <div className="max-w-xl">
+               <h2 className="text-[10px] font-bold text-primary uppercase tracking-[0.4em] mb-4">Voices of Love</h2>
+               <h3 className="text-4xl md:text-6xl font-medium tracking-tight leading-none mb-6 font-serif">
+                  Stories from our <span className="gradient-text italic">Community</span>.
+               </h3>
+               <p className="text-muted-foreground font-medium text-lg tracking-tight">
+                  Real moments from real people who have shared heartfelt surprises with those they love.
+               </p>
+            </div>
+            
+            <div className="flex gap-4">
+               <button onClick={prev} className="w-14 h-14 rounded-full glass border border-border flex items-center justify-center hover:bg-primary/5 transition-all active:scale-90 shadow-xl">
+                  <ChevronLeft size={24} />
+               </button>
+               <button onClick={next} className="w-14 h-14 rounded-full glass border border-border flex items-center justify-center hover:bg-primary/5 transition-all active:scale-90 shadow-xl">
+                  <ChevronRight size={24} />
+               </button>
+            </div>
+         </div>
 
-        <div className="relative h-[400px] md:h-[350px]">
-           <AnimatePresence mode="wait">
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, x: 50, scale: 0.95 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: -50, scale: 0.95 }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute inset-0"
-              >
-                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center h-full">
-                   {/* Feedback Content */}
-                   <div className="lg:col-span-12 p-8 md:p-12 rounded-[56px] glass border border-border shadow-huge relative flex flex-col justify-center overflow-hidden group">
-                      <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[60px] rounded-full -mr-32 -mt-32" />
-                      <Quote size={80} className="absolute top-12 left-12 text-foreground/3 scale-150 rotate-12" />
-                      
-                      <div className="relative z-10">
-                         <div className="flex items-center gap-2 mb-8">
-                            {[...Array(testimonials[index].rating)].map((_, i) => (
-                              <Star key={i} size={16} className="fill-primary text-primary" />
-                            ))}
-                            <div className="ml-4 px-4 py-1.5 rounded-full bg-primary/10 border border-primary/20 text-primary text-[10px] font-black uppercase tracking-widest italic">
-                               {testimonials[index].tag}
-                            </div>
-                         </div>
-                         
-                         <p className="text-2xl md:text-3xl font-black tracking-tight leading-snug mb-8 max-w-4xl italic">
-                            "{testimonials[index].content}"
-                         </p>
-                         
-                         <div className="flex items-center gap-4">
-                            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary p-0.5 shadow-xl">
-                               <div className="w-full h-full rounded-[14px] bg-background flex items-center justify-center font-black text-xl gradient-text">
-                                  {testimonials[index].name.charAt(0)}
-                               </div>
-                            </div>
-                            <div>
-                               <div className="font-black text-lg">{testimonials[index].name}</div>
-                               <div className="text-xs font-bold text-muted-foreground uppercase tracking-widest">{testimonials[index].role}</div>
-                            </div>
-                         </div>
-                      </div>
+         <div className="relative h-[400px] md:h-[350px]">
+            <AnimatePresence mode="wait">
+               <motion.div
+                 key={index}
+                 initial={{ opacity: 0, x: 50, scale: 0.95 }}
+                 animate={{ opacity: 1, x: 0, scale: 1 }}
+                 exit={{ opacity: 0, x: -50, scale: 0.95 }}
+                 transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                 className="absolute inset-0"
+               >
+                 <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center h-full">
+                    {/* Feedback Content */}
+                    <div className="lg:col-span-12 p-8 md:p-12 rounded-[56px] glass border border-border/50 shadow-huge relative flex flex-col justify-center overflow-hidden group">
+                       <div className="absolute top-0 right-0 w-64 h-64 bg-primary/3 blur-[60px] rounded-full -mr-32 -mt-32" />
+                       <Quote size={80} className="absolute top-12 left-12 text-foreground/3 scale-150 rotate-12" />
+                       
+                       <div className="relative z-10">
+                          <div className="flex items-center gap-2 mb-8">
+                             {[...Array(testimonials[index].rating)].map((_, i) => (
+                               <Star key={i} size={16} className="fill-primary text-primary" />
+                             ))}
+                             <div className="ml-4 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest italic">
+                                {testimonials[index].tag}
+                             </div>
+                          </div>
+                          
+                          <p className="text-2xl md:text-3xl font-medium tracking-tight leading-snug mb-8 max-w-4xl italic font-serif">
+                             "{testimonials[index].content}"
+                          </p>
+                          
+                          <div className="flex items-center gap-4">
+                             <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-primary to-secondary p-0.5 shadow-xl">
+                                <div className="w-full h-full rounded-[14px] bg-background flex items-center justify-center font-semibold text-xl gradient-text">
+                                   {testimonials[index].name.charAt(0)}
+                                </div>
+                             </div>
+                             <div>
+                                <div className="font-semibold text-lg">{testimonials[index].name}</div>
+                                <div className="text-xs font-medium text-muted-foreground uppercase tracking-widest">{testimonials[index].role}</div>
+                             </div>
+                          </div>
+                       </div>
 
                       <div className="absolute bottom-12 right-12 opacity-0 group-hover:opacity-100 transition-opacity">
                          <MessageCircle size={32} className="text-primary/20" />

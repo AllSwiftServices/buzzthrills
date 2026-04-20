@@ -2,66 +2,46 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import PricingCard from "@/components/PricingCard";
 import { motion } from "framer-motion";
-import { Zap, Shield, Star, Users, ArrowRight, Check, Minus } from "lucide-react";
+import { Sparkles, Star, Heart, ArrowRight, Check, MessageCircle, Crown, Info } from "lucide-react";
 import Link from "next/link";
-import { useState } from "react";
+import { CALL_SERVICES, ICON_MAP } from "@/lib/pricing_config";
+
+const categories = [
+  {
+    name: "Personal Connections",
+    description: "One-off surprises to brighten someone's day.",
+    services: [
+      CALL_SERVICES.celebratory,
+      CALL_SERVICES.appreciatory,
+      CALL_SERVICES.apology,
+      CALL_SERVICES.request,
+      CALL_SERVICES.encouragement,
+      CALL_SERVICES.shoot_your_shot,
+      CALL_SERVICES.period_care,
+      CALL_SERVICES.silent_vent
+    ]
+  },
+  {
+    name: "Ongoing Care",
+    description: "Subscription-based services for consistent connection.",
+    services: [
+      CALL_SERVICES.royal_checkup,
+      CALL_SERVICES.self_love,
+      CALL_SERVICES.lullaby
+    ]
+  },
+  {
+    name: "Specialized & Business",
+    description: "Premium media and corporate solutions.",
+    services: [
+      CALL_SERVICES.video_shoutout,
+      CALL_SERVICES.company_calls
+    ]
+  }
+];
 
 export default function PricingPage() {
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
-
-  const plans = [
-    {
-      id: "lite",
-      name: "Lite",
-      price: billingCycle === 'monthly' ? "15,000" : "14,250",
-      description: "Ideal for individuals sending their first surprise.",
-      features: [
-        "5 Surprise Calls / month",
-        "Unlimited Digital Letters",
-        "Standard Delivery (24-48h)",
-        "Morning/Afternoon Slots",
-        "Email Support"
-      ],
-      icon: <Star size={32} />,
-      gradient: "from-blue-500/20 via-cyan-500/10 to-transparent"
-    },
-    {
-      id: "plus",
-      name: "Plus",
-      price: billingCycle === 'monthly' ? "45,000" : "42,750",
-      description: "The standard choice for personal celebrations and small groups.",
-      features: [
-        "15 Surprise Calls / month",
-        "Holographic Digital Letters",
-        "Express Delivery (Under 12h)",
-        "All Time Slots (Inc. Night)",
-        "Priority Support Channel",
-        "2 Free Custom Deliveries"
-      ],
-      isPopular: true,
-      icon: <Zap size={32} />,
-      gradient: "from-primary/30 via-secondary/10 to-transparent"
-    },
-    {
-      id: "orbit",
-      name: "Orbit",
-      price: billingCycle === 'monthly' ? "120,000" : "114,000",
-      description: "Unlimited access for high-volume personal or business requirements.",
-      features: [
-        "Unlimited Surprise Calls",
-        "Video Digital Letters",
-        "Bypass All Scheduling Restrictions",
-        "Dedicated Account Support Agent",
-        "Custom Recording Studio Access",
-        "Exclusive Merch Early Access"
-      ],
-      icon: <Shield size={32} />,
-      gradient: "from-purple-500/30 via-pink-500/10 to-transparent"
-    }
-  ];
-
   return (
     <main className="min-h-screen bg-background relative overflow-hidden">
       <Header />
@@ -75,59 +55,88 @@ export default function PricingPage() {
       <section className="pt-24 sm:pt-32 md:pt-40 pb-12 sm:pb-24 px-4 relative z-10">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-16 px-4">
+          <div className="text-center mb-24 px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-black uppercase tracking-[0.4em] mb-8"
+              className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold uppercase tracking-[0.4em] mb-8"
             >
-              <Zap size={14} className="fill-current" />
-              Service Options
+              <Sparkles size={14} className="fill-current" />
+              Service Catalog & Pricing
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-6 sm:mb-8 tracking-tighter italic uppercase leading-none"
+              className="text-4xl sm:text-6xl md:text-8xl font-medium mb-8 tracking-tight font-serif leading-none"
             >
-              Choose Your <span className="gradient-text italic">Plan</span>
+              Transparent <span className="gradient-text italic">Pricing</span>
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2 }}
-              className="text-muted-foreground text-base sm:text-lg md:text-xl font-bold max-w-2xl mx-auto tracking-tight leading-relaxed mb-8 sm:mb-12"
+              className="text-muted-foreground text-lg sm:text-xl font-medium max-w-2xl mx-auto tracking-tight leading-relaxed"
             >
-              Choose the service tier that matches your requirements. From personal celebrations to corporate gifting, we've optimized your experience.
+              No hidden fees. No complicated bundles. Just heartfelt connections delivered with professional care. Choose the service that fits your story.
             </motion.p>
-
-            {/* Billing Toggle */}
-            <motion.div 
-              initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.3 }}
-              className="flex items-center justify-center gap-4 sm:gap-6 mb-8 sm:mb-16"
-            >
-              <span className={`text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'monthly' ? 'text-foreground' : 'text-foreground/40'}`}>Monthly</span>
-              <button 
-                onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
-                className="w-14 sm:w-16 h-7 sm:h-8 rounded-full glass border border-border p-1 relative group cursor-pointer transition-all hover:border-primary/50"
-              >
-                <div className={`w-5 h-5 sm:w-6 sm:h-6 rounded-full gradient-bg transition-all duration-300 shadow-xl ${billingCycle === 'annual' ? 'translate-x-7 sm:translate-x-8' : 'translate-x-0'}`} />
-              </button>
-              <div className="flex items-center gap-2 sm:gap-3">
-                 <span className={`text-[10px] sm:text-xs font-black uppercase tracking-widest transition-colors ${billingCycle === 'annual' ? 'text-foreground' : 'text-foreground/40'}`}>Annual <span className="hidden xs:inline">Billing</span></span>
-                 <div className="px-1.5 py-0.5 sm:px-2 sm:py-1 bg-green-500/10 text-green-500 border border-green-500/20 text-[8px] sm:text-[9px] font-black uppercase tracking-widest rounded-md animate-bounce">
-                    Save 5%
-                 </div>
-              </div>
-            </motion.div>
           </div>
 
-          {/* Pricing Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 px-4 items-stretch">
-            {plans.map((plan, i) => (
-              <PricingCard key={plan.id} {...plan} cycle={billingCycle} delay={0.4 + (i * 0.1)} />
+          {/* Pricing Categories */}
+          <div className="space-y-32">
+            {categories.map((cat, catIdx) => (
+              <div key={cat.name} className="relative">
+                <div className="mb-12">
+                   <h2 className="text-3xl sm:text-5xl font-medium font-serif italic mb-4">{cat.name}</h2>
+                   <p className="text-muted-foreground font-medium">{cat.description}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {cat.services.map((service, i) => (
+                    <motion.div
+                      key={service.id}
+                      initial={{ opacity: 0, y: 30 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: i * 0.1 }}
+                      className="glass border border-border rounded-[48px] p-8 flex flex-col h-full group hover:border-primary/30 transition-all duration-500 hover:shadow-huge"
+                    >
+                      <div className="flex justify-between items-start mb-8">
+                         <div className="w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500">
+                             {(() => { const Icon = ICON_MAP[service.icon] || Star; return <Icon size={24} />; })()}
+                         </div>
+                         <div className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
+                            {service.basePrice > 0 ? `₦${service.basePrice.toLocaleString()}` : "Contract"}
+                         </div>
+                      </div>
+
+                      <h3 className="text-2xl font-bold mb-4 tracking-tight">{service.name}</h3>
+                      <p className="text-muted-foreground text-sm font-medium leading-relaxed mb-8 flex-grow">
+                        {service.description}
+                      </p>
+
+                      <div className="space-y-4 mb-8">
+                         {service.tiers.map(tier => (
+                            <div key={tier.variant} className="flex justify-between items-center text-xs font-bold border-b border-border/50 pb-3 last:border-0">
+                               <span className="text-foreground/60 uppercase tracking-widest">{tier.label}</span>
+                               <span className={tier.price === service.basePrice ? "text-primary" : "text-foreground"}>
+                                  {tier.price > 0 ? `₦${tier.price.toLocaleString()}` : "Inquire"}
+                               </span>
+                            </div>
+                         ))}
+                      </div>
+
+                      <Link 
+                        href={`/book?type=${service.id}`}
+                        className="w-full py-5 gradient-bg rounded-2xl text-white font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 group-hover:scale-[1.02] active:scale-95 transition-all"
+                      >
+                        Book Service
+                        <ArrowRight size={16} />
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+              </div>
             ))}
           </div>
 
@@ -136,43 +145,41 @@ export default function PricingPage() {
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="p-8 sm:p-12 md:p-16 rounded-[48px] sm:rounded-[64px] glass border border-border shadow-huge bg-background/40 flex flex-col lg:flex-row items-center justify-between gap-12 mb-16 sm:mb-24 relative overflow-hidden group"
+            className="mt-32 p-8 sm:p-12 md:p-16 rounded-[48px] sm:rounded-[64px] glass border border-border shadow-huge bg-background/40 flex flex-col lg:flex-row items-center justify-between gap-12 mb-16 sm:mb-24 relative overflow-hidden group"
           >
              <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none group-hover:scale-110 transition-transform duration-[2s]" />
              
              <div className="relative z-10 text-center lg:text-left">
-                <div className="w-16 h-16 rounded-3xl bg-foreground/5 flex items-center justify-center mx-auto lg:mx-0 mb-8 text-primary shadow-xl">
-                   <Users size={32} />
-                </div>
-                <h2 className="text-4xl md:text-5xl font-black mb-4 tracking-tighter uppercase italic leading-none">Buzz <span className="gradient-text italic">Corporate</span></h2>
-                <p className="text-muted-foreground font-bold text-lg max-w-xl tracking-tight leading-relaxed uppercase text-[10px] tracking-widest">Bulk employee birthdays, corporate rewards, and custom company branding. Designed for professional high-fidelity engagement.</p>
+                 <div className="w-16 h-16 rounded-3xl bg-foreground/5 flex items-center justify-center mx-auto lg:mx-0 mb-8 text-primary shadow-xl">
+                    <Heart size={32} />
+                 </div>
+                 <h2 className="text-4xl md:text-5xl font-medium mb-4 tracking-tight font-serif italic text-primary">Corporate <span className="gradient-text italic">Connections</span></h2>
+                 <p className="text-muted-foreground font-medium text-lg max-w-xl tracking-tight leading-relaxed">Meaningful connection at scale. Celebrate your employees and partners with custom heartfelt experiences that reflect your brand&apos;s human side.</p>
              </div>
 
              <div className="relative z-10 w-full lg:w-auto">
-                <button className="w-full lg:w-auto px-12 py-6 bg-foreground text-background font-black rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3 uppercase text-sm tracking-widest italic">
-                   Contact Sales
-                   <ArrowRight size={20} />
-                </button>
+                 <Link href="/corporate" className="w-full lg:w-auto px-12 py-6 bg-foreground text-background font-semibold rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3 text-sm tracking-widest">
+                    Create a Consultation
+                    <ArrowRight size={20} />
+                 </Link>
              </div>
           </motion.div>
 
-          {/* FAQ Section Placeholder */}
-          <div className="max-w-4xl mx-auto text-center">
-             <h3 className="text-2xl font-black mb-12 italic uppercase tracking-tighter">Frequent <span className="gradient-text">Questions</span></h3>
-             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-                {[
-                  { q: "Can I upgrade mid-billing cycle?", a: "Yes, clients can upgrade their service plan anytime. The new perks manifest instantly." },
-                  { q: "What is Express Delivery?", a: "Orders placed with Express are prioritized by our operations team for priority delivery." },
-                  { q: "How are calls scheduled?", a: "You select a delivery window (Morning, Afternoon, Evening) and our agents coordinate the communication." },
-                  { q: "What is the Cancellation policy?", a: "Unused calls roll over if cancelled 48h before the scheduled window." }
-                ].map((item, i) => (
-                  <div key={i} className="p-6 sm:p-8 rounded-[32px] bg-foreground/5 border border-border hover:border-primary/20 transition-all">
-                    <div className="font-black text-foreground mb-3 text-sm uppercase tracking-wide italic">{item.q}</div>
-                    <p className="text-muted-foreground font-bold text-sm tracking-tight leading-relaxed">{item.a}</p>
-                  </div>
-                ))}
-             </div>
+          {/* Guarantee / Info */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-24">
+             {[
+               { title: "No Surprises", desc: "The price you see is the price you pay. All taxes and platform fees included.", icon: <Info size={24} /> },
+               { title: "Flexible Rescheduling", desc: "Life happens. Reschedule any one-off call with 24h notice at no cost.", icon: <Check size={24} /> },
+               { title: "Safe & Secure", desc: "All transactions are processed through Paystack, ensuring 100% data security.", icon: <Crown size={24} /> }
+             ].map((item, i) => (
+                <div key={i} className="p-10 rounded-[40px] glass border border-border flex flex-col items-center text-center">
+                   <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6">{item.icon}</div>
+                   <h4 className="font-bold text-lg mb-2">{item.title}</h4>
+                   <p className="text-muted-foreground text-sm font-medium leading-relaxed">{item.desc}</p>
+                </div>
+             ))}
           </div>
+
         </div>
       </section>
 

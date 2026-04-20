@@ -21,7 +21,7 @@ export default function PrivacyPage() {
             <div className="prose prose-sm md:prose-base dark:prose-invert max-w-none space-y-8">
               <section>
                 <h2 className="text-xl font-bold mb-4">1. Information We Collect</h2>
-                <p>We collect information you provide directly to us, such as when you create an account, book a service, or communicate with our Superheroes. This may include your name, email, phone number, and the contact details of your gift recipients.</p>
+                <p>We collect information you provide directly to us, such as when you create an account, book a service, or communicate with our professional team. This may include your name, email, phone number, and the contact details of your gift recipients.</p>
               </section>
 
               <section>
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
 
               <section className="p-8 rounded-3xl glass border border-primary/20 bg-primary/5">
                 <h2 className="text-xl font-bold mb-4 text-primary">5. Contact Us</h2>
-                <p className="mb-0">If you have any questions about this Privacy Policy, please contact our Superhero Support Team at hello@buzzthrillsprime.com.</p>
+                <p className="mb-0">If you have any questions about this Privacy Policy, please contact our Support Team at hello@buzzthrillsprime.com.</p>
               </section>
             </div>
           </Reveal>

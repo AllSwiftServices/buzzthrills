@@ -26,17 +26,17 @@ export default function TermsPage() {
 
               <section>
                 <h2 className="text-xl font-bold mb-4">2. Service Description</h2>
-                <p>BuzzThrills provides a platform for booking surprise phone calls, digital letters, and other personalized experiences. We act as a service provider using professional hosts and voice actors to deliver these surprises.</p>
+                <p>BuzzThrills provides a platform for booking surprise phone calls, digital letters, and other personalized experiences. We act as a service provider using professional agents to deliver these surprises.</p>
               </section>
 
               <section>
                 <h2 className="text-xl font-bold mb-4">3. User Conduct</h2>
-                <p>You agree not to use our services for any unlawful purpose or to solicit the performance of any illegal activity. Prank calls must be conducted in good faith and must not constitute harassment or intimidation of any individual.</p>
+                <p>You agree not to use our services for any unlawful purpose or to solicit the performance of any illegal activity. Prank calls must be conducted in good faith and must not constitute harassment or intimidation of any individual. If you have concerns, please contact our Support Team.</p>
               </section>
 
               <section>
                 <h2 className="text-xl font-bold mb-4">4. Payment & Refunds</h2>
-                <p>All payments are processed securely through our partners. We offer full refunds if our Superheroes are unable to initiate a call within the specified time slot for reasons within our control.</p>
+                <p>All payments are processed securely through our partners. We offer full refunds if our professional agents are unable to initiate a call within the specified time slot for reasons within our control.</p>
               </section>
 
               <section className="p-8 rounded-3xl glass border border-secondary/20 bg-secondary/5">

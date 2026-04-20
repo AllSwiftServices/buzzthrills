@@ -7,8 +7,6 @@ import { useSearchParams } from "next/navigation";
 import { Suspense } from "react";
 
 function BookingContent() {
-  const searchParams = useSearchParams();
-  const plan = searchParams.get("plan") || "one-off";
 
   return (
     <main className="min-h-screen bg-background text-foreground pt-32 pb-20 px-6 transition-colors duration-500">
@@ -36,7 +34,7 @@ function BookingContent() {
           transition={{ delay: 0.2 }}
           className="text-muted-foreground max-w-2xl mx-auto"
         >
-          Complete the form below to schedule your surprise calls. Our team of Superheroes will take it from here!
+          Complete the form below to schedule your surprise calls. Our team of professionals will take it from here!
         </motion.p>
       </div>
 
@@ -45,7 +43,7 @@ function BookingContent() {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.3 }}
       >
-        <BookingForm planType={plan} />
+        <BookingForm />
       </motion.div>
 
       <div className="mt-20 text-center opacity-40 text-xs flex flex-col items-center gap-4">

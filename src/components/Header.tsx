@@ -32,12 +32,13 @@ export default function Header() {
   }, [isOpen]);
 
   const navLinks = [
-    { href: "/about", label: "About Us" },
-    { href: "/pricing", label: "Pricing Plans" },
+    { href: "/about", label: "Our Story" },
+    { href: "/pricing", label: "Pricing & Services" },
     { href: "/surprise-calls", label: "Surprise Calls" },
-    { href: "/digital-letters", label: "Digital Letters" },
-    { href: "/book", label: "Book Now" },
+    { href: "/digital-letters", label: "Digital Artifacts" },
+    { href: "/book", label: "Send a Surprise" },
   ];
+
 
   const menuVariants = {
     closed: { opacity: 0, scale: 0.95 },
@@ -71,14 +72,15 @@ export default function Header() {
                 : 'bg-white border-border mx-2 md:mx-4 mt-2 md:mt-4 rounded-2xl border shadow-xl')
         }`}
       >
-        <Link href="/" className="flex items-center gap-2 relative z-60">
-          <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center">
-            <Phone size={18} className="text-white" />
+        <Link href="/" className="flex items-center gap-2 relative z-60 group">
+          <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
+            <Phone size={16} className="text-white" />
           </div>
-          <span className="text-xl font-extrabold tracking-tight">
-            BUZZ<span className="gradient-text">THRILLS</span>
+          <span className="text-xl font-semibold tracking-tight font-serif">
+            Buzz<span className="gradient-text">Thrills</span>
           </span>
         </Link>
+
 
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
@@ -117,13 +119,14 @@ export default function Header() {
                 Login
               </Link>
             )}
-            <Link 
-              href={user ? "/profile" : "/auth"}
-              className="px-5 py-2 rounded-xl gradient-bg text-white font-bold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
-            >
-              {user ? <ShoppingBag size={16} /> : null}
-              {user ? "My Dashboard" : "Get Started"}
-            </Link>
+              <Link 
+                href={user ? "/profile" : "/auth"}
+                className="px-5 py-2 rounded-xl gradient-bg text-white font-semibold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
+              >
+                {user ? <ShoppingBag size={16} /> : null}
+                {user ? "My Dashboard" : "Start Sharing"}
+              </Link>
+
           </div>
 
           {/* Mobile Menu Button */}
@@ -201,10 +204,11 @@ export default function Header() {
                     <Link 
                       href={user ? "/profile" : "/auth"}
                       onClick={() => setIsOpen(false)}
-                      className="w-full max-w-xs py-5 rounded-3xl gradient-bg text-white font-black text-2xl text-center shadow-2xl shadow-primary/30 active:scale-95 transition-all"
+                      className="w-full max-w-xs py-5 rounded-3xl gradient-bg text-white font-semibold text-2xl text-center shadow-2xl shadow-primary/30 active:scale-95 transition-all"
                     >
-                      {user ? "Dashboard" : "Get Started Now"}
+                      {user ? "My Dashboard" : "Start Sharing Joy"}
                     </Link>
+
                   </div>
                 </motion.div>
               </div>

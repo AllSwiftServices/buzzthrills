@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, ShieldCheck, ArrowRight, Zap, CheckCircle2, Loader2, Sparkles, X } from "lucide-react";
+import { Mail, ShieldCheck, ArrowRight, Heart, CheckCircle2, Loader2, Sparkles, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 
@@ -26,12 +26,11 @@ export default function NewsletterSignup() {
       .from('newsletter_subscribers')
       .insert([{ email, is_active: true }]);
 
-    if (error && error.code !== '23505') { // Ignore unique constraint errors
+    if (error && error.code !== '23505') { 
        setStatus("error");
     } else {
        setStatus("success");
-       // Track conversion logic here (e.g., Pixel/GA4)
-       console.log("Superhero joined the squad!", { email, source: "homepage_popup" });
+       console.log("New community member connected!", { email, source: "homepage_popup" });
        setTimeout(() => setIsVisible(false), 3000);
     }
   };
@@ -63,10 +62,10 @@ export default function NewsletterSignup() {
                    </div>
 
                    <h3 className="text-3xl md:text-5xl font-black mb-6 tracking-tighter leading-none">
-                      Join the <span className="gradient-text">Squad.</span>
+                      Join the <span className="gradient-text">Family.</span>
                    </h3>
                    <p className="text-muted-foreground font-bold tracking-tight mb-12 text-lg leading-relaxed">
-                      Get early access to holiday deals, tactical mission flyers, and community-exclusive discounts.
+                      Get early access to holiday deals, heartfelt inspiration, and community-exclusive discounts.
                    </p>
 
                    {status === "success" ? (
@@ -76,7 +75,7 @@ export default function NewsletterSignup() {
                        className="p-8 rounded-[32px] bg-green-500/10 border border-green-500/20 text-green-500 flex flex-col items-center gap-4 shadow-xl"
                      >
                         <CheckCircle2 size={40} className="animate-bounce" />
-                        <div className="font-black text-xl italic">Identity Verified. Welcome Home.</div>
+                        <div className="font-black text-xl italic">Connected. Welcome Home.</div>
                      </motion.div>
                    ) : (
                      <form onSubmit={handleJoin} className="space-y-6">
@@ -87,7 +86,7 @@ export default function NewsletterSignup() {
                              required
                              value={email}
                              onChange={(e) => setEmail(e.target.value)}
-                             placeholder="Your superhero email..."
+                             placeholder="your@email.com"
                              className="w-full bg-foreground/5 border border-border rounded-[28px] py-6 pl-16 pr-8 focus:border-primary transition-all shadow-xl font-bold outline-none"
                            />
                         </div>
@@ -97,7 +96,7 @@ export default function NewsletterSignup() {
                         >
                           {status === "loading" ? <Loader2 size={24} className="animate-spin text-white" /> : (
                             <>
-                              Claim Early Access
+                              Join our Community
                               <ArrowRight size={20} />
                             </>
                           )}
@@ -107,7 +106,7 @@ export default function NewsletterSignup() {
 
                    <div className="mt-12 flex items-center justify-center gap-4 text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em] whitespace-nowrap">
                       <ShieldCheck size={14} />
-                      Tactical Encryption Active
+                      Privacy Guaranteed
                       <div className="flex gap-1.5 ml-2">
                          {[1, 2, 3].map(i => (
                             <div key={i} className="w-1 h-1 rounded-full bg-primary/40 animate-pulse" style={{ animationDelay: `${i * 0.2}s` }} />
@@ -127,10 +126,10 @@ export default function NewsletterSignup() {
             
             <div className="max-w-xl relative z-10 text-center md:text-left">
                <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-6">
-                  Ready to <span className="gradient-text tracking-tighter">Initiate?</span>
+                  Ready to <span className="gradient-text tracking-tighter">Connect?</span>
                </h3>
                <p className="text-muted-foreground font-bold text-xl tracking-tight leading-relaxed">
-                  Join 12,000+ superheroes receiving mission updates, early deals, and high-fidelity thrill reports.
+                  Join 12,000+ others receiving our heartfelt stories, early deals, and community reports.
                </p>
             </div>
 
@@ -143,7 +142,7 @@ export default function NewsletterSignup() {
                        required
                        value={email}
                        onChange={(e) => setEmail(e.target.value)}
-                       placeholder="hero@buzzthrills.com"
+                       placeholder="your@email.com"
                        className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold"
                      />
                   </div>
@@ -151,11 +150,11 @@ export default function NewsletterSignup() {
                     disabled={status === "loading"}
                     className="w-full py-5 rounded-[24px] gradient-bg text-white font-black text-[10px] uppercase tracking-[0.3em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
                   >
-                    Initiate Access
-                    <Zap size={16} />
+                    Join our Community
+                    <Heart size={16} />
                   </button>
                </form>
-                <div className="mt-4 text-[10px] font-black text-foreground/20 uppercase tracking-widest text-center">No Spam. Pure Thrill.</div>
+                <div className="mt-4 text-[10px] font-black text-foreground/20 uppercase tracking-widest text-center">No Spam. Pure Care.</div>
             </div>
          </div>
       </section>

@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Zap, Users, PhoneCall, Globe } from "lucide-react";
+import { Users, PhoneCall, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function LiveStatsWidget() {
   const [stats, setStats] = useState({ 
     total_calls: 1250, 
-    active_heroes: 480 
+    active_members: 480 
   });
 
   useEffect(() => {
@@ -21,7 +21,7 @@ export default function LiveStatsWidget() {
       if (data) {
         setStats({
           total_calls: Math.max(1250, data.total_calls_delivered),
-          active_heroes: Math.max(480, data.total_users)
+          active_members: Math.max(480, data.total_users)
         });
       }
     }
@@ -35,7 +35,7 @@ export default function LiveStatsWidget() {
 
   const items = [
     { label: "Thrills Delivered", value: stats.total_calls.toLocaleString(), icon: <PhoneCall size={18} />, color: "text-primary" },
-    { label: "Active Superheroes", value: stats.active_heroes.toLocaleString(), icon: <Users size={18} />, color: "text-secondary" },
+    { label: "Community Members", value: stats.active_members.toLocaleString(), icon: <Users size={18} />, color: "text-secondary" },
     { label: "Platform Reach", value: "Global", icon: <Globe size={18} />, color: "text-amber-400" },
   ];
 

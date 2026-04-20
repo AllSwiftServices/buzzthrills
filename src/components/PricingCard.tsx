@@ -49,9 +49,9 @@ export default function PricingCard({
       {/* Popular Badge */}
       {isPopular && (
         <div className="absolute top-8 right-8 z-20">
-          <div className="flex items-center gap-1 px-4 py-2 rounded-full bg-primary text-white text-[10px] font-black uppercase tracking-[0.2em] shadow-xl">
-            <Zap size={12} className="fill-current" />
-            Most Popular
+          <div className="flex items-center gap-1 px-4 py-2 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-[0.2em] shadow-sm backdrop-blur-md border border-primary/20">
+            <Star size={12} className="fill-current" />
+            Most Loved
           </div>
         </div>
       )}
@@ -61,15 +61,15 @@ export default function PricingCard({
         <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-foreground/5 flex items-center justify-center mb-4 sm:mb-6 shadow-xl ${isPopular ? "text-primary" : "text-foreground/40"}`}>
           {icon}
         </div>
-        <h3 className="text-2xl sm:text-3xl font-black mb-2 sm:mb-3 tracking-tighter uppercase italic">{name}</h3>
-        <p className="text-muted-foreground font-bold text-xs sm:text-sm tracking-tight leading-relaxed">{description}</p>
+        <h3 className="text-2xl sm:text-3xl font-medium mb-2 sm:mb-3 tracking-tight font-serif italic text-primary">{name}</h3>
+        <p className="text-muted-foreground font-medium text-xs sm:text-sm tracking-tight leading-relaxed">{description}</p>
       </div>
 
       {/* Pricing */}
       <div className="mb-10 relative z-10">
         <div className="flex items-baseline gap-1">
-          <span className="text-4xl sm:text-5xl font-black tracking-tighter italic">₦{price}</span>
-          <span className="text-muted-foreground font-black text-[10px] sm:text-xs uppercase tracking-widest">/ Month</span>
+          <span className="text-4xl sm:text-5xl font-medium tracking-tight font-serif">₦{price}</span>
+          <span className="text-muted-foreground font-semibold text-[10px] sm:text-xs uppercase tracking-widest">/ Month</span>
         </div>
       </div>
 
@@ -77,8 +77,8 @@ export default function PricingCard({
       <div className="space-y-3 sm:space-y-4 mb-8 sm:mb-12 flex-1 relative z-10">
         {features.map((feature, i) => (
           <div key={i} className="flex items-start gap-4">
-              <Check strokeWidth={4} className="w-[9px] h-[9px] sm:w-2.5 sm:h-2.5" />
-            <span className="text-foreground/80 font-bold text-xs sm:text-sm tracking-tight">{feature}</span>
+              <Check strokeWidth={3} className="w-[10px] h-[10px] sm:w-3 sm:h-3 text-primary" />
+            <span className="text-foreground/80 font-medium text-xs sm:text-sm tracking-tight">{feature}</span>
           </div>
         ))}
       </div>
@@ -94,14 +94,15 @@ export default function PricingCard({
               router.push(`/auth?redirect=checkout&plan=${id}&cycle=${cycle}`);
             }
           }}
-          className={`w-full py-5 rounded-[28px] font-black italic uppercase tracking-[0.15em] text-sm shadow-huge active:scale-95 transition-all flex items-center justify-center gap-3 group/btn ${
+          className={`w-full py-5 rounded-[28px] font-semibold tracking-wide text-sm shadow-huge active:scale-95 transition-all flex items-center justify-center gap-3 group/btn ${
             isPopular ? "gradient-bg text-white" : "bg-foreground/5 text-foreground hover:bg-foreground/10"
           }`}
         >
-          {name === "Corporate" ? "Inquire Mission" : "Deploy Perks"}
+          {name === "Corporate" ? "Create a Business Moment" : "Share the Joy"}
           <ArrowRight size={18} className="group-hover/btn:translate-x-2 transition-transform" />
         </button>
       </div>
+
     </motion.div>
   );
 }

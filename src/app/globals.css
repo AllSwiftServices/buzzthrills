@@ -10,29 +10,33 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   
-  --radius-xl: 1rem;
-  --radius-2xl: 1.5rem;
-  --radius-3xl: 2rem;
-  --radius-4xl: 2.5rem;
+  --font-serif: var(--font-lora);
+  
+  --radius-xl: 1.5rem;
+  --radius-2xl: 2rem;
+  --radius-3xl: 2.5rem;
+  --radius-4xl: 3rem;
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #050505;
+  --background: #fdfaf6;
+  --foreground: #2d1e1e;
   --primary: #8b5cf6;
   --secondary: #fbbf24;
   --accent: #ec4899;
-  --muted: #f4f4f5;
-  --muted-foreground: #71717a;
-  --border: rgba(5, 5, 5, 0.1);
+  --muted: #f1ede4;
+  --muted-foreground: #6d5959;
+  --border: rgba(139, 92, 246, 0.1);
 }
 
 .dark {
   --background: #050505;
-  --foreground: #ffffff;
+  --foreground: #fdfaf6;
   --muted: #1e1e1e;
   --muted-foreground: #a1a1aa;
-  --border: rgba(255, 255, 255, 0.1);
+  --border: rgba(139, 92, 246, 0.15);
+  --primary: #8b5cf6;
+  --accent: #ec4899;
 }
 
 @layer base {
@@ -41,19 +45,23 @@
   }
   
   body {
-    @apply bg-background text-foreground antialiased selection:bg-primary/30;
+    @apply bg-background text-foreground antialiased selection:bg-primary/20;
     font-family: var(--font-outfit), sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
   }
+
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif), serif;
+  }
 }
 
 @layer components {
   .glass {
-    @apply bg-foreground/5 backdrop-blur-[10px] border border-border;
+    @apply bg-foreground/3 backdrop-blur-[12px] border border-border;
     /* Hardware acceleration hints - localized for stability */
-    -webkit-backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(12px);
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     backface-visibility: hidden;
@@ -66,7 +74,7 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-br from-primary to-accent bg-clip-text text-transparent;
+    @apply bg-gradient-to-br from-primary via-accent to-primary bg-clip-text text-transparent;
   }
 
   .gradient-bg {
@@ -74,12 +82,13 @@
   }
 
   .animate-float {
-    animation: float 6s ease-in-out infinite;
+    animation: float 8s ease-in-out infinite;
   }
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
-  100% { transform: translateY(0px); }
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(1deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
 }
+

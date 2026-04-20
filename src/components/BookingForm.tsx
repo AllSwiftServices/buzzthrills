@@ -3,9 +3,10 @@
 import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Zap, Loader2 } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Sparkles, Loader2, Star, Zap, PhoneCall, Globe, Heart } from "lucide-react";
 import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
 import { useAuth } from "@/context/AuthContext";
+import { CALL_SERVICES, CallService, CallVariant } from "@/lib/pricing_config";
 
 declare global {
   interface Window {
@@ -13,19 +14,23 @@ declare global {
   }
 }
 
-type Step = "subscriber" | "recipients" | "preferences" | "payment";
+type Step = "subscriber" | "variant" | "recipients" | "preferences" | "payment";
 
-function BookingContent({ planType = "one-off" }: { planType?: string }) {
+function BookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const cycle = searchParams.get("cycle") || "monthly";
+  const serviceId = searchParams.get("type") || "celebratory";
   const { user } = useAuth();
+  
+  const service = CALL_SERVICES[serviceId] || CALL_SERVICES.celebratory;
+  
   const [step, setStep] = useState<Step>("subscriber");
+  const [selectedVariant, setSelectedVariant] = useState<CallVariant>(service.tiers[0].variant);
   const [isExpress, setIsExpress] = useState(false);
   const [loading, setLoading] = useState(false);
   const [subscription, setSubscription] = useState<any>(null);
   const [clientData, setClientData] = useState({ name: "", email: "", phone: "" });
-  const [recipients, setRecipients] = useState([{ name: "", phone: "", occasion: "Birthday", date: "", time: "morning" }]);
+  const [recipients, setRecipients] = useState([{ name: "", phone: "", occasion: service.name, date: "", time: "morning" }]);
 
   useEffect(() => {
     async function checkSubscription() {
@@ -43,23 +48,21 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
     checkSubscription();
   }, [user]);
 
+  // Update occasion and variant when service changes
+  useEffect(() => {
+    setRecipients(r => r.map(item => ({ ...item, occasion: service.name })));
+    setSelectedVariant(service.tiers[0].variant);
+  }, [serviceId]);
+
   const isSubscriber = subscription?.status === 'active';
 
-  const prices = {
-    lite: { monthly: 15000, annual: 14250 },
-    plus: { monthly: 45000, annual: 42750 },
-    orbit: { monthly: 120000, annual: 114000 },
-    corporate: { monthly: 250000, annual: 250000 },
-    "one-off": { monthly: 15000, annual: 15000 }
-  };
-
-  const selectedPlan = (planType.toLowerCase() as keyof typeof prices) || "one-off";
-  const planBasePrice = prices[selectedPlan]?.[cycle as 'monthly' | 'annual'] || 15000;
+  const selectedTier = service.tiers.find(t => t.variant === selectedVariant) || service.tiers[0];
+  const basePrice = selectedTier.price;
   const expressCharge = isExpress ? 2000 : 0;
-  const totalPrice = planBasePrice + expressCharge;
+  const totalPrice = basePrice + expressCharge;
 
   const addRecipient = () => {
-    setRecipients([...recipients, { name: "", phone: "", occasion: "Birthday", date: "", time: "morning" }]);
+    setRecipients([...recipients, { name: "", phone: "", occasion: service.name, date: "", time: "morning" }]);
   };
 
   const removeRecipient = (index: number) => {
@@ -83,14 +86,13 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
       email: clientData.email,
       amount: totalPrice * 100, // Amount in kobo
       metadata: {
-        plan: selectedPlan,
-        cycle: cycle,
+        service: service.id,
+        variant: selectedVariant,
         user_id: user?.id,
         is_express: isExpress,
         client_name: clientData.name,
       },
       callback: function(response: any) {
-        // Verify payment on server
         fetch(`/api/payments/verify?reference=${response.reference}`)
           .then(res => res.json())
           .then(data => {
@@ -113,40 +115,15 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
     handler.openIframe();
   };
 
-  const handleSubscriberBooking = async () => {
-    setLoading(true);
-    try {
-      const res = await fetch("/api/bookings/create", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          recipients,
-          preferences: recipients.map(r => ({ time: r.time })),
-          isExpress,
-          plan_id: subscription.id
-        })
-      });
-      if (res.ok) {
-        router.push("/checkout/success");
-      } else {
-        alert("Booking failed. Please try again.");
-      }
-    } catch (e) {
-      alert("An error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const nextStep = () => {
-    if (step === "subscriber") setStep("recipients");
+    if (step === "subscriber") {
+      if (service.tiers.length > 1) setStep("variant");
+      else setStep("recipients");
+    }
+    else if (step === "variant") setStep("recipients");
     else if (step === "recipients") setStep("preferences");
     else if (step === "preferences") {
-      if (isSubscriber) {
-        handleSubscriberBooking();
-      } else {
-        setStep("payment");
-      }
+      setStep("payment");
     }
     else if (step === "payment") {
        handlePaystackPayment();
@@ -154,7 +131,11 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
   };
 
   const prevStep = () => {
-    if (step === "recipients") setStep("subscriber");
+    if (step === "variant") setStep("subscriber");
+    else if (step === "recipients") {
+      if (service.tiers.length > 1) setStep("variant");
+      else setStep("subscriber");
+    }
     else if (step === "preferences") setStep("recipients");
     else if (step === "payment") setStep("preferences");
   };
@@ -166,7 +147,7 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
       {/* Progress Stepper */}
       <div className="flex items-center justify-between mb-8 md:mb-12 relative px-2">
         <div className="absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2 z-0" />
-        {(isSubscriber ? ["subscriber", "recipients", "preferences"] : ["subscriber", "recipients", "preferences", "payment"]).map((s, i, arr) => (
+        {(["subscriber", ...(service.tiers.length > 1 ? ["variant"] : []), "recipients", "preferences", "payment"]).map((s, i, arr) => (
           <div 
             key={s} 
             className={`relative z-10 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-black text-xs md:text-sm transition-all border-2 ${
@@ -175,8 +156,6 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
             }`}
           >
             {i < arr.indexOf(step) ? <Check size={14} className="md:w-[18px] md:h-[18px]" /> : i + 1}
-            
-            {/* Step Label - Mobile Only (Hidden for space, but used for accessibility) */}
             <span className="sr-only">{s}</span>
           </div>
         ))}
@@ -191,14 +170,19 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
             exit={{ opacity: 0, x: -20 }}
             className="flex-grow space-y-8"
           >
-            <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Client <span className="gradient-text italic">Profile</span></h2>
-              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Enter the details of the person placing this order.</p>
+            <div className="flex items-center gap-4 mb-8">
+               <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center text-white">
+                  <Star size={20} />
+               </div>
+               <div>
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tighter uppercase italic leading-none">{service.name}</h2>
+                  <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest mt-1">Starting from ₦{service.basePrice.toLocaleString()}</p>
+               </div>
             </div>
-            
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Full Name</label>
+                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Your Full Name</label>
                 <div className="relative group">
                   <User size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <input 
@@ -206,7 +190,7 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
                     value={clientData.name}
                     onChange={(e) => setClientData({ ...clientData, name: e.target.value })}
                     className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold" 
-                    placeholder="Hero Name" 
+                    placeholder="Your Name" 
                   />
                 </div>
               </div>
@@ -219,7 +203,7 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
                     value={clientData.email}
                     onChange={(e) => setClientData({ ...clientData, email: e.target.value })}
                     className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold" 
-                    placeholder="hero@buzzthrills.com" 
+                    placeholder="you@email.com" 
                   />
                 </div>
               </div>
@@ -236,16 +220,50 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
                   />
                 </div>
               </div>
-              <div className="space-y-3">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Preferred Frequency</label>
-                <select className="w-full bg-foreground/5 border border-border rounded-[24px] py-4 sm:py-5 px-6 sm:px-8 focus:border-primary transition-all outline-none appearance-none font-bold cursor-pointer text-sm">
-                  <option className="bg-background text-foreground">WhatsApp Channel</option>
-                  <option className="bg-background text-foreground">Direct Email</option>
-                  <option className="bg-background text-foreground">Phone Call</option>
-                </select>
-              </div>
             </div>
           </motion.div>
+        )}
+
+        {step === "variant" && (
+           <motion.div
+             key="variant"
+             initial={{ opacity: 0, x: 20 }}
+             animate={{ opacity: 1, x: 0 }}
+             exit={{ opacity: 0, x: -20 }}
+             className="flex-grow space-y-12"
+           >
+             <div>
+               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Choose <span className="gradient-text italic">Package</span></h2>
+               <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Select the level of thrill for this experience.</p>
+             </div>
+
+             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                {service.tiers.map(tier => (
+                  <button
+                    key={tier.variant}
+                    onClick={() => setSelectedVariant(tier.variant)}
+                    className={`p-8 rounded-[36px] border-2 transition-all text-left group relative flex flex-col justify-between h-full ${
+                      selectedVariant === tier.variant ? 'bg-primary/10 border-primary shadow-huge scale-105' : 'glass border-border hover:border-foreground/20'
+                    }`}
+                  >
+                    <div>
+                      <div className="flex justify-between items-start mb-4">
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${selectedVariant === tier.variant ? 'bg-primary text-white' : 'bg-foreground/5 text-foreground/40'}`}>
+                           <Sparkles size={20} />
+                        </div>
+                        {selectedVariant === tier.variant && (
+                          <div className="bg-primary px-3 py-1 rounded-full text-[8px] font-black text-white uppercase tracking-widest animate-pulse">Included</div>
+                        )}
+                      </div>
+                      <h4 className="font-black text-lg uppercase tracking-tight mb-2">{tier.label}</h4>
+                    </div>
+                    <div className="mt-8">
+                       <span className="text-2xl font-black">₦{tier.price.toLocaleString()}</span>
+                    </div>
+                  </button>
+                ))}
+             </div>
+           </motion.div>
         )}
 
         {step === "recipients" && (
@@ -261,13 +279,15 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Recipient <span className="gradient-text italic">Details</span></h2>
                 <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Who are we celebrating today?</p>
               </div>
-              <button 
-                onClick={addRecipient}
-                className="flex items-center gap-3 px-6 py-4 rounded-2xl glass border-primary/20 text-primary text-xs font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/5"
-              >
-                <Plus size={16} />
-                Add Recipient
-              </button>
+              {selectedVariant !== 'monthly' && (
+                <button 
+                  onClick={addRecipient}
+                  className="flex items-center gap-3 px-6 py-4 rounded-2xl glass border-primary/20 text-primary text-xs font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/5"
+                >
+                  <Plus size={16} />
+                  Add Recipient
+                </button>
+              )}
             </div>
 
             <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
@@ -291,16 +311,11 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
                        <input type="tel" className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" placeholder="+234 ..." />
                     </div>
                     <div className="space-y-2">
-                       <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Occasion Type</label>
-                       <select className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold cursor-pointer">
-                          <option className="bg-background text-foreground">Birthday</option>
-                          <option className="bg-background text-foreground">Anniversary</option>
-                          <option className="bg-background text-foreground">Appreciation</option>
-                          <option className="bg-background text-foreground">Celebration</option>
-                       </select>
+                       <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Service Frequency</label>
+                       <div className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 text-sm font-bold text-foreground/60">{selectedVariant === 'monthly' ? "Monthly Subscription" : "One-Time Surprise"}</div>
                     </div>
                     <div className="space-y-2">
-                       <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Arrival Date</label>
+                       <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Preferred Date</label>
                        <input type="date" className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" />
                     </div>
                   </div>
@@ -344,9 +359,6 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
                       <div className="text-[10px] text-muted-foreground font-bold italic">{slot.note}</div>
                     </button>
                   ))}
-                </div>
-                <div className="text-[10px] text-muted-foreground font-bold italic bg-foreground/5 p-4 rounded-2xl inline-block px-6">
-                   💡 Note: We recommend booking at least 48 hours in advance for guaranteed service delivery.
                 </div>
               </div>
 
@@ -401,8 +413,8 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
                
                <div className="space-y-6 relative z-10">
                   <div className="flex justify-between items-center group">
-                    <span className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">Service Package ({planType})</span>
-                    <span className="font-black text-lg">₦{planBasePrice.toLocaleString()}</span>
+                    <span className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">Package ({selectedTier.label})</span>
+                    <span className="font-black text-lg">₦{basePrice.toLocaleString()}</span>
                   </div>
                   {isExpress && (
                     <div className="flex justify-between items-center text-primary">
@@ -436,19 +448,19 @@ function BookingContent({ planType = "one-off" }: { planType?: string }) {
             className="flex items-center gap-2 sm:gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-[32px] gradient-bg text-white font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group disabled:opacity-50"
           >
             <span className="group-hover:mr-2 transition-all">
-              {loading ? "Processing..." : step === "payment" ? "Complete Payment" : isSubscriber && step === "preferences" ? "Confirm Surprise ✨" : "Next Step"}
+              {loading ? "Processing..." : step === "payment" ? "Complete Payment" : "Next Step"}
             </span>
-            {loading ? <Loader2 className="animate-spin" size={16} /> : (step !== "payment" && !(isSubscriber && step === "preferences") ? <ChevronRight size={18} className="sm:w-5 sm:h-5" /> : <Zap size={18} className="sm:w-5 sm:h-5 animate-pulse" />)}
+            {loading ? <Loader2 className="animate-spin" size={16} /> : (step !== "payment" ? <ChevronRight size={18} className="sm:w-5 sm:h-5" /> : <Sparkles size={18} className="sm:w-5 sm:h-5 animate-pulse" />)}
           </button>
       </div>
     </div>
   );
 }
 
-export default function BookingForm(props: { planType?: string }) {
+export default function BookingForm() {
   return (
-    <Suspense fallback={<div className="p-12 text-center font-black animate-pulse uppercase tracking-widest text-primary">Initializing Gear...</div>}>
-      <BookingContent {...props} />
+    <Suspense fallback={<div className="p-12 text-center font-black animate-pulse uppercase tracking-widest text-primary">Preparing Your Experience...</div>}>
+      <BookingContent />
     </Suspense>
   );
 }

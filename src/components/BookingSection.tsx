@@ -2,73 +2,138 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Heart, Zap, Sparkles, Gift, MessageSquare, Music, Video } from "lucide-react";
+import { 
+  Star, Heart, MessageCircle, HelpCircle, Sun, User, 
+  Crown, Target, Moon, Music, CloudRain, Video, Building,
+  ChevronRight, Sparkles
+} from "lucide-react";
+import { CALL_SERVICES, CallService } from "@/lib/pricing_config";
+import Link from "next/link";
 
-const oneOffCalls = [
-  { type: "Celebratory", price: "2,000", options: ["Standard", "Prank (+1k)", "Music (+2k)", "Music+Prank (+3k)"], icon: <Star size={20} /> },
-  { type: "Apology", price: "3,000", options: ["Standard", "Music (+2k)"], icon: <Heart size={20} /> },
-  { type: "Period Care", price: "2,000", options: ["Standard", "Music (+1k)"], icon: <Zap size={20} /> },
-  { type: "Self Love", price: "2,000", options: ["One-off", "Monthly (+8k)"], icon: <Sparkles size={20} /> },
-  { type: "Shoot Your Shot", price: "3,000", icon: <Gift size={20} /> },
-  { type: "Grief/Comfort", price: "4,000", icon: <MessageSquare size={20} /> },
-  { type: "Lullaby Call", price: "3,000", icon: <Music size={20} /> },
-  { type: "Video ShoutOut", price: "5,000", icon: <Video size={20} /> }
-];
+const ICON_MAP: Record<string, any> = {
+  Star, Heart, MessageCircle, HelpCircle, Sun, User, 
+  Crown, Target, Moon, Music, CloudRain, Video, Building
+};
 
 export default function BookingSection() {
-  const [selectedCall, setSelectedCall] = useState<string | null>(null);
+  const [selectedId, setSelectedId] = useState<string | null>(null);
+  const services = Object.values(CALL_SERVICES);
+  const selectedService = selectedId ? CALL_SERVICES[selectedId] : null;
 
   return (
-    <section id="one-off" className="py-24 px-4 sm:px-6 bg-background">
-      <div className="max-w-6xl mx-auto rounded-[40px] p-6 sm:p-12 glass border-foreground/10 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-accent/10 blur-[100px] rounded-full dark:bg-accent/20" />
-        
-        <div className="text-center mb-12">
-          <h2 className="text-4xl font-black mb-4">Book a <span className="gradient-text">One-off Call</span></h2>
-          <p className="text-muted-foreground">The most affordable way to send a thoughtful surprise.</p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {oneOffCalls.map((call) => (
-            <button
-              key={call.type}
-              onClick={() => setSelectedCall(call.type)}
-              className={`p-6 rounded-3xl text-left transition-all duration-300 transform active:scale-95 ${
-                selectedCall === call.type ? 'gradient-bg text-white' : 'glass border-foreground/5 hover:bg-foreground/10'
-              }`}
-            >
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center mb-4 ${
-                selectedCall === call.type ? 'bg-white/20' : 'bg-primary/10 text-primary'
-              }`}>
-                {call.icon}
-              </div>
-              <div className="font-bold text-lg">{call.type}</div>
-              <div className={selectedCall === call.type ? 'text-white/80 text-sm' : 'text-muted-foreground text-sm'}>
-                From ₦{call.price}
-              </div>
-            </button>
-          ))}
-        </div>
-
-        {selectedCall && (
-          <motion.div 
-            key={selectedCall}
-            initial={{ height: 0, opacity: 0, scale: 0.95 }}
-            animate={{ height: 'auto', opacity: 1, scale: 1 }}
-            className="mt-12 p-8 rounded-3xl bg-foreground/5 border border-foreground/10 overflow-hidden"
+    <section id="services" className="py-24 px-4 sm:px-6 bg-background">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold uppercase tracking-[0.4em] mb-8"
           >
-            <div className="flex flex-col md:flex-row justify-between items-center gap-8">
-              <div>
-                <h3 className="text-2xl font-bold mb-2">Selected: {selectedCall} Call</h3>
-                <p className="text-muted-foreground">Fill in the details to customize your surprise.</p>
-              </div>
-              <button className="px-10 py-4 gradient-bg rounded-2xl font-black text-xl hover:scale-105 transition-all shadow-xl shadow-primary/20">
-                Book Now
-              </button>
-            </div>
+            <Sparkles size={14} className="fill-current" />
+            Our Service Catalog
           </motion.div>
-        )}
+          <h2 className="text-4xl sm:text-6xl font-medium mb-6 font-serif tracking-tight">
+            Share a <span className="gradient-text italic">Heartfelt Moment</span>
+          </h2>
+          <p className="text-muted-foreground font-medium text-lg max-w-2xl mx-auto tracking-tight leading-relaxed italic font-serif">
+            Choose the perfect experience to brighten someone's day. Each service is crafted with genuine care and emotion.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, i) => {
+            const Icon = ICON_MAP[service.icon] || Star;
+            return (
+              <motion.button
+                key={service.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ delay: i * 0.05 }}
+                onClick={() => setSelectedId(service.id)}
+                className={`p-8 rounded-[40px] text-left transition-all duration-500 transform active:scale-95 border group relative overflow-hidden h-full flex flex-col ${
+                  selectedId === service.id 
+                    ? 'bg-primary/5 border-primary shadow-huge scale-[1.02]' 
+                    : 'glass border-border hover:border-primary/20 hover:bg-primary/[0.02]'
+                }`}
+              >
+                <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-8 transition-all duration-500 ${
+                  selectedId === service.id ? 'bg-primary text-white rotate-12' : 'bg-foreground/5 text-primary group-hover:bg-primary/10 group-hover:-rotate-12'
+                }`}>
+                  <Icon size={24} />
+                </div>
+                
+                <div className="flex-grow">
+                  <h3 className="font-bold text-xl mb-3 tracking-tight group-hover:text-primary transition-colors">
+                    {service.name}
+                  </h3>
+                  <p className="text-muted-foreground text-sm font-medium leading-relaxed mb-6 line-clamp-3">
+                    {service.description}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between mt-auto pt-4 border-t border-border/50">
+                  <div className={`font-black text-sm tracking-tight ${selectedId === service.id ? 'text-primary' : 'text-foreground/40'}`}>
+                    {service.basePrice > 0 ? `From ₦${service.basePrice.toLocaleString()}` : "Custom Quote"}
+                  </div>
+                  {selectedId === service.id && (
+                    <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                       <ChevronRight size={18} className="text-primary" />
+                    </motion.div>
+                  )}
+                </div>
+              </motion.button>
+            );
+          })}
+        </div>
+
+        <AnimatePresence>
+          {selectedService && (
+            <motion.div 
+              initial={{ height: 0, opacity: 0, y: 20 }}
+              animate={{ height: 'auto', opacity: 1, y: 0 }}
+              exit={{ height: 0, opacity: 0, y: 20 }}
+              className="mt-16 p-10 md:p-14 rounded-[56px] glass border border-primary/20 overflow-hidden relative shadow-huge bg-background/40"
+            >
+              <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48" />
+              
+              <div className="flex flex-col md:flex-row justify-between items-center gap-12 relative z-10">
+                <div className="max-w-2xl">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center text-white">
+                      {(() => { const Icon = ICON_MAP[selectedService.icon] || Star; return <Icon size={20} />; })()}
+                    </div>
+                    <h3 className="text-3xl md:text-5xl font-medium font-serif italic tracking-tight">{selectedService.name}</h3>
+                  </div>
+                  <p className="text-muted-foreground font-medium text-lg md:text-xl leading-relaxed tracking-tight max-w-xl">
+                    {selectedService.description} Let's make this moment unforgettable for your special someone.
+                  </p>
+                </div>
+                
+                <Link 
+                  href={`/book?type=${selectedService.id}`}
+                  className="w-full md:w-auto px-12 py-6 gradient-bg rounded-3xl font-bold text-xl text-white shadow-huge hover:scale-105 active:scale-95 transition-all text-center flex items-center justify-center gap-3 group"
+                >
+                  Book This Experience
+                  <ChevronRight size={24} className="group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+
+              {selectedService.tiers.length > 1 && (
+                <div className="mt-12 pt-12 border-t border-border/50 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                  {selectedService.tiers.map(tier => (
+                    <div key={tier.variant} className="p-6 rounded-3xl bg-foreground/5 border border-border flex flex-col gap-2">
+                      <div className="text-[10px] font-black uppercase tracking-widest text-primary/60">{tier.label}</div>
+                      <div className="text-xl font-bold">₦{tier.price.toLocaleString()}</div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
 }
+
+import { AnimatePresence } from "framer-motion";

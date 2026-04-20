@@ -9,20 +9,20 @@ export default function Footer() {
 
   const footerLinks = [
     {
-      title: "Missions",
+      title: "Experiences",
       links: [
         { label: "Surprise Calls", href: "/surprise-calls" },
         { label: "Digital Letters", href: "/digital-letters" },
-        { label: "Corporate Gifting", href: "/corporate" },
-        { label: "Pricing & Perks", href: "/pricing" },
+        { label: "Corporate Connections", href: "/corporate" },
+        { label: "Plans & Sharing", href: "/pricing" },
       ]
     },
     {
-      title: "Intelligence",
+      title: "Our Story",
       links: [
-        { label: "About the Squad", href: "/about" },
+        { label: "Meet the Team", href: "/about" },
         { label: "Support Center", href: "/support" },
-        { label: "Mission Privacy", href: "/privacy" },
+        { label: "Privacy & Trust", href: "/privacy" },
         { label: "Terms of Service", href: "/terms" },
       ]
     }
@@ -42,25 +42,25 @@ export default function Footer() {
           <div className="lg:col-span-5">
             <Link href="/" className="flex items-center gap-2 mb-8 group">
               <div className="w-10 h-10 gradient-bg rounded-xl flex items-center justify-center group-hover:rotate-12 transition-transform shadow-huge">
-                <Phone size={22} className="text-white" />
+                <Phone size={20} className="text-white" />
               </div>
-              <span className="text-2xl font-black tracking-tighter uppercase italic">
-                BUZZ<span className="gradient-text italic">THRILLS</span>
+              <span className="text-2xl font-semibold tracking-tight font-serif text-primary">
+                Buzz<span className="text-foreground">Thrills</span>
               </span>
             </Link>
-            <p className="text-foreground/60 font-bold text-lg md:text-xl tracking-tight leading-relaxed max-w-sm mb-10 italic">
-              Hyper-human connection for the digital-first generation. Deploying thrills since 2024.
+            <p className="text-foreground/80 font-medium text-lg md:text-xl tracking-tight leading-relaxed max-w-sm mb-10 italic font-serif">
+              Creating heartfelt connections that bridge the distance. Sharing beautiful moments since 2024.
             </p>
             
             <div className="flex items-center gap-4">
               {[
-                { icon: <Globe size={20} />, label: "Global" },
-                { icon: <Send size={20} />, label: "Connect" },
-                { icon: <MessageSquare size={20} />, label: "Discord" },
+                { icon: <Globe size={18} />, label: "Global" },
+                { icon: <Send size={18} />, label: "Connect" },
+                { icon: <MessageSquare size={18} />, label: "Community" },
               ].map((social, i) => (
                 <button 
                   key={i}
-                  className="w-12 h-12 rounded-2xl bg-foreground/5 border border-border flex items-center justify-center text-foreground/40 hover:text-primary hover:border-primary/50 hover:bg-primary/10 transition-all shadow-xl"
+                  className="w-10 h-10 rounded-xl bg-foreground/5 border border-border flex items-center justify-center text-foreground/40 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all"
                 >
                   {social.icon}
                 </button>
@@ -71,7 +71,7 @@ export default function Footer() {
           {/* Links Columns */}
           {footerLinks.map((column, i) => (
             <div key={i} className="lg:col-span-3">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.4em] text-foreground/20 mb-8 font-mono italic">
+              <h4 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary/60 mb-8 font-serif italic">
                 {column.title}
               </h4>
               <ul className="space-y-4">
@@ -79,7 +79,7 @@ export default function Footer() {
                   <li key={j}>
                     <Link 
                       href={link.href} 
-                      className="group flex items-center gap-2 text-foreground/60 hover:text-foreground font-bold tracking-tight transition-all"
+                      className="group flex items-center gap-2 text-foreground/70 hover:text-primary font-medium tracking-tight transition-all"
                     >
                       {link.label}
                       <ArrowUpRight size={14} className="opacity-0 -translate-y-1 translate-x-1 group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 transition-all text-primary" />
@@ -93,32 +93,33 @@ export default function Footer() {
           {/* Location / Status Column */}
           <div className="lg:col-span-1 border-l border-border lg:pl-8 flex flex-col justify-between items-center lg:items-end">
              <div className="flex flex-col items-center lg:items-end gap-1">
-                <div className="text-[10px] font-black text-green-500 uppercase tracking-widest flex items-center gap-2">
+                <div className="text-[10px] font-semibold text-green-600 uppercase tracking-widest flex items-center gap-2 font-serif italic">
                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                   System Online
+                   Always here for you
                 </div>
-                 <div className="text-[9px] font-black text-foreground/10 uppercase tracking-widest italic">Global Cluster active</div>
+                 <div className="text-[9px] font-medium text-foreground/20 uppercase tracking-widest italic">Bridging hearts globally</div>
              </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
         <div className="pt-12 border-t border-border flex flex-col md:flex-row items-center justify-between gap-8 md:gap-4">
-          <div className="text-[10px] font-black text-foreground/20 uppercase tracking-[0.2em] italic">
-            &copy; {currentYear} BUZZ<span className="text-foreground/5">THRILLS</span> PLATFORM. ALL RIGHTS SECURED.
+          <div className="text-[10px] font-medium text-foreground/30 uppercase tracking-[0.2em] italic font-serif">
+            &copy; {currentYear} BuzzThrills Prime. All rights reserved.
           </div>
           
-          <div className="flex items-center gap-12 text-[9px] font-black text-foreground/10 uppercase tracking-widest italic">
+          <div className="flex items-center gap-12 text-[9px] font-medium text-foreground/20 uppercase tracking-widest italic font-serif">
              <div className="flex items-center gap-2">
                 <ShieldCheck size={12} className="text-primary/20" />
-                No Cookies Detected
+                Purely Personal
              </div>
              <div className="flex items-center gap-2">
-                <Activity size={12} className="text-secondary/20" />
-                12,402 Active Heroes
+                <Activity size={12} className="text-secondary/60" />
+                24,000+ Hearts Touched
              </div>
           </div>
         </div>
+
       </div>
     </footer>
   );
