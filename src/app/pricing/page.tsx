@@ -105,9 +105,12 @@ export default function PricingPage() {
                          <div className="w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500">
                              {(() => { const Icon = ICON_MAP[service.icon] || Star; return <Icon size={24} />; })()}
                          </div>
-                         <div className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest">
+                         <Link 
+                           href={`/book?type=${service.id}`}
+                           className="bg-primary/10 text-primary px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest hover:scale-105 transition-transform"
+                         >
                             {service.basePrice > 0 ? `₦${service.basePrice.toLocaleString()}` : "Contract"}
-                         </div>
+                         </Link>
                       </div>
 
                       <h3 className="text-2xl font-bold mb-4 tracking-tight">{service.name}</h3>
@@ -115,7 +118,7 @@ export default function PricingPage() {
                         {service.description}
                       </p>
 
-                      <div className="space-y-4 mb-8">
+                      <Link href={`/book?type=${service.id}`} className="space-y-4 mb-8 block hover:bg-foreground/5 p-4 -mx-4 rounded-3xl transition-colors">
                          {service.tiers.map(tier => (
                             <div key={tier.variant} className="flex justify-between items-center text-xs font-bold border-b border-border/50 pb-3 last:border-0">
                                <span className="text-foreground/60 uppercase tracking-widest">{tier.label}</span>
@@ -124,7 +127,7 @@ export default function PricingPage() {
                                </span>
                             </div>
                          ))}
-                      </div>
+                      </Link>
 
                       <Link 
                         href={`/book?type=${service.id}`}

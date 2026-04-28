@@ -21,15 +21,15 @@ export async function GET(request: Request) {
 
       if (data.status && data.data.status === 'success') {
         const metadata = data.data.metadata;
-        const { plan, cycle, user_id } = metadata || {};
+        const { service, variant, user_id, recipients, is_express, cycle, plan } = metadata || {};
         const customerEmail = data.data.customer.email;
         const amount = (data.data.amount / 100).toLocaleString();
 
-        if (plan && user_id && typeof window === 'undefined') {
-          const { supabaseAdmin } = await import('@/lib/supabase');
-          
-          if (supabaseAdmin) {
-            // ... subscription logic ...
+        const { supabaseAdmin } = await import('@/lib/supabase');
+        
+        if (supabaseAdmin) {
+          // 1. Handle Subscriptions
+          if (plan && user_id) {
             const daysToAdd = cycle === 'annual' ? 365 : 30;
             const nextBillingDate = new Date();
             nextBillingDate.setDate(nextBillingDate.getDate() + daysToAdd);
@@ -43,18 +43,48 @@ export async function GET(request: Request) {
                 next_billing_date: nextBillingDate.toISOString(),
               }, { onConflict: 'user_id' });
           }
+
+          // 2. Handle One-Off Bookings (Calls)
+          if (recipients && Array.isArray(recipients)) {
+            const callInserts = recipients.map((r: any) => ({
+              user_id: user_id || null,
+              recipient_name: r.name,
+              recipient_phone: r.phone,
+              occasion_type: r.occasion || service || 'General',
+              occasion_date: r.date,
+              call_type: variant || 'standard',
+              scheduled_slot: r.time || 'morning',
+              is_express: !!is_express,
+              status: 'pending'
+            }));
+
+            await supabaseAdmin.from('calls').insert(callInserts);
+          }
         }
 
         // Trigger Confirmation Email via Brevo
         try {
-          const { sendBookingConfirmation } = await import('@/lib/email');
+          const { sendBookingConfirmation, sendAdminCallNotification } = await import('@/lib/email');
+          
+          // User Confirmation
           await sendBookingConfirmation(customerEmail, {
-            serviceName: plan || "BuzzThrills Service",
+            serviceName: plan || service || "BuzzThrills Service",
             price: amount
           });
+
+          // Admin Notification
+          if (recipients && recipients.length > 0) {
+            await sendAdminCallNotification(recipients.map((r: any) => ({
+              recipient_name: r.name,
+              recipient_phone: r.phone,
+              occasion_type: r.occasion || service || 'General',
+              occasion_date: r.date,
+              call_type: variant || 'standard',
+              scheduled_slot: r.time || 'morning'
+            })));
+          }
         } catch (emailError) {
           console.error("Post-payment email failed:", emailError);
-          // Don't fail the verification if email fails
         }
 
         return NextResponse.json({ success: true, data: data.data });

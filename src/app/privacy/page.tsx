@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 
 export default function PrivacyPage() {
@@ -41,12 +42,13 @@ export default function PrivacyPage() {
 
               <section className="p-8 rounded-3xl glass border border-primary/20 bg-primary/5">
                 <h2 className="text-xl font-bold mb-4 text-primary">5. Contact Us</h2>
-                <p className="mb-0">If you have any questions about this Privacy Policy, please contact our Support Team at hello@buzzthrillsprime.com.</p>
+                <p className="mb-0">If you have any questions about this Privacy Policy, please contact our Support Team at <a href="mailto:buzzthrills941@gmail.com" className="font-bold underline">buzzthrills941@gmail.com</a>.</p>
               </section>
             </div>
           </Reveal>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

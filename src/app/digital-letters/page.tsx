@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { Mail, Volume2, QrCode, Share2, Heart, Star, Sparkles, Send, Zap, MessageSquareQuote } from "lucide-react";
 import Link from "next/link";
@@ -135,6 +136,7 @@ export default function DigitalLettersPage() {
           </div>
         </Reveal>
       </section>
+      <Footer />
     </main>
   );
 }

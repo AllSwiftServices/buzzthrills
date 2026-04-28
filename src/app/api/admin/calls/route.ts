@@ -23,7 +23,7 @@ export async function GET() {
 
     const { data: calls, error } = await supabaseAdmin
       .from("calls")
-      .select("*")
+      .select("*, profiles!user_id(full_name, email)")
       .order("created_at", { ascending: false });
 
     if (error) throw error;

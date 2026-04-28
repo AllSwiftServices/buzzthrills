@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { Briefcase, Users, TrendingUp, Zap, Sparkles, Building2, Presentation, ArrowRight, Heart, Globe } from "lucide-react";
 import Link from "next/link";
@@ -130,6 +131,7 @@ export default function CorporatePage() {
           </div>
         </Reveal>
       </section>
+      <Footer />
     </main>
   );
 }

@@ -3,6 +3,7 @@
 import { Phone, Mail, Globe, Send, MessageSquare, ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { InstagramIcon, FacebookIcon, WhatsAppIcon } from "@/components/Icons";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -54,17 +55,42 @@ export default function Footer() {
             
             <div className="flex items-center gap-4">
               {[
-                { icon: <Globe size={18} />, label: "Global" },
-                { icon: <Send size={18} />, label: "Connect" },
-                { icon: <MessageSquare size={18} />, label: "Community" },
+                { icon: <InstagramIcon size={18} />, label: "Instagram", href: "https://instagram.com/Buzzthrills" },
+                { icon: <FacebookIcon size={18} />, label: "Facebook", href: "https://facebook.com/Buzzthrills" },
+                { icon: <WhatsAppIcon size={18} />, label: "WhatsApp", href: "https://wa.me/2349059388005" },
               ].map((social, i) => (
-                <button 
+                <a 
                   key={i}
+                  href={social.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={social.label}
                   className="w-10 h-10 rounded-xl bg-foreground/5 border border-border flex items-center justify-center text-foreground/40 hover:text-primary hover:border-primary/50 hover:bg-primary/5 transition-all"
                 >
                   {social.icon}
-                </button>
+                </a>
               ))}
+            </div>
+
+            <div className="mt-8 space-y-4">
+               <a 
+                 href="tel:+2349059388005"
+                 className="flex items-center gap-3 text-foreground/60 text-sm font-medium hover:text-primary transition-colors group"
+               >
+                  <div className="w-8 h-8 rounded-lg bg-primary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Phone size={14} className="text-primary" />
+                  </div>
+                  09059388005
+               </a>
+               <a 
+                 href="mailto:buzzthrills941@gmail.com"
+                 className="flex items-center gap-3 text-foreground/60 text-sm font-medium hover:text-secondary transition-colors group"
+               >
+                  <div className="w-8 h-8 rounded-lg bg-secondary/5 flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <Mail size={14} className="text-secondary" />
+                  </div>
+                  buzzthrills941@gmail.com
+               </a>
             </div>
           </div>
 

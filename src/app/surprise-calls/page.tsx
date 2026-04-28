@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { Phone, Calendar, Heart, MessageCircle, Star, Music, Mic2, Sun, Sparkles, ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -149,6 +150,7 @@ export default function SurpriseCallsPage() {
           </div>
         </Reveal>
       </section>
+      <Footer />
     </main>
   );
 }

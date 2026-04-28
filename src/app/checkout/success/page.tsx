@@ -43,36 +43,36 @@ export default function CheckoutSuccess() {
               <CheckCircle2 size={48} className="text-green-500" />
            </motion.div>
 
-           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">Mission <span className="gradient-text">Accepted.</span></h1>
-           <p className="text-muted-foreground font-bold tracking-tight mb-12 max-w-md mx-auto text-lg leading-relaxed">
-             Your high-fidelity thrill has been funded and logged. Our specialist squad is currently coordinating the execution.
+           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">Order <span className="gradient-text">Confirmed!</span></h1>
+           <p className="text-muted-foreground font-black tracking-tight mb-12 max-w-md mx-auto text-base leading-relaxed uppercase tracking-[0.1em]">
+             Your booking was successful! Our team is already working to make it a special experience.
            </p>
 
            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
-              <div className="p-6 rounded-3xl bg-foreground/5 border border-border text-left group hover:border-primary/20 transition-all">
-                 <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mb-1">Order Pulse</div>
-                 <div className="font-black text-lg font-mono text-primary group-hover:scale-105 transition-transform origin-left">{orderRef}</div>
+              <div className="p-8 rounded-[32px] bg-primary/5 border-2 border-primary/20 text-left group hover:border-primary/40 transition-all shadow-xl shadow-primary/5">
+                 <div className="text-[11px] font-black text-primary uppercase tracking-widest mb-2 opacity-70">Order ID</div>
+                 <div className="font-black text-2xl font-mono text-primary group-hover:scale-105 transition-transform origin-left tracking-tight">{orderRef}</div>
               </div>
-              <div className="p-6 rounded-3xl bg-foreground/5 border border-border text-left group hover:border-secondary/20 transition-all">
-                 <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mb-1">Status</div>
-                 <div className="font-black text-lg flex items-center gap-2 group-hover:translate-x-2 transition-transform">
-                    <Zap size={18} className="text-secondary animate-pulse" />
-                    Tactical Setup
+              <div className="p-8 rounded-[32px] bg-secondary/5 border-2 border-secondary/20 text-left group hover:border-secondary/40 transition-all shadow-xl shadow-secondary/5">
+                 <div className="text-[11px] font-black text-secondary uppercase tracking-widest mb-2 opacity-70">Status</div>
+                 <div className="font-black text-xl flex items-center gap-2 group-hover:translate-x-2 transition-transform text-secondary">
+                    <Zap size={20} className="fill-current animate-pulse" />
+                    Processing
                  </div>
               </div>
            </div>
 
-           <div className="flex flex-col sm:flex-row gap-4 justify-center">
+           <div className="flex flex-col gap-4 justify-center">
               <Link 
                 href="/profile"
-                className="px-8 py-5 rounded-[32px] gradient-bg text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
+                className="px-10 py-6 rounded-[32px] gradient-bg text-white font-black text-sm uppercase tracking-[0.2em] shadow-huge hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
               >
-                Track In Dashboard
-                <ArrowRight size={18} />
+                Track Your Order
+                <ArrowRight size={20} />
               </Link>
-              <button className="px-8 py-5 rounded-[32px] glass border border-border text-foreground/60 hover:text-foreground font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
-                <Download size={18} />
-                Mission Receipt
+              <button className="px-10 py-6 rounded-[32px] glass border-2 border-border text-foreground font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+                <Download size={20} />
+                Download Receipt
               </button>
            </div>
 

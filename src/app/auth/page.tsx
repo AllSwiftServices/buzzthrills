@@ -15,15 +15,12 @@ export default function AuthPage() {
       <div className="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-accent/10 blur-[120px] rounded-full gpu-accelerated opacity-40 dark:bg-accent/20 pointer-events-none" />
 
       <div className="w-full py-20 relative z-10">
-        <Reveal>
           <div className="flex flex-col items-center mb-12">
             <div className="w-16 h-16 gradient-bg rounded-2xl flex items-center justify-center mb-6 shadow-2xl shadow-primary/30">
               <span className="text-3xl font-black text-white">B</span>
             </div>
           </div>
-        </Reveal>
 
-        <Reveal delay={0.1}>
           <Suspense fallback={
             <div className="w-full max-w-md mx-auto p-8 rounded-[48px] glass border border-border shadow-3xl text-center">
               <div className="animate-pulse flex flex-col items-center">
@@ -35,7 +32,6 @@ export default function AuthPage() {
           }>
             <AuthForm />
           </Suspense>
-        </Reveal>
 
        
       </div>

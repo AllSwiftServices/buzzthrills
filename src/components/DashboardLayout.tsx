@@ -3,6 +3,7 @@
 import { ReactNode, useEffect } from "react";
 import Header from "@/components/Header";
 import BottomTabNav from "./BottomTabNav";
+import Sidebar from "./Sidebar";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { Loader2, ShieldCheck } from "lucide-react";
@@ -43,17 +44,23 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     <main className="min-h-screen bg-background text-foreground transition-colors duration-500 font-outfit pb-24 md:pb-0">
       <Header />
       
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={pathname}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          className="pt-32 px-4 md:px-6 max-w-6xl mx-auto"
-        >
-          {children}
-        </motion.div>
-      </AnimatePresence>
+      <div className="pt-32 px-4 md:px-6 max-w-7xl mx-auto pb-24 md:pb-12">
+        <div className="flex flex-col md:flex-row gap-8 lg:gap-12">
+          <Sidebar />
+          <div className="flex-1 min-w-0">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={pathname}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+              >
+                {children}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </div>
+      </div>
 
       {user.role === 'admin' && (
         <Link 

@@ -47,6 +47,8 @@ CREATE TABLE calls (
   is_express BOOLEAN DEFAULT FALSE,
   custom_message TEXT,
   recording_url TEXT,
+  admin_notes TEXT,
+  failure_reason TEXT,
   assigned_to UUID REFERENCES profiles(id), -- Assigned Caller
   created_at TIMESTAMPTZ DEFAULT NOW()
 );

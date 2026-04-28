@@ -2,9 +2,11 @@
 
 import { useState } from "react";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { HelpCircle, Mail, MessageSquare, Phone, Plus, Minus, Send, Star } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { WhatsAppIcon } from "@/components/Icons";
 
 const faqs = [
   {
@@ -47,18 +49,21 @@ export default function SupportPage() {
       <section className="py-12 px-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { title: "Direct WhatsApp", value: "+234 800 BUZZ", icon: <MessageSquare className="text-green-500" /> },
-            { title: "Email Support", value: "hello@buzzthrillsprime.com", icon: <Mail className="text-primary" /> },
-            { title: "Voice Support", value: "Available 24/7", icon: <Phone className="text-accent" /> }
+            { title: "Direct WhatsApp", value: "09059388005", href: "https://wa.me/2349059388005", icon: <WhatsAppIcon className="text-green-500" /> },
+            { title: "Email Support", value: "buzzthrills941@gmail.com", href: "mailto:buzzthrills941@gmail.com", icon: <Mail className="text-primary" /> },
+            { title: "Voice Support", value: "09059388005", href: "tel:+2349059388005", icon: <Phone className="text-accent" /> }
           ].map((opt, i) => (
             <Reveal key={i} delay={i * 0.1}>
-              <div className="p-8 rounded-[32px] glass border border-border flex flex-col items-center text-center hover:scale-105 transition-all">
-                <div className="w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center mb-6 shadow-inner">
+              <a 
+                href={opt.href}
+                className="p-8 rounded-[32px] glass border border-border flex flex-col items-center text-center hover:scale-105 transition-all group"
+              >
+                <div className="w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center mb-6 shadow-inner group-hover:bg-foreground/10 transition-colors">
                   {opt.icon}
                 </div>
                 <div className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-2">{opt.title}</div>
                 <div className="font-bold text-lg">{opt.value}</div>
-              </div>
+              </a>
             </Reveal>
           ))}
         </div>
@@ -145,6 +150,7 @@ export default function SupportPage() {
           </div>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

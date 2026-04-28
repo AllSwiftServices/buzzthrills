@@ -36,7 +36,7 @@ export default function Header() {
     { href: "/pricing", label: "Pricing & Services" },
     { href: "/surprise-calls", label: "Surprise Calls" },
     { href: "/digital-letters", label: "Digital Artifacts" },
-    { href: "/book", label: "Send a Surprise" },
+    { href: "/pricing", label: "Send a Surprise" },
   ];
 
 
@@ -120,7 +120,7 @@ export default function Header() {
               </Link>
             )}
               <Link 
-                href={user ? "/profile" : "/auth"}
+                href="/pricing"
                 className="px-5 py-2 rounded-xl gradient-bg text-white font-semibold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2"
               >
                 {user ? <ShoppingBag size={16} /> : null}
@@ -202,7 +202,7 @@ export default function Header() {
                       </Link>
                     )}
                     <Link 
-                      href={user ? "/profile" : "/auth"}
+                      href="/pricing"
                       onClick={() => setIsOpen(false)}
                       className="w-full max-w-xs py-5 rounded-3xl gradient-bg text-white font-semibold text-2xl text-center shadow-2xl shadow-primary/30 active:scale-95 transition-all"
                     >

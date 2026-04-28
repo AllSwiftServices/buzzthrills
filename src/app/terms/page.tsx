@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 
 export default function TermsPage() {
@@ -47,6 +48,7 @@ export default function TermsPage() {
           </Reveal>
         </div>
       </section>
+      <Footer />
     </main>
   );
 }

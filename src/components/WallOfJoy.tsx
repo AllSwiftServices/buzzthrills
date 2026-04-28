@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import Link from "next/link";
 import { Heart, MessageCircle, Star } from "lucide-react";
 import Reveal from "./Reveal";
 
@@ -13,7 +14,7 @@ interface TestimonialScreenshot {
   accent?: string;
 }
 
-const screenshots: TestimonialScreenshot[] = [
+export const screenshots: TestimonialScreenshot[] = [
   {
     id: 1,
     image: "/testimonials/testimonial_1.png",
@@ -94,6 +95,8 @@ const screenshots: TestimonialScreenshot[] = [
 ];
 
 export default function WallOfJoy() {
+  const displayScreenshots = screenshots.slice(0, 4);
+
   return (
     <section className="py-24 px-4 sm:px-6 bg-cream/30 dark:bg-black/20">
       <div className="max-w-7xl mx-auto">
@@ -118,7 +121,7 @@ export default function WallOfJoy() {
 
         {/* Masonry-style grid */}
         <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 px-4">
-          {screenshots.map((item, index) => (
+          {displayScreenshots.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
@@ -128,26 +131,18 @@ export default function WallOfJoy() {
               className="break-inside-avoid"
             >
               <div className="group relative rounded-[2rem] overflow-hidden glass border border-border/50 hover:border-primary/30 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-primary/5 bg-background/40 backdrop-blur-md">
-                {/* Image Placeholder/Container */}
                 <div className="relative aspect-[9/16] w-full bg-foreground/5 overflow-hidden">
-                   {/* In a real scenario, we'd have the actual images here. 
-                       For now, I'll use a stylized placeholder or simple Image component */}
                    <div className="absolute inset-0 flex items-center justify-center text-foreground/10 opacity-20 group-hover:scale-110 transition-transform duration-700">
                      <MessageCircle size={80} strokeWidth={1} />
                    </div>
                    
-                   {/* 
-                      Note to User: Place your screenshots in public/testimonials/ 
-                      named testimonial_1.png through testimonial_10.png 
-                   */}
                    <Image 
                      src={item.image}
-                     alt={`Testimonial from ${item.author}`}
+                     alt={`Testimonial screenshot`}
                      fill
-                     className="object-cover opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700"
+                     className="object-contain opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700"
                    />
 
-                   {/* Overlay info */}
                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
                       <div className="mb-2">
                         <div className="flex gap-1 mb-2">
@@ -158,20 +153,16 @@ export default function WallOfJoy() {
                         <p className="text-foreground font-medium text-sm leading-relaxed font-serif italic">
                           &ldquo;{item.quote}&rdquo;
                         </p>
-                        <p className={`mt-3 text-[10px] font-bold uppercase tracking-widest ${item.accent}`}>
-                          — {item.author}
-                        </p>
                       </div>
                    </div>
                 </div>
 
-                {/* Visible Info Part */}
                 <div className="p-5 border-t border-border/50">
                    <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground/40 font-serif">{item.author}</span>
+                      <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground/40 font-serif">Verified Experience</span>
                       <div className="flex items-center gap-2">
                          <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                         <span className="text-[9px] font-bold uppercase tracking-widest text-primary/60">Verified Love</span>
+                         <span className="text-[9px] font-bold uppercase tracking-widest text-primary/60">Success</span>
                       </div>
                    </div>
                 </div>
@@ -180,14 +171,24 @@ export default function WallOfJoy() {
           ))}
         </div>
 
+        <div className="mt-16 text-center">
+           <Link 
+            href="/testimonials" 
+            className="inline-flex items-center gap-3 px-10 py-5 rounded-3xl glass border-primary/20 text-primary font-black uppercase tracking-[0.2em] text-xs hover:scale-105 active:scale-95 transition-all"
+           >
+              View All 150+ Screenshots
+              <Star size={16} />
+           </Link>
+        </div>
+
         {/* CTA */}
         <Reveal delay={0.4}>
           <div className="mt-20 text-center">
             <p className="text-muted-foreground font-medium mb-8 font-serif italic">Want to create your own special moment?</p>
-            <button className="px-10 py-5 gradient-bg rounded-3xl font-semibold text-lg text-white shadow-huge hover:scale-105 transition-all active:scale-95 group">
+            <Link href="/pricing" className="inline-flex px-10 py-5 gradient-bg rounded-3xl font-semibold text-lg text-white shadow-huge hover:scale-105 transition-all active:scale-95 group items-center justify-center whitespace-nowrap">
               Start Sharing Joy
-              <Heart size={20} className="inline-ml-2 group-hover:scale-125 transition-transform ml-2" />
-            </button>
+              <Heart size={20} className="group-hover:scale-125 transition-transform ml-2" />
+            </Link>
           </div>
         </Reveal>
       </div>

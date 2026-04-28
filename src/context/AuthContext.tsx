@@ -38,7 +38,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       
       if (res.status === 401) {
         setAuth(null, null);
-        const isProtectedRoute = window.location.pathname.startsWith('/profile') || window.location.pathname.startsWith('/admin');
+        const isProtectedRoute = window.location.pathname.startsWith('/profile') || window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/book') || window.location.pathname.startsWith('/checkout');
         if (isProtectedRoute) {
           router.push("/auth?error=expired");
         }
@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAuth(data.user, data.accessToken);
       } else {
         setAuth(null, null);
-        if (window.location.pathname.startsWith('/profile') || window.location.pathname.startsWith('/admin')) {
+        if (window.location.pathname.startsWith('/profile') || window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/book') || window.location.pathname.startsWith('/checkout')) {
           router.push("/auth");
         }
       }

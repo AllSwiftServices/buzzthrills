@@ -137,12 +137,25 @@ export const CALL_SERVICES: Record<string, CallService> = {
     tiers: [{ variant: "standard", price: 5000, label: "Standard" }],
     icon: "Video",
   },
+  digital_letter: {
+    id: "digital_letter",
+    name: "Digital Letter",
+    description: "A premium digital artifact combining typography, animated scrolls, and voice recordings.",
+    basePrice: 5000,
+    tiers: [
+      { variant: "standard", price: 5000, label: "Standard (Voice + Animation)" },
+      { variant: "special", price: 7500, label: "Premium (Custom Theme + Extended Voice)" },
+    ],
+    icon: "Mail",
+  },
   company_calls: {
     id: "company_calls",
-    name: "Company Calls",
-    description: "Bulk call services and cold calling services inclusive for your business.",
-    basePrice: 0,
-    tiers: [{ variant: "standard", price: 0, label: "Based on Contract" }],
+    name: "Company / Corporate Calls",
+    description: "Tailored connection solutions for teams, employees, and corporate partners.",
+    basePrice: 0, // Contract based
+    tiers: [
+      { variant: "special", price: 0, label: "Custom Consultation" },
+    ],
     icon: "Building",
   },
 };

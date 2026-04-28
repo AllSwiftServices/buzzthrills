@@ -1,12 +1,14 @@
 "use client";
 
-import { Phone, Check, Volume2, Star, ArrowRight, Heart, Sparkles, MessageCircle, Sun } from "lucide-react";
+import { Phone, Check, Volume2, Star, ArrowRight, Heart, Sparkles, MessageCircle, Sun, Globe, Mail } from "lucide-react";
 import Header from "@/components/Header";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import BookingSection from "@/components/BookingSection";
 import WallOfJoy from "@/components/WallOfJoy";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
+import Footer from "@/components/Footer";
+import LiveStatsWidget from "@/components/LiveStatsWidget";
 
 export default function Home() {
   return (
@@ -49,6 +51,15 @@ export default function Home() {
                 Explore 13+ Services
               </Link>
             </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* Social Proof Stats */}
+      <section className="py-24 px-6 relative z-20">
+        <div className="max-w-6xl mx-auto">
+          <Reveal>
+             <LiveStatsWidget />
           </Reveal>
         </div>
       </section>
@@ -156,67 +167,8 @@ export default function Home() {
 
       <WallOfJoy />
 
-      {/* Social Proof Stats */}
-      <section className="py-24 px-6 glass border-y border-border bg-background/50">
-        <div className="max-w-5xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-12 text-center">
-          {[
-            { value: "1,250+", label: "Calls Delivered" },
-            { value: "24.5k+", label: "Hearts Touched" },
-            { value: "98%", label: "Happy Families" },
-            { value: "24/7", label: "Professional Care" }
-          ].map((stat, i) => (
-            <Reveal key={stat.label} delay={i * 0.1}>
-              <div className="relative">
-                <div className="text-5xl font-medium font-serif gradient-text mb-2 tracking-tighter italic">{stat.value}</div>
-                <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest italic">{stat.label}</div>
-                {i < 3 && <div className="hidden lg:block absolute top-1/2 right-[-24px] w-px h-10 bg-border -translate-y-1/2 opacity-50" />}
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       {/* Footer */}
-      <footer className="py-24 px-6 border-t border-border bg-background relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full pointer-events-none" />
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-start gap-16 relative z-10">
-          <div className="max-w-sm">
-            <div className="flex items-center gap-3 mb-8 text-3xl font-black italic tracking-tighter">
-              <div className="w-12 h-12 gradient-bg rounded-2xl flex items-center justify-center text-white shadow-lg">
-                <Phone size={24} />
-              </div>
-              BUZZ<span className="gradient-text italic">THRILLS</span>
-            </div>
-            <p className="text-muted-foreground leading-relaxed font-medium">
-              The number one surprise call and emotional message service in Nigeria. We help you stay connected with the people who matter most.
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-16 text-sm">
-            <div className="flex flex-col gap-6">
-              <div className="font-black uppercase tracking-[0.2em] text-[10px] text-primary">Services</div>
-              <Link href="/surprise-calls" className="font-medium hover:text-primary transition-colors">Surprise Calls</Link>
-              <Link href="/digital-letters" className="font-medium hover:text-primary transition-colors">Digital Artifacts</Link>
-              <Link href="/corporate" className="font-medium hover:text-primary transition-colors">Business Solutions</Link>
-            </div>
-            <div className="flex flex-col gap-6">
-              <div className="font-black uppercase tracking-[0.2em] text-[10px] text-primary">Company</div>
-              <Link href="/about" className="font-medium hover:text-primary transition-colors">Our Story</Link>
-              <Link href="/support" className="font-medium hover:text-primary transition-colors">Help Center</Link>
-              <Link href="/pricing" className="font-medium hover:text-primary transition-colors">Price List</Link>
-            </div>
-            <div className="flex flex-col gap-6">
-              <div className="font-black uppercase tracking-[0.2em] text-[10px] text-primary">Legal</div>
-              <Link href="/privacy" className="font-medium hover:text-primary transition-colors">Privacy</Link>
-              <Link href="/terms" className="font-medium hover:text-primary transition-colors">Terms</Link>
-            </div>
-          </div>
-        </div>
-        <div className="max-w-6xl mx-auto mt-24 pt-8 border-t border-border flex flex-col sm:flex-row justify-between items-center gap-6 text-[10px] font-bold text-muted-foreground uppercase tracking-widest italic text-center sm:text-left">
-          <span>© 2026 BuzzThrills Prime. All rights reserved.</span>
-          <span>Designed with ❤️ for genuine connection.</span>
-        </div>
-      </footer>
+      <Footer />
     </main>
   );
 }

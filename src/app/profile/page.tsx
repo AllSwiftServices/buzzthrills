@@ -88,16 +88,7 @@ export default function ProfilePage() {
             </motion.h1>
             <p className="text-muted-foreground font-black uppercase text-[9px] sm:text-[10px] tracking-widest">Your scheduled platform engagements are active.</p>
           </div>
-          <button 
-            onClick={async () => {
-              await fetch("/api/auth/logout", { method: "POST" });
-              window.location.href = "/auth";
-            }}
-            className="px-5 py-3 sm:px-6 sm:py-4 rounded-2xl sm:rounded-3xl glass border border-border text-red-500 font-black text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-red-500/10 transition-all active:scale-95"
-          >
-            <LogOut size={14} className="sm:size-4" />
-            Logout Session
-          </button>
+            <div className="text-muted-foreground font-black uppercase text-[9px] sm:text-[10px] tracking-widest">Your scheduled platform engagements are active.</div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -113,7 +104,7 @@ export default function ProfilePage() {
                     Subscription Status
                   </span>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-none my-2 sm:my-3">
-                    {subscription?.plan || 'Standard'} <span className="text-white/20">Plus</span>
+                    {subscription?.plan || 'Member'}
                   </h2>
                   <p className="font-bold text-xs sm:text-sm md:text-lg opacity-80 italic">
                     {subscription?.calls_made || 0}/{subscription?.total_calls || (subscription?.plan === 'Orbit' ? '∞' : subscription?.plan === 'Plus' ? 15 : 5)} Engagements remaining this month
@@ -188,40 +179,19 @@ export default function ProfilePage() {
                 <div className="absolute top-0 right-0 w-48 h-48 bg-primary/10 blur-[60px] rounded-full -mr-24 -mt-24" />
                 <h3 className="text-xl font-black italic uppercase tracking-tighter mb-8 relative z-10">Activity <span className="gradient-text italic">Stats</span></h3>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="p-6 rounded-[32px] bg-foreground/5 border border-border flex flex-col items-center justify-center text-center">
-                    <div className="text-4xl font-black italic mb-1">{history.length}</div>
-                    <div className="text-[10px] font-black uppercase tracking-widest opacity-20">Total Calls</div>
-                  </div>
-                  <div className="p-6 rounded-[32px] bg-foreground/5 border border-border flex flex-col items-center justify-center text-center">
-                    <div className="text-4xl font-black italic mb-1">5.0</div>
-                    <div className="text-[10px] font-black uppercase tracking-widest opacity-20">Satisfaction</div>
+                  <div className="p-6 rounded-[32px] bg-foreground/5 border border-border flex flex-col items-center justify-center text-center col-span-2">
+                    <div className="text-4xl font-black italic mb-1">{totalThrills}</div>
+                    <div className="text-[10px] font-black uppercase tracking-widest opacity-20">Recent Engagements</div>
                   </div>
                 </div>
             </div>
 
-            <div className="p-6 sm:p-10 rounded-[40px] sm:rounded-[56px] bg-linear-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 shadow-huge shadow-primary/5 backdrop-blur-3xl relative overflow-hidden group">
-              <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/5 blur-[60px] rounded-full -ml-24 -mb-24" />
-              <h3 className="text-xl font-black italic uppercase tracking-tighter mb-4 relative z-10">Quick <span className="gradient-text italic">Menu</span></h3>
-              <div className="space-y-3">
-                {[
-                  { icon: <Settings size={18} />, label: "Profile Settings", href: "/profile/settings" },
-                  { icon: <CreditCard size={18} />, label: "Billing & Plans", href: "/profile/settings" },
-                  { icon: <Bell size={18} />, label: "Notification Hub", href: "/profile/messages" },
-                ].map((item, i) => (
-                  <Link 
-                    key={i}
-                    href={item.href}
-                    className="w-full p-4 sm:p-6 rounded-[24px] sm:rounded-[28px] bg-foreground/5 border border-border flex items-center justify-between group hover:bg-foreground/10 transition-all"
-                  >
-                    <div className="flex items-center gap-4 font-black uppercase tracking-widest text-[10px]">
-                      <div className="text-foreground/20 group-hover:text-primary transition-colors shrink-0">
-                        {item.icon}
-                      </div>
-                      {item.label}
-                    </div>
-                  </Link>
-                ))}
-              </div>
+            {/* Quick Tips or Announcements could go here */}
+            <div className="p-10 rounded-[56px] bg-linear-to-br from-accent/10 via-accent/5 to-transparent border border-accent/20 shadow-huge backdrop-blur-3xl relative overflow-hidden group">
+               <h3 className="text-xl font-black italic uppercase tracking-tighter mb-4 relative z-10">Quick <span className="gradient-text italic">Tip</span></h3>
+               <p className="text-xs text-muted-foreground font-medium leading-relaxed relative z-10 italic opacity-80">
+                 "A surprise call is a core memory in the making. Make sure to provide specific details about the recipient for the best experience."
+               </p>
             </div>
           </div>
         </div>

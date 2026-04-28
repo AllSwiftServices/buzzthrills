@@ -69,6 +69,12 @@ function BookingContent() {
     setRecipients(recipients.filter((_, i) => i !== index));
   };
 
+  const handleRecipientChange = (index: number, field: string, value: string) => {
+    const newRecipients = [...recipients];
+    newRecipients[index] = { ...newRecipients[index], [field]: value };
+    setRecipients(newRecipients);
+  };
+
   const handlePaystackPayment = () => {
     if (!window.PaystackPop) {
       alert("Payment gateway is loading, please try again in a moment.");
@@ -81,6 +87,15 @@ function BookingContent() {
       return;
     }
 
+    // Basic Validation
+    for (const r of recipients) {
+      if (!r.name || !r.phone || !r.date) {
+        alert("Please complete all recipient details.");
+        setStep("recipients");
+        return;
+      }
+    }
+
     const handler = window.PaystackPop.setup({
       key: PAYSTACK_PUBLIC_KEY,
       email: clientData.email,
@@ -91,6 +106,7 @@ function BookingContent() {
         user_id: user?.id,
         is_express: isExpress,
         client_name: clientData.name,
+        recipients: recipients, // Pass full recipient list
       },
       callback: function(response: any) {
         fetch(`/api/payments/verify?reference=${response.reference}`)
@@ -117,11 +133,23 @@ function BookingContent() {
 
   const nextStep = () => {
     if (step === "subscriber") {
+      if (!clientData.name || !clientData.email || !clientData.phone) {
+        alert("Please fill in your details.");
+        return;
+      }
       if (service.tiers.length > 1) setStep("variant");
       else setStep("recipients");
     }
     else if (step === "variant") setStep("recipients");
-    else if (step === "recipients") setStep("preferences");
+    else if (step === "recipients") {
+      for (const r of recipients) {
+        if (!r.name || !r.phone || !r.date) {
+          alert("Please fill in all recipient details.");
+          return;
+        }
+      }
+      setStep("preferences");
+    }
     else if (step === "preferences") {
       setStep("payment");
     }
@@ -139,6 +167,17 @@ function BookingContent() {
     else if (step === "preferences") setStep("recipients");
     else if (step === "payment") setStep("preferences");
   };
+
+  // Pre-fill user data
+  useEffect(() => {
+    if (user) {
+      setClientData({
+        name: user.fullName || "",
+        email: user.email || "",
+        phone: "" // Phone might not be in auth but in profile
+      });
+    }
+  }, [user]);
 
   return (
     <div className="w-full max-w-4xl mx-auto glass p-6 sm:p-8 md:p-12 min-h-[500px] sm:min-h-[600px] flex flex-col border border-border shadow-2xl relative overflow-hidden">
@@ -304,11 +343,23 @@ function BookingContent() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-2">
                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Recipient Name</label>
-                       <input type="text" className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" placeholder="First Name / Nickname" />
+                       <input 
+                        type="text" 
+                        value={r.name}
+                        onChange={(e) => handleRecipientChange(i, 'name', e.target.value)}
+                        className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" 
+                        placeholder="First Name / Nickname" 
+                       />
                     </div>
                     <div className="space-y-2">
                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Phone Pulse</label>
-                       <input type="tel" className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" placeholder="+234 ..." />
+                       <input 
+                        type="tel" 
+                        value={r.phone}
+                        onChange={(e) => handleRecipientChange(i, 'phone', e.target.value)}
+                        className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" 
+                        placeholder="+234 ..." 
+                       />
                     </div>
                     <div className="space-y-2">
                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Service Frequency</label>
@@ -316,7 +367,12 @@ function BookingContent() {
                     </div>
                     <div className="space-y-2">
                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Preferred Date</label>
-                       <input type="date" className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" />
+                       <input 
+                        type="date" 
+                        value={r.date}
+                        onChange={(e) => handleRecipientChange(i, 'date', e.target.value)}
+                        className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" 
+                       />
                     </div>
                   </div>
                 </div>

@@ -1,6 +1,7 @@
 "use client";
 
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 import Reveal from "@/components/Reveal";
 import { Heart, Sparkles, Star, Users, Smile, Globe } from "lucide-react";
 import Link from "next/link";
@@ -127,6 +128,7 @@ export default function AboutPage() {
           </div>
         </Reveal>
       </section>
+      <Footer />
     </main>
   );
 }
