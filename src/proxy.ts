@@ -12,6 +12,7 @@ export async function proxy(req: NextRequest) {
   const isProfileRoute = pathname.startsWith("/profile");
   const isAdminRoute = pathname.startsWith("/admin");
   const isAuthRoute = pathname.startsWith("/auth");
+  const isBookingRoute = pathname.startsWith("/book") || pathname.startsWith("/checkout");
 
   // 2. Identify the Access Token
   // We check the Authorization header first, then the cookie (if implemented for SSR)
@@ -23,7 +24,7 @@ export async function proxy(req: NextRequest) {
   }
 
   // 3. Logic for Protected Routes
-  if (isProfileRoute || isAdminRoute) {
+  if (isProfileRoute || isAdminRoute || isBookingRoute) {
     if (!token) {
       return NextResponse.redirect(new URL("/auth", req.url));
     }
@@ -69,5 +70,7 @@ export const config = {
     "/profile/:path*",
     "/admin/:path*",
     "/auth/:path*",
+    "/book/:path*",
+    "/checkout/:path*",
   ],
 };
