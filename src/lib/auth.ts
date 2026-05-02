@@ -30,7 +30,7 @@ export async function verifyToken(token: string) {
       return null;
     }
 
-    return payload;
+    return payload as unknown as { id: string; email: string; role: string; is_suspended?: boolean };
   } catch (error) {
     return null;
   }

@@ -128,7 +128,7 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
         {/* Recent Activity */}
-        <div className="lg:col-span-12 p-12 rounded-[64px] glass border border-white/10 shadow-huge bg-black/20 relative overflow-hidden h-fit">
+        <div className="lg:col-span-12 p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[64px] glass border border-white/10 shadow-huge bg-black/20 relative overflow-hidden h-fit">
           <div className="flex justify-between items-center mb-10">
             <div>
               <h3 className="text-2xl font-black italic tracking-tighter uppercase">Recent <span className="gradient-text italic">History</span></h3>
@@ -136,7 +136,7 @@ export default function AdminDashboard() {
             </div>
             <button 
               onClick={() => router.push('/admin/calls')}
-              className="px-6 py-3 rounded-xl bg-white/5 border border-white/5 text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
+              className="px-4 py-2 sm:px-6 sm:py-3 rounded-xl bg-white/5 border border-white/5 text-[8px] sm:text-[10px] font-black uppercase tracking-widest hover:bg-white/10 transition-all"
             >
                View All History
             </button>
@@ -149,19 +149,19 @@ export default function AdminDashboard() {
                 initial={{ opacity: 0, x: -10 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: i * 0.05 }}
-                className="p-8 rounded-[48px] bg-white/5 border border-white/5 hover:border-primary/20 hover:bg-white/10 transition-all group cursor-pointer relative overflow-hidden"
+                className="p-5 sm:p-8 rounded-[24px] sm:rounded-[48px] bg-white/5 border border-white/5 hover:border-primary/20 hover:bg-white/10 transition-all group cursor-pointer relative overflow-hidden"
               >
-                <div className="flex items-center gap-6 mb-6">
-                  <div className="w-16 h-16 rounded-[24px] bg-primary/10 border border-primary/20 flex items-center justify-center font-black text-primary text-xl shadow-huge group-hover:scale-110 transition-transform duration-500">
+                <div className="flex items-center gap-4 sm:gap-6 mb-4 sm:mb-6">
+                  <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[16px] sm:rounded-[24px] bg-primary/10 border border-primary/20 flex items-center justify-center font-black text-primary text-base sm:text-xl shadow-huge group-hover:scale-110 transition-transform duration-500">
                     {call.recipient_name[0]}
                   </div>
                   <div>
-                    <div className="font-black text-lg tracking-tight group-hover:text-primary transition-colors">{call.recipient_name}</div>
-                    <div className="text-[10px] text-white/40 font-bold uppercase tracking-widest mt-0.5">{call.recipient_phone}</div>
+                    <div className="font-black text-sm sm:text-lg tracking-tight group-hover:text-primary transition-colors">{call.recipient_name}</div>
+                    <div className="text-[9px] sm:text-[10px] text-white/40 font-bold uppercase tracking-widest mt-0.5">{call.recipient_phone}</div>
                   </div>
                 </div>
                 
-                <div className="flex items-center justify-between pt-6 border-t border-white/5">
+                <div className="flex items-center justify-between pt-4 sm:pt-6 border-t border-white/5">
                    <div className="flex flex-col gap-1">
                       <div className="text-[10px] font-black text-white/20 uppercase tracking-widest flex items-center gap-2">
                          <Clock size={12} />

@@ -100,33 +100,33 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-5xl bg-[#0D0D0E] border border-white/10 rounded-[40px] shadow-2xl overflow-hidden"
+        className="relative w-full max-w-5xl bg-[#0D0D0E] border border-white/10 rounded-[24px] sm:rounded-[40px] shadow-2xl overflow-hidden"
       >
-        <div className="p-8 border-b border-white/5 flex justify-between items-center bg-linear-to-b from-white/5 to-transparent">
+        <div className="p-5 sm:p-8 border-b border-white/5 flex justify-between items-center bg-linear-to-b from-white/5 to-transparent">
           <div>
-            <h2 className="text-2xl font-black italic uppercase tracking-tighter text-white">Engagement <span className="gradient-text italic">Command Console</span></h2>
-            <p className="text-[10px] font-black text-white/40 uppercase tracking-widest mt-1">Audit ID: {call.id.toUpperCase()}</p>
+            <h2 className="text-lg sm:text-2xl font-black italic uppercase tracking-tighter text-white">Engagement <span className="gradient-text italic">Intelligence</span></h2>
+            <p className="text-[8px] sm:text-[10px] font-black text-white/40 uppercase tracking-widest mt-1">Strategic oversight for active engagement audit.</p>
           </div>
-          <div className="flex items-center gap-4">
-             <div className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border ${
-                call.status === 'delivered' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 
-                call.status === 'failed' ? 'bg-red-500/10 text-red-500 border-red-500/20' : 
-                'bg-amber-500/10 text-amber-500 border-amber-500/20'
-             }`}>
-                Current: {call.status}
-             </div>
-             <button onClick={onClose} className="p-2 hover:bg-white/5 rounded-full transition-colors text-white/60">
-               <X size={24} />
-             </button>
+          <div className="flex items-center gap-2 sm:gap-4">
+            <div className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border ${
+               call.status === 'delivered' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 
+               call.status === 'failed' ? 'bg-red-500/10 text-red-500 border-red-500/20' : 
+               'bg-amber-500/10 text-amber-500 border-amber-500/20'
+            }`}>
+               Current: {call.status}
+            </div>
+            <button onClick={onClose} className="p-1 sm:p-2 hover:bg-white/5 rounded-full transition-colors text-white/60">
+              <X size={20} className="sm:size-6" />
+            </button>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 h-[60vh] overflow-y-auto lg:h-auto lg:overflow-visible">
+        <div className="grid grid-cols-1 lg:grid-cols-4 max-h-[70vh] lg:max-h-none overflow-y-auto">
            {/* Column 1: Core Details */}
-           <div className="p-8 space-y-8 border-r border-white/5 bg-white/[0.01]">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-white/5 bg-white/[0.01]">
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">The Recipient</label>
-                <div className="p-5 rounded-3xl bg-white/5 border border-white/10 space-y-4">
+                <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 space-y-3 sm:space-y-4">
                    <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center text-white shadow-xl">
                          <User size={24} />
@@ -150,9 +150,9 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
 
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">The Booker</label>
-                <div className="p-5 rounded-3xl bg-white/5 border border-white/10 flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary shadow-xl">
-                    <UserCheck size={24} />
+                <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 flex items-center gap-3 sm:gap-4">
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary shadow-xl">
+                    <UserCheck size={20} className="sm:size-6" />
                   </div>
                   <div className="overflow-hidden">
                     <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">User</div>
@@ -163,18 +163,18 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            </div>
 
            {/* Column 2: Context */}
-           <div className="p-8 space-y-8 border-r border-white/5">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-white/5">
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Engagement Context</label>
                 <div className="grid grid-cols-2 gap-3">
-                   <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                   <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10">
                       <div className="flex items-center gap-2 text-white/40 mb-1">
                          <Calendar size={12} className="text-primary" />
                          <span className="text-[9px] font-black uppercase tracking-widest">Date</span>
                       </div>
                       <div className="text-xs font-black text-white">{new Date(call.occasion_date).toLocaleDateString()}</div>
                    </div>
-                   <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                   <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10">
                       <div className="flex items-center gap-2 text-white/40 mb-1">
                          <Clock size={12} className="text-secondary" />
                          <span className="text-[9px] font-black uppercase tracking-widest">Slot</span>
@@ -206,7 +206,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            </div>
 
            {/* Column 3: Operator Actions (Notes & Proof) */}
-           <div className="p-8 space-y-8 border-r border-white/5 bg-white/[0.01]">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-white/5 bg-white/[0.01]">
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Operator Notes (Sent to Booker)</label>
                 <textarea 
@@ -261,7 +261,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            </div>
 
            {/* Column 4: Lifecycle Finalization */}
-           <div className="p-8 space-y-8 bg-white/[0.02]">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 bg-white/[0.02]">
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Status Lifecycle</label>
                 <div className="grid grid-cols-1 gap-2">

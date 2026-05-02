@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Calendar, MessageSquare, Settings, ShieldCheck, LogOut } from "lucide-react";
+import { User, Calendar, Settings, ShieldCheck, LogOut } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -13,7 +13,6 @@ export default function Sidebar() {
   const menuItems = [
     { href: "/profile", icon: <User size={20} />, label: "Dashboard" },
     { href: "/profile/history", icon: <Calendar size={20} />, label: "Thrills History" },
-    { href: "/profile/messages", icon: <MessageSquare size={20} />, label: "Support Hub" },
     { href: "/profile/settings", icon: <Settings size={20} />, label: "Settings" },
   ];
 

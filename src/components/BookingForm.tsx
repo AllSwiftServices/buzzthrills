@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Sparkles, Loader2, Star, Zap, PhoneCall, Globe, Heart } from "lucide-react";
 import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
 import { useAuth } from "@/context/AuthContext";
-import { CALL_SERVICES, CallService, CallVariant } from "@/lib/pricing_config";
+import { CALL_SERVICES, CallService, CallVariant, ICON_MAP } from "@/lib/pricing_config";
 
 declare global {
   interface Window {
@@ -14,17 +14,17 @@ declare global {
   }
 }
 
-type Step = "subscriber" | "variant" | "recipients" | "preferences" | "payment";
+type Step = "type" | "subscriber" | "variant" | "recipients" | "preferences" | "payment";
 
 function BookingContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const serviceId = searchParams.get("type") || "celebratory";
   const { user } = useAuth();
+  const serviceId = searchParams.get("type") || "celebratory";
+  const [currentServiceId, setCurrentServiceId] = useState(serviceId);
+  const service = CALL_SERVICES[currentServiceId] || CALL_SERVICES.celebratory;
   
-  const service = CALL_SERVICES[serviceId] || CALL_SERVICES.celebratory;
-  
-  const [step, setStep] = useState<Step>("subscriber");
+  const [step, setStep] = useState<Step>(searchParams.get("type") ? "subscriber" : "type");
   const [selectedVariant, setSelectedVariant] = useState<CallVariant>(service.tiers[0].variant);
   const [isExpress, setIsExpress] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -52,7 +52,7 @@ function BookingContent() {
   useEffect(() => {
     setRecipients(r => r.map(item => ({ ...item, occasion: service.name })));
     setSelectedVariant(service.tiers[0].variant);
-  }, [serviceId]);
+  }, [currentServiceId, service.name]);
 
   const isSubscriber = subscription?.status === 'active';
 
@@ -132,7 +132,10 @@ function BookingContent() {
   };
 
   const nextStep = () => {
-    if (step === "subscriber") {
+    if (step === "type") {
+      setStep("subscriber");
+    }
+    else if (step === "subscriber") {
       if (!clientData.name || !clientData.email || !clientData.phone) {
         alert("Please fill in your details.");
         return;
@@ -159,7 +162,8 @@ function BookingContent() {
   };
 
   const prevStep = () => {
-    if (step === "variant") setStep("subscriber");
+    if (step === "subscriber") setStep("type");
+    else if (step === "variant") setStep("subscriber");
     else if (step === "recipients") {
       if (service.tiers.length > 1) setStep("variant");
       else setStep("subscriber");
@@ -184,23 +188,78 @@ function BookingContent() {
       <div className="absolute top-0 left-0 w-full h-1 gradient-bg opacity-50" />
       
       {/* Progress Stepper */}
-      <div className="flex items-center justify-between mb-8 md:mb-12 relative px-2">
+      <div className="flex items-center justify-between mb-6 md:mb-12 relative px-1 sm:px-2">
         <div className="absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2 z-0" />
-        {(["subscriber", ...(service.tiers.length > 1 ? ["variant"] : []), "recipients", "preferences", "payment"]).map((s, i, arr) => (
-          <div 
-            key={s} 
-            className={`relative z-10 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-black text-xs md:text-sm transition-all border-2 ${
-              step === s ? 'gradient-bg border-transparent text-white scale-110 shadow-lg shadow-primary/20' : 
-              i < arr.indexOf(step) ? 'bg-primary border-primary text-white' : 'bg-muted border-border text-muted-foreground'
-            }`}
-          >
-            {i < arr.indexOf(step) ? <Check size={14} className="md:w-[18px] md:h-[18px]" /> : i + 1}
-            <span className="sr-only">{s}</span>
-          </div>
-        ))}
+        {(["type", "subscriber", ...(service.tiers.length > 1 ? ["variant"] : []), "recipients", "preferences", "payment"] as Step[]).map((s, i, arr) => {
+          const isPast = arr.indexOf(step) > i;
+          return (
+            <button 
+              key={s} 
+              onClick={() => isPast && setStep(s)}
+              disabled={!isPast}
+              className={`relative z-10 w-6 h-6 xs:w-8 xs:h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center font-black text-[8px] xs:text-xs md:text-sm transition-all border-2 ${
+                step === s ? 'gradient-bg border-transparent text-white scale-110 shadow-lg shadow-primary/20' : 
+                isPast ? 'bg-primary border-primary text-white cursor-pointer hover:scale-110' : 'bg-muted border-border text-muted-foreground cursor-default'
+              }`}
+            >
+              {isPast ? <Check className="w-3 h-3 xs:w-3.5 xs:h-3.5 md:w-[18px] md:h-[18px]" /> : i + 1}
+              <span className="sr-only">{s}</span>
+            </button>
+          );
+        })}
       </div>
 
       <AnimatePresence mode="wait">
+        {step === "type" && (
+          <motion.div
+            key="type"
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            className="flex-grow space-y-8"
+          >
+            <div>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Select <span className="gradient-text italic">Experience</span></h2>
+              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">What kind of thrill are we booking today?</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 max-h-[500px] overflow-y-auto pt-[2px] px-[2px] pr-2 custom-scrollbar">
+              {Object.values(CALL_SERVICES).map((s) => (
+                <button
+                  key={s.id}
+                  onClick={() => {
+                    if (s.id === 'company_calls') {
+                      router.push('/corporate');
+                      return;
+                    }
+                    setCurrentServiceId(s.id);
+                    setStep("subscriber");
+                  }}
+                  className={`p-4 sm:p-6 rounded-2xl sm:rounded-[32px] border-2 transition-all text-left group flex items-center gap-4 ${
+                    currentServiceId === s.id ? 'bg-primary/10 border-primary shadow-xl scale-[1.02]' : 'glass border-border hover:border-foreground/20'
+                  }`}
+                >
+                  <div className={`w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl flex items-center justify-center shrink-0 ${currentServiceId === s.id ? 'bg-primary text-white' : 'bg-foreground/5 text-foreground/40'}`}>
+                    {(() => {
+                      const Icon = ICON_MAP[s.icon] || PhoneCall;
+                      return <Icon size={20} className="sm:size-6" />;
+                    })()}
+                  </div>
+                  <div className="flex-grow min-w-0">
+                    <div className="flex justify-between items-start gap-2">
+                      <h4 className="font-black text-xs sm:text-sm uppercase tracking-tight truncate">{s.name}</h4>
+                      <span className="text-[9px] sm:text-[10px] font-black text-primary/60 shrink-0 whitespace-nowrap">₦{s.basePrice.toLocaleString()}</span>
+                    </div>
+                    <p className="text-[9px] sm:text-[10px] text-muted-foreground font-medium line-clamp-1 sm:line-clamp-2 mt-0.5 leading-relaxed italic">
+                      {s.description}
+                    </p>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
         {step === "subscriber" && (
           <motion.div
             key="subscriber"
@@ -281,8 +340,8 @@ function BookingContent() {
                   <button
                     key={tier.variant}
                     onClick={() => setSelectedVariant(tier.variant)}
-                    className={`p-8 rounded-[36px] border-2 transition-all text-left group relative flex flex-col justify-between h-full ${
-                      selectedVariant === tier.variant ? 'bg-primary/10 border-primary shadow-huge scale-105' : 'glass border-border hover:border-foreground/20'
+                    className={`p-5 sm:p-8 rounded-[28px] sm:rounded-[36px] border-2 transition-all text-left group relative flex flex-col justify-between h-full ${
+                      selectedVariant === tier.variant ? 'bg-primary/10 border-primary shadow-huge scale-[1.02] sm:scale-105' : 'glass border-border hover:border-foreground/20'
                     }`}
                   >
                     <div>
@@ -331,7 +390,7 @@ function BookingContent() {
 
             <div className="space-y-8 max-h-[500px] overflow-y-auto pr-4 custom-scrollbar">
               {recipients.map((r, i) => (
-                <div key={i} className="p-6 sm:p-8 rounded-[32px] sm:rounded-[40px] bg-foreground/5 border border-border relative group hover:border-primary/20 transition-all">
+                <div key={i} className="p-4 sm:p-8 rounded-2xl sm:rounded-[40px] bg-foreground/5 border border-border relative group hover:border-primary/20 transition-all">
                   {recipients.length > 1 && (
                     <button 
                       onClick={() => removeRecipient(i)}
@@ -371,7 +430,7 @@ function BookingContent() {
                         type="date" 
                         value={r.date}
                         onChange={(e) => handleRecipientChange(i, 'date', e.target.value)}
-                        className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold" 
+                        className="w-full min-w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold block appearance-none" 
                        />
                     </div>
                   </div>
@@ -420,7 +479,7 @@ function BookingContent() {
 
               <div 
                 onClick={() => setIsExpress(!isExpress)}
-                className={`p-6 sm:p-8 rounded-[32px] sm:rounded-[40px] border-2 cursor-pointer transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 group ${
+                className={`p-4 sm:p-8 rounded-2xl sm:rounded-[40px] border-2 cursor-pointer transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 group ${
                   isExpress ? 'bg-primary/10 border-primary shadow-2xl shadow-primary/20' : 'glass border-border hover:border-foreground/10'
                 }`}
               >
@@ -464,23 +523,23 @@ function BookingContent() {
               Redirecting to Paystack for secure payment. You will receive an order confirmation email instantly.
             </p>
             
-            <div className="w-full max-w-md p-6 sm:p-10 rounded-[48px] sm:rounded-[56px] glass border border-border shadow-3xl relative overflow-hidden text-left">
+            <div className="w-full max-w-md p-5 sm:p-10 rounded-[32px] sm:rounded-[56px] glass border border-border shadow-3xl relative overflow-hidden text-left">
                <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[60px] rounded-full -mr-16 -mt-16" />
                
-               <div className="space-y-6 relative z-10">
+               <div className="space-y-4 sm:space-y-6 relative z-10">
                   <div className="flex justify-between items-center group">
-                    <span className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">Package ({selectedTier.label})</span>
-                    <span className="font-black text-lg">₦{basePrice.toLocaleString()}</span>
+                    <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Package ({selectedTier.label})</span>
+                    <span className="font-black text-base sm:text-lg">₦{basePrice.toLocaleString()}</span>
                   </div>
                   {isExpress && (
                     <div className="flex justify-between items-center text-primary">
-                      <span className="font-black uppercase tracking-widest text-[10px]">Express Service</span>
-                      <span className="font-black text-lg">+₦2,000</span>
+                      <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Express Service</span>
+                      <span className="font-black text-base sm:text-lg">+₦2,000</span>
                     </div>
                   )}
-                  <div className="pt-6 border-t border-border flex justify-between items-center bg-foreground/2 -mx-6 -mb-6 p-6 sm:p-10 sm:-mx-10 sm:-mb-10 mt-8">
-                    <span className="text-xs sm:text-sm font-black uppercase tracking-[0.2em] italic">Total Amount</span>
-                    <span className="text-2xl sm:text-3xl font-black gradient-text tracking-tighter">₦{totalPrice.toLocaleString()}</span>
+                  <div className="pt-6 border-t border-border flex justify-between items-center bg-foreground/2 -mx-5 -mb-5 p-5 sm:p-10 sm:-mx-10 sm:-mb-10 mt-6 sm:mt-8">
+                    <span className="text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] italic">Total Amount</span>
+                    <span className="text-xl sm:text-3xl font-black gradient-text tracking-tighter">₦{totalPrice.toLocaleString()}</span>
                   </div>
                </div>
             </div>
@@ -491,8 +550,8 @@ function BookingContent() {
       <div className="mt-8 sm:mt-12 flex justify-between items-center pt-6 sm:pt-8 border-t border-border">
           <button 
             onClick={prevStep}
-            disabled={step === "subscriber"}
-            className={`flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-4 sm:py-5 rounded-[32px] font-black text-[9px] sm:text-[10px] uppercase tracking-widest transition-all ${step === "subscriber" ? 'opacity-0 pointer-events-none' : 'glass border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground hover:scale-105 active:scale-95'}`}
+            disabled={step === "type"}
+            className={`flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-4 sm:py-5 rounded-[32px] font-black text-[9px] sm:text-[10px] uppercase tracking-widest transition-all ${step === "type" ? 'opacity-0 pointer-events-none' : 'glass border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground hover:scale-105 active:scale-95'}`}
           >
             <ChevronLeft size={18} className="sm:w-5 sm:h-5" />
             <span className="hidden xs:inline">Previous Step</span>

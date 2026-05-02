@@ -85,7 +85,7 @@ export default function Header() {
         {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
           {navLinks.map((link) => (
-            <Link key={link.href} href={link.href} className="hover:text-primary transition-colors">
+            <Link key={link.label} href={link.href} className="hover:text-primary transition-colors">
               {link.label}
             </Link>
           ))}
@@ -162,53 +162,52 @@ export default function Header() {
               initial="closed"
               animate="open"
               exit="closed"
-              className="fixed inset-0 z-45 flex flex-col items-center justify-center p-6 md:hidden pointer-events-none"
+              className="fixed inset-0 z-45 flex flex-col items-center justify-center p-4 md:hidden pointer-events-auto overflow-y-auto"
             >
-              <div className="w-full max-w-sm flex flex-col items-center gap-12 pointer-events-auto">
-                <motion.div variants={itemVariants} className="flex flex-col items-center gap-6 w-full">
+              <div className="w-full max-w-sm flex flex-col items-center gap-8 py-20">
+                <motion.div variants={itemVariants} className="flex flex-col items-center gap-4 w-full">
                   {navLinks.map((link) => (
                     <Link 
-                      key={link.href} 
+                      key={link.label} 
                       href={link.href} 
                       onClick={() => setIsOpen(false)}
-                      className="text-4xl font-black hover:text-primary transition-all py-2 text-center gradient-h-hover block w-full hover:scale-105"
+                      className="text-2xl sm:text-3xl font-black hover:text-primary transition-all py-1.5 text-center gradient-h-hover block w-full hover:scale-105 tracking-tight"
                     >
                       {link.label}
                     </Link>
                   ))}
                 </motion.div>
-
-                <motion.div variants={itemVariants} className="w-full flex flex-col items-center gap-8">
-                  <div className="w-24 h-px bg-primary/20" />
+ 
+                <motion.div variants={itemVariants} className="w-full flex flex-col items-center gap-6">
+                  <div className="w-16 h-px bg-primary/20" />
                   
-                  <div className="flex flex-col items-center gap-6 w-full">
+                  <div className="flex flex-col items-center gap-4 w-full">
                     {user ? (
                       <Link 
                         href="/profile"
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center gap-3 text-2xl font-bold py-2 group"
+                        className="flex items-center gap-3 text-xl font-bold py-1 group"
                       >
-                        <User className="text-primary group-hover:scale-110 transition-transform" size={28} />
+                        <User className="text-primary group-hover:scale-110 transition-transform" size={24} />
                         My Dashboard
                       </Link>
                     ) : (
                       <Link 
                         href="/auth"
                         onClick={() => setIsOpen(false)}
-                        className="flex items-center gap-3 text-2xl font-bold py-2 group"
+                        className="flex items-center gap-3 text-xl font-bold py-1 group"
                       >
-                        <User className="text-primary group-hover:scale-110 transition-transform" size={28} />
+                        <User className="text-primary group-hover:scale-110 transition-transform" size={24} />
                         Get Started
                       </Link>
                     )}
                     <Link 
                       href="/pricing"
                       onClick={() => setIsOpen(false)}
-                      className="w-full max-w-xs py-5 rounded-3xl gradient-bg text-white font-semibold text-2xl text-center shadow-2xl shadow-primary/30 active:scale-95 transition-all"
+                      className="w-full max-w-[280px] py-4 rounded-2xl gradient-bg text-white font-bold text-xl text-center shadow-xl shadow-primary/20 active:scale-95 transition-all"
                     >
-                      {user ? "My Dashboard" : "Start Sharing Joy"}
+                      {user ? "Send a Surprise" : "Start Sharing Joy"}
                     </Link>
-
                   </div>
                 </motion.div>
               </div>

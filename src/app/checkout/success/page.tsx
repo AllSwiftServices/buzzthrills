@@ -43,21 +43,21 @@ export default function CheckoutSuccess() {
               <CheckCircle2 size={48} className="text-green-500" />
            </motion.div>
 
-           <h1 className="text-4xl md:text-6xl font-black mb-6 tracking-tighter">Order <span className="gradient-text">Confirmed!</span></h1>
-           <p className="text-muted-foreground font-black tracking-tight mb-12 max-w-md mx-auto text-base leading-relaxed uppercase tracking-[0.1em]">
-             Your booking was successful! Our team is already working to make it a special experience.
+           <h1 className="text-5xl md:text-8xl font-medium mb-4 tracking-tight font-serif italic leading-none">Mission <br className="xs:hidden" /><span className="gradient-text italic">Accepted.</span></h1>
+           <p className="text-muted-foreground font-medium italic font-serif text-lg md:text-xl mb-12 max-w-sm mx-auto leading-relaxed">
+             Your order is confirmed. We&apos;re already on it!
            </p>
 
            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
-              <div className="p-8 rounded-[32px] bg-primary/5 border-2 border-primary/20 text-left group hover:border-primary/40 transition-all shadow-xl shadow-primary/5">
-                 <div className="text-[11px] font-black text-primary uppercase tracking-widest mb-2 opacity-70">Order ID</div>
+              <div className="p-8 rounded-[32px] bg-primary/5 border border-border text-left group hover:border-primary/20 transition-all shadow-xl shadow-primary/5">
+                 <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-2">Order Pulse</div>
                  <div className="font-black text-2xl font-mono text-primary group-hover:scale-105 transition-transform origin-left tracking-tight">{orderRef}</div>
               </div>
-              <div className="p-8 rounded-[32px] bg-secondary/5 border-2 border-secondary/20 text-left group hover:border-secondary/40 transition-all shadow-xl shadow-secondary/5">
-                 <div className="text-[11px] font-black text-secondary uppercase tracking-widest mb-2 opacity-70">Status</div>
+              <div className="p-8 rounded-[32px] bg-secondary/5 border border-border text-left group hover:border-secondary/20 transition-all shadow-xl shadow-secondary/5">
+                 <div className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mb-2">Status</div>
                  <div className="font-black text-xl flex items-center gap-2 group-hover:translate-x-2 transition-transform text-secondary">
-                    <Zap size={20} className="fill-current animate-pulse" />
-                    Processing
+                    <Zap size={20} className="fill-current animate-pulse text-amber-400" />
+                    Tactical Setup
                  </div>
               </div>
            </div>
@@ -65,12 +65,13 @@ export default function CheckoutSuccess() {
            <div className="flex flex-col gap-4 justify-center">
               <Link 
                 href="/profile"
-                className="px-10 py-6 rounded-[32px] gradient-bg text-white font-black text-sm uppercase tracking-[0.2em] shadow-huge hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
+                className="px-10 py-6 rounded-[32px] bg-primary text-white font-black text-sm uppercase tracking-[0.2em] shadow-[0_20px_50px_rgba(var(--primary-rgb),0.3)] hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 relative overflow-hidden group"
               >
-                Track Your Order
-                <ArrowRight size={20} />
+                <div className="absolute inset-0 bg-white/10 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                <span className="relative z-10">Track Your Order</span>
+                <ArrowRight size={20} className="relative z-10" />
               </Link>
-              <button className="px-10 py-6 rounded-[32px] glass border-2 border-border text-foreground font-black text-xs uppercase tracking-widest hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
+              <button className="px-10 py-6 rounded-[32px] glass border border-border text-foreground font-black text-xs uppercase tracking-widest hover:bg-foreground/5 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3">
                 <Download size={20} />
                 Download Receipt
               </button>

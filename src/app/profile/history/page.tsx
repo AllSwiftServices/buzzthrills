@@ -75,7 +75,7 @@ export default function HistoryPage() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.1 }}
                 onClick={() => setExpandedId(expandedId === item.id ? null : item.id)}
-                className={`group p-6 sm:p-8 rounded-[40px] border transition-all cursor-pointer relative overflow-hidden ${
+                className={`group p-4 sm:p-8 rounded-[24px] sm:rounded-[40px] border transition-all cursor-pointer relative overflow-hidden ${
                   expandedId === item.id 
                     ? 'bg-accent/5 border-primary/30 shadow-huge shadow-primary/5' 
                     : 'glass border-border hover:border-primary/20 hover:bg-foreground/[0.02]'
@@ -85,11 +85,11 @@ export default function HistoryPage() {
                 
                 <div className="relative z-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">
                   <div className="flex items-center gap-6">
-                    <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-[24px] gradient-bg flex items-center justify-center text-white shadow-2xl shadow-primary/20 group-hover:scale-105 transition-transform shrink-0">
-                      <Phone size={24} />
+                    <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[16px] sm:rounded-[24px] gradient-bg flex items-center justify-center text-white shadow-2xl shadow-primary/20 group-hover:scale-105 transition-transform shrink-0">
+                      <Phone size={20} className="sm:size-6" />
                     </div>
                     <div>
-                      <div className="font-black text-xl sm:text-2xl tracking-tighter uppercase italic leading-tight group-hover:text-primary transition-colors">{item.occasion_type}</div>
+                      <div className="font-black text-lg sm:text-2xl tracking-tighter uppercase italic leading-tight group-hover:text-primary transition-colors">{item.occasion_type}</div>
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-1">
                         <div className="text-[10px] text-muted-foreground font-black uppercase tracking-widest flex items-center gap-1.5">
                            <User size={12} className="text-primary/60" />
@@ -104,7 +104,7 @@ export default function HistoryPage() {
                   </div>
 
                   <div className="flex items-center justify-between sm:justify-end gap-4">
-                    <div className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest border ${
+                    <div className={`px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border ${
                       item.status === 'delivered' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 
                       item.status === 'failed' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
                       'bg-amber-500/10 text-amber-500 border-amber-500/20'

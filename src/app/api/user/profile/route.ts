@@ -43,12 +43,66 @@ export async function GET() {
       console.error("Subscription Fetch Failure:", subError);
     }
 
+    // 3. Fetch Profile Info
+    const { data: profile, error: profileError } = await supabaseAdmin
+      .from("profiles")
+      .select("*")
+      .eq("id", payload.id)
+      .single();
+
+    if (profileError) console.error("Profile Fetch Failure:", profileError);
+
     return NextResponse.json({
+      profile: profile || null,
       history: calls || [],
       subscription: subscription || null,
     });
   } catch (error) {
     console.error("Profile data fetch error:", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+  }
+}
+
+export async function PATCH(request: Request) {
+  try {
+    const cookieStore = await cookies();
+    const token = cookieStore.get("access_token")?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const payload = await verifyToken(token);
+    if (!payload) {
+      return NextResponse.json({ error: "Invalid Session" }, { status: 401 });
+    }
+
+    const body = await request.json();
+    const { fullName, phone } = body;
+
+    if (!supabaseAdmin) {
+      throw new Error("Admin Client initialization failure");
+    }
+
+    const { data, error } = await supabaseAdmin
+      .from("profiles")
+      .update({
+        full_name: fullName,
+        phone: phone,
+        updated_at: new Date().toISOString(),
+      })
+      .eq("id", payload.id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error("Profile update error:", error);
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ success: true, profile: data });
+  } catch (error) {
+    console.error("Profile update error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

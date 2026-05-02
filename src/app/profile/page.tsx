@@ -86,9 +86,8 @@ export default function ProfilePage() {
             >
               Welcome, <span className="gradient-text italic">{user.fullName || "Client"}</span>!
             </motion.h1>
-            <p className="text-muted-foreground font-black uppercase text-[9px] sm:text-[10px] tracking-widest">Your scheduled platform engagements are active.</p>
+            <p className="text-muted-foreground font-black uppercase text-[9px] sm:text-[10px] tracking-widest pl-1">Manage your upcoming thrills and account details.</p>
           </div>
-            <div className="text-muted-foreground font-black uppercase text-[9px] sm:text-[10px] tracking-widest">Your scheduled platform engagements are active.</div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -129,48 +128,60 @@ export default function ProfilePage() {
             </div>
 
             {/* Activity History */}
-            <div className="p-6 sm:p-10 rounded-[40px] sm:rounded-[56px] bg-linear-to-br from-accent/5 via-accent/2 to-transparent border border-accent/10 shadow-huge backdrop-blur-3xl relative overflow-hidden group">
+            <div className="p-4 sm:p-10 rounded-[32px] sm:rounded-[56px] bg-linear-to-br from-accent/5 via-accent/2 to-transparent border border-accent/10 shadow-huge backdrop-blur-3xl relative overflow-hidden group">
                <div className="absolute top-0 right-0 w-64 h-64 bg-accent/5 blur-[80px] rounded-full -mr-32 -mt-32 group-hover:scale-110 transition-transform duration-1000" />
-               <h3 className="text-lg sm:text-xl font-black italic uppercase tracking-tighter flex items-center justify-between mb-8 sm:mb-10 relative z-10">
-                Activity <span className="gradient-text italic">History</span>
-                <Link href="/profile/history" className="text-[9px] font-black uppercase tracking-widest opacity-40 hover:opacity-100 transition-opacity">View Log</Link>
-              </h3>
-
-              <div className="space-y-4">
-                {history.length > 0 ? history.map((thrill, i) => (
-                  <motion.div 
-                    key={thrill.id} 
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex items-center justify-between p-4 sm:p-6 rounded-[24px] sm:rounded-[32px] bg-foreground/5 hover:bg-accent/10 transition-all border border-border group cursor-pointer relative z-10"
+               
+               <div className="flex items-center justify-between mb-8 sm:mb-10 relative z-10">
+                 <Link href="/profile/history" className="group/title flex items-center gap-3">
+                   <h3 className="text-lg sm:text-xl font-black italic uppercase tracking-tighter group-hover/title:text-primary transition-colors">
+                    Activity <span className="gradient-text italic">History</span>
+                   </h3>
+                   <ChevronRight size={16} className="text-primary opacity-0 -translate-x-2 group-hover/title:opacity-100 group-hover/title:translate-x-0 transition-all" />
+                 </Link>
+                  <Link 
+                    href="/profile/history" 
+                    className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl bg-foreground/5 hover:bg-foreground/10 border border-border text-[8px] sm:text-[9px] font-black uppercase tracking-widest transition-all active:scale-95"
                   >
-                    <div className="flex gap-4 sm:gap-6 items-center">
-                      <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl gradient-bg flex items-center justify-center text-white shadow-xl shadow-primary/20 shrink-0">
-                         {thrill.status === 'delivered' ? <CheckCircle2 size={20} className="sm:size-6" /> : thrill.status === 'pending' ? <Clock size={20} className="sm:size-6" /> : <XCircle size={20} className="sm:size-6" />}
-                      </div>
-                      <div>
-                        <div className="font-black text-base sm:text-lg tracking-tight group-hover:text-primary transition-colors">{thrill.occasion_type}</div>
-                        <div className="text-[9px] sm:text-[10px] text-foreground/40 font-black uppercase tracking-widest mt-1">To: {thrill.recipient_name} • {new Date(thrill.created_at).toLocaleDateString()}</div>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                       <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-border ${
-                         thrill.status === 'delivered' ? 'bg-green-500/10 text-green-500' : 'bg-amber-500/10 text-amber-500'
-                       }`}>
-                          {thrill.status}
+                    View Log
+                  </Link>
+               </div>
+ 
+               <div className="flex flex-col gap-6">
+                 {history.length > 0 ? history.map((thrill, i) => (
+                   <Link key={thrill.id} href="/profile/history" className="block">
+                      <motion.div 
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.1 }}
+                        className="flex items-center justify-between p-3 sm:p-6 rounded-[20px] sm:rounded-[32px] bg-foreground/5 hover:bg-accent/10 transition-all border border-border group cursor-pointer relative z-10"
+                      >
+                       <div className="flex gap-4 sm:gap-6 items-center">
+                          <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-xl sm:rounded-2xl gradient-bg flex items-center justify-center text-white shadow-xl shadow-primary/20 shrink-0">
+                             {thrill.status === 'delivered' ? <CheckCircle2 size={18} className="sm:size-6" /> : thrill.status === 'pending' ? <Clock size={18} className="sm:size-6" /> : <XCircle size={18} className="sm:size-6" />}
+                          </div>
+                          <div>
+                            <div className="font-black text-sm sm:text-lg tracking-tight group-hover:text-primary transition-colors">{thrill.occasion_type}</div>
+                           <div className="text-[9px] sm:text-[10px] text-foreground/40 font-black uppercase tracking-widest mt-1">To: {thrill.recipient_name} • {new Date(thrill.created_at).toLocaleDateString()}</div>
+                         </div>
                        </div>
-                       <ChevronRight size={18} className="text-foreground/20 group-hover:translate-x-1 group-hover:text-foreground transition-all" />
-                    </div>
-                  </motion.div>
-                )) : (
-                  <div className="flex-1 rounded-[40px] border-2 border-dashed border-border flex flex-col items-center justify-center p-8 text-center bg-foreground/2">
-                    <Phone size={48} className="text-foreground/5 mb-4" />
-                    <div className="text-sm font-black uppercase tracking-[0.2em] opacity-10">No History recorded.</div>
-                  </div>
-                )}
-              </div>
-            </div>
+                       <div className="flex items-center gap-3">
+                           <div className={`px-3 py-1 sm:px-4 sm:py-1.5 rounded-full text-[8px] sm:text-[9px] font-black uppercase tracking-widest border border-border ${
+                             thrill.status === 'delivered' ? 'bg-green-500/10 text-green-500' : 'bg-amber-500/10 text-amber-500'
+                           }`}>
+                              {thrill.status}
+                           </div>
+                          <ChevronRight size={18} className="text-foreground/20 group-hover:translate-x-1 group-hover:text-foreground transition-all" />
+                       </div>
+                     </motion.div>
+                   </Link>
+                 )) : (
+                   <div className="flex-1 rounded-[40px] border-2 border-dashed border-border flex flex-col items-center justify-center p-8 text-center bg-foreground/2">
+                     <Phone size={48} className="text-foreground/5 mb-4" />
+                     <div className="text-sm font-black uppercase tracking-[0.2em] opacity-10">No History recorded.</div>
+                   </div>
+                 )}
+               </div>
+             </div>
           </div>
 
           {/* Sidebar Stats / Settings */}

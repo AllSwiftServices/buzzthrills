@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Calendar, MessageSquare, Settings, ShieldCheck } from "lucide-react";
+import { User, Calendar, Settings, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -13,7 +13,6 @@ export default function BottomTabNav() {
   const tabs = [
     { href: "/profile", icon: <User size={20} />, label: "Profile" },
     { href: "/profile/history", icon: <Calendar size={20} />, label: "History" },
-    { href: "/profile/messages", icon: <MessageSquare size={20} />, label: "Messages" },
     { href: "/profile/settings", icon: <Settings size={20} />, label: "Settings" },
   ];
 

@@ -53,17 +53,17 @@ export default function AdminCalls() {
     <div className="space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-4xl font-black mb-2 italic text-white uppercase tracking-tighter">Call <span className="gradient-text italic">Management</span></h1>
-          <p className="text-white/40 font-black uppercase text-[10px] tracking-[0.2em]">Operational Console for platform engagements.</p>
+          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 italic text-white uppercase tracking-tighter">Engagement <span className="gradient-text italic">Operations</span></h1>
+          <p className="text-white/40 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.2em]">Strategic oversight of active platform thrills.</p>
         </div>
         
-        <div className="flex items-center gap-4 w-full md:w-auto">
+        <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
-            <input type="text" className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm outline-none focus:border-primary transition-all font-bold text-white placeholder:text-white/10" placeholder="Search call history..." />
+            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/20" />
+            <input type="text" className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 pl-10 sm:pl-12 pr-4 text-xs sm:text-sm outline-none focus:border-primary transition-all font-bold text-white placeholder:text-white/10" placeholder="Search call history..." />
           </div>
-          <button className="p-3.5 rounded-2xl bg-white/5 border border-white/10 text-white/20 hover:text-primary transition-all">
-            <Filter size={20} />
+          <button className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 text-white/20 hover:text-primary transition-all">
+            <Filter size={18} />
           </button>
         </div>
       </header>
@@ -75,14 +75,14 @@ export default function AdminCalls() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="p-8 rounded-[40px] bg-white/[0.03] border border-white/5 hover:border-primary/30 transition-all group relative overflow-hidden"
+            className="p-5 sm:p-8 rounded-[24px] sm:rounded-[40px] bg-white/[0.03] border border-white/5 hover:border-primary/30 transition-all group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-[50px] rounded-full group-hover:bg-primary/10 transition-all -mr-24 -mt-24" />
             
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
-              <div className="flex items-center gap-8">
-                <div className="w-16 h-16 rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-primary shadow-2xl group-hover:scale-110 transition-transform duration-500">
-                  <PhoneCall size={28} />
+              <div className="flex items-center gap-4 sm:gap-8">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[16px] sm:rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-primary shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                  <PhoneCall size={20} className="sm:size-7" />
                 </div>
                 <div>
                    <div className="flex flex-wrap items-center gap-3 mb-2">
@@ -96,39 +96,39 @@ export default function AdminCalls() {
                          {call.status}
                       </div>
                    </div>
-                    <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
-                       <div className="flex items-center gap-2 text-white/40 font-black uppercase text-[10px] tracking-widest">
-                          <Phone size={14} className="text-primary/60" />
+                    <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3">
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-white/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest">
+                          <Phone size={12} className="sm:size-[14px] text-primary/60" />
                           {call.recipient_phone}
                        </div>
-                       <div className="flex items-center gap-2 text-white/40 font-black uppercase text-[10px] tracking-widest border-l border-white/5 pl-6">
-                          <Calendar size={14} className="text-secondary/60" />
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-white/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest border-l border-white/5 pl-4 sm:pl-6">
+                          <Calendar size={12} className="sm:size-[14px] text-secondary/60" />
                           {new Date(call.occasion_date).toLocaleDateString()}
                        </div>
-                       <div className="flex items-center gap-2 text-white/40 font-black uppercase text-[10px] tracking-widest border-l border-white/5 pl-6">
-                          <Clock size={14} className="text-primary/60" />
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-white/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest border-l border-white/5 pl-4 sm:pl-6">
+                          <Clock size={12} className="sm:size-[14px] text-primary/60" />
                           {call.scheduled_slot} Slot
                        </div>
                     </div>
                 </div>
               </div>
 
-               <div className="flex flex-col sm:flex-row items-center gap-4">
-                  <div className="w-full sm:w-auto p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-4">
-                     <div className="w-10 h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
-                        <UserCheck size={18} />
+               <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
+                  <div className="w-full sm:w-auto p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3 sm:gap-4">
+                     <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+                        <UserCheck size={16} className="sm:size-[18px]" />
                      </div>
                      <div>
-                        <div className="text-[9px] font-black text-white/20 uppercase tracking-widest">Booked By</div>
-                        <div className="text-xs font-black text-white">{call.profiles?.full_name || "Anonymous"}</div>
+                        <div className="text-[8px] sm:text-[9px] font-black text-white/20 uppercase tracking-widest">Booked By</div>
+                        <div className="text-[11px] sm:text-xs font-black text-white">{call.profiles?.full_name || "Anonymous"}</div>
                      </div>
                   </div>
                   <button 
                     onClick={() => setSelectedCall(call)}
-                    className="w-full sm:w-auto px-10 py-5 rounded-2xl bg-primary text-white font-black text-[10px] uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-3"
+                    className="w-full sm:w-auto px-6 py-4 sm:px-10 sm:py-5 rounded-2xl bg-primary text-white font-black text-[9px] sm:text-[10px] uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 sm:gap-3"
                   >
                     View & Manage
-                    <ChevronRight size={18} />
+                    <ChevronRight size={16} className="sm:size-[18px]" />
                   </button>
               </div>
             </div>
