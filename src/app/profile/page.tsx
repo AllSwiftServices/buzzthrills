@@ -115,13 +115,13 @@ export default function ProfilePage() {
                     className="flex-1 sm:flex-none px-6 sm:px-8 py-4 rounded-2xl sm:rounded-3xl bg-white text-black font-black text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-2 whitespace-nowrap"
                   >
                     <Star size={18} className="text-primary" />
-                    Book a Surprise ✨
+                    Book a Call ✨
                   </Link>
                   <Link 
                     href="/pricing"
-                    className="flex-1 sm:flex-none px-6 py-4 rounded-2xl sm:rounded-3xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all backdrop-blur-md flex items-center justify-center whitespace-nowrap"
+                    className="flex-1 sm:flex-none px-6 py-4 rounded-2xl sm:rounded-3xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all backdrop-blur-md flex items-center justify-center text-center leading-tight"
                   >
-                    Upgrade Plan
+                    Subscribe to Monthly Packages
                   </Link>
                 </div>
               </div>
