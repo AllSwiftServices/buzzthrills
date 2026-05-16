@@ -4,7 +4,7 @@
 CREATE TYPE user_role AS ENUM ('user', 'admin', 'caller');
 CREATE TYPE subscription_status AS ENUM ('active', 'expired', 'canceled');
 CREATE TYPE call_status AS ENUM ('pending', 'scheduled', 'delivered', 'failed');
-CREATE TYPE call_slot AS ENUM ('morning', 'afternoon', 'night');
+CREATE TYPE call_slot AS ENUM ('morning', 'afternoon', 'evening', 'night');
 CREATE TYPE plan_type AS ENUM ('lite', 'plus', 'orbit', 'corporate');
 
 -- 2. PROFILES
@@ -22,11 +22,12 @@ CREATE TABLE profiles (
 -- 3. SUBSCRIPTIONS
 CREATE TABLE subscriptions (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL,
+  user_id UUID REFERENCES profiles(id) ON DELETE CASCADE NOT NULL UNIQUE,
   plan plan_type NOT NULL,
   status subscription_status DEFAULT 'active',
   calls_made INTEGER DEFAULT 0,
   total_calls INTEGER NOT NULL,
+  billing_cycle TEXT NOT NULL DEFAULT 'monthly' CHECK (billing_cycle IN ('monthly','annual')),
   start_date TIMESTAMPTZ DEFAULT NOW(),
   next_billing_date TIMESTAMPTZ,
   created_at TIMESTAMPTZ DEFAULT NOW()
@@ -50,6 +51,7 @@ CREATE TABLE calls (
   admin_notes TEXT,
   failure_reason TEXT,
   assigned_to UUID REFERENCES profiles(id), -- Assigned Caller
+  metadata JSONB DEFAULT '{}'::jsonb, -- Booking questionnaire payload (sender, recipient, call-specific Q&A, final notes)
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 

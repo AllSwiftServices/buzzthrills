@@ -6,7 +6,8 @@ import { useAuth } from "@/context/AuthContext";
 import Header from "@/components/Header";
 import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
 import { motion } from "framer-motion";
-import { Zap, Shield, Star, CreditCard, ChevronRight, Loader2 } from "lucide-react";
+import { CreditCard, ChevronRight, Loader2 } from "lucide-react";
+import { SUBSCRIPTION_PLANS, PLAN_ICONS, getCycleMultiplier, type BillingCycle, type PlanId } from "@/lib/plans";
 
 declare global {
   interface Window {
@@ -17,26 +18,27 @@ declare global {
 function CheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const plan = searchParams.get("plan") || "lite";
-  const cycle = searchParams.get("cycle") || "monthly";
+  const planParam = (searchParams.get("plan") || "lite").toLowerCase();
+  const cycleParam = (searchParams.get("cycle") || "monthly").toLowerCase();
   const { user, loading: authLoading } = useAuth();
   const [loading, setLoading] = useState(false);
 
-  const prices = {
-    lite: { monthly: 15000, annual: 14250, label: "Lite Plan", icon: <Star size={24} /> },
-    plus: { monthly: 45000, annual: 42750, label: "Plus Plan", icon: <Zap size={24} /> },
-    orbit: { monthly: 120000, annual: 114000, label: "Orbit Plan", icon: <Shield size={24} /> }
-  };
-
-  const selectedPlan = (plan.toLowerCase() as keyof typeof prices) || "lite";
-  const planData = prices[selectedPlan];
-  const amount = planData[cycle as 'monthly' | 'annual'];
+  const planId = (planParam in SUBSCRIPTION_PLANS ? planParam : "lite") as PlanId;
+  const cycle: BillingCycle = cycleParam === "annual" ? "annual" : "monthly";
+  const planData = SUBSCRIPTION_PLANS[planId];
+  const Icon = PLAN_ICONS[planData.iconName];
+  const amount = cycle === "annual" ? planData.annualPrice : planData.monthlyPrice;
+  const totalDue = amount * getCycleMultiplier(cycle);
 
   useEffect(() => {
-    if (!authLoading && !user) {
-      router.push(`/auth?redirect=checkout&plan=${plan}&cycle=${cycle}`);
+    if (planData.isCustom) {
+      router.replace("/corporate");
+      return;
     }
-  }, [user, authLoading, router, plan, cycle]);
+    if (!authLoading && !user) {
+      router.push(`/auth?redirect=checkout&plan=${planId}&cycle=${cycle}`);
+    }
+  }, [user, authLoading, router, planId, cycle, planData.isCustom]);
 
   const handlePayment = () => {
     if (!window.PaystackPop) {
@@ -49,13 +51,13 @@ function CheckoutContent() {
     const handler = window.PaystackPop.setup({
       key: PAYSTACK_PUBLIC_KEY,
       email: user?.email,
-      amount: amount * (cycle === 'annual' ? 12 : 1) * 100, // Total for the period
+      amount: totalDue * 100, // Total for the period in kobo
       currency: "NGN",
       metadata: {
-        plan: selectedPlan,
+        plan: planId,
         cycle: cycle,
         user_id: user?.id,
-        purchase_type: "subscription"
+        purchase_type: "subscription",
       },
       callback: function(response: any) {
         fetch(`/api/payments/verify?reference=${response.reference}`)
@@ -101,11 +103,11 @@ function CheckoutContent() {
           
           <div className="flex items-center gap-4 mb-10">
             <div className="w-16 h-16 rounded-2xl gradient-bg flex items-center justify-center text-white shadow-xl">
-              {planData.icon}
+              <Icon size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-black italic uppercase tracking-tighter leading-none">{planData.label}</h1>
-              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-2">{cycle} Billing Cycle</p>
+              <h1 className="text-2xl font-black italic uppercase tracking-tighter leading-none">{planData.name}</h1>
+              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-2">{cycle} Billing Cycle · {planData.totalCalls} calls / mo</p>
             </div>
           </div>
 
@@ -117,7 +119,7 @@ function CheckoutContent() {
             <div className="flex justify-between items-center pt-6 border-t border-border mt-8">
               <span className="text-sm font-black uppercase tracking-[0.2em] italic">Total Due Now</span>
               <div className="text-right">
-                <div className="text-3xl font-black gradient-text tracking-tighter">₦{(amount * (cycle === 'annual' ? 12 : 1)).toLocaleString()}</div>
+                <div className="text-3xl font-black gradient-text tracking-tighter">₦{totalDue.toLocaleString()}</div>
                 {cycle === 'annual' && <div className="text-[9px] font-black text-green-500 uppercase tracking-widest mt-1">Includes 5% Yearly Discount ✨</div>}
               </div>
             </div>

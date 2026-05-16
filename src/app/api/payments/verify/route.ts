@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { PAYSTACK_SECRET_KEY } from '@/lib/paystack';
+import { getPlan, type PlanId } from '@/lib/plans';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -30,7 +31,17 @@ export async function GET(request: Request) {
         if (supabaseAdmin) {
           // 1. Handle Subscriptions
           if (plan && user_id) {
-            const daysToAdd = cycle === 'annual' ? 365 : 30;
+            const planConfig = getPlan(plan);
+            if (!planConfig || planConfig.isCustom) {
+              // Corporate plans are provisioned manually; self-serve checkout shouldn't reach here.
+              return NextResponse.json(
+                { success: false, message: 'Plan not available for self-serve checkout.' },
+                { status: 400 }
+              );
+            }
+
+            const billingCycle: 'monthly' | 'annual' = cycle === 'annual' ? 'annual' : 'monthly';
+            const daysToAdd = billingCycle === 'annual' ? 365 : 30;
             const nextBillingDate = new Date();
             nextBillingDate.setDate(nextBillingDate.getDate() + daysToAdd);
 
@@ -38,24 +49,34 @@ export async function GET(request: Request) {
               .from('subscriptions')
               .upsert({
                 user_id: user_id,
-                plan: plan,
+                plan: planConfig.id as PlanId,
                 status: 'active',
+                total_calls: planConfig.totalCalls,
+                calls_made: 0,
+                billing_cycle: billingCycle,
+                start_date: new Date().toISOString(),
                 next_billing_date: nextBillingDate.toISOString(),
               }, { onConflict: 'user_id' });
           }
 
           // 2. Handle One-Off Bookings (Calls)
           if (recipients && Array.isArray(recipients)) {
-            const callInserts = recipients.map((r: any) => ({
+            const bookingMetadata = metadata?.booking && typeof metadata.booking === 'object' ? metadata.booking : {};
+            const callInserts = recipients.map((r: any, idx: number) => ({
               user_id: user_id || null,
               recipient_name: r.name,
               recipient_phone: r.phone,
+              relationship: r.relationship || null,
               occasion_type: r.occasion || service || 'General',
               occasion_date: r.date,
               call_type: variant || 'standard',
               scheduled_slot: r.time || 'morning',
               is_express: !!is_express,
-              status: 'pending'
+              status: 'pending',
+              metadata: {
+                ...bookingMetadata,
+                recipient: bookingMetadata?.recipients?.[idx] ?? null,
+              },
             }));
 
             await supabaseAdmin.from('calls').insert(callInserts);
@@ -64,15 +85,31 @@ export async function GET(request: Request) {
 
         // Trigger Confirmation Email via Brevo
         try {
-          const { sendBookingConfirmation, sendAdminCallNotification } = await import('@/lib/email');
-          
-          // User Confirmation
-          await sendBookingConfirmation(customerEmail, {
-            serviceName: plan || service || "BuzzThrills Service",
-            price: amount
-          });
+          const { sendBookingConfirmation, sendAdminCallNotification, sendSubscriptionConfirmation } = await import('@/lib/email');
+          const subscriptionPlan = plan ? getPlan(plan) : null;
 
-          // Admin Notification
+          if (subscriptionPlan && !subscriptionPlan.isCustom) {
+            const billingCycle: 'monthly' | 'annual' = cycle === 'annual' ? 'annual' : 'monthly';
+            const daysToAdd = billingCycle === 'annual' ? 365 : 30;
+            const nextBilling = new Date();
+            nextBilling.setDate(nextBilling.getDate() + daysToAdd);
+
+            await sendSubscriptionConfirmation(customerEmail, {
+              planName: subscriptionPlan.name,
+              totalCalls: subscriptionPlan.totalCalls,
+              billingCycle,
+              amountPaid: amount,
+              nextBillingDate: nextBilling.toLocaleDateString('en-NG', { year: 'numeric', month: 'long', day: 'numeric' }),
+            });
+          } else {
+            // One-off booking
+            await sendBookingConfirmation(customerEmail, {
+              serviceName: service || "BuzzThrills Service",
+              price: amount
+            });
+          }
+
+          // Admin Notification for any new call records
           if (recipients && recipients.length > 0) {
             await sendAdminCallNotification(recipients.map((r: any) => ({
               recipient_name: r.name,

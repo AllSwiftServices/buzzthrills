@@ -21,7 +21,11 @@ export async function POST(request: Request) {
       throw new Error("Admin Client initialization failure");
     }
 
-    const { recipients, preferences, isExpress } = await request.json();
+    const { recipients, service, variant, isExpress, metadata } = await request.json();
+
+    if (!Array.isArray(recipients) || recipients.length === 0) {
+      return NextResponse.json({ error: "At least one recipient is required" }, { status: 400 });
+    }
 
     // 1. Verify User's Active Subscription
     const { data: subscription, error: subError } = await supabaseAdmin
@@ -35,19 +39,41 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "No active subscription found" }, { status: 403 });
     }
 
-    // 2. Check Credits (Optional but good practice)
-    // For now, we'll allow the booking but increment the calls_made count
-    
-    // 3. Create Call Records
-    const callEntries = recipients.map((r: any) => ({
+    // 2. Expiry check — a stale active row shouldn't grant calls.
+    if (subscription.next_billing_date && new Date(subscription.next_billing_date) < new Date()) {
+      return NextResponse.json(
+        { error: "Subscription has expired. Renew to continue booking." },
+        { status: 403 }
+      );
+    }
+
+    // 3. Quota check
+    const requested = recipients.length;
+    const remaining = (subscription.total_calls ?? 0) - (subscription.calls_made ?? 0);
+    if (requested > remaining) {
+      return NextResponse.json(
+        { error: "Quota exceeded for this billing cycle", remaining, requested },
+        { status: 402 }
+      );
+    }
+
+    // 4. Create Call Records
+    const bookingMetadata = metadata && typeof metadata === "object" ? metadata : {};
+    const callEntries = recipients.map((r: any, idx: number) => ({
       user_id: payload.id,
       recipient_name: r.name,
       recipient_phone: r.phone,
-      occasion_type: r.occasion,
-      arrival_date: r.date,
-      time_window: r.time,
-      is_express: isExpress,
-      status: "pending"
+      relationship: r.relationship || null,
+      occasion_type: r.occasion || service || "General",
+      occasion_date: r.date,
+      call_type: variant || "standard",
+      scheduled_slot: r.time || "morning",
+      is_express: !!isExpress,
+      status: "pending",
+      metadata: {
+        ...bookingMetadata,
+        recipient: bookingMetadata?.recipients?.[idx] ?? null,
+      },
     }));
 
     const { error: insertError } = await supabaseAdmin
@@ -56,13 +82,49 @@ export async function POST(request: Request) {
 
     if (insertError) throw insertError;
 
-    // 4. Update Subscription Usage
+    // 5. Deduct from quota
     await supabaseAdmin
       .from("subscriptions")
       .update({ calls_made: (subscription.calls_made || 0) + callEntries.length })
       .eq("id", subscription.id);
 
-    return NextResponse.json({ success: true });
+    // 6. Send confirmation + admin notification
+    try {
+      const { data: profile } = await supabaseAdmin
+        .from("profiles")
+        .select("email")
+        .eq("id", payload.id)
+        .single();
+
+      const { sendBookingConfirmation, sendAdminCallNotification } = await import("@/lib/email");
+      const { getPlan } = await import("@/lib/plans");
+      const planName = getPlan(subscription.plan)?.name || "Buzzthrills Subscription";
+
+      if (profile?.email) {
+        await sendBookingConfirmation(profile.email, {
+          serviceName: `${planName} · ${callEntries.length} call${callEntries.length === 1 ? "" : "s"}`,
+          price: "0",
+          isSubscription: true,
+        });
+      }
+
+      await sendAdminCallNotification(callEntries.map((c) => ({
+        recipient_name: c.recipient_name,
+        recipient_phone: c.recipient_phone,
+        occasion_type: c.occasion_type,
+        occasion_date: c.occasion_date,
+        call_type: c.call_type,
+        scheduled_slot: c.scheduled_slot,
+      })));
+    } catch (emailError) {
+      console.error("Subscriber booking email failed:", emailError);
+    }
+
+    return NextResponse.json({
+      success: true,
+      booked: callEntries.length,
+      remaining: remaining - requested,
+    });
   } catch (error: any) {
     console.error("Booking Creation Error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });

@@ -70,7 +70,7 @@ export async function sendResetOTPEmail(email: string, otp: string) {
   }
 }
 
-export async function sendBookingConfirmation(email: string, details: { serviceName: string; price: string; date?: string }) {
+export async function sendBookingConfirmation(email: string, details: { serviceName: string; price: string; date?: string; isSubscription?: boolean }) {
   if (!brevo) {
     console.error("❌ BREVO_API_KEY is missing in environment variables!");
     throw new Error("Email service is not configured.");
@@ -95,10 +95,17 @@ export async function sendBookingConfirmation(email: string, details: { serviceN
                 <span style="color: #666;">Service:</span>
                 <span style="font-weight: bold;">${details.serviceName}</span>
               </div>
+              ${details.isSubscription ? `
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: #666;">Included With:</span>
+                <span style="font-weight: bold; color: #8b5cf6;">Active Subscription</span>
+              </div>
+              ` : `
               <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                 <span style="color: #666;">Amount Paid:</span>
                 <span style="font-weight: bold;">₦${details.price}</span>
               </div>
+              `}
               ${details.date ? `
               <div style="display: flex; justify-content: space-between;">
                 <span style="color: #666;">Date:</span>
@@ -121,7 +128,76 @@ export async function sendBookingConfirmation(email: string, details: { serviceN
   }
 }
 
-export async function sendCallStatusUpdate(email: string, details: { 
+export async function sendSubscriptionConfirmation(email: string, details: {
+  planName: string;
+  totalCalls: number;
+  billingCycle: 'monthly' | 'annual';
+  amountPaid: string;
+  nextBillingDate: string;
+}) {
+  if (!brevo) {
+    console.error("❌ BREVO_API_KEY is missing in environment variables!");
+    throw new Error("Email service is not configured.");
+  }
+
+  try {
+    const data = await brevo.transactionalEmails.sendTransacEmail({
+      subject: `${details.planName} Activated 🎉`,
+      sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      to: [{ email }],
+      htmlContent: `
+        <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
+          <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <h1 style="color: #8b5cf6; font-size: 28px; font-weight: 900; margin-bottom: 24px;">Welcome to ${details.planName}! 💜</h1>
+            <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 32px;">
+              Your subscription is now active. You have <strong>${details.totalCalls} heartfelt calls</strong> ready to send this cycle. Book them whenever you're ready — we'll handle the rest.
+            </p>
+
+            <div style="padding: 24px; background: #fdfaf6; border-radius: 16px; border: 1px solid #eee; margin-bottom: 32px;">
+              <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 16px;">Subscription Details</h2>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: #666;">Plan:</span>
+                <span style="font-weight: bold;">${details.planName}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: #666;">Calls this cycle:</span>
+                <span style="font-weight: bold;">${details.totalCalls}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: #666;">Billing cycle:</span>
+                <span style="font-weight: bold; text-transform: capitalize;">${details.billingCycle}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: #666;">Amount paid:</span>
+                <span style="font-weight: bold;">₦${details.amountPaid}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span style="color: #666;">Next billing date:</span>
+                <span style="font-weight: bold;">${details.nextBillingDate}</span>
+              </div>
+            </div>
+
+            <div style="text-align: center; margin-bottom: 32px;">
+              <a href="https://buzzthrills.com/book" style="display: inline-block; padding: 16px 32px; background: #8b5cf6; color: #fff; text-decoration: none; border-radius: 16px; font-weight: 900; box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);">
+                Book Your First Call →
+              </a>
+            </div>
+
+            <p style="text-align: center; font-size: 14px; color: #999;">
+              Manage your plan in your <a href="https://buzzthrills.com/profile" style="color: #8b5cf6; text-decoration: none; font-weight: bold;">Dashboard</a>.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+    return { success: true, messageId: (data as any).messageId };
+  } catch (error) {
+    console.error("Brevo subscription email failed:", error);
+    throw error;
+  }
+}
+
+export async function sendCallStatusUpdate(email: string, details: {
   status: string; 
   recipientName: string; 
   recordingUrl?: string; 

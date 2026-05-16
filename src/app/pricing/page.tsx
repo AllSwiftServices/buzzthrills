@@ -2,6 +2,7 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import SubscriptionTiers from "@/components/SubscriptionTiers";
 import { motion } from "framer-motion";
 import { Sparkles, Star, Heart, ArrowRight, Check, MessageCircle, Crown, Info } from "lucide-react";
 import Link from "next/link";
@@ -82,9 +83,12 @@ export default function PricingPage() {
             </motion.p>
           </div>
 
+          {/* Subscription Plans */}
+          <SubscriptionTiers />
+
           {/* Pricing Categories */}
           <div className="space-y-32">
-            {categories.map((cat, catIdx) => (
+            {categories.map((cat) => (
               <div key={cat.name} className="relative">
                 <div className="mb-12">
                    <h2 className="text-3xl sm:text-5xl font-medium font-serif italic mb-4">{cat.name}</h2>

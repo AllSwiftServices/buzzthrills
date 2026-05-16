@@ -36,9 +36,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       const res = await fetch("/api/auth/refresh", { method: "POST" });
       
+      const path = window.location.pathname;
+      // /checkout/success is a public post-payment landing; /checkout handles its own auth gate.
+      const isProtectedRoute =
+        path.startsWith('/profile') ||
+        path.startsWith('/admin') ||
+        path.startsWith('/book') ||
+        (path.startsWith('/checkout') && !path.startsWith('/checkout/success'));
+
       if (res.status === 401) {
         setAuth(null, null);
-        const isProtectedRoute = window.location.pathname.startsWith('/profile') || window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/book') || window.location.pathname.startsWith('/checkout');
         if (isProtectedRoute) {
           router.push("/auth?error=expired");
         }
@@ -50,7 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setAuth(data.user, data.accessToken);
       } else {
         setAuth(null, null);
-        if (window.location.pathname.startsWith('/profile') || window.location.pathname.startsWith('/admin') || window.location.pathname.startsWith('/book') || window.location.pathname.startsWith('/checkout')) {
+        if (isProtectedRoute) {
           router.push("/auth");
         }
       }
