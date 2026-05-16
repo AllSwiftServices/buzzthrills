@@ -83,6 +83,9 @@ ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE calls ENABLE ROW LEVEL SECURITY;
 ALTER TABLE digital_letters ENABLE ROW LEVEL SECURITY;
+ALTER TABLE special_offers ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "Public read access to special offers" ON special_offers FOR SELECT USING (true);
 
 -- Users can read their own data
 CREATE POLICY "Users can view own profile" ON profiles FOR SELECT USING (auth.uid() = id);
@@ -99,7 +102,7 @@ CREATE POLICY "Admins can manage calls" ON calls FOR ALL USING (
 );
 
 -- 8. ANALYTICS VIEWS
-CREATE VIEW analytics_summary AS
+CREATE VIEW analytics_summary WITH (security_invoker = on) AS
 SELECT 
   (SELECT COUNT(*) FROM calls WHERE status = 'delivered') as total_calls_delivered,
   (SELECT COUNT(*) FROM profiles WHERE role = 'user') as total_users,

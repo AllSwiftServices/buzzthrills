@@ -40,6 +40,9 @@ ALTER TABLE profiles ADD COLUMN IF NOT EXISTS account_id UUID REFERENCES auth_ac
 -- We will need to update RLS policies to check the session token or a custom claim.
 -- For now, we'll allow the API routes (using service role) to bypass RLS.
 -- frontend queries will need a different approach (e.g. session-based RLS).
+ALTER TABLE auth_accounts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE auth_sessions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE auth_otps ENABLE ROW LEVEL SECURITY;
 
 -- Function to clean up expired OTPs
 CREATE OR REPLACE FUNCTION expire_otps() RETURNS trigger AS $$
