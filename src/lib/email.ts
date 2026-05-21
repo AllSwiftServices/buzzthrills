@@ -197,6 +197,50 @@ export async function sendSubscriptionConfirmation(email: string, details: {
   }
 }
 
+export async function sendLetterReadyEmail(email: string, details: { recipientName: string; shareUrl: string }) {
+  if (!brevo) {
+    console.error("❌ BREVO_API_KEY is missing in environment variables!");
+    throw new Error("Email service is not configured.");
+  }
+
+  try {
+    const data = await brevo.transactionalEmails.sendTransacEmail({
+      subject: `Your Digital Letter for ${details.recipientName} is Ready 💌`,
+      sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      to: [{ email }],
+      htmlContent: `
+        <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
+          <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <h1 style="color: #8b5cf6; font-size: 28px; font-weight: 900; margin-bottom: 24px;">Your Letter is Live 💜</h1>
+            <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 32px;">
+              The digital letter you created for <strong>${details.recipientName}</strong> is ready to share. Send them the link below — they'll see your message animate to life.
+            </p>
+
+            <div style="text-align: center; margin-bottom: 32px;">
+              <a href="${details.shareUrl}" style="display: inline-block; padding: 16px 32px; background: #8b5cf6; color: #fff; text-decoration: none; border-radius: 16px; font-weight: 900; box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);">
+                Open Your Letter →
+              </a>
+            </div>
+
+            <div style="padding: 16px; background: #fdfaf6; border-radius: 12px; border: 1px solid #eee; margin-bottom: 24px;">
+              <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 8px;">Share URL</div>
+              <div style="font-size: 13px; font-family: monospace; word-break: break-all; color: #8b5cf6;">${details.shareUrl}</div>
+            </div>
+
+            <p style="text-align: center; font-size: 14px; color: #999;">
+              Manage all your letters in your <a href="https://buzzthrills.com/profile" style="color: #8b5cf6; text-decoration: none; font-weight: bold;">Dashboard</a>.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+    return { success: true, messageId: (data as any).messageId };
+  } catch (error) {
+    console.error("Brevo letter email failed:", error);
+    throw error;
+  }
+}
+
 export async function sendCallStatusUpdate(email: string, details: {
   status: string; 
   recipientName: string; 

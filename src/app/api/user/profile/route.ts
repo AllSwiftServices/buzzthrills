@@ -31,6 +31,16 @@ export async function GET() {
 
     if (callsError) console.error("Calls Fetch Failure:", callsError);
 
+    // 1b. Fetch User's Digital Letters
+    const { data: letters, error: lettersError } = await supabaseAdmin
+      .from("digital_letters")
+      .select("id, recipient_name, theme, status, qr_identifier, unfurled_count, wants_scannable, scannable_status, created_at")
+      .eq("sender_id", payload.id)
+      .order("created_at", { ascending: false })
+      .limit(20);
+
+    if (lettersError) console.error("Letters Fetch Failure:", lettersError);
+
     // 2. Fetch User's Active Subscription
     const { data: subscription, error: subError } = await supabaseAdmin
       .from("subscriptions")
@@ -55,6 +65,7 @@ export async function GET() {
     return NextResponse.json({
       profile: profile || null,
       history: calls || [],
+      letters: letters || [],
       subscription: subscription || null,
     });
   } catch (error) {

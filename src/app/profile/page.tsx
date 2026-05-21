@@ -16,7 +16,10 @@ import {
   CheckCircle2, 
   XCircle, 
   Loader2,
-  CreditCard
+  CreditCard,
+  Mail,
+  ExternalLink,
+  Eye
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -28,6 +31,7 @@ export default function ProfilePage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [history, setHistory] = useState<any[]>([]);
+  const [letters, setLetters] = useState<any[]>([]);
   const [subscription, setSubscription] = useState<any>(null);
 
   useEffect(() => {
@@ -47,6 +51,7 @@ export default function ProfilePage() {
         
         const data = await res.json();
         setHistory(data.history || []);
+        setLetters(data.letters || []);
         setSubscription(data.subscription || null);
       } catch (error) {
         console.error("Profile Data Error:", error);
@@ -182,6 +187,92 @@ export default function ProfilePage() {
                  )}
                </div>
              </div>
+
+            {/* My Digital Letters */}
+            <div className="p-4 sm:p-10 rounded-[32px] sm:rounded-[56px] bg-linear-to-br from-primary/5 via-primary/2 to-transparent border border-primary/10 shadow-huge backdrop-blur-3xl relative overflow-hidden group">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -mr-32 -mt-32 group-hover:scale-110 transition-transform duration-1000" />
+
+              <div className="flex items-center justify-between mb-8 relative z-10">
+                <h3 className="text-lg sm:text-xl font-black italic uppercase tracking-tighter">
+                  My Digital <span className="gradient-text italic">Letters</span>
+                </h3>
+                <Link
+                  href="/digital-letters/create"
+                  className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-xl gradient-bg text-white text-[8px] sm:text-[9px] font-black uppercase tracking-widest transition-all active:scale-95 hover:scale-105"
+                >
+                  + New Letter
+                </Link>
+              </div>
+
+              {letters.length === 0 ? (
+                <div className="rounded-[32px] border-2 border-dashed border-border flex flex-col items-center justify-center p-8 text-center bg-foreground/2">
+                  <Mail size={40} className="text-foreground/10 mb-3" />
+                  <div className="text-sm font-black uppercase tracking-[0.2em] opacity-20">No letters sent yet.</div>
+                  <Link href="/digital-letters/create" className="mt-4 text-xs font-bold text-primary hover:underline">
+                    Create your first digital letter →
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3 relative z-10">
+                  {letters.map((letter, i) => {
+                    const statusStyle =
+                      letter.status === "published"
+                        ? "bg-green-500/10 text-green-400 border-green-500/20"
+                        : letter.status === "archived"
+                        ? "bg-white/5 text-muted-foreground border-border"
+                        : "bg-amber-500/10 text-amber-400 border-amber-500/20";
+                    return (
+                      <motion.div
+                        key={letter.id}
+                        initial={{ opacity: 0, y: 8 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: i * 0.05 }}
+                        className="flex items-center justify-between p-3 sm:p-5 rounded-[20px] sm:rounded-[28px] bg-foreground/5 border border-border hover:bg-accent/5 transition-all group"
+                      >
+                        <div className="flex items-center gap-3 sm:gap-4 min-w-0">
+                          <div className="w-10 h-10 rounded-2xl gradient-bg flex items-center justify-center text-white shrink-0 shadow-lg shadow-primary/20">
+                            <Mail size={16} />
+                          </div>
+                          <div className="min-w-0">
+                            <div className="font-black text-sm truncate">{letter.recipient_name}</div>
+                            <div className="flex items-center gap-2 mt-0.5 flex-wrap">
+                              <span className={`inline-flex px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${statusStyle}`}>
+                                {letter.status}
+                              </span>
+                              <span className="text-[9px] text-muted-foreground font-bold capitalize">{letter.theme}</span>
+                              {letter.status === "published" && (
+                                <span className="text-[9px] text-muted-foreground font-bold flex items-center gap-1">
+                                  <Eye size={10} />{letter.unfurled_count ?? 0} views
+                                </span>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                        <div className="flex gap-2 shrink-0">
+                          {letter.status === "published" && (
+                            <Link
+                              href={`/digital-letters/share/${letter.id}`}
+                              className="px-3 py-2 rounded-xl bg-foreground/5 border border-border hover:border-primary/30 text-[9px] font-black uppercase tracking-widest transition-all flex items-center gap-1.5"
+                            >
+                              Share
+                              <ExternalLink size={10} />
+                            </Link>
+                          )}
+                          {letter.status === "draft" && (
+                            <Link
+                              href={`/digital-letters/create`}
+                              className="px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-400 text-[9px] font-black uppercase tracking-widest transition-all"
+                            >
+                              Continue
+                            </Link>
+                          )}
+                        </div>
+                      </motion.div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Sidebar Stats / Settings */}

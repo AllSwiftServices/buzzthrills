@@ -22,11 +22,34 @@ export async function GET(request: Request) {
 
       if (data.status && data.data.status === 'success') {
         const metadata = data.data.metadata;
-        const { service, variant, user_id, recipients, is_express, cycle, plan } = metadata || {};
+        const { service, variant, user_id, recipients, is_express, cycle, plan, purchase_type, letter_id } = metadata || {};
         const customerEmail = data.data.customer.email;
         const amount = (data.data.amount / 100).toLocaleString();
 
         const { supabaseAdmin } = await import('@/lib/supabase');
+
+        // 0. Digital Letter publishing (short-circuit — letters don't insert into calls)
+        if (purchase_type === 'digital_letter' && letter_id && supabaseAdmin) {
+          const { data: letterRow } = await supabaseAdmin
+            .from('digital_letters')
+            .update({ status: 'published', updated_at: new Date().toISOString() })
+            .eq('id', letter_id)
+            .select('id, qr_identifier, recipient_name')
+            .single();
+
+          try {
+            const { sendLetterReadyEmail } = await import('@/lib/email');
+            const origin = new URL(request.url).origin;
+            await sendLetterReadyEmail(customerEmail, {
+              recipientName: letterRow?.recipient_name || 'your recipient',
+              shareUrl: `${origin}/letter/${letterRow?.qr_identifier}`,
+            });
+          } catch (e) {
+            console.error('Letter ready email failed:', e);
+          }
+
+          return NextResponse.json({ success: true, letter: letterRow });
+        }
         
         if (supabaseAdmin) {
           // 1. Handle Subscriptions

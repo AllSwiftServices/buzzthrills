@@ -1,101 +1,93 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
 import Link from "next/link";
-import { Heart, MessageCircle, Star } from "lucide-react";
+import { Heart, Quote, Star } from "lucide-react";
 import Reveal from "./Reveal";
 
-interface TestimonialScreenshot {
+export interface Testimonial {
   id: number;
-  image: string;
-  author: string;
+  name: string;
+  callType: string;
   quote: string;
-  accent?: string;
 }
 
-export const screenshots: TestimonialScreenshot[] = [
+export const testimonials: Testimonial[] = [
   {
     id: 1,
-    image: "/testimonials/testimonial_1.png",
-    author: "Chineye",
-    quote: "The value of this call is more than the price... see how I'm blushing.",
-    accent: "text-rose-500"
+    name: "dohrnii_best",
+    callType: "Birthday Call",
+    quote:
+      "I honestly made a choice to stick to Buzzthrills from the first day I had a trial. Listening to the recorded call was awesome. Thank you for choosing to spread positive vibes in the midst of so much negativity.",
   },
   {
     id: 2,
-    image: "/testimonials/testimonial_2.png",
-    author: "Aunty Sonia",
-    quote: "That was so sweeetttttt... See the way I'm smiling listening to the recording.",
-    accent: "text-amber-500"
+    name: "Joy Oluchi",
+    callType: "Encouragement Call",
+    quote:
+      "It's been 3 years of using and referring your services, and trust me, there's more to come… Thank you.",
   },
   {
     id: 3,
-    image: "/testimonials/testimonial_3.png",
-    author: "Partner Feedback",
-    quote: "D gift this morning was unexpected and it was actually a very good gift... professional delivery.",
-    accent: "text-blue-500"
+    name: "Sunday",
+    callType: "Apology Call",
+    quote:
+      "Thank you for mending my relationship. She called me herself and started laughing, and she was really happy. She's willing to sort things out. Thank you Buzzthrills.",
   },
   {
     id: 4,
-    image: "/testimonials/testimonial_4.png",
-    author: "DivineFavour",
-    quote: "I must say I am glad I booked with you guys fr... He called and kept smiling.",
-    accent: "text-emerald-500"
+    name: "Chinenye",
+    callType: "Valentine Call",
+    quote:
+      "The value of this call is worth more than its price… I'm not the one that was called but see how I'm blushing.",
   },
   {
     id: 5,
-    image: "/testimonials/testimonial_5.png",
-    author: "Aunty Precious",
-    quote: "See voiceeeeeeeeee... See me crying... Over excitement!",
-    accent: "text-purple-500"
+    name: "Rebecca",
+    callType: "Valentine Call",
+    quote:
+      "You almost made a grown man shed tears. He loved it. You delivered excellently as always. Thank you for putting a smile on my baby's face.",
   },
-  {
-    id: 6,
-    image: "/testimonials/testimonial_6.png",
-    author: "BrightSunday Ana",
-    quote: "Only one BuzzThrills... She called me herself and started laughing and was happy, really happy.",
-    accent: "text-pink-500"
-  },
-  {
-    id: 7,
-    image: "/testimonials/testimonial_7.png",
-    author: "Lizzy",
-    quote: "Thank you so much for making him thrilled... He's still blushing!",
-    accent: "text-rose-400"
-  },
-  {
-    id: 8,
-    image: "/testimonials/testimonial_8.jpg",
-    author: "Nemi Otobor",
-    quote: "You made me shed tears on the road... I don't want to send a VN because I'll burst out in tears.",
-    accent: "text-indigo-500"
-  },
-  {
-    id: 9,
-    image: "/testimonials/testimonial_9.jpg",
-    author: "Special Moment",
-    quote: "You almost made a grown man shed tears... he loved it.",
-    accent: "text-slate-500"
-  },
-  {
-    id: 10,
-    image: "/testimonials/testimonial_10.jpg",
-    author: "Happy Parent",
-    quote: "Thank you for putting a smile on my baby's face. Exellent delivery.",
-    accent: "text-orange-500"
-  },
-  {
-    id: 11,
-    image: "/testimonials/testimonial_11.jpg",
-    author: "Community Member",
-    quote: "God bless you and keep promoting you. I wish I had more to say.",
-    accent: "text-cyan-500"
-  }
 ];
 
+function TestimonialCard({ item }: { item: Testimonial }) {
+  return (
+    <div className="group relative rounded-[2rem] glass border border-border/50 hover:border-primary/30 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-primary/5 bg-background/40 backdrop-blur-md p-8 flex flex-col h-full">
+      <div className="absolute top-6 right-6 opacity-10 group-hover:opacity-20 transition-opacity">
+        <Quote size={48} className="text-primary" />
+      </div>
+
+      <div className="flex gap-1 mb-5">
+        {[...Array(5)].map((_, i) => (
+          <Star key={i} size={14} className="fill-gold text-gold" />
+        ))}
+      </div>
+
+      <p className="text-base sm:text-lg font-medium font-serif italic leading-relaxed text-foreground/85 mb-6 flex-grow">
+        &ldquo;{item.quote}&rdquo;
+      </p>
+
+      <div className="pt-5 border-t border-border/60 flex items-center gap-4">
+        <div className="w-11 h-11 rounded-full bg-gradient-to-br from-primary to-secondary p-0.5 shadow-lg shrink-0">
+          <div className="w-full h-full rounded-full bg-background flex items-center justify-center font-black gradient-text">
+            {item.name.charAt(0).toUpperCase()}
+          </div>
+        </div>
+        <div className="min-w-0">
+          <div className="font-bold text-sm truncate">{item.name}</div>
+          <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70 mt-0.5">
+            {item.callType}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export { TestimonialCard };
+
 export default function WallOfJoy() {
-  const displayScreenshots = screenshots.slice(0, 4);
+  const displayed = testimonials.slice(0, 3);
 
   return (
     <section className="py-24 px-4 sm:px-6 bg-cream/30 dark:bg-black/20">
@@ -119,73 +111,39 @@ export default function WallOfJoy() {
           </Reveal>
         </div>
 
-        {/* Masonry-style grid */}
-        <div className="columns-1 sm:columns-2 lg:columns-3 xl:columns-4 gap-6 space-y-6 px-4">
-          {displayScreenshots.map((item, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 px-4">
+          {displayed.map((item, index) => (
             <motion.div
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
               viewport={{ once: true }}
-              className="break-inside-avoid"
             >
-              <div className="group relative rounded-[2rem] overflow-hidden glass border border-border/50 hover:border-primary/30 transition-all duration-500 shadow-xl hover:shadow-2xl hover:shadow-primary/5 bg-background/40 backdrop-blur-md">
-                <div className="relative aspect-[9/16] w-full bg-foreground/5 overflow-hidden">
-                   <div className="absolute inset-0 flex items-center justify-center text-foreground/10 opacity-20 group-hover:scale-110 transition-transform duration-700">
-                     <MessageCircle size={80} strokeWidth={1} />
-                   </div>
-                   
-                   <Image 
-                     src={item.image}
-                     alt={`Testimonial screenshot`}
-                     fill
-                     className="object-contain opacity-90 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-700"
-                   />
-
-                   <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 flex flex-col justify-end p-6">
-                      <div className="mb-2">
-                        <div className="flex gap-1 mb-2">
-                          {[...Array(5)].map((_, i) => (
-                            <Star key={i} size={12} className="fill-gold text-gold" />
-                          ))}
-                        </div>
-                        <p className="text-foreground font-medium text-sm leading-relaxed font-serif italic">
-                          &ldquo;{item.quote}&rdquo;
-                        </p>
-                      </div>
-                   </div>
-                </div>
-
-                <div className="p-5 border-t border-border/50">
-                   <div className="flex items-center justify-between">
-                      <span className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground/40 font-serif">Verified Experience</span>
-                      <div className="flex items-center gap-2">
-                         <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
-                         <span className="text-[9px] font-bold uppercase tracking-widest text-primary/60">Success</span>
-                      </div>
-                   </div>
-                </div>
-              </div>
+              <TestimonialCard item={item} />
             </motion.div>
           ))}
         </div>
 
         <div className="mt-16 text-center">
-           <Link 
-            href="/testimonials" 
+          <Link
+            href="/testimonials"
             className="inline-flex items-center gap-3 px-10 py-5 rounded-3xl glass border-primary/20 text-primary font-black uppercase tracking-[0.2em] text-xs hover:scale-105 active:scale-95 transition-all"
-           >
-              View All 150+ Screenshots
-              <Star size={16} />
-           </Link>
+          >
+            Read All Stories
+            <Star size={16} />
+          </Link>
         </div>
 
-        {/* CTA */}
         <Reveal delay={0.4}>
           <div className="mt-20 text-center">
-            <p className="text-muted-foreground font-medium mb-8 font-serif italic">Want to create your own special moment?</p>
-            <Link href="/pricing" className="inline-flex px-10 py-5 gradient-bg rounded-3xl font-semibold text-lg text-white shadow-huge hover:scale-105 transition-all active:scale-95 group items-center justify-center whitespace-nowrap">
+            <p className="text-muted-foreground font-medium mb-8 font-serif italic">
+              Want to create your own special moment?
+            </p>
+            <Link
+              href="/pricing"
+              className="inline-flex px-10 py-5 gradient-bg rounded-3xl font-semibold text-lg text-white shadow-huge hover:scale-105 transition-all active:scale-95 group items-center justify-center whitespace-nowrap"
+            >
               Start Sharing Joy
               <Heart size={20} className="group-hover:scale-125 transition-transform ml-2" />
             </Link>

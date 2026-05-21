@@ -60,11 +60,23 @@ CREATE TABLE digital_letters (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   sender_id UUID REFERENCES profiles(id),
   recipient_name TEXT NOT NULL,
+  recipient_phone TEXT,
   message TEXT NOT NULL,
   voice_note_url TEXT,
+  background_music_url TEXT,
+  video_url TEXT,
+  recipient_photo_url TEXT,
+  theme TEXT NOT NULL DEFAULT 'parchment' CHECK (theme IN ('parchment','royal','modern')),
+  tier TEXT NOT NULL DEFAULT 'standard' CHECK (tier IN ('standard','premium')),
+  status TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','published','archived')),
+  wants_scannable BOOLEAN NOT NULL DEFAULT false,
+  scannable_status TEXT NOT NULL DEFAULT 'none' CHECK (scannable_status IN ('none','pending','printed','shipped')),
+  admin_notes TEXT,
+  created_by_admin BOOLEAN NOT NULL DEFAULT false,
   qr_identifier TEXT UNIQUE NOT NULL,
   unfurled_count INTEGER DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  updated_at TIMESTAMPTZ DEFAULT NOW()
 );
 
 -- 6. SPECIAL OFFERS

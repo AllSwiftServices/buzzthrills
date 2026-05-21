@@ -3,7 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { Loader2, LayoutDashboard, PhoneCall, Users, Tag, BarChart3, LogOut, ShieldCheck, User } from "lucide-react";
+import { Loader2, LayoutDashboard, PhoneCall, Users, Tag, BarChart3, LogOut, ShieldCheck, User, Mail } from "lucide-react";
 import Link from "next/link";
 import AdminBottomTabNav from "@/components/AdminBottomTabNav";
 import { motion } from "framer-motion";
@@ -30,6 +30,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const menuItems = [
     { href: "/admin", icon: <LayoutDashboard size={18} />, label: "Overview" },
     { href: "/admin/calls", icon: <PhoneCall size={18} />, label: "Call History" },
+    { href: "/admin/letters", icon: <Mail size={18} />, label: "Digital Letters" },
     { href: "/admin/crm", icon: <Users size={18} />, label: "Client Directory" },
     { href: "/admin/offers", icon: <Tag size={18} />, label: "Promotions" },
     { href: "/admin/analytics", icon: <BarChart3 size={18} />, label: "Analytics" },

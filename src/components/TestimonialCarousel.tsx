@@ -3,33 +3,16 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { Quote, Star, ChevronLeft, ChevronRight, MessageCircle } from "lucide-react";
 import { useState, useEffect } from "react";
+import { testimonials as wallTestimonials } from "@/components/WallOfJoy";
 
-const testimonials = [
-  {
-    id: 1,
-    name: "Tega B.",
-    role: "Surprised Girlfriend",
-    content: "I was literally in tears! The BuzzThrills squad called me with the most heartfelt message from my boyfriend. It made my whole month!",
-    rating: 5,
-    tag: "Birthday Thrill"
-  },
-  {
-    id: 2,
-    name: "Olumide S.",
-    role: "Corporate Executive",
-    content: "Used the Corporate Orbit plan for our team appreciation week. 50+ calls delivered flawlessly. The morale boost was massive.",
-    rating: 5,
-    tag: "Corporate Surge"
-  },
-  {
-    id: 3,
-    name: "Chioma E.",
-    role: "Super Hero",
-    content: "The digital letters are magic. My mom scanned the QR code and heard my voice note while reading the letter. Such a premium experience.",
-    rating: 5,
-    tag: "Digital Letter"
-  }
-];
+const testimonials = wallTestimonials.map((t) => ({
+  id: t.id,
+  name: t.name,
+  role: t.callType,
+  content: t.quote,
+  rating: 5,
+  tag: t.callType,
+}));
 
 export default function TestimonialCarousel() {
   const [index, setIndex] = useState(0);
