@@ -503,7 +503,7 @@ function BookingContent() {
                   key: "premium",
                   title: "Premium & Specialized",
                   caption: "High-touch & branded experiences.",
-                  ids: ["video_shoutout", "digital_letter", "company_calls"],
+                  ids: ["video_shoutout", "company_calls"],
                 },
               ].map((cat) => (
                 <div key={cat.key} className="space-y-3">
@@ -519,7 +519,6 @@ function BookingContent() {
                       const Icon = ICON_MAP[s.icon] || PhoneCall;
                       const onlyMonthly = s.tiers.length > 0 && s.tiers.every((t) => t.variant === "monthly");
                       const isCorporate = s.id === "company_calls";
-                      const isLetter = s.id === "digital_letter";
                       const priceLabel = isCorporate
                         ? "Contact"
                         : isSubscriber
@@ -532,10 +531,6 @@ function BookingContent() {
                           onClick={() => {
                             if (isCorporate) {
                               router.push("/corporate");
-                              return;
-                            }
-                            if (isLetter) {
-                              router.push("/digital-letters/create");
                               return;
                             }
                             setCurrentServiceId(s.id);

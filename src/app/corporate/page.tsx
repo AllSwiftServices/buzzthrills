@@ -10,7 +10,7 @@ export default function CorporatePage() {
   const corporateBenefits = [
     { title: "Team Morale", desc: "Show your team they're seen with personalized professional affirmation calls.", icon: <Zap size={24} /> },
     { title: "Smart Onboarding", desc: "Automated 'Welcome' calls for new hires that create an immediate sense of belonging.", icon: <Users size={24} /> },
-    { title: "Retention Strategy", desc: "Unique 'Engagement Artifacts' linked to performance milestones and anniversaries.", icon: <Heart size={24} /> },
+    { title: "Retention Strategy", desc: "Unique 'Engagement Letters' linked to performance milestones and anniversaries.", icon: <Heart size={24} /> },
     { title: "B2B Gifting", desc: "Elevate your client experience with a curated professional voice that speaks your brand.", icon: <Globe size={24} /> }
   ];
 
@@ -30,7 +30,7 @@ export default function CorporatePage() {
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <h1 className="text-5xl md:text-8xl font-medium mb-8 tracking-tight font-serif leading-none">
+            <h1 className="text-4xl sm:text-5xl md:text-8xl font-medium mb-8 tracking-tight font-serif leading-none">
               Buzz for <br className="hidden sm:block" />
               <span className="gradient-text italic">Business</span>.
             </h1>
@@ -42,11 +42,11 @@ export default function CorporatePage() {
           </Reveal>
           <Reveal delay={0.3}>
             <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <Link href="/support" className="px-12 py-6 rounded-3xl gradient-bg text-white font-bold text-xl hover:scale-105 transition-all shadow-huge flex items-center justify-center gap-3 active:scale-95">
+              <Link href="/support" className="px-8 py-4 sm:px-12 sm:py-6 rounded-3xl gradient-bg text-white font-bold text-base sm:text-xl hover:scale-105 transition-all shadow-huge flex items-center justify-center gap-3 active:scale-95">
                 Request a Demo
-                <ArrowRight size={24} />
+                <ArrowRight size={20} />
               </Link>
-              <Link href="#solutions" className="px-12 py-6 rounded-3xl glass font-bold text-xl hover:bg-foreground/5 transition-all border border-border flex items-center justify-center active:scale-95">
+              <Link href="#solutions" className="px-8 py-4 sm:px-12 sm:py-6 rounded-3xl glass font-bold text-base sm:text-xl hover:bg-foreground/5 transition-all border border-border flex items-center justify-center active:scale-95">
                 Our Solutions
               </Link>
             </div>
@@ -59,7 +59,7 @@ export default function CorporatePage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8">
           {corporateBenefits.map((benefit, i) => (
             <Reveal key={i} delay={i * 0.1}>
-              <div className="p-10 rounded-[48px] glass border border-border h-full flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-8 group hover:border-primary/20 transition-all duration-500 bg-background/40">
+              <div className="p-6 sm:p-10 rounded-[32px] sm:rounded-[48px] glass border border-border h-full flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-6 sm:gap-8 group hover:border-primary/20 transition-all duration-500 bg-background/40">
                 <div className="w-20 h-20 rounded-3xl bg-primary/10 text-primary shrink-0 flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
                   {benefit.icon}
                 </div>
@@ -75,7 +75,7 @@ export default function CorporatePage() {
 
       {/* Solutions Section */}
       <section className="py-24 px-6 relative">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
           <Reveal direction="left">
             <div className="space-y-10">
               <h2 className="text-4xl md:text-5xl font-medium mb-12 font-serif italic tracking-tight leading-tight">Scale Your <span className="gradient-text italic">Emotional</span> Intelligence.</h2>
@@ -101,7 +101,7 @@ export default function CorporatePage() {
           </Reveal>
 
           <Reveal direction="right">
-            <div className="relative aspect-[4/5] rounded-[64px] glass border border-border overflow-hidden group shadow-huge bg-background/40">
+            <div className="relative aspect-[4/5] rounded-[32px] sm:rounded-[64px] glass border border-border overflow-hidden group shadow-huge bg-background/40">
               <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity duration-1000" />
               <div className="absolute inset-0 flex flex-col items-center justify-center p-12 text-center pointer-events-none">
                 <div className="w-24 h-24 mb-10 text-primary shadow-huge flex items-center justify-center bg-white/10 backdrop-blur-3xl rounded-full border border-white/20">
@@ -121,10 +121,10 @@ export default function CorporatePage() {
       {/* Corporate Call to Action */}
       <section className="py-24 px-6 text-center">
         <Reveal>
-          <div className="max-w-4xl mx-auto p-16 sm:p-24 rounded-[64px] glass border border-border shadow-huge relative overflow-hidden group">
+          <div className="max-w-4xl mx-auto p-8 sm:p-16 rounded-[32px] sm:rounded-[64px] glass border border-border shadow-huge relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[100px] rounded-full -mr-48 -mt-48" />
             <h2 className="text-4xl sm:text-6xl font-medium mb-12 relative z-10 tracking-tight font-serif italic leading-tight">Modernize Your <br className="hidden sm:block" />Culture.</h2>
-            <Link href="/support" className="inline-flex px-12 py-6 gradient-bg text-white font-bold text-xl rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge relative z-10 items-center gap-3">
+            <Link href="/support" className="inline-flex px-8 py-4 sm:px-12 sm:py-6 gradient-bg text-white font-bold text-base sm:text-xl rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge relative z-10 items-center gap-3">
               Book a Strategy Call
               <ArrowRight size={24} />
             </Link>

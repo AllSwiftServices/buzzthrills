@@ -46,7 +46,7 @@ export default function LiveStatsWidget() {
   ];
 
   return (
-    <div className="w-full py-12 px-8 lg:px-16 glass border border-border rounded-[64px] shadow-huge relative overflow-hidden bg-background/40 group hover:border-primary/20 transition-all duration-700">
+    <div className="w-full py-8 sm:py-12 px-6 sm:px-10 lg:px-16 glass border border-border rounded-[32px] sm:rounded-[64px] shadow-huge relative overflow-hidden bg-background/40 group hover:border-primary/20 transition-all duration-700">
       <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48 group-hover:bg-primary/10 transition-all duration-1000" />
       <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary/5 blur-[80px] rounded-full -ml-32 -mb-32 group-hover:bg-secondary/10 transition-all duration-1000" />
       

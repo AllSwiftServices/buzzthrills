@@ -282,7 +282,7 @@ export default function SettingsPage() {
                           </div>
                           <div className="font-black text-[10px] uppercase tracking-widest">Upgrade Account</div>
                         </div>
-                        <p className="text-xs text-muted-foreground font-medium mb-6 italic">Unlock premium voices, more calls, and extended letter artifacts.</p>
+                        <p className="text-xs text-muted-foreground font-medium mb-6 italic">Unlock premium voices, more calls, and extended letters.</p>
                         <button className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-2 hover:gap-3 transition-all">
                           View Plans <ChevronRight size={12} />
                         </button>

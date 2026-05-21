@@ -165,7 +165,7 @@ export default function PricingPage() {
              </div>
 
              <div className="relative z-10 w-full lg:w-auto">
-                 <Link href="/corporate" className="w-full lg:w-auto px-12 py-6 bg-foreground text-background font-semibold rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3 text-sm tracking-widest">
+                 <Link href="/corporate" className="w-full lg:w-auto px-8 py-4 sm:px-12 sm:py-6 bg-foreground text-background font-semibold rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3 text-sm tracking-widest">
                     Create a Consultation
                     <ArrowRight size={20} />
                  </Link>
@@ -179,7 +179,7 @@ export default function PricingPage() {
                { title: "Flexible Rescheduling", desc: "Life happens. Reschedule any one-off call with 24h notice at no cost.", icon: <Check size={24} /> },
                { title: "Safe & Secure", desc: "All transactions are processed through Paystack, ensuring 100% data security.", icon: <Crown size={24} /> }
              ].map((item, i) => (
-                <div key={i} className="p-10 rounded-[40px] glass border border-border flex flex-col items-center text-center">
+                <div key={i} className="p-6 sm:p-10 rounded-[32px] sm:rounded-[40px] glass border border-border flex flex-col items-center text-center">
                    <div className="w-12 h-12 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6">{item.icon}</div>
                    <h4 className="font-bold text-lg mb-2">{item.title}</h4>
                    <p className="text-muted-foreground text-sm font-medium leading-relaxed">{item.desc}</p>

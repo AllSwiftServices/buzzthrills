@@ -49,6 +49,9 @@ interface Draft {
   videoUrl: string | null;
   extraKind: "none" | "voice" | "video";
   wantsScannable: boolean;
+  requestAdminVoice: boolean;
+  additionalComments: string;
+  requestAdminLetter: boolean;
 }
 
 interface FormProps {
@@ -83,6 +86,9 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
     videoUrl: existing?.video_url || null,
     extraKind: existing?.video_url ? "video" : existing?.voice_note_url ? "voice" : "none",
     wantsScannable: !!existing?.wants_scannable,
+    requestAdminVoice: !!existing?.request_admin_voice,
+    additionalComments: existing?.additional_comments || "",
+    requestAdminLetter: !!existing?.request_admin_letter,
   });
 
   useEffect(() => {
@@ -102,20 +108,15 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
 
   const isSubscriber = subscription?.status === "active";
   const hasAudioOrVideo =
-    (draft.extraKind === "voice" && !!draft.voiceNoteUrl) ||
-    (draft.extraKind === "video" && !!draft.videoUrl);
+    draft.extraKind === "voice" ||
+    draft.extraKind === "video" ||
+    draft.requestAdminVoice;
   const priceBreakdown = calculateLetterPrice({
     hasAudioOrVideo,
     wantsScannable: draft.wantsScannable,
   });
-  // Subscribers get the base + audio/video covered by their quota. The scannable
-  // physical-fulfilment add-on always charges via Paystack (separate ops cost).
-  const subscriberCovered = isSubscriber && !draft.wantsScannable;
-  const amountToCharge = subscriberCovered
-    ? 0
-    : isSubscriber
-    ? LETTER_PRICING.scannableAddon
-    : priceBreakdown.total;
+  // Digital letters are always paid separately — not covered by subscription.
+  const amountToCharge = priceBreakdown.total;
 
   const ensureDraftSaved = async (): Promise<{ id: string; code: string } | null> => {
     if (draft.id && draft.code) return { id: draft.id, code: draft.code };
@@ -130,6 +131,9 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
         theme: draft.theme,
         tier: "standard",
         wants_scannable: draft.wantsScannable,
+        request_admin_voice: draft.requestAdminVoice,
+        request_admin_letter: draft.requestAdminLetter,
+        additional_comments: draft.additionalComments || null,
       }),
     });
     const data = await res.json();
@@ -152,6 +156,9 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
     voice_note_url: string | null;
     video_url: string | null;
     wants_scannable: boolean;
+    request_admin_voice: boolean;
+    request_admin_letter: boolean;
+    additional_comments: string | null;
   }>) => {
     if (!draft.id) return;
     try {
@@ -167,8 +174,8 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
 
   const nextStep = async () => {
     if (step === "compose") {
-      if (!draft.message.trim()) {
-        alert("Please write a message first.");
+      if (!draft.requestAdminLetter && !draft.message.trim()) {
+        alert("Please write your message, or choose 'Write it for me'.");
         return;
       }
       setStep("recipient");
@@ -202,6 +209,9 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
         voice_note_url: draft.extraKind === "voice" ? draft.voiceNoteUrl : null,
         video_url: draft.extraKind === "video" ? draft.videoUrl : null,
         wants_scannable: draft.wantsScannable,
+        request_admin_voice: draft.requestAdminVoice,
+        request_admin_letter: draft.requestAdminLetter,
+        additional_comments: draft.additionalComments || null,
       });
       if (isAdmin || isEditing) {
         await finalizeAdmin();
@@ -236,29 +246,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
     }
   };
 
-  const handleSubscriberFinalize = async () => {
-    if (!draft.id) return;
-    setLoading(true);
-    try {
-      const res = await fetch(`/api/letters/${draft.id}/finalize-subscription`, {
-        method: "POST",
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data.error || "Could not finalize letter");
-        return;
-      }
-      router.push(`/digital-letters/share/${draft.id}`);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handlePay = () => {
-    if (subscriberCovered) {
-      handleSubscriberFinalize();
-      return;
-    }
     if (!window.PaystackPop) {
       alert("Payment gateway is loading, please try again.");
       return;
@@ -283,14 +271,17 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
         user_id: user.id,
         has_audio_video: hasAudioOrVideo,
         wants_scannable: draft.wantsScannable,
-        is_subscriber_addon: isSubscriber && draft.wantsScannable,
       },
       callback: function (response: any) {
         fetch(`/api/payments/verify?reference=${response.reference}`)
           .then((r) => r.json())
           .then((data) => {
             if (data.success) {
-              router.push(`/digital-letters/share/${draft.id}`);
+              if (data.needs_processing) {
+                router.push(`/digital-letters/processing/${draft.id}`);
+              } else {
+                router.push(`/digital-letters/share/${draft.id}`);
+              }
             } else {
               alert("Payment verification failed.");
             }
@@ -352,21 +343,78 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
               </p>
             </div>
 
-            <div className="space-y-3">
-              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                Your Message
-              </label>
-              <textarea
-                value={draft.message}
-                onChange={(e) => setDraft({ ...draft, message: e.target.value })}
-                rows={8}
-                className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 px-6 focus:border-primary outline-none font-medium text-base leading-relaxed resize-none"
-                placeholder="Dear ..., I want you to know..."
-              />
-              <p className="text-[10px] font-bold italic text-muted-foreground/70 ml-1">
-                {draft.message.length} characters · keep it heartfelt and personal
-              </p>
+            {/* Write mode toggle */}
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                type="button"
+                onClick={() => setDraft({ ...draft, requestAdminLetter: false })}
+                className={`p-4 rounded-2xl border-2 text-left transition-all ${
+                  !draft.requestAdminLetter
+                    ? "border-primary bg-primary/10"
+                    : "border-border hover:border-primary/40"
+                }`}
+              >
+                <div className={`text-xs font-black uppercase tracking-widest mb-1 ${!draft.requestAdminLetter ? "text-primary" : "text-foreground/40"}`}>
+                  ✍️ I'll write it
+                </div>
+                <p className="text-[10px] text-muted-foreground font-medium leading-snug">
+                  Write your own heartfelt message
+                </p>
+              </button>
+              <button
+                type="button"
+                onClick={() => setDraft({ ...draft, requestAdminLetter: true })}
+                className={`p-4 rounded-2xl border-2 text-left transition-all ${
+                  draft.requestAdminLetter
+                    ? "border-primary bg-primary/10"
+                    : "border-border hover:border-primary/40"
+                }`}
+              >
+                <div className={`text-xs font-black uppercase tracking-widest mb-1 ${draft.requestAdminLetter ? "text-primary" : "text-foreground/40"}`}>
+                  ✨ Write it for me
+                </div>
+                <p className="text-[10px] text-muted-foreground font-medium leading-snug">
+                  BuzzThrills crafts the letter for you
+                </p>
+              </button>
             </div>
+
+            {draft.requestAdminLetter ? (
+              <div className="space-y-3">
+                <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex gap-3">
+                  <span className="text-lg shrink-0">✨</span>
+                  <p className="text-[11px] text-amber-300 font-medium leading-relaxed">
+                    Our team will craft a beautiful, personalised letter on your behalf. Just tell us a little about the occasion and recipient — we'll take care of the rest before your letter is published.
+                  </p>
+                </div>
+                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
+                  Tell us about the occasion
+                </label>
+                <textarea
+                  value={draft.additionalComments}
+                  onChange={(e) => setDraft({ ...draft, additionalComments: e.target.value })}
+                  rows={6}
+                  className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 px-6 focus:border-primary outline-none font-medium text-base leading-relaxed resize-none"
+                  placeholder="e.g. It's my mum's 60th birthday. She loves poetry and has always been my biggest supporter. Keep it warm and celebratory…"
+                />
+              </div>
+            ) : (
+              <div className="space-y-3">
+                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
+                  Your Message
+                </label>
+                <textarea
+                  value={draft.message}
+                  onChange={(e) => setDraft({ ...draft, message: e.target.value })}
+                  rows={8}
+                  className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 px-6 focus:border-primary outline-none font-medium text-base leading-relaxed resize-none"
+                  placeholder="Dear ..., I want you to know..."
+                />
+                <p className="text-[10px] font-bold italic text-muted-foreground/70 ml-1">
+                  {draft.message.length} characters · keep it heartfelt and personal
+                </p>
+              </div>
+            )}
 
             <div className="space-y-3">
               <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Theme</label>
@@ -496,13 +544,13 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
               <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/70">
                 Personal Touch <span className="text-muted-foreground/50 normal-case italic">— pick one</span>
               </div>
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {([
                   { id: "none", label: "None", icon: Sparkles },
-                  { id: "voice", label: "Voice", icon: Mic },
+                  { id: "voice", label: "My Voice", icon: Mic },
                   { id: "video", label: "Video", icon: Video },
                 ] as { id: Draft["extraKind"]; label: string; icon: any }[]).map((opt) => {
-                  const active = draft.extraKind === opt.id;
+                  const active = draft.extraKind === opt.id && !draft.requestAdminVoice;
                   const Icon = opt.icon;
                   return (
                     <button
@@ -512,6 +560,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                         setDraft({
                           ...draft,
                           extraKind: opt.id,
+                          requestAdminVoice: false,
                           voiceNoteUrl: opt.id === "voice" ? draft.voiceNoteUrl : null,
                           videoUrl: opt.id === "video" ? draft.videoUrl : null,
                         })
@@ -525,7 +574,30 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                     </button>
                   );
                 })}
+                {/* Request BuzzThrills voice recording */}
+                <button
+                  type="button"
+                  onClick={() =>
+                    setDraft({
+                      ...draft,
+                      requestAdminVoice: !draft.requestAdminVoice,
+                      extraKind: !draft.requestAdminVoice ? "none" : draft.extraKind,
+                      voiceNoteUrl: null,
+                    })
+                  }
+                  className={`p-3 rounded-2xl border-2 transition-all flex flex-col items-center gap-2 ${
+                    draft.requestAdminVoice ? "border-primary bg-primary/10" : "border-border hover:border-primary/40"
+                  }`}
+                >
+                  <Mic size={18} className={draft.requestAdminVoice ? "text-primary" : "text-foreground/40"} />
+                  <span className="text-[10px] font-black uppercase tracking-widest text-center leading-tight">BuzzThrills Voice</span>
+                </button>
               </div>
+              {draft.requestAdminVoice && (
+                <p className="text-[11px] text-primary/80 font-medium italic px-1">
+                  ✓ We'll record a professional voice-over for your letter. Leave any instructions in the comments below.
+                </p>
+              )}
             </div>
 
             {draft.extraKind === "voice" && (
@@ -571,6 +643,20 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
               </div>
             </button>
 
+            {/* Additional comments */}
+            <div className="space-y-2">
+              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
+                Additional Comments <span className="text-muted-foreground/60 normal-case font-bold italic">— optional</span>
+              </label>
+              <textarea
+                value={draft.additionalComments}
+                onChange={(e) => setDraft({ ...draft, additionalComments: e.target.value })}
+                rows={3}
+                className="w-full bg-foreground/5 border border-border rounded-[20px] py-4 px-5 focus:border-primary outline-none font-medium text-sm leading-relaxed resize-none"
+                placeholder="Any special instructions — tone, style, timing, language preference…"
+              />
+            </div>
+
             <div className="p-5 rounded-2xl bg-foreground/5 border border-border space-y-2">
               <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-2">Running total</div>
               {priceBreakdown.lines.map((line) => (
@@ -583,13 +669,6 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                 <span className="font-black uppercase tracking-widest">Total</span>
                 <span className="font-black gradient-text">₦{priceBreakdown.total.toLocaleString()}</span>
               </div>
-              {isSubscriber && (
-                <p className="text-[10px] font-bold italic text-primary/80 mt-2">
-                  {draft.wantsScannable
-                    ? `As a subscriber, we'll only charge the ₦${LETTER_PRICING.scannableAddon.toLocaleString()} scannable add-on.`
-                    : "Subscribers: this letter is included in your monthly bundle."}
-                </p>
-              )}
             </div>
           </motion.div>
         )}
@@ -603,17 +682,13 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             className="flex-grow flex flex-col items-center justify-center text-center py-8"
           >
             <div className="w-20 h-20 rounded-[28px] gradient-bg flex items-center justify-center mb-8 shadow-huge animate-pulse">
-              {subscriberCovered ? <Sparkles size={32} className="text-white" /> : <CreditCard size={32} className="text-white" />}
+              <CreditCard size={32} className="text-white" />
             </div>
             <h2 className="text-3xl sm:text-4xl font-black mb-3 tracking-tighter uppercase italic">
-              {subscriberCovered ? <>Publish <span className="gradient-text italic">Letter</span></> : <>Pay & <span className="gradient-text italic">Publish</span></>}
+              Pay &amp; <span className="gradient-text italic">Publish</span>
             </h2>
             <p className="text-muted-foreground font-bold mb-8 max-w-sm leading-relaxed uppercase text-[10px] tracking-[0.2em]">
-              {subscriberCovered
-                ? "This letter uses one call from your subscription."
-                : isSubscriber && draft.wantsScannable
-                ? "Subscription covers the letter. You're only charged for the scannable physical copy."
-                : "Secure checkout via Paystack. You'll get the share link instantly."}
+              Secure checkout via Paystack. You'll receive your share link instantly after payment.
             </p>
 
             <div className="w-full max-w-md p-6 sm:p-8 rounded-[32px] glass border border-border text-left space-y-4">
@@ -641,7 +716,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
               <div className="pt-3 border-t border-border flex justify-between items-center">
                 <span className="text-xs font-black uppercase tracking-[0.2em] italic">You pay now</span>
                 <span className="text-2xl font-black gradient-text">
-                  {amountToCharge === 0 ? "Included" : `₦${amountToCharge.toLocaleString()}`}
+                  ₦{amountToCharge.toLocaleString()}
                 </span>
               </div>
             </div>
@@ -672,9 +747,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
           ) : (
             <>
               {step === "pay"
-                ? subscriberCovered
-                  ? "Publish Letter"
-                  : "Pay & Publish"
+                ? "Pay & Publish"
                 : step === "media" && (isAdmin || isEditing)
                 ? isEditing
                   ? "Save & Publish"

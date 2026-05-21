@@ -27,6 +27,9 @@ export async function POST(request: Request) {
       voice_note_url,
       video_url,
       wants_scannable,
+      additional_comments,
+      request_admin_voice,
+      request_admin_letter,
     } = body || {};
 
     if (!recipient_name || !message) {
@@ -62,6 +65,9 @@ export async function POST(request: Request) {
         video_url: video_url || null,
         wants_scannable: !!wants_scannable,
         scannable_status: wants_scannable ? "pending" : "none",
+        additional_comments: additional_comments || null,
+        request_admin_voice: !!request_admin_voice,
+        request_admin_letter: !!request_admin_letter,
         qr_identifier: code,
         status: "draft",
       })

@@ -68,7 +68,7 @@ export default function AdminLettersPage() {
             Letter <span className="gradient-text italic">Operations</span>
           </h1>
           <p className="text-white/40 mt-3 font-medium text-sm">
-            Manage every published artifact, augment drafts, or create one on behalf of a client.
+            Manage every published letter, augment drafts, or create one on behalf of a client.
           </p>
         </div>
         <Link

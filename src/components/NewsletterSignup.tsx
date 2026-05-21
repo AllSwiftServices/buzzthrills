@@ -44,7 +44,7 @@ export default function NewsletterSignup() {
                initial={{ opacity: 0, scale: 0.9, y: 20 }}
                animate={{ opacity: 1, scale: 1, y: 0 }}
                exit={{ opacity: 0, scale: 0.9, y: 20 }}
-               className="w-full max-w-lg glass p-10 md:p-14 rounded-[56px] border border-border shadow-huge relative overflow-hidden text-center"
+               className="w-full max-w-lg glass p-7 sm:p-10 md:p-14 rounded-[32px] sm:rounded-[56px] border border-border shadow-huge relative overflow-hidden text-center"
              >
                 <button 
                   onClick={() => setIsVisible(false)}
@@ -121,7 +121,7 @@ export default function NewsletterSignup() {
 
       {/* Static Section Version (Non-Popup) */}
       <section className="py-24 max-w-6xl mx-auto px-6">
-         <div className="p-12 md:p-20 rounded-[64px] glass border border-border shadow-huge relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-12 bg-background/40 group hover:border-primary/20 transition-all">
+         <div className="p-7 sm:p-12 md:p-20 rounded-[32px] sm:rounded-[64px] glass border border-border shadow-huge relative overflow-hidden flex flex-col md:flex-row items-center justify-between gap-10 md:gap-12 bg-background/40 group hover:border-primary/20 transition-all">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[120px] rounded-full -mr-48 -mt-48" />
             
             <div className="max-w-xl relative z-10 text-center md:text-left">

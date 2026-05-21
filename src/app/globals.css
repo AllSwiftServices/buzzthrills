@@ -10,7 +10,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   
-  --font-serif: var(--font-lora);
+  --font-serif: var(--font-playfair);
   
   --radius-xl: 1.5rem;
   --radius-2xl: 2rem;
@@ -19,24 +19,24 @@
 }
 
 :root {
-  --background: #fdfaf6;
-  --foreground: #2d1e1e;
-  --primary: #8b5cf6;
-  --secondary: #fbbf24;
-  --accent: #ec4899;
-  --muted: #f1ede4;
-  --muted-foreground: #6d5959;
-  --border: rgba(139, 92, 246, 0.1);
+  --background: #fdfcff;
+  --foreground: #1a0a2e;
+  --primary: #5A0C7E;
+  --secondary: #360171;
+  --accent: #D9BE18;
+  --muted: #f3f0f8;
+  --muted-foreground: #6b5b7b;
+  --border: rgba(90, 12, 126, 0.12);
 }
 
 .dark {
-  --background: #050505;
-  --foreground: #fdfaf6;
-  --muted: #1e1e1e;
-  --muted-foreground: #a1a1aa;
-  --border: rgba(139, 92, 246, 0.15);
-  --primary: #8b5cf6;
-  --accent: #ec4899;
+  --background: #0a0414;
+  --foreground: #f5f0ff;
+  --muted: #1a0d2e;
+  --muted-foreground: #a090b8;
+  --border: rgba(90, 12, 126, 0.2);
+  --primary: #7b1fa2;
+  --accent: #D9BE18;
 }
 
 @layer base {
@@ -44,12 +44,22 @@
     @apply border-border;
   }
   
+  html {
+    overflow-x: hidden;
+    box-sizing: border-box;
+  }
+
+  *, *::before, *::after {
+    box-sizing: inherit;
+  }
+
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20;
-    font-family: var(--font-outfit), sans-serif;
+    font-family: var(--font-inter), sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
+    overflow-x: hidden;
   }
 
   h1, h2, h3, .font-serif {
@@ -74,11 +84,11 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-br from-primary via-accent to-primary bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent;
   }
 
   .gradient-bg {
-    @apply bg-gradient-to-br from-primary to-accent;
+    @apply bg-gradient-to-br from-primary to-secondary;
   }
 
   .animate-float {

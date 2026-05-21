@@ -241,6 +241,48 @@ export async function sendLetterReadyEmail(email: string, details: { recipientNa
   }
 }
 
+export async function sendLetterProcessingEmail(email: string, details: { recipientName: string }) {
+  if (!brevo) {
+    console.warn("⚠️ Email service not configured. Skipping letter processing email.");
+    return;
+  }
+
+  try {
+    await brevo.transactionalEmails.sendTransacEmail({
+      subject: `Your Letter is Being Crafted 💜`,
+      sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      to: [{ email }],
+      htmlContent: `
+        <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
+          <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <h1 style="color: #5A0C7E; font-size: 28px; font-weight: 900; margin-bottom: 24px;">Payment Confirmed — We're On It! ✨</h1>
+            <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 32px;">
+              Your digital letter for <strong>${details.recipientName}</strong> has been paid for and is now being prepared by our team.
+              We'll personalise every detail and notify you the moment it's ready to share.
+            </p>
+
+            <div style="padding: 24px; background: #f9f4ff; border-radius: 16px; border: 1px solid #e9d8ff; margin-bottom: 32px;">
+              <h2 style="font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #5A0C7E; margin-bottom: 12px;">What Happens Next</h2>
+              <ol style="margin: 0; padding-left: 20px; color: #555; font-size: 14px; line-height: 1.8;">
+                <li>Our team reviews your brief and crafts your letter</li>
+                <li>We add the requested voice recording or other touches</li>
+                <li>You receive an email with your live share link</li>
+                <li>Share the link — your recipient opens it to a beautiful experience</li>
+              </ol>
+            </div>
+
+            <p style="text-align: center; font-size: 14px; color: #999;">
+              Track your letter status in your <a href="https://buzzthrillsprime.com/profile" style="color: #5A0C7E; text-decoration: none; font-weight: bold;">Dashboard</a>.
+            </p>
+          </div>
+        </div>
+      `,
+    });
+  } catch (error) {
+    console.error("Brevo letter processing email failed:", error);
+  }
+}
+
 export async function sendCallStatusUpdate(email: string, details: {
   status: string; 
   recipientName: string; 

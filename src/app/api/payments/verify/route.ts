@@ -30,25 +30,46 @@ export async function GET(request: Request) {
 
         // 0. Digital Letter publishing (short-circuit — letters don't insert into calls)
         if (purchase_type === 'digital_letter' && letter_id && supabaseAdmin) {
+          // Fetch the letter to check if admin work is required
+          const { data: letterFull } = await supabaseAdmin
+            .from('digital_letters')
+            .select('id, qr_identifier, recipient_name, request_admin_letter, request_admin_voice')
+            .eq('id', letter_id)
+            .single();
+
+          const needsAdminWork = !!(letterFull?.request_admin_letter || letterFull?.request_admin_voice);
+          const newStatus = needsAdminWork ? 'processing' : 'published';
+
           const { data: letterRow } = await supabaseAdmin
             .from('digital_letters')
-            .update({ status: 'published', updated_at: new Date().toISOString() })
+            .update({ status: newStatus, updated_at: new Date().toISOString() })
             .eq('id', letter_id)
-            .select('id, qr_identifier, recipient_name')
+            .select('id, qr_identifier, recipient_name, request_admin_letter, request_admin_voice')
             .single();
 
           try {
-            const { sendLetterReadyEmail } = await import('@/lib/email');
             const origin = new URL(request.url).origin;
-            await sendLetterReadyEmail(customerEmail, {
-              recipientName: letterRow?.recipient_name || 'your recipient',
-              shareUrl: `${origin}/letter/${letterRow?.qr_identifier}`,
-            });
+            if (needsAdminWork) {
+              const { sendLetterProcessingEmail } = await import('@/lib/email');
+              await sendLetterProcessingEmail(customerEmail, {
+                recipientName: letterRow?.recipient_name || 'your recipient',
+              });
+            } else {
+              const { sendLetterReadyEmail } = await import('@/lib/email');
+              await sendLetterReadyEmail(customerEmail, {
+                recipientName: letterRow?.recipient_name || 'your recipient',
+                shareUrl: `${origin}/letter/${letterRow?.qr_identifier}`,
+              });
+            }
           } catch (e) {
-            console.error('Letter ready email failed:', e);
+            console.error('Letter email failed:', e);
           }
 
-          return NextResponse.json({ success: true, letter: letterRow });
+          return NextResponse.json({
+            success: true,
+            letter: letterRow,
+            needs_processing: needsAdminWork,
+          });
         }
         
         if (supabaseAdmin) {

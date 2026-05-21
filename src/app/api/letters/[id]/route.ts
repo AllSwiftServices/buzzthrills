@@ -68,10 +68,13 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
       "background_music_url",
       "voice_note_url",
       "video_url",
+      "additional_comments",
     ];
     for (const key of writable) {
       if (key in body) patch[key] = body[key];
     }
+    if ("request_admin_voice" in body) patch.request_admin_voice = !!body.request_admin_voice;
+    if ("request_admin_letter" in body) patch.request_admin_letter = !!body.request_admin_letter;
     if ("theme" in body) patch.theme = getThemeSpec(body.theme).id;
     if ("tier" in body) patch.tier = getLetterTier(body.tier);
     if ("wants_scannable" in body) {
@@ -85,7 +88,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     }
     if (isAdmin) {
       if ("admin_notes" in body) patch.admin_notes = body.admin_notes;
-      if ("status" in body && ["draft", "published", "archived"].includes(body.status)) {
+      if ("status" in body && ["draft", "processing", "published", "archived"].includes(body.status)) {
         patch.status = body.status;
       }
       if ("scannable_status" in body && ["none", "pending", "printed", "shipped"].includes(body.scannable_status)) {

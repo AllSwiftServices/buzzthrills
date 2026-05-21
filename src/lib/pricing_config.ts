@@ -137,17 +137,6 @@ export const CALL_SERVICES: Record<string, CallService> = {
     tiers: [{ variant: "standard", price: 6000, label: "Standard" }],
     icon: "Video",
   },
-  digital_letter: {
-    id: "digital_letter",
-    name: "Digital Letter",
-    description: "A premium digital artifact combining typography, animated scrolls, and voice recordings.",
-    basePrice: 5000,
-    tiers: [
-      { variant: "standard", price: 5000, label: "Standard (Voice + Animation)" },
-      { variant: "special", price: 7500, label: "Premium (Custom Theme + Extended Voice)" },
-    ],
-    icon: "Mail",
-  },
   company_calls: {
     id: "company_calls",
     name: "Company / Corporate Calls",
@@ -176,3 +165,18 @@ export const ICON_MAP: Record<string, any> = {
   Video,
   Building
 };
+
+// ─── Digital Letters ───────────────────────────────────────────────────────────
+// Separate from CALL_SERVICES — Digital Letters are an independent product
+// with their own creation flow at /digital-letters/create.
+export const DIGITAL_LETTER_SERVICE = {
+  id: "digital_letter",
+  name: "Digital Letter",
+  description: "A premium digital letter combining typography, animated scrolls, and voice recordings.",
+  basePrice: 5000,
+  tiers: [
+    { variant: "standard" as CallVariant, price: 5000, label: "Standard (Voice + Animation)" },
+    { variant: "special" as CallVariant, price: 7500, label: "Premium (Custom Theme + Extended Voice)" },
+  ],
+  icon: "Mail",
+} satisfies CallService;

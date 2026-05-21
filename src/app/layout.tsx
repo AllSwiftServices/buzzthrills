@@ -1,22 +1,23 @@
 import type { Metadata } from "next";
-import { Outfit, Lora } from "next/font/google";
+import { Inter, Playfair_Display } from "next/font/google";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { AuthProvider } from "@/context/AuthContext";
 import Script from "next/script";
 import { ServiceWorkerCleaner } from "@/components/ServiceWorkerCleaner";
 import "./globals.css";
 
-const outfit = Outfit({
+const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-outfit",
+  variable: "--font-inter",
   weight: ["300", "400", "500", "600", "700", "800", "900"],
   display: "swap",
 });
 
-const lora = Lora({
+const playfair = Playfair_Display({
   subsets: ["latin"],
-  variable: "--font-lora",
-  weight: ["400", "500", "600", "700"],
+  variable: "--font-playfair",
+  weight: ["400", "500", "600", "700", "800", "900"],
+  style: ["normal", "italic"],
   display: "swap",
 });
 
@@ -32,7 +33,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${outfit.variable} ${lora.variable} scroll-smooth`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} ${playfair.variable} scroll-smooth`} suppressHydrationWarning>
       <body 
         className="antialiased bg-background text-foreground transition-colors duration-500"
         suppressHydrationWarning

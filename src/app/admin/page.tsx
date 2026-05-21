@@ -105,12 +105,12 @@ export default function AdminDashboard() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="p-10 rounded-[56px] glass border border-white/10 flex flex-col gap-8 group hover:border-primary/20 transition-all cursor-pointer overflow-hidden relative shadow-huge bg-black/20"
+            className="p-5 sm:p-8 lg:p-10 rounded-[28px] sm:rounded-[40px] lg:rounded-[56px] glass border border-white/10 flex flex-col gap-6 lg:gap-8 group hover:border-primary/20 transition-all cursor-pointer overflow-hidden relative shadow-huge bg-black/20"
           >
             <div className="absolute top-0 right-0 w-32 h-32 bg-primary/5 blur-[40px] rounded-full -mr-16 -mt-16 group-hover:bg-primary/20 transition-all duration-700" />
             
             <div className="flex justify-between items-start relative z-10">
-               <div className="w-16 h-16 rounded-2xl bg-white/5 flex items-center justify-center shadow-xl shadow-white/5 group-hover:scale-110 transition-transform">
+               <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-2xl bg-white/5 flex items-center justify-center shadow-xl shadow-white/5 group-hover:scale-110 transition-transform">
                  {stat.icon}
                </div>
                <div className="flex items-center gap-1 text-green-500 font-black text-[10px] italic tracking-widest">
@@ -187,7 +187,7 @@ export default function AdminDashboard() {
         </div>
 
         {/* Tactical Intelligence Overlays */}
-        <div className="lg:col-span-7 p-12 rounded-[64px] glass border border-white/10 shadow-huge bg-black/20 h-full relative overflow-hidden">
+        <div className="lg:col-span-7 p-6 sm:p-8 lg:p-12 rounded-[32px] lg:rounded-[64px] glass border border-white/10 shadow-huge bg-black/20 h-full relative overflow-hidden">
            <div className="absolute top-0 left-0 w-96 h-96 bg-secondary/2 blur-[100px] rounded-full -ml-48 -mt-48" />
            <div className="flex items-center gap-4 mb-10 relative z-10">
               <Globe className="text-secondary" size={24} />
@@ -230,11 +230,11 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        <div className="lg:col-span-5 flex flex-col gap-8">
+        <div className="lg:col-span-5 flex flex-col gap-6 lg:gap-8">
            <motion.div 
              whileHover={{ scale: 1.02 }}
              onClick={() => router.push('/admin/offers')}
-             className="p-10 rounded-[64px] gradient-bg shadow-huge flex flex-col items-center justify-center text-center relative overflow-hidden group cursor-pointer flex-1"
+             className="p-8 lg:p-10 rounded-[40px] lg:rounded-[64px] gradient-bg shadow-huge flex flex-col items-center justify-center text-center relative overflow-hidden group cursor-pointer flex-1"
            >
               <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-[80px] rounded-full -mr-32 -mt-32 group-hover:scale-150 transition-transform duration-[2s]" />
               <div className="relative z-10">
@@ -252,7 +252,7 @@ export default function AdminDashboard() {
            <motion.div 
              whileHover={{ scale: 1.02 }}
              onClick={() => router.push('/admin/crm')}
-             className="p-10 rounded-[56px] glass border border-white/10 shadow-huge bg-black/50 flex items-center justify-between group cursor-pointer"
+             className="p-6 lg:p-10 rounded-[32px] lg:rounded-[56px] glass border border-white/10 shadow-huge bg-black/50 flex items-center justify-between group cursor-pointer"
            >
               <div className="flex items-center gap-6">
                  <div className="w-16 h-16 rounded-[24px] bg-secondary/10 border border-secondary/20 flex items-center justify-center text-secondary group-hover:bg-secondary group-hover:text-white transition-all duration-500 shadow-xl shadow-secondary/5">

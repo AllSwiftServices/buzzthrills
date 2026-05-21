@@ -35,7 +35,7 @@ function CreatePageContent() {
             Digital Letter
           </div>
           <h1 className="text-4xl sm:text-6xl font-medium tracking-tight font-serif leading-none">
-            Craft Your <span className="gradient-text italic">Artifact</span>
+            Craft Your <span className="gradient-text italic">Letter</span>
           </h1>
         </div>
         <DigitalLetterForm mode="user" />

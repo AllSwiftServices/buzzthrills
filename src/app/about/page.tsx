@@ -45,9 +45,9 @@ export default function AboutPage() {
 
       {/* Mission Section */}
       <section className="py-24 px-6 bg-muted/20 border-y border-border">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-20 items-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20 items-center">
           <Reveal direction="left">
-            <div className="relative aspect-square rounded-[64px] glass border border-border overflow-hidden shadow-huge bg-background/40">
+            <div className="relative aspect-square rounded-[32px] sm:rounded-[64px] glass border border-border overflow-hidden shadow-huge bg-background/40">
               <div className="absolute inset-0 gradient-bg opacity-5" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <Sparkles size={120} className="text-primary opacity-10 animate-pulse" />
@@ -89,11 +89,11 @@ export default function AboutPage() {
 
       {/* Stats / Numbers */}
       <section className="py-24 px-6 relative">
-        <div className="max-w-5xl mx-auto rounded-[64px] p-16 glass border border-border text-center overflow-hidden relative shadow-huge">
+        <div className="max-w-5xl mx-auto rounded-[32px] sm:rounded-[64px] p-6 sm:p-12 md:p-16 glass border border-border text-center overflow-hidden relative shadow-huge">
           <div className="absolute bottom-0 left-0 w-64 h-64 bg-accent/10 blur-[100px] rounded-full -ml-32 -mb-32" />
           <Reveal>
             <h3 className="text-3xl font-medium mb-16 font-serif italic tracking-tight">BuzzThrills by the <span className="gradient-text">Numbers</span></h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-12 sm:gap-20">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 sm:gap-12 md:gap-20">
               {[
                 { label: "Hearts Connected", value: "24.5k" },
                 { label: "Hearts Rekindled", value: "12k+" },
@@ -114,14 +114,14 @@ export default function AboutPage() {
       {/* Call to Action */}
       <section className="py-24 px-6 text-center">
         <Reveal>
-          <div className="max-w-4xl mx-auto p-16 sm:p-24 rounded-[64px] glass border border-border bg-foreground/2 relative overflow-hidden group shadow-huge">
+          <div className="max-w-4xl mx-auto p-8 sm:p-16 rounded-[32px] sm:rounded-[64px] glass border border-border bg-foreground/2 relative overflow-hidden group shadow-huge">
             <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity duration-1000" />
             <h2 className="text-4xl sm:text-6xl font-medium mb-12 font-serif italic relative z-10">Start <span className="gradient-text italic">Connecting</span> Now.</h2>
             <div className="flex flex-col sm:flex-row gap-6 justify-center relative z-10">
-              <Link href="/book" className="px-12 py-6 rounded-3xl gradient-bg text-white font-bold text-xl hover:scale-105 active:scale-95 transition-all shadow-huge">
+              <Link href="/book" className="px-8 py-4 sm:px-12 sm:py-6 rounded-3xl gradient-bg text-white font-bold text-base sm:text-xl hover:scale-105 active:scale-95 transition-all shadow-huge text-center">
                 Send a Surprise
               </Link>
-              <Link href="/support" className="px-12 py-6 rounded-3xl glass font-bold text-xl hover:bg-foreground/5 transition-all border border-border flex items-center justify-center">
+              <Link href="/support" className="px-8 py-4 sm:px-12 sm:py-6 rounded-3xl glass font-bold text-base sm:text-xl hover:bg-foreground/5 transition-all border border-border flex items-center justify-center">
                 Contact Support
               </Link>
             </div>

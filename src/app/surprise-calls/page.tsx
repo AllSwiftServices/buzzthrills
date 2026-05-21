@@ -42,11 +42,11 @@ export default function SurpriseCallsPage() {
           </Reveal>
           <Reveal delay={0.3}>
             <div className="flex flex-col sm:flex-row justify-center gap-6">
-              <Link href="/book" className="px-12 py-6 rounded-3xl gradient-bg text-white font-bold text-xl hover:scale-105 transition-all shadow-huge flex items-center justify-center gap-3">
+              <Link href="/book" className="px-8 py-4 sm:px-12 sm:py-6 rounded-3xl gradient-bg text-white font-bold text-base sm:text-xl hover:scale-105 transition-all shadow-huge flex items-center justify-center gap-3">
                 Send a Call Now
-                <Phone size={24} />
+                <Phone size={20} />
               </Link>
-              <Link href="#how-it-works" className="px-12 py-6 rounded-3xl glass font-bold text-xl hover:bg-foreground/5 transition-all border border-border flex items-center justify-center gap-2 group">
+              <Link href="#how-it-works" className="px-8 py-4 sm:px-12 sm:py-6 rounded-3xl glass font-bold text-base sm:text-xl hover:bg-foreground/5 transition-all border border-border flex items-center justify-center gap-2 group">
                 How It Works
                 <ChevronRight size={20} className="group-hover:translate-x-1 transition-transform" />
               </Link>
@@ -60,7 +60,7 @@ export default function SurpriseCallsPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {categories.map((cat, i) => (
             <Reveal key={i} delay={i * 0.1}>
-              <div className="p-10 rounded-[48px] glass border border-border h-full flex flex-col items-center text-center group hover:border-primary/20 transition-all duration-500 hover:shadow-huge bg-background/40">
+              <div className="p-6 sm:p-10 rounded-[32px] sm:rounded-[48px] glass border border-border h-full flex flex-col items-center text-center group hover:border-primary/20 transition-all duration-500 hover:shadow-huge bg-background/40">
                 <div className={`w-20 h-20 rounded-[32px] flex items-center justify-center mb-8 group-hover:scale-110 group-hover:rotate-6 transition-all duration-500 shadow-xl ${cat.color}`}>
                   {cat.icon}
                 </div>
@@ -74,9 +74,9 @@ export default function SurpriseCallsPage() {
 
       {/* Showcase Section */}
       <section id="how-it-works" className="py-24 px-6 relative">
-        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
+        <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-center">
           <Reveal direction="left">
-            <div className="relative p-2 glass border border-border rounded-[64px] aspect-square overflow-hidden group shadow-huge bg-background/40">
+            <div className="relative p-2 glass border border-border rounded-[32px] sm:rounded-[64px] aspect-square overflow-hidden group shadow-huge bg-background/40">
               <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity duration-1000" />
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="w-32 h-32 bg-white/20 backdrop-blur-2xl rounded-full flex items-center justify-center animate-pulse cursor-pointer shadow-2xl border border-white/30">
@@ -116,11 +116,11 @@ export default function SurpriseCallsPage() {
 
       {/* Stats / Numbers */}
       <section className="py-24 px-6">
-        <div className="max-w-4xl mx-auto p-16 glass border border-primary/10 rounded-[64px] text-center shadow-huge relative overflow-hidden">
+        <div className="max-w-4xl mx-auto p-6 sm:p-12 sm:p-16 glass border border-primary/10 rounded-[32px] sm:rounded-[64px] text-center shadow-huge relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -mr-32 -mt-32" />
           <Reveal>
             <h3 className="text-3xl font-medium mb-16 font-serif italic tracking-tight">Why People <span className="gradient-text">Trust Us</span></h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 sm:gap-20">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 md:gap-20">
               {[
                 { label: "Successful Deliveries", value: "98.4%" },
                 { label: "Hearts Connected", value: "24.5k+" },
@@ -140,11 +140,11 @@ export default function SurpriseCallsPage() {
       {/* Footer CTA */}
       <section className="py-24 px-6 text-center">
         <Reveal>
-          <div className="max-w-4xl mx-auto p-16 sm:p-24 rounded-[64px] glass border border-border shadow-huge relative overflow-hidden group">
+          <div className="max-w-4xl mx-auto p-8 sm:p-16 rounded-[32px] sm:rounded-[64px] glass border border-border shadow-huge relative overflow-hidden group">
             <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity duration-1000" />
             <div className="absolute top-0 left-0 w-96 h-96 bg-primary/10 blur-[100px] rounded-full -ml-48 -mt-48" />
             <h2 className="text-4xl sm:text-5xl md:text-6xl font-medium mb-12 relative z-10 tracking-tight font-serif italic">Make Someone Smile <br className="hidden sm:block" />Today.</h2>
-            <Link href="/book" className="inline-flex px-12 py-6 gradient-bg text-white font-bold text-xl rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge relative z-10">
+            <Link href="/book" className="inline-flex px-8 py-4 sm:px-12 sm:py-6 gradient-bg text-white font-bold text-base sm:text-xl rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge relative z-10">
               Book a Surprise
             </Link>
           </div>
