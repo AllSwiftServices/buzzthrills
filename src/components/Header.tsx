@@ -28,16 +28,16 @@ export default function Header() {
   useEffect(() => { setIsOpen(false); }, [pathname]);
 
   const mainLinks = [
-    { href: "/",                label: "Home",            icon: <Home size={14} /> },
-    { href: "/about",           label: "Our Story",       icon: <BookOpen size={14} /> },
-    { href: "/pricing",         label: "Plans & Pricing", icon: <CreditCard size={14} /> },
-    { href: "/digital-letters", label: "Digital Letters", icon: <Mail size={14} /> },
+    { href: "/",                matchPath: "/",                label: "Home",            icon: <Home size={14} /> },
+    { href: "/about",           matchPath: "/about",           label: "Our Story",       icon: <BookOpen size={14} /> },
+    { href: "/pricing",         matchPath: "/pricing",         label: "Plans & Pricing", icon: <CreditCard size={14} /> },
+    { href: mounted ? (user ? "/digital-letters" : "/auth?redirect=/digital-letters/create") : "/digital-letters", matchPath: "/digital-letters", label: "Digital Letters", icon: <Mail size={14} /> },
   ];
 
   const isDark = mounted && resolvedTheme === "dark";
 
-  const isActive = (href: string) =>
-    href === "/" ? pathname === "/" : pathname.startsWith(href);
+  const isActive = (matchPath: string) =>
+    matchPath === "/" ? pathname === "/" : pathname.startsWith(matchPath);
 
   // Old-style menu: stagger children inward
   const menuVariants = {
@@ -86,7 +86,7 @@ export default function Header() {
               key={link.href}
               href={link.href}
               className={`px-4 py-2 rounded-xl transition-all hover:text-primary ${
-                isActive(link.href)
+                isActive(link.matchPath)
                   ? "text-primary font-semibold"
                   : "hover:bg-foreground/5"
               }`}
@@ -171,7 +171,7 @@ export default function Header() {
                       href={link.href}
                       onClick={() => setIsOpen(false)}
                       className={`text-2xl sm:text-3xl font-black hover:text-primary transition-all py-1.5 text-center block w-full hover:scale-105 tracking-tight ${
-                        isActive(link.href) ? "text-primary" : ""
+                        isActive(link.matchPath) ? "text-primary" : ""
                       }`}
                     >
                       {link.label}
