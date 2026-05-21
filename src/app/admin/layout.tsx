@@ -45,7 +45,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg shadow-primary/20">
-              <ShieldCheck className="text-white" size={24} />
+              <ShieldCheck className="text-foreground" size={24} />
             </div>
             <div className="text-sm font-black tracking-tighter gradient-text uppercase">Buzz Admin</div>
           </div>

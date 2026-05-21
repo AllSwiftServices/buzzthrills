@@ -9,7 +9,7 @@ export default function AdminNewLetterPage() {
     <div className="max-w-3xl mx-auto">
       <Link
         href="/admin/letters"
-        className="inline-flex items-center gap-2 text-xs font-bold text-white/40 hover:text-primary transition-colors mb-6"
+        className="inline-flex items-center gap-2 text-xs font-bold text-foreground/40 hover:text-primary transition-colors mb-6"
       >
         <ArrowLeft size={14} />
         Back to letters

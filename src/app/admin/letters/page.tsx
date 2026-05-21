@@ -24,7 +24,7 @@ type Letter = {
 const statusStyles: Record<string, string> = {
   draft: "bg-amber-500/10 text-amber-400 border-amber-500/20",
   published: "bg-green-500/10 text-green-400 border-green-500/20",
-  archived: "bg-white/5 text-white/40 border-white/10",
+  archived: "bg-foreground/5 text-foreground/40 border-foreground/10",
 };
 
 export default function AdminLettersPage() {
@@ -67,7 +67,7 @@ export default function AdminLettersPage() {
           <h1 className="text-4xl md:text-5xl font-black italic tracking-tighter leading-none">
             Letter <span className="gradient-text italic">Operations</span>
           </h1>
-          <p className="text-white/40 mt-3 font-medium text-sm">
+          <p className="text-foreground/40 mt-3 font-medium text-sm">
             Manage every published letter, augment drafts, or create one on behalf of a client.
           </p>
         </div>
@@ -82,13 +82,13 @@ export default function AdminLettersPage() {
 
       <div className="flex flex-col md:flex-row gap-3 mb-6">
         <div className="relative flex-1">
-          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
+          <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/30" />
           <input
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             placeholder="Search by recipient, sender email, or code…"
-            className="w-full bg-white/5 border border-white/10 rounded-2xl py-3 pl-12 pr-4 text-sm font-medium outline-none focus:border-primary/40"
+            className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl py-3 pl-12 pr-4 text-sm font-medium outline-none focus:border-primary/40"
           />
         </div>
         <div className="flex gap-2">
@@ -99,7 +99,7 @@ export default function AdminLettersPage() {
               className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
                 statusFilter === s
                   ? "bg-primary text-white"
-                  : "bg-white/5 text-white/40 hover:text-white"
+                  : "bg-foreground/5 text-foreground/40 hover:text-white"
               }`}
             >
               {s}
@@ -109,21 +109,21 @@ export default function AdminLettersPage() {
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center py-20 gap-3 text-white/40">
+        <div className="flex items-center justify-center py-20 gap-3 text-foreground/40">
           <Loader2 className="animate-spin" size={20} />
           <span className="text-sm font-bold">Loading letters…</span>
         </div>
       ) : filtered.length === 0 ? (
-        <div className="text-center py-20 border border-dashed border-white/10 rounded-3xl">
-          <Mail className="text-white/20 mx-auto mb-4" size={32} />
-          <p className="text-white/40 font-medium">No letters match the current filter.</p>
+        <div className="text-center py-20 border border-dashed border-foreground/10 rounded-3xl">
+          <Mail className="text-foreground/20 mx-auto mb-4" size={32} />
+          <p className="text-foreground/40 font-medium">No letters match the current filter.</p>
         </div>
       ) : (
         <div className="space-y-3">
           {filtered.map((l) => (
             <div
               key={l.id}
-              className="p-5 rounded-2xl border border-white/10 bg-white/[0.02] hover:bg-white/[0.04] transition-all"
+              className="p-5 rounded-2xl border border-foreground/10 bg-foreground/[0.02] hover:bg-foreground/[0.04] transition-all"
             >
               <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6">
                 <div className="flex-1 min-w-0">
@@ -135,7 +135,7 @@ export default function AdminLettersPage() {
                     >
                       {l.status}
                     </span>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-white/40">
+                    <span className="text-[10px] font-black uppercase tracking-widest text-foreground/40">
                       {l.tier} · {l.theme}
                     </span>
                     {l.created_by_admin && (
@@ -157,7 +157,7 @@ export default function AdminLettersPage() {
                     )}
                   </div>
                   <div className="font-black text-base truncate">{l.recipient_name}</div>
-                  <div className="text-xs text-white/40 truncate">
+                  <div className="text-xs text-foreground/40 truncate">
                     From: {l.sender_email || l.sender_name || "—"}{" "}
                     · Code: <span className="font-mono text-primary/70">{l.qr_identifier}</span>{" "}
                     · {l.unfurled_count ?? 0} views
@@ -169,7 +169,7 @@ export default function AdminLettersPage() {
                       href={`/letter/${l.qr_identifier}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-4 py-2 rounded-xl border border-white/10 hover:bg-white/5 text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
+                      className="px-4 py-2 rounded-xl border border-foreground/10 hover:bg-foreground/5 text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
                     >
                       <Eye size={12} />
                       View

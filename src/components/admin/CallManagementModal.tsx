@@ -93,19 +93,19 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-black/80 backdrop-blur-md"
+        className="absolute inset-0 bg-foreground/5 backdrop-blur-md"
       />
       
       <motion.div
         initial={{ opacity: 0, scale: 0.95, y: 20 }}
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-        className="relative w-full max-w-5xl bg-[#0D0D0E] border border-white/10 rounded-[24px] sm:rounded-[40px] shadow-2xl overflow-hidden"
+        className="relative w-full max-w-5xl bg-background border border-foreground/10 rounded-[24px] sm:rounded-[40px] shadow-2xl overflow-hidden"
       >
-        <div className="p-5 sm:p-8 border-b border-white/5 flex justify-between items-center bg-linear-to-b from-white/5 to-transparent">
+        <div className="p-5 sm:p-8 border-b border-foreground/5 flex justify-between items-center bg-linear-to-b from-white/5 to-transparent">
           <div>
-            <h2 className="text-lg sm:text-2xl font-black italic uppercase tracking-tighter text-white">Engagement <span className="gradient-text italic">Intelligence</span></h2>
-            <p className="text-[8px] sm:text-[10px] font-black text-white/40 uppercase tracking-widest mt-1">Strategic oversight for active engagement audit.</p>
+            <h2 className="text-lg sm:text-2xl font-black italic uppercase tracking-tighter text-foreground">Engagement <span className="gradient-text italic">Intelligence</span></h2>
+            <p className="text-[8px] sm:text-[10px] font-black text-foreground/40 uppercase tracking-widest mt-1">Strategic oversight for active engagement audit.</p>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             <div className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border ${
@@ -115,7 +115,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
             }`}>
                Current: {call.status}
             </div>
-            <button onClick={onClose} className="p-1 sm:p-2 hover:bg-white/5 rounded-full transition-colors text-white/60">
+            <button onClick={onClose} className="p-1 sm:p-2 hover:bg-foreground/5 rounded-full transition-colors text-foreground/60">
               <X size={20} className="sm:size-6" />
             </button>
           </div>
@@ -123,82 +123,82 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
 
         <div className="grid grid-cols-1 lg:grid-cols-4 max-h-[70vh] lg:max-h-none overflow-y-auto">
            {/* Column 1: Core Details */}
-           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-white/5 bg-white/[0.01]">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-foreground/5 bg-foreground/[0.01]">
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">The Recipient</label>
-                <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 space-y-3 sm:space-y-4">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">The Recipient</label>
+                <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-foreground/5 border border-foreground/10 space-y-3 sm:space-y-4">
                    <div className="flex items-center gap-4">
                       <div className="w-12 h-12 rounded-2xl gradient-bg flex items-center justify-center text-white shadow-xl">
                          <User size={24} />
                       </div>
                       <div className="overflow-hidden">
-                         <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Name</div>
-                         <div className="text-lg font-black text-white italic truncate">{call.recipient_name}</div>
+                         <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">Name</div>
+                         <div className="text-lg font-black text-foreground italic truncate">{call.recipient_name}</div>
                       </div>
                    </div>
-                   <div className="flex items-center gap-4 pt-4 border-t border-white/5">
+                   <div className="flex items-center gap-4 pt-4 border-t border-foreground/5">
                       <div className="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center text-primary">
                          <Phone size={18} />
                       </div>
                       <div>
-                         <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">Phone</div>
-                         <div className="text-sm font-black text-white tracking-wider">{call.recipient_phone}</div>
+                         <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">Phone</div>
+                         <div className="text-sm font-black text-foreground tracking-wider">{call.recipient_phone}</div>
                       </div>
                    </div>
                 </div>
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">The Booker</label>
-                <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-white/5 border border-white/10 flex items-center gap-3 sm:gap-4">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">The Booker</label>
+                <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-foreground/5 border border-foreground/10 flex items-center gap-3 sm:gap-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary shadow-xl">
                     <UserCheck size={20} className="sm:size-6" />
                   </div>
                   <div className="overflow-hidden">
-                    <div className="text-[10px] font-black text-white/40 uppercase tracking-widest">User</div>
-                    <div className="text-sm font-black text-white truncate">{call.profiles?.full_name || "Anonymous"}</div>
+                    <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">User</div>
+                    <div className="text-sm font-black text-foreground truncate">{call.profiles?.full_name || "Anonymous"}</div>
                   </div>
                 </div>
               </div>
            </div>
 
            {/* Column 2: Context */}
-           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-white/5">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-foreground/5">
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Engagement Context</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Engagement Context</label>
                 <div className="grid grid-cols-2 gap-3">
-                   <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10">
-                      <div className="flex items-center gap-2 text-white/40 mb-1">
+                   <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-foreground/10">
+                      <div className="flex items-center gap-2 text-foreground/40 mb-1">
                          <Calendar size={12} className="text-primary" />
                          <span className="text-[9px] font-black uppercase tracking-widest">Date</span>
                       </div>
-                      <div className="text-xs font-black text-white">{new Date(call.occasion_date).toLocaleDateString()}</div>
+                      <div className="text-xs font-black text-foreground">{new Date(call.occasion_date).toLocaleDateString()}</div>
                    </div>
-                   <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10">
-                      <div className="flex items-center gap-2 text-white/40 mb-1">
+                   <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-foreground/10">
+                      <div className="flex items-center gap-2 text-foreground/40 mb-1">
                          <Clock size={12} className="text-secondary" />
                          <span className="text-[9px] font-black uppercase tracking-widest">Slot</span>
                       </div>
-                      <div className="text-xs font-black text-white uppercase">{call.scheduled_slot}</div>
+                      <div className="text-xs font-black text-foreground uppercase">{call.scheduled_slot}</div>
                    </div>
                 </div>
 
-                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-4">
+                <div className="p-4 rounded-2xl bg-foreground/5 border border-foreground/10 flex items-center gap-4">
                   <div className="w-10 h-10 rounded-xl bg-accent/20 flex items-center justify-center text-accent shrink-0">
                     <Heart size={18} />
                   </div>
                   <div>
-                    <div className="text-[9px] font-black text-white/40 uppercase tracking-widest">Relationship</div>
-                    <div className="text-sm font-black text-white">{call.relationship || "Not specified"}</div>
+                    <div className="text-[9px] font-black text-foreground/40 uppercase tracking-widest">Relationship</div>
+                    <div className="text-sm font-black text-foreground">{call.relationship || "Not specified"}</div>
                   </div>
                 </div>
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Message</label>
-                <div className="p-6 rounded-3xl bg-white/5 border border-white/10 relative overflow-hidden group min-h-[120px]">
-                  <MessageSquare size={40} className="absolute -bottom-4 -right-4 text-white/[0.02] group-hover:scale-110 transition-transform duration-500" />
-                  <div className="text-xs font-medium text-white/80 leading-relaxed italic relative z-10">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Message</label>
+                <div className="p-6 rounded-3xl bg-foreground/5 border border-foreground/10 relative overflow-hidden group min-h-[120px]">
+                  <MessageSquare size={40} className="absolute -bottom-4 -right-4 text-foreground/[0.02] group-hover:scale-110 transition-transform duration-500" />
+                  <div className="text-xs font-medium text-foreground/80 leading-relaxed italic relative z-10">
                     "{call.custom_message || "No custom message provided."}"
                   </div>
                 </div>
@@ -206,19 +206,19 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            </div>
 
            {/* Column 3: Operator Actions (Notes & Proof) */}
-           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-white/5 bg-white/[0.01]">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-foreground/5 bg-foreground/[0.01]">
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Operator Notes (Sent to Booker)</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Operator Notes (Sent to Booker)</label>
                 <textarea 
                   value={adminNotes}
                   onChange={(e) => setAdminNotes(e.target.value)}
                   placeholder="Add details about how the call went..."
-                  className="w-full h-32 bg-white/5 border border-white/10 rounded-2xl p-4 text-xs text-white outline-none focus:border-primary transition-all resize-none font-medium placeholder:text-white/10"
+                  className="w-full h-32 bg-foreground/5 border border-foreground/10 rounded-2xl p-4 text-xs text-foreground outline-none focus:border-primary transition-all resize-none font-medium placeholder:text-foreground/10"
                 />
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40 flex items-center gap-2">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 flex items-center gap-2">
                   <Upload size={10} />
                   Voice Proof {status === 'delivered' && <span className="text-primary font-black">*REQUIRED</span>}
                 </label>
@@ -231,10 +231,10 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                       </div>
                       <div className="overflow-hidden">
                         <div className="text-[9px] font-black uppercase tracking-widest text-green-500">Audio Ready</div>
-                        <div className="text-[8px] font-bold text-white/30 truncate">Proof_Linked.mp3</div>
+                        <div className="text-[8px] font-bold text-foreground/30 truncate">Proof_Linked.mp3</div>
                       </div>
                     </div>
-                    <button onClick={() => setRecordingUrl("")} className="p-2 text-white/20 hover:text-red-500 transition-colors">
+                    <button onClick={() => setRecordingUrl("")} className="p-2 text-foreground/20 hover:text-red-500 transition-colors">
                       <Trash2 size={14} />
                     </button>
                   </div>
@@ -242,10 +242,10 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                   <div className="relative">
                     <input type="file" accept="audio/*" onChange={(e) => setFile(e.target.files?.[0] || null)} className="hidden" id="recording-upload" />
                     <label htmlFor="recording-upload" className={`flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-[32px] transition-all cursor-pointer group ${
-                      error && status === 'delivered' && !recordingUrl ? 'border-red-500/50 bg-red-500/5' : 'border-white/10 hover:border-primary/40 hover:bg-primary/5'
+                      error && status === 'delivered' && !recordingUrl ? 'border-red-500/50 bg-red-500/5' : 'border-foreground/10 hover:border-primary/40 hover:bg-primary/5'
                     }`}>
-                      <Upload size={24} className={`mb-2 transition-all ${file ? 'text-primary' : 'text-white/10 group-hover:text-primary group-hover:scale-110'}`} />
-                      <div className="text-[9px] font-black uppercase tracking-widest text-white/40 text-center truncate w-full px-4">
+                      <Upload size={24} className={`mb-2 transition-all ${file ? 'text-primary' : 'text-foreground/10 group-hover:text-primary group-hover:scale-110'}`} />
+                      <div className="text-[9px] font-black uppercase tracking-widest text-foreground/40 text-center truncate w-full px-4">
                         {file ? file.name : "Select Voice Proof"}
                       </div>
                     </label>
@@ -261,16 +261,16 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            </div>
 
            {/* Column 4: Lifecycle Finalization */}
-           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 bg-white/[0.02]">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 bg-foreground/[0.02]">
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-white/40">Status Lifecycle</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Status Lifecycle</label>
                 <div className="grid grid-cols-1 gap-2">
                   {['pending', 'delivered', 'failed'].map((s) => (
                     <button
                       key={s}
                       onClick={() => { setStatus(s); setError(null); }}
                       className={`py-4 rounded-2xl font-black text-[10px] uppercase tracking-widest transition-all border flex items-center justify-between px-6 ${
-                        status === s ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-white/5 border-white/10 text-white/40 hover:border-primary/30 hover:text-white'
+                        status === s ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'bg-foreground/5 border-foreground/10 text-foreground/40 hover:border-primary/30 hover:text-white'
                       }`}
                     >
                       {s}
@@ -297,7 +297,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                 )}
               </AnimatePresence>
 
-              <div className="pt-8 space-y-4 border-t border-white/5">
+              <div className="pt-8 space-y-4 border-t border-foreground/5">
                 {error && (
                   <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center gap-3 text-red-500">
                     <AlertCircle size={16} className="shrink-0" />
@@ -313,7 +313,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                     {uploading ? <Loader2 size={18} className="animate-spin" /> : <ShieldCheck size={18} />}
                     Complete Engagement
                   </div>
-                  <span className="text-[8px] font-bold text-white/40 tracking-[0.2em]">Syncing Results & Notifying Booker</span>
+                  <span className="text-[8px] font-bold text-foreground/40 tracking-[0.2em]">Syncing Results & Notifying Booker</span>
                 </button>
               </div>
            </div>

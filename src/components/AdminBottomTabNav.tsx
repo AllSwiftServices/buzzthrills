@@ -22,7 +22,7 @@ export default function AdminBottomTabNav() {
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-[100] lg:hidden">
       <div className="mx-4 mb-4 relative z-10">
-        <div className="glass border border-primary/20 rounded-[32px] p-2 flex items-center justify-around shadow-2xl backdrop-blur-3xl bg-black/40">
+        <div className="glass border border-primary/20 rounded-[32px] p-2 flex items-center justify-around shadow-2xl backdrop-blur-3xl bg-foreground/5">
           {tabs.map((tab) => {
             const on = active(tab.href);
             return (

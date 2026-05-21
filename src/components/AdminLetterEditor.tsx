@@ -66,7 +66,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
   return (
     <div className="space-y-6">
       {/* ── Letter Content ── */}
-      <section className="p-6 rounded-3xl border border-white/10 bg-white/[0.02] space-y-4">
+      <section className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
           Letter Content
         </div>
@@ -93,12 +93,12 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
           onChange={(e) => setForm({ ...form, message: e.target.value })}
           rows={10}
           placeholder="Write the letter content here…"
-          className="w-full bg-black/40 border border-white/10 rounded-2xl py-4 px-5 text-sm font-medium leading-relaxed outline-none focus:border-primary/40 resize-none"
+          className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl py-4 px-5 text-sm font-medium leading-relaxed outline-none focus:border-primary/40 resize-none"
         />
       </section>
 
       {/* ── Theme ── */}
-      <section className="p-6 rounded-3xl border border-white/10 bg-white/[0.02] space-y-4">
+      <section className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Theme</div>
         <div className="grid grid-cols-3 gap-3">
           {LETTER_THEMES.map((t) => {
@@ -109,7 +109,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
                 type="button"
                 onClick={() => setForm({ ...form, theme: t.id as LetterTheme })}
                 className={`p-3 rounded-2xl border-2 text-left transition-all ${
-                  active ? "border-primary" : "border-white/10 hover:border-white/20"
+                  active ? "border-primary" : "border-foreground/10 hover:border-foreground/20"
                 }`}
               >
                 <div
@@ -118,7 +118,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
                 >
                   Aa
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-white/70">
+                <span className="text-[10px] font-black uppercase tracking-widest text-foreground/70">
                   {t.name}
                 </span>
               </button>
@@ -128,7 +128,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
       </section>
 
       {/* ── Background Music ── */}
-      <section className="p-6 rounded-3xl border border-white/10 bg-white/[0.02] space-y-4">
+      <section className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
         <div className="flex items-center gap-2">
           <Music size={14} className="text-primary" />
           <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
@@ -145,7 +145,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
       </section>
 
       {/* ── Voice / Video ── */}
-      <section className="p-6 rounded-3xl border border-white/10 bg-white/[0.02] space-y-4">
+      <section className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
         <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
           Voice / Video
         </div>
@@ -174,11 +174,11 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
                 className={`p-3 rounded-2xl border-2 flex items-center gap-2 text-left transition-all ${
                   active
                     ? "border-primary bg-primary/10"
-                    : "border-white/10 hover:border-white/20"
+                    : "border-foreground/10 hover:border-foreground/20"
                 }`}
               >
-                <Icon size={14} className={active ? "text-primary" : "text-white/40"} />
-                <span className="text-[10px] font-black uppercase tracking-widest capitalize text-white/70">
+                <Icon size={14} className={active ? "text-primary" : "text-foreground/40"} />
+                <span className="text-[10px] font-black uppercase tracking-widest capitalize text-foreground/70">
                   {kind}
                 </span>
               </button>

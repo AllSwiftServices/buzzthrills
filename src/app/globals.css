@@ -10,8 +10,7 @@
   --color-muted-foreground: var(--muted-foreground);
   --color-border: var(--border);
   
-  --font-serif: var(--font-playfair);
-  
+
   --radius-xl: 1.5rem;
   --radius-2xl: 2rem;
   --radius-3xl: 2.5rem;
@@ -31,7 +30,7 @@
 
 .dark {
   --background: #0a0414;
-  --foreground: #f5f0ff;
+  --foreground: #ffffff;
   --muted: #1a0d2e;
   --muted-foreground: #a090b8;
   --border: rgba(90, 12, 126, 0.2);
@@ -61,10 +60,6 @@
     text-rendering: optimizeLegibility;
     overflow-x: hidden;
   }
-
-  h1, h2, h3, .font-serif {
-    font-family: var(--font-serif), serif;
-  }
 }
 
 @layer components {
@@ -93,6 +88,17 @@
 
   .animate-float {
     animation: float 8s ease-in-out infinite;
+  }
+
+  /* Force purple texts and gradients to be white in dark mode */
+  .dark .text-primary {
+    color: #ffffff !important;
+  }
+  
+  .dark .gradient-text {
+    background: none !important;
+    -webkit-text-fill-color: #ffffff !important;
+    color: #ffffff !important;
   }
 }
 

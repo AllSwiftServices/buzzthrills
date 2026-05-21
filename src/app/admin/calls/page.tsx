@@ -44,7 +44,7 @@ export default function AdminCalls() {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-white/20">Loading Engagement Data...</div>
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/20">Loading Engagement Data...</div>
       </div>
     );
   }
@@ -53,16 +53,16 @@ export default function AdminCalls() {
     <div className="space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 italic text-white uppercase tracking-tighter">Engagement <span className="gradient-text italic">Operations</span></h1>
-          <p className="text-white/40 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.2em]">Strategic oversight of active platform thrills.</p>
+          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 italic text-foreground uppercase tracking-tighter">Engagement <span className="gradient-text italic">Operations</span></h1>
+          <p className="text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.2em]">Strategic oversight of active platform thrills.</p>
         </div>
         
         <div className="flex items-center gap-3 w-full md:w-auto">
           <div className="relative flex-1 md:w-64">
-            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-white/20" />
-            <input type="text" className="w-full bg-white/5 border border-white/10 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 pl-10 sm:pl-12 pr-4 text-xs sm:text-sm outline-none focus:border-primary transition-all font-bold text-white placeholder:text-white/10" placeholder="Search call history..." />
+            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/20" />
+            <input type="text" className="w-full bg-foreground/5 border border-foreground/10 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 pl-10 sm:pl-12 pr-4 text-xs sm:text-sm outline-none focus:border-primary transition-all font-bold text-foreground placeholder:text-foreground/10" placeholder="Search call history..." />
           </div>
-          <button className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-white/5 border border-white/10 text-white/20 hover:text-primary transition-all">
+          <button className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-foreground/5 border border-foreground/10 text-foreground/20 hover:text-primary transition-all">
             <Filter size={18} />
           </button>
         </div>
@@ -75,18 +75,18 @@ export default function AdminCalls() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1 }}
-            className="p-5 sm:p-8 rounded-[24px] sm:rounded-[40px] bg-white/[0.03] border border-white/5 hover:border-primary/30 transition-all group relative overflow-hidden"
+            className="p-5 sm:p-8 rounded-[24px] sm:rounded-[40px] bg-foreground/[0.03] border border-foreground/5 hover:border-primary/30 transition-all group relative overflow-hidden"
           >
             <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-[50px] rounded-full group-hover:bg-primary/10 transition-all -mr-24 -mt-24" />
             
             <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-8 relative z-10">
               <div className="flex items-center gap-4 sm:gap-8">
-                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[16px] sm:rounded-3xl bg-white/5 border border-white/10 flex items-center justify-center text-primary shadow-2xl group-hover:scale-110 transition-transform duration-500">
+                <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-[16px] sm:rounded-3xl bg-foreground/5 border border-foreground/10 flex items-center justify-center text-primary shadow-2xl group-hover:scale-110 transition-transform duration-500">
                   <PhoneCall size={20} className="sm:size-7" />
                 </div>
                 <div>
                    <div className="flex flex-wrap items-center gap-3 mb-2">
-                      <h3 className="text-2xl font-black text-white italic uppercase tracking-tighter">{call.recipient_name}</h3>
+                      <h3 className="text-2xl font-black text-foreground italic uppercase tracking-tighter">{call.recipient_name}</h3>
                       <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 ${
                         call.status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
                         call.status === 'failed' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 
@@ -97,15 +97,15 @@ export default function AdminCalls() {
                       </div>
                    </div>
                     <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3">
-                       <div className="flex items-center gap-1.5 sm:gap-2 text-white/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest">
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest">
                           <Phone size={12} className="sm:size-[14px] text-primary/60" />
                           {call.recipient_phone}
                        </div>
-                       <div className="flex items-center gap-1.5 sm:gap-2 text-white/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest border-l border-white/5 pl-4 sm:pl-6">
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest border-l border-foreground/5 pl-4 sm:pl-6">
                           <Calendar size={12} className="sm:size-[14px] text-secondary/60" />
                           {new Date(call.occasion_date).toLocaleDateString()}
                        </div>
-                       <div className="flex items-center gap-1.5 sm:gap-2 text-white/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest border-l border-white/5 pl-4 sm:pl-6">
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest border-l border-foreground/5 pl-4 sm:pl-6">
                           <Clock size={12} className="sm:size-[14px] text-primary/60" />
                           {call.scheduled_slot} Slot
                        </div>
@@ -114,13 +114,13 @@ export default function AdminCalls() {
               </div>
 
                <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-4">
-                  <div className="w-full sm:w-auto p-3 sm:p-4 rounded-2xl bg-white/5 border border-white/10 flex items-center gap-3 sm:gap-4">
+                  <div className="w-full sm:w-auto p-3 sm:p-4 rounded-2xl bg-foreground/5 border border-foreground/10 flex items-center gap-3 sm:gap-4">
                      <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-xl bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
                         <UserCheck size={16} className="sm:size-[18px]" />
                      </div>
                      <div>
-                        <div className="text-[8px] sm:text-[9px] font-black text-white/20 uppercase tracking-widest">Booked By</div>
-                        <div className="text-[11px] sm:text-xs font-black text-white">{call.profiles?.full_name || "Anonymous"}</div>
+                        <div className="text-[8px] sm:text-[9px] font-black text-foreground/20 uppercase tracking-widest">Booked By</div>
+                        <div className="text-[11px] sm:text-xs font-black text-foreground">{call.profiles?.full_name || "Anonymous"}</div>
                      </div>
                   </div>
                   <button 
@@ -134,10 +134,10 @@ export default function AdminCalls() {
             </div>
           </motion.div>
         )) : (
-          <div className="flex flex-col items-center justify-center py-20 px-8 rounded-[40px] border-2 border-dashed border-white/5 bg-white/[0.02] text-center">
-             <ShieldCheck size={48} className="text-white/10 mb-4" />
-             <div className="text-xl font-black text-white italic uppercase tracking-tighter">No Active Engagements</div>
-             <div className="text-[10px] font-black text-white/20 uppercase tracking-widest mt-2">All scheduled calls will appear here.</div>
+          <div className="flex flex-col items-center justify-center py-20 px-8 rounded-[40px] border-2 border-dashed border-foreground/5 bg-foreground/[0.02] text-center">
+             <ShieldCheck size={48} className="text-foreground/10 mb-4" />
+             <div className="text-xl font-black text-foreground italic uppercase tracking-tighter">No Active Engagements</div>
+             <div className="text-[10px] font-black text-foreground/20 uppercase tracking-widest mt-2">All scheduled calls will appear here.</div>
           </div>
         )}
       </div>
