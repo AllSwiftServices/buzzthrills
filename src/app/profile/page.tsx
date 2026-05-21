@@ -19,7 +19,9 @@ import {
   CreditCard,
   Mail,
   ExternalLink,
-  Eye
+  Eye,
+  PenLine,
+  ArrowRight
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -131,6 +133,27 @@ export default function ProfilePage() {
                 </div>
               </div>
             </div>
+
+            {/* ── Create a Digital Letter ── */}
+            <Link
+              href="/digital-letters"
+              className="group block p-5 sm:p-8 rounded-[32px] sm:rounded-[40px] border-2 border-dashed border-primary/20 hover:border-primary/50 bg-primary/3 hover:bg-primary/6 transition-all relative overflow-hidden"
+            >
+              <div className="absolute top-0 right-0 w-48 h-48 bg-primary/5 blur-[60px] rounded-full -mr-24 -mt-24 group-hover:bg-primary/10 transition-colors duration-700" />
+              <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-5">
+                <div className="w-14 h-14 rounded-2xl gradient-bg flex items-center justify-center shadow-xl shadow-primary/20 shrink-0 group-hover:scale-105 transition-transform">
+                  <PenLine size={24} className="text-white" />
+                </div>
+                <div className="flex-1">
+                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-1">New</div>
+                  <h3 className="text-lg sm:text-xl font-black italic uppercase tracking-tighter leading-tight">Create a <span className="gradient-text italic">Digital Letter</span></h3>
+                  <p className="text-xs text-muted-foreground font-medium mt-1 leading-relaxed">Send a heartfelt animated scroll with your voice or video to someone special.</p>
+                </div>
+                <div className="shrink-0 w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
+                  <ArrowRight size={16} className="text-primary group-hover:text-white transition-colors" />
+                </div>
+              </div>
+            </Link>
 
             {/* Activity History */}
             <div className="p-4 sm:p-10 rounded-[32px] sm:rounded-[56px] bg-linear-to-br from-accent/5 via-accent/2 to-transparent border border-accent/10 shadow-huge backdrop-blur-3xl relative overflow-hidden group">
