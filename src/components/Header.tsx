@@ -78,7 +78,7 @@ export default function Header() {
               alt="BuzzThrills"
               width={200}
               height={40}
-              className="h-20 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              className="h-10 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
               priority
             />
           ) : (
