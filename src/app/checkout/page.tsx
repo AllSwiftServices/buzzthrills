@@ -29,6 +29,7 @@ function CheckoutContent() {
   const Icon = PLAN_ICONS[planData.iconName];
   const amount = cycle === "annual" ? planData.annualPrice : planData.monthlyPrice;
   const totalDue = amount * getCycleMultiplier(cycle);
+  const paystackPlanCode = cycle === "annual" ? planData.paystackPlanCodeAnnual : planData.paystackPlanCodeMonthly;
 
   useEffect(() => {
     if (planData.isCustom) {
@@ -53,6 +54,7 @@ function CheckoutContent() {
       email: user?.email,
       amount: totalDue * 100, // Total for the period in kobo
       currency: "NGN",
+      ...(paystackPlanCode && { plan: paystackPlanCode }), // This enables auto-renewal on Paystack
       metadata: {
         plan: planId,
         cycle: cycle,

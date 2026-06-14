@@ -395,7 +395,7 @@ function BookingContent() {
         alert("Please fill in your name and email.");
         return;
       }
-      if (service.tiers.length > 1) setStep("variant");
+      if (service.tiers.length > 1 && !isSpecialCall) setStep("variant");
       else setStep("recipients");
     }
     else if (step === "variant") setStep("recipients");
@@ -415,7 +415,7 @@ function BookingContent() {
       setStep("payment");
     }
     else if (step === "payment") {
-      if (isSubscriber) {
+      if (isSubscriber && !isSpecialCall) {
         handleSubscriberBooking();
       } else {
         handlePaystackPayment();
@@ -427,7 +427,7 @@ function BookingContent() {
     if (step === "subscriber") setStep("type");
     else if (step === "variant") setStep("subscriber");
     else if (step === "recipients") {
-      if (service.tiers.length > 1) setStep("variant");
+      if (service.tiers.length > 1 && !isSpecialCall) setStep("variant");
       else setStep("subscriber");
     }
     else if (step === "message") setStep("recipients");
@@ -453,7 +453,7 @@ function BookingContent() {
       {/* Progress Stepper */}
       <div className="flex items-center justify-between mb-6 md:mb-12 relative px-1 sm:px-2">
         <div className="absolute top-1/2 left-0 w-full h-px bg-border -translate-y-1/2 z-0" />
-        {(["type", "subscriber", ...(service.tiers.length > 1 ? ["variant"] : []), "recipients", "message", "preferences", "payment"] as Step[]).map((s, i, arr) => {
+        {(["type", "subscriber", ...(service.tiers.length > 1 && !isSpecialCall ? ["variant" as Step] : []), "recipients", "message", "preferences", "payment"] as Step[]).map((s, i, arr) => {
           const isPast = arr.indexOf(step) > i;
           return (
             <button 
