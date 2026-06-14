@@ -87,7 +87,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[150] flex items-center justify-center p-4">
       <motion.div 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -121,9 +121,9 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 max-h-[70vh] lg:max-h-none overflow-y-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 max-h-[80vh] overflow-y-auto">
            {/* Column 1: Core Details */}
-           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-foreground/5 bg-foreground/[0.01]">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-b lg:border-r border-foreground/5 bg-foreground/[0.01]">
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">The Recipient</label>
                 <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-foreground/5 border border-foreground/10 space-y-3 sm:space-y-4">
@@ -163,7 +163,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            </div>
 
            {/* Column 2: Context */}
-           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-foreground/5">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-b border-foreground/5">
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Engagement Context</label>
                 <div className="grid grid-cols-2 gap-3">
@@ -206,7 +206,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            </div>
 
            {/* Column 3: Operator Actions (Notes & Proof) */}
-           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-r border-foreground/5 bg-foreground/[0.01]">
+           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-b lg:border-b-0 lg:border-r border-foreground/5 bg-foreground/[0.01]">
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Operator Notes (Sent to Booker)</label>
                 <textarea 
@@ -261,7 +261,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            </div>
 
            {/* Column 4: Lifecycle Finalization */}
-           <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 bg-foreground/[0.02]">
+           <div className="p-5 sm:p-8 pb-32 sm:pb-8 space-y-6 sm:space-y-8 bg-foreground/[0.02]">
               <div className="space-y-4">
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Status Lifecycle</label>
                 <div className="grid grid-cols-1 gap-2">
@@ -304,17 +304,27 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                     <div className="text-[10px] font-black uppercase tracking-widest leading-tight">{error}</div>
                   </div>
                 )}
-                <button 
-                  onClick={handleSave}
-                  disabled={uploading}
-                  className="w-full py-6 rounded-[24px] bg-primary text-white font-black text-[12px] uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex flex-col items-center justify-center gap-1 disabled:opacity-50"
-                >
-                  <div className="flex items-center gap-2">
-                    {uploading ? <Loader2 size={18} className="animate-spin" /> : <ShieldCheck size={18} />}
-                    Complete Engagement
+                {call.status === 'pending' ? (
+                  <button 
+                    onClick={handleSave}
+                    disabled={uploading}
+                    className="w-full py-6 rounded-[24px] bg-primary text-white font-black text-[12px] uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex flex-col items-center justify-center gap-1 disabled:opacity-50"
+                  >
+                    <div className="flex items-center gap-2">
+                      {uploading ? <Loader2 size={18} className="animate-spin" /> : <ShieldCheck size={18} />}
+                      Complete Engagement
+                    </div>
+                    <span className="text-[8px] font-bold text-foreground/40 tracking-[0.2em]">Syncing Results & Notifying Booker</span>
+                  </button>
+                ) : (
+                  <div className="w-full py-6 rounded-[24px] bg-foreground/5 border border-foreground/10 text-foreground/40 font-black text-[12px] uppercase tracking-widest flex flex-col items-center justify-center gap-1">
+                    <div className="flex items-center gap-2">
+                      <CheckCircle2 size={18} />
+                      Engagement Completed
+                    </div>
+                    <span className="text-[8px] font-bold tracking-[0.2em]">This thrill has already been processed.</span>
                   </div>
-                  <span className="text-[8px] font-bold text-foreground/40 tracking-[0.2em]">Syncing Results & Notifying Booker</span>
-                </button>
+                )}
               </div>
            </div>
         </div>

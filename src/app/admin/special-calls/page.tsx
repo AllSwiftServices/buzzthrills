@@ -273,14 +273,14 @@ export default function AdminSpecialCallsPage() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setShowForm(false)}
-              className="fixed inset-0 z-40 bg-background/80 backdrop-blur-2xl"
+              className="fixed inset-0 z-[140] bg-background/80 backdrop-blur-2xl"
             />
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ type: "spring", damping: 28, stiffness: 350 }}
-              className="fixed inset-x-4 top-[5%] bottom-[5%] z-50 max-w-2xl mx-auto flex flex-col overflow-hidden rounded-[32px] sm:rounded-[48px] bg-background border border-border shadow-2xl"
+              className="fixed inset-x-4 top-[5%] bottom-[5%] z-[150] max-w-2xl mx-auto flex flex-col overflow-hidden rounded-[32px] sm:rounded-[48px] bg-background border border-border shadow-2xl"
             >
               {/* Modal Header */}
               <div className="flex items-center justify-between p-6 sm:p-8 border-b border-border shrink-0">
