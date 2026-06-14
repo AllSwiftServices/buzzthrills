@@ -46,8 +46,9 @@ export async function GET() {
       .from("subscriptions")
       .select("*")
       .eq("user_id", payload.id)
-      .eq("status", "active")
-      .single();
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
     if (subError && subError.code !== "PGRST116") {
       console.error("Subscription Fetch Failure:", subError);

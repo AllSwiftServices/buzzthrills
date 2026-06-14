@@ -29,7 +29,6 @@ function CheckoutContent() {
   const Icon = PLAN_ICONS[planData.iconName];
   const amount = cycle === "annual" ? planData.annualPrice : planData.monthlyPrice;
   const totalDue = amount * getCycleMultiplier(cycle);
-  const paystackPlanCode = cycle === "annual" ? planData.paystackPlanCodeAnnual : planData.paystackPlanCodeMonthly;
 
   useEffect(() => {
     if (planData.isCustom) {
@@ -41,7 +40,7 @@ function CheckoutContent() {
     }
   }, [user, authLoading, router, planId, cycle, planData.isCustom]);
 
-  const handlePayment = () => {
+  const handlePayment = async () => {
     if (!window.PaystackPop) {
       alert("Payment gateway loading...");
       return;
@@ -49,37 +48,57 @@ function CheckoutContent() {
 
     setLoading(true);
 
-    const handler = window.PaystackPop.setup({
-      key: PAYSTACK_PUBLIC_KEY,
-      email: user?.email,
-      amount: totalDue * 100, // Total for the period in kobo
-      currency: "NGN",
-      ...(paystackPlanCode && { plan: paystackPlanCode }), // This enables auto-renewal on Paystack
-      metadata: {
-        plan: planId,
-        cycle: cycle,
-        user_id: user?.id,
-        purchase_type: "subscription",
-      },
-      callback: function(response: any) {
-        fetch(`/api/payments/verify?reference=${response.reference}`)
-          .then(res => res.json())
-          .then(data => {
-            if (data.success) {
-              router.push("/profile?success=true");
-            } else {
-              alert("Verification failed.");
-            }
-          })
-          .catch(() => alert("Error verifying payment."))
-          .finally(() => setLoading(false));
-      },
-      onClose: function() {
+    try {
+      // Dynamically fetch or create the Paystack plan code
+      const planRes = await fetch("/api/payments/get-or-create-plan", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ planId, cycle })
+      });
+      const planDataResp = await planRes.json();
+      
+      if (!planDataResp.planCode) {
+        alert("Failed to initialize billing plan. Please try again.");
         setLoading(false);
+        return;
       }
-    });
 
-    handler.openIframe();
+      const handler = window.PaystackPop.setup({
+        key: PAYSTACK_PUBLIC_KEY,
+        email: user?.email,
+        amount: totalDue * 100, // Total for the period in kobo
+        currency: "NGN",
+        plan: planDataResp.planCode, // This enables auto-renewal on Paystack
+        metadata: {
+          plan: planId,
+          cycle: cycle,
+          user_id: user?.id,
+          purchase_type: "subscription",
+        },
+        callback: function(response: any) {
+          fetch(`/api/payments/verify?reference=${response.reference}`)
+            .then(res => res.json())
+            .then(data => {
+              if (data.success) {
+                router.push("/profile?success=true");
+              } else {
+                alert("Verification failed.");
+              }
+            })
+            .catch(() => alert("Error verifying payment."))
+            .finally(() => setLoading(false));
+        },
+        onClose: function() {
+          setLoading(false);
+        }
+      });
+
+      handler.openIframe();
+    } catch (e) {
+      console.error(e);
+      alert("An error occurred during checkout setup.");
+      setLoading(false);
+    }
   };
 
   if (authLoading || !user) {

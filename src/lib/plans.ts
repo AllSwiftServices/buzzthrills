@@ -15,8 +15,6 @@ export interface SubscriptionPlan {
   iconName: "Star" | "Zap" | "Shield" | "Briefcase";
   isCustom?: boolean;
   popular?: boolean;
-  paystackPlanCodeMonthly?: string;
-  paystackPlanCodeAnnual?: string;
 }
 
 const ANNUAL_DISCOUNT = 0.05;
@@ -38,8 +36,6 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       "Complimentary add-ons (Prank & Music Thrills) included on request",
     ],
     iconName: "Star",
-    paystackPlanCodeMonthly: process.env.NEXT_PUBLIC_PAYSTACK_LITE_MONTHLY_PLAN,
-    paystackPlanCodeAnnual: process.env.NEXT_PUBLIC_PAYSTACK_LITE_ANNUAL_PLAN,
   },
   plus: {
     id: "plus",
@@ -58,8 +54,6 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
     ],
     iconName: "Zap",
     popular: true,
-    paystackPlanCodeMonthly: process.env.NEXT_PUBLIC_PAYSTACK_PLUS_MONTHLY_PLAN,
-    paystackPlanCodeAnnual: process.env.NEXT_PUBLIC_PAYSTACK_PLUS_ANNUAL_PLAN,
   },
   orbit: {
     id: "orbit",
@@ -78,8 +72,6 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       "VIP scheduling & priority customer support",
     ],
     iconName: "Shield",
-    paystackPlanCodeMonthly: process.env.NEXT_PUBLIC_PAYSTACK_ORBIT_MONTHLY_PLAN,
-    paystackPlanCodeAnnual: process.env.NEXT_PUBLIC_PAYSTACK_ORBIT_ANNUAL_PLAN,
   },
   corporate: {
     id: "corporate",

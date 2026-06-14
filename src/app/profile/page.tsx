@@ -105,15 +105,27 @@ export default function ProfilePage() {
               <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 blur-[100px] rounded-full group-hover:scale-125 transition-transform duration-1000" />
               <div className="relative z-10 flex flex-wrap justify-between items-center gap-8 w-full">
                 <div className="text-left w-full lg:w-auto flex-1 min-w-[280px]">
-                  <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] italic flex items-center justify-start gap-2">
-                    <Zap size={10} className="text-primary animate-pulse" />
-                    Subscription Status
-                  </span>
+                  <div className="flex items-center gap-3">
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] italic flex items-center justify-start gap-2">
+                      <Zap size={10} className="text-primary animate-pulse" />
+                      Subscription Status
+                    </span>
+                    {subscription && (
+                      <span className={`px-2 py-0.5 rounded-full text-[8px] font-black uppercase tracking-widest border ${
+                        subscription.status === 'active' ? 'bg-green-500/20 text-green-400 border-green-500/30' : 'bg-red-500/20 text-red-400 border-red-500/30'
+                      }`}>
+                        {subscription.status}
+                      </span>
+                    )}
+                  </div>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-none my-2 sm:my-3">
                     {subscription?.plan || 'Member'}
                   </h2>
                   <p className="font-bold text-xs sm:text-sm md:text-lg opacity-80 italic">
-                    {subscription?.calls_made || 0}/{subscription?.total_calls || (subscription?.plan === 'Orbit' ? '∞' : subscription?.plan === 'Plus' ? 15 : 5)} Engagements remaining this month
+                    {subscription?.status !== 'active' && subscription 
+                      ? "Your plan has expired. Please renew to continue."
+                      : `${subscription?.calls_made || 0}/${subscription?.total_calls || (subscription?.plan === 'Orbit' ? '∞' : subscription?.plan === 'Plus' ? 15 : 5)} Engagements remaining this month`
+                    }
                   </p>
                 </div>
                 <div className="grid grid-cols-1 gap-4 w-full lg:flex lg:flex-row lg:w-auto shrink-0 justify-start lg:justify-end">
@@ -124,12 +136,21 @@ export default function ProfilePage() {
                     <Star size={18} className="text-primary" />
                     Book a Call ✨
                   </Link>
-                  <Link 
-                    href="/pricing"
-                    className="w-full lg:w-auto px-6 py-4 rounded-2xl lg:rounded-3xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black text-[10px] sm:text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all backdrop-blur-md flex items-center justify-center text-center leading-tight whitespace-normal"
-                  >
-                    Subscribe to Monthly Plans
-                  </Link>
+                  {subscription && subscription.status !== 'active' ? (
+                    <Link 
+                      href={`/checkout?plan=${subscription.plan.toLowerCase()}&cycle=${subscription.billing_cycle || 'monthly'}`}
+                      className="w-full lg:w-auto px-6 py-4 rounded-2xl lg:rounded-3xl bg-red-500 hover:bg-red-600 text-white border border-red-400 font-black text-[10px] sm:text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center text-center leading-tight whitespace-nowrap"
+                    >
+                      Renew Plan
+                    </Link>
+                  ) : (
+                    <Link 
+                      href="/pricing"
+                      className="w-full lg:w-auto px-6 py-4 rounded-2xl lg:rounded-3xl bg-white/10 hover:bg-white/20 text-white border border-white/20 font-black text-[10px] sm:text-xs md:text-sm uppercase tracking-widest hover:scale-105 active:scale-95 transition-all backdrop-blur-md flex items-center justify-center text-center leading-tight whitespace-normal"
+                    >
+                      Subscribe to Monthly Plans
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

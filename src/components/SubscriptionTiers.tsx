@@ -11,6 +11,7 @@ export default function SubscriptionTiers() {
   const [cycle, setCycle] = useState<BillingCycle>("monthly");
   const { user } = useAuth();
   const [currentPlan, setCurrentPlan] = useState<string | null>(null);
+  const [currentPlanStatus, setCurrentPlanStatus] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchPlan() {
@@ -19,8 +20,9 @@ export default function SubscriptionTiers() {
         const res = await fetch("/api/user/profile");
         if (res.ok) {
           const data = await res.json();
-          if (data.subscription?.status === "active") {
+          if (data.subscription) {
             setCurrentPlan(data.subscription.plan.toLowerCase());
+            setCurrentPlanStatus(data.subscription.status);
           }
         }
       } catch (e) {
@@ -86,6 +88,8 @@ export default function SubscriptionTiers() {
           const Icon = PLAN_ICONS[plan.iconName];
           const price = cycle === "annual" ? plan.annualPrice : plan.monthlyPrice;
           const isCurrentPlan = currentPlan === plan.id;
+          const isExpired = isCurrentPlan && currentPlanStatus !== "active";
+          const isActive = isCurrentPlan && currentPlanStatus === "active";
           return (
             <motion.div
               key={plan.id}
@@ -94,19 +98,24 @@ export default function SubscriptionTiers() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
               className={`relative glass border rounded-[40px] p-8 flex flex-col h-full transition-all duration-500 ${
-                plan.popular && !isCurrentPlan
+                plan.popular && !isActive
                   ? "border-primary/60 shadow-huge shadow-primary/10 md:scale-[1.03]"
                   : "border-border hover:border-primary/30 hover:shadow-huge"
-              } ${isCurrentPlan ? "border-primary ring-2 ring-primary/50" : ""}`}
+              } ${isActive ? "border-primary ring-2 ring-primary/50" : ""} ${isExpired ? "border-red-500/50" : ""}`}
             >
               {plan.popular && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-bg px-4 py-1.5 rounded-full text-[9px] font-black text-white uppercase tracking-[0.2em] shadow-lg shadow-primary/20">
                   Most Popular
                 </div>
               )}
-              {isCurrentPlan && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-lg">
+              {isActive && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-lg whitespace-nowrap">
                   Current Plan
+                </div>
+              )}
+              {isExpired && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-lg whitespace-nowrap">
+                  Plan Expired
                 </div>
               )}
 
@@ -151,7 +160,7 @@ export default function SubscriptionTiers() {
                 ))}
               </ul>
 
-              {isCurrentPlan ? (
+              {isActive ? (
                 <div
                   className="w-full py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 transition-all bg-green-500/10 text-green-500 cursor-default"
                 >
@@ -162,12 +171,14 @@ export default function SubscriptionTiers() {
                 <Link
                   href={`/checkout?plan=${plan.id}&cycle=${cycle}`}
                   className={`w-full py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 ${
-                    plan.popular
+                    isExpired
+                      ? "bg-red-500 text-white shadow-xl shadow-red-500/20"
+                      : plan.popular
                       ? "gradient-bg text-white shadow-xl shadow-primary/20"
                       : "bg-foreground text-background"
                   }`}
                 >
-                  Choose {plan.name.replace("Buzz ", "")}
+                  {isExpired ? `Renew ${plan.name.replace("Buzz ", "")}` : `Choose ${plan.name.replace("Buzz ", "")}`}
                   <ArrowRight size={16} />
                 </Link>
               )}
