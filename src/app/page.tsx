@@ -8,6 +8,7 @@ import WallOfJoy from "@/components/WallOfJoy";
 import TestimonialCarousel from "@/components/TestimonialCarousel";
 import Footer from "@/components/Footer";
 import LiveStatsWidget from "@/components/LiveStatsWidget";
+import SpecialCallBanner from "@/components/SpecialCallBanner";
 
 export default function Home() {
   return (
@@ -63,6 +64,8 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Special Occasion Call Banner — admin-controlled, shown between stats & digital letter */}
+      <SpecialCallBanner />
 
       {/* Digital Letter Feature Teaser Section - Light background contrast */}
       <section id="digital-letter" className="py-24 px-6 relative bg-background overflow-hidden border-t border-border">

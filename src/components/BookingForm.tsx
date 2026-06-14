@@ -117,8 +117,17 @@ function BookingContent() {
   const serviceId = searchParams.get("type") || "celebratory";
   const [currentServiceId, setCurrentServiceId] = useState(serviceId);
   const service = CALL_SERVICES[currentServiceId] || CALL_SERVICES.celebratory;
-  
-  const [step, setStep] = useState<Step>(searchParams.get("type") ? "subscriber" : "type");
+
+  // Special call params (from admin-created special call banner)
+  const specialCallId = searchParams.get("specialCallId");
+  const specialCallOccasion = searchParams.get("occasion");
+  const specialCallPrice = searchParams.get("price") ? Number(searchParams.get("price")) : null;
+  const isSpecialCall = !!specialCallId && specialCallPrice !== null;
+
+  const [step, setStep] = useState<Step>(
+    // If arriving from special call banner, skip type selection
+    isSpecialCall || searchParams.get("type") ? "subscriber" : "type"
+  );
   const [selectedVariant, setSelectedVariant] = useState<CallVariant>(service.tiers[0].variant);
   const [isExpress, setIsExpress] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -130,7 +139,9 @@ function BookingContent() {
     gender: "",
     location: "",
   });
-  const [recipients, setRecipients] = useState<Recipient[]>([emptyRecipient(service.name)]);
+  const [recipients, setRecipients] = useState<Recipient[]>([emptyRecipient(
+    specialCallOccasion || service.name
+  )]);
   const [callMessage, setCallMessage] = useState<CallMessage>(emptyCallMessage());
   const [timezone, setTimezone] = useState<string>(defaultTimezone());
 
@@ -164,8 +175,8 @@ function BookingContent() {
   const subscriberPlan = isSubscriber ? getPlan(subscription?.plan) : null;
 
   const selectedTier = service.tiers.find(t => t.variant === selectedVariant) || service.tiers[0];
-  const basePrice = selectedTier.price;
-  const expressCharge = !isSubscriber && isExpress ? 2000 : 0;
+  const basePrice = isSpecialCall ? (specialCallPrice as number) : selectedTier.price;
+  const expressCharge = !isSubscriber && isExpress && !isSpecialCall ? 2000 : 0;
   const totalPrice = basePrice + expressCharge;
 
   const addRecipient = () => {
@@ -605,13 +616,32 @@ function BookingContent() {
             exit={{ opacity: 0, x: -20 }}
             className="flex-grow space-y-8"
           >
+            {/* Special call badge */}
+            {isSpecialCall && (
+              <div className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-primary/10 border border-primary/20">
+                <span className="text-2xl">{searchParams.get("occasion")?.match(/\p{Emoji}/u)?.[0] || "🎉"}</span>
+                <div>
+                  <div className="text-[9px] font-black text-primary uppercase tracking-[0.3em] mb-0.5">Special Occasion Call</div>
+                  <div className="font-black text-sm tracking-tight">{specialCallOccasion}</div>
+                </div>
+                <div className="ml-auto text-right">
+                  <div className="text-[9px] font-black text-foreground/30 uppercase tracking-widest">Fixed Price</div>
+                  <div className="text-xl font-black gradient-text tracking-tighter">₦{(specialCallPrice as number).toLocaleString()}</div>
+                </div>
+              </div>
+            )}
+
             <div className="flex items-center gap-4 mb-8">
                <div className="w-12 h-12 rounded-xl gradient-bg flex items-center justify-center text-white">
                   <Star size={20} />
                </div>
                <div>
-                  <h2 className="text-2xl sm:text-3xl font-black tracking-tighter uppercase italic leading-none">{service.name}</h2>
-                  <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest mt-1">Starting from ₦{service.basePrice.toLocaleString()}</p>
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tighter uppercase italic leading-none">
+                    {isSpecialCall ? specialCallOccasion : service.name}
+                  </h2>
+                  <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest mt-1">
+                    {isSpecialCall ? `Fixed price: ₦${(specialCallPrice as number).toLocaleString()}` : `Starting from ₦${service.basePrice.toLocaleString()}`}
+                  </p>
                </div>
             </div>
 
@@ -1412,11 +1442,19 @@ function BookingContent() {
                     </>
                   ) : (
                     <>
+                      {isSpecialCall && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Occasion</span>
+                          <span className="font-black text-base sm:text-lg">{specialCallOccasion}</span>
+                        </div>
+                      )}
                       <div className="flex justify-between items-center group">
-                        <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Package ({selectedTier.label})</span>
+                        <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">
+                          {isSpecialCall ? "Special Call" : `Package (${selectedTier.label})`}
+                        </span>
                         <span className="font-black text-base sm:text-lg">₦{basePrice.toLocaleString()}</span>
                       </div>
-                      {isExpress && (
+                      {isExpress && !isSpecialCall && (
                         <div className="flex justify-between items-center text-primary">
                           <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Express Service</span>
                           <span className="font-black text-base sm:text-lg">+₦2,000</span>

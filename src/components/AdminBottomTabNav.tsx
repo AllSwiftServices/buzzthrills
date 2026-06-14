@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, PhoneCall, Users, BarChart3, Mail } from "lucide-react";
+import { LayoutDashboard, PhoneCall, Users, BarChart3, Mail, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
@@ -9,11 +9,11 @@ export default function AdminBottomTabNav() {
   const pathname = usePathname();
 
   const tabs = [
-    { href: "/admin",          icon: <LayoutDashboard size={20} />, label: "Overview" },
-    { href: "/admin/calls",    icon: <PhoneCall size={20} />,       label: "Calls" },
-    { href: "/admin/letters",  icon: <Mail size={20} />,            label: "Letters" },
-    { href: "/admin/crm",      icon: <Users size={20} />,           label: "Directory" },
-    { href: "/admin/analytics",icon: <BarChart3 size={20} />,       label: "Analytics" },
+    { href: "/admin",               icon: <LayoutDashboard size={20} />, label: "Overview" },
+    { href: "/admin/calls",         icon: <PhoneCall size={20} />,       label: "Calls" },
+    { href: "/admin/special-calls", icon: <Sparkles size={20} />,        label: "Special" },
+    { href: "/admin/letters",       icon: <Mail size={20} />,            label: "Letters" },
+    { href: "/admin/analytics",     icon: <BarChart3 size={20} />,       label: "Analytics" },
   ];
 
   const active = (href: string) =>

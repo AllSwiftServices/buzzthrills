@@ -1,6 +1,7 @@
 "use client";
 
-import { Phone, User, Calendar, Menu, X, Home, BookOpen, CreditCard, Mail, LayoutDashboard } from "lucide-react";
+import { User, Calendar, Menu, X, Home, BookOpen, CreditCard, Mail, LayoutDashboard } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
 import { useEffect, useState } from "react";
@@ -71,12 +72,19 @@ export default function Header() {
       >
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 relative z-10 group shrink-0">
-          <div className="w-8 h-8 gradient-bg rounded-lg flex items-center justify-center transition-transform group-hover:scale-110">
-            <Phone size={16} className="text-white" />
-          </div>
-          <span className="text-xl font-semibold tracking-tight font-serif">
-            Buzz<span className="gradient-text">Thrills</span>
-          </span>
+          {mounted ? (
+            <Image
+              src={isDark ? "/logo-dark.png" : "/logo-light.png"}
+              alt="BuzzThrills"
+              width={200}
+              height={70}
+              className="h-20 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              priority
+            />
+          ) : (
+            // SSR placeholder — same size, prevents layout shift
+            <div className="h-9 w-[160px]" />
+          )}
         </Link>
 
         {/* Desktop Nav — hidden below lg */}
