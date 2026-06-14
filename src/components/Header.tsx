@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Calendar, Menu, X, Home, BookOpen, CreditCard, Mail, LayoutDashboard } from "lucide-react";
+import { User, Menu, X, Home, BookOpen, CreditCard, Mail, LayoutDashboard } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
@@ -77,13 +77,13 @@ export default function Header() {
               src={isDark ? "/logo-dark.png" : "/logo-light.png"}
               alt="BuzzThrills"
               width={200}
-              height={70}
+              height={40}
               className="h-20 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
               priority
             />
           ) : (
             // SSR placeholder — same size, prevents layout shift
-            <div className="h-9 w-[160px]" />
+            <div className="h-20 w-[160px]" />
           )}
         </Link>
 
@@ -123,11 +123,11 @@ export default function Header() {
         <div className="hidden lg:flex items-center gap-3">
           <ThemeToggle />
           <Link
-            href="/book"
+            href={user ? "/profile" : "/auth"}
             className="px-5 py-2.5 rounded-xl gradient-bg text-white font-semibold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 whitespace-nowrap"
           >
-            <Calendar size={15} />
-            Book a Surprise Call
+            <User size={15} />
+            {user ? "My Account" : "Log In / Get Started"}
           </Link>
         </div>
 
@@ -207,12 +207,12 @@ export default function Header() {
 
                     {/* CTA button */}
                     <Link
-                      href="/book"
+                      href={user ? "/profile" : "/auth"}
                       onClick={() => setIsOpen(false)}
                       className="w-full max-w-[280px] py-4 rounded-2xl gradient-bg text-white font-bold text-xl text-center shadow-xl shadow-primary/20 active:scale-95 transition-all flex items-center justify-center gap-2"
                     >
-                      <Calendar size={20} />
-                      Book a Surprise Call
+                      <User size={20} />
+                      {user ? "My Account" : "Log In / Get Started"}
                     </Link>
                   </div>
                 </motion.div>

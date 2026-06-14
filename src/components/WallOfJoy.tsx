@@ -87,7 +87,7 @@ function TestimonialCard({ item }: { item: Testimonial }) {
 export { TestimonialCard };
 
 export default function WallOfJoy() {
-  const displayed = testimonials.slice(0, 3);
+  const displayed = testimonials;
 
   return (
     <section className="py-24 px-4 sm:px-6 bg-cream/30 dark:bg-black/20">
@@ -130,21 +130,21 @@ export default function WallOfJoy() {
             href="/testimonials"
             className="inline-flex items-center gap-3 px-10 py-5 rounded-3xl glass border-primary/20 text-primary font-black uppercase tracking-[0.2em] text-xs hover:scale-105 active:scale-95 transition-all"
           >
-            Read All Stories
+            The Full Wall of Joy
             <Star size={16} />
           </Link>
         </div>
 
         <Reveal delay={0.4}>
           <div className="mt-20 text-center">
-            <p className="text-muted-foreground font-medium mb-8 font-serif italic">
-              Want to create your own special moment?
+            <p className="text-muted-foreground font-medium mb-3 font-serif italic text-lg">
+              Next up: Your own unforgettable moment.
             </p>
             <Link
-              href="/pricing"
+              href="/book"
               className="inline-flex px-10 py-5 gradient-bg rounded-3xl font-semibold text-lg text-white shadow-huge hover:scale-105 transition-all active:scale-95 group items-center justify-center whitespace-nowrap"
             >
-              Start Sharing Joy
+              Book Your First Surprise Call
               <Heart size={20} className="group-hover:scale-125 transition-transform ml-2" />
             </Link>
           </div>

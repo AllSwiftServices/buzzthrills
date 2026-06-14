@@ -206,7 +206,7 @@ export default function SubscriptionTiers() {
                 <div>
                   <h3 className="text-2xl font-black uppercase tracking-tight italic">{corporate.name}</h3>
                   <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-1">
-                    Custom pricing from ₦XX,XXX / month
+                    Custom Pricing from ₦100,000 / month
                   </p>
                 </div>
               </div>
