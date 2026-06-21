@@ -155,38 +155,7 @@ export default function PricingPage() {
             </div>
           </motion.div>
 
-          {/* Buzz for Business */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mt-8 mb-16 p-8 sm:p-12 md:p-16 rounded-[48px] sm:rounded-[64px] glass border border-border shadow-huge bg-background/40 flex flex-col lg:flex-row items-center justify-between gap-12 relative overflow-hidden group"
-          >
-            <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none group-hover:scale-110 transition-transform duration-[2s]" />
 
-            <div className="relative z-10 text-center lg:text-left">
-              <div className="w-16 h-16 rounded-3xl bg-foreground/5 flex items-center justify-center mx-auto lg:mx-0 mb-8 text-primary shadow-xl">
-                <Shield size={32} />
-              </div>
-              <div className="text-[9px] font-black text-primary uppercase tracking-[0.4em] mb-3">Workplace Culture & Client Loyalty</div>
-              <h2 className="text-4xl md:text-5xl font-medium mb-4 tracking-tight font-serif italic text-primary">
-                Buzz for <span className="gradient-text italic">Business</span>
-              </h2>
-              <p className="text-muted-foreground font-medium text-lg max-w-xl tracking-tight leading-relaxed">
-                Custom Pricing from <strong>₦100,000 / month</strong>. Engineered for companies, progressive HR teams, and corporate leaders looking to actively combat workplace burnout, celebrate staff, and build structured client engagement.
-              </p>
-            </div>
-
-            <div className="relative z-10 w-full lg:w-auto">
-              <Link
-                href="/corporate"
-                className="w-full lg:w-auto px-8 py-4 sm:px-12 sm:py-6 bg-foreground text-background font-semibold rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-3 text-sm tracking-widest"
-              >
-                Book a Consultation
-                <ArrowRight size={20} />
-              </Link>
-            </div>
-          </motion.div>
 
           {/* Guarantee / Info */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">

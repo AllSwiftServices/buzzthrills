@@ -38,35 +38,7 @@ export default function SubscriptionTiers() {
   return (
     <section className="mb-32">
       <div className="text-center mb-16">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold uppercase tracking-[0.4em] mb-8"
-        >
-          <Sparkles size={14} className="fill-current" />
-          Monthly Subscriptions
-        </motion.div>
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.1 }}
-          className="text-4xl sm:text-6xl font-medium mb-6 tracking-tight font-serif leading-none"
-        >
-          Choose Your <span className="gradient-text italic">Buzzthrills</span> Plan
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.2 }}
-          className="text-muted-foreground text-base sm:text-lg font-medium max-w-2xl mx-auto tracking-tight leading-relaxed"
-        >
-          A bundle of heartfelt calls every month. Premium add-ons like prank and music thrills are included on every plan.
-        </motion.p>
-
-        <div className="inline-flex items-center gap-1 p-1 rounded-full glass border border-border mt-10">
+        <div className="inline-flex items-center gap-1 p-1 rounded-full glass border border-border">
           {(["monthly", "annual"] as BillingCycle[]).map((c) => (
             <button
               key={c}
