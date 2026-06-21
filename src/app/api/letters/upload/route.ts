@@ -25,40 +25,41 @@ export async function POST(req: Request) {
 
     if (!supabaseAdmin) throw new Error("Admin client init failure");
 
-    const formData = await req.formData();
-    const file = formData.get("file") as File | null;
-    const kind = (formData.get("kind") as Kind | null) || "music";
-    const letterId = (formData.get("letterId") as string | null) || "drafts";
+    const body = await req.json();
+    const { filename, filetype, filesize, kind, letterId } = body;
 
-    if (!file) return NextResponse.json({ error: "Missing file" }, { status: 400 });
-    if (!["music", "voice", "video", "photo"].includes(kind)) {
+    const selectedKind = (kind as Kind | null) || "music";
+    const selectedLetterId = letterId || "drafts";
+
+    if (!filename || !filetype || filesize === undefined) {
+      return NextResponse.json({ error: "Missing metadata parameters" }, { status: 400 });
+    }
+
+    if (!["music", "voice", "video", "photo"].includes(selectedKind)) {
       return NextResponse.json({ error: "Invalid kind" }, { status: 400 });
     }
 
-    if (file.size > LETTER_MEDIA_LIMITS.maxFileBytes) {
+    if (filesize > LETTER_MEDIA_LIMITS.maxFileBytes) {
       return NextResponse.json(
         { error: `File too large (max ${LETTER_MEDIA_LIMITS.maxFileBytes / (1024 * 1024)}MB)` },
         { status: 413 }
       );
     }
 
-    const accepted = acceptedFor(kind);
-    if (file.type && !accepted.includes(file.type)) {
+    const accepted = acceptedFor(selectedKind);
+    if (filetype && !accepted.includes(filetype)) {
       return NextResponse.json(
-        { error: `Unsupported file type for ${kind}: ${file.type}` },
+        { error: `Unsupported file type for ${selectedKind}: ${filetype}` },
         { status: 415 }
       );
     }
 
-    const fileExt = file.name.split(".").pop() || "bin";
-    const fileName = `letters/${letterId}/${kind}-${uuidv4()}.${fileExt}`;
+    const fileExt = filename.split(".").pop() || "bin";
+    const fileName = `letters/${selectedLetterId}/${selectedKind}-${uuidv4()}.${fileExt}`;
 
-    const { error: uploadError } = await supabaseAdmin.storage
+    const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
       .from("recordings")
-      .upload(fileName, file, {
-        contentType: file.type || "application/octet-stream",
-        upsert: false,
-      });
+      .createSignedUploadUrl(fileName);
 
     if (uploadError) throw uploadError;
 
@@ -66,9 +67,13 @@ export async function POST(req: Request) {
       data: { publicUrl },
     } = supabaseAdmin.storage.from("recordings").getPublicUrl(fileName);
 
-    return NextResponse.json({ url: publicUrl, kind });
+    return NextResponse.json({
+      signedUrl: uploadData.signedUrl,
+      url: publicUrl,
+      kind: selectedKind,
+    });
   } catch (err: any) {
-    console.error("Letter upload error:", err);
-    return NextResponse.json({ error: err.message || "Upload failed" }, { status: 500 });
+    console.error("Letter upload URL generation error:", err);
+    return NextResponse.json({ error: err.message || "Failed to generate upload URL" }, { status: 500 });
   }
 }

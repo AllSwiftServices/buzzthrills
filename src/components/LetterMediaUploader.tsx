@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Upload, X, Loader2, Music, Mic, Video, Image as ImageIcon } from "lucide-react";
+import { LETTER_MEDIA_LIMITS } from "@/lib/letters";
 
 type Kind = "music" | "voice" | "video" | "photo";
 
@@ -32,18 +33,64 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
     const file = e.target.files?.[0];
     if (!file) return;
     setError(null);
+
+    // 1. Client-side size check
+    if (file.size > LETTER_MEDIA_LIMITS.maxFileBytes) {
+      setError(`File is too large (max ${LETTER_MEDIA_LIMITS.maxFileBytes / (1024 * 1024)}MB)`);
+      if (inputRef.current) inputRef.current.value = "";
+      return;
+    }
+
+    // 2. Client-side type check
+    let acceptedTypes: readonly string[] = [];
+    if (kind === "music") acceptedTypes = LETTER_MEDIA_LIMITS.acceptedMusic;
+    else if (kind === "voice") acceptedTypes = LETTER_MEDIA_LIMITS.acceptedVoice;
+    else if (kind === "video") acceptedTypes = LETTER_MEDIA_LIMITS.acceptedVideo;
+    else if (kind === "photo") acceptedTypes = LETTER_MEDIA_LIMITS.acceptedPhoto;
+
+    if (file.type && !acceptedTypes.includes(file.type)) {
+      setError(`Unsupported file type for ${meta.label.toLowerCase()}`);
+      if (inputRef.current) inputRef.current.value = "";
+      return;
+    }
+
     setUploading(true);
     try {
-      const form = new FormData();
-      form.append("file", file);
-      form.append("kind", kind);
-      if (letterId) form.append("letterId", letterId);
-      const res = await fetch("/api/letters/upload", { method: "POST", body: form });
+      // 3. Request signed upload URL from Next.js server
+      const res = await fetch("/api/letters/upload", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          filename: file.name,
+          filetype: file.type || "application/octet-stream",
+          filesize: file.size,
+          kind,
+          letterId: letterId || null,
+        }),
+      });
+
       const data = await res.json();
       if (!res.ok) {
-        setError(data.error || "Upload failed");
+        setError(data.error || "Failed to initiate upload");
         return;
       }
+
+      // 4. Perform direct upload to the signedUrl
+      const uploadRes = await fetch(data.signedUrl, {
+        method: "PUT",
+        headers: {
+          "Content-Type": file.type || "application/octet-stream",
+        },
+        body: file,
+      });
+
+      if (!uploadRes.ok) {
+        const uploadErrText = await uploadRes.text();
+        console.error("Direct upload error:", uploadErrText);
+        setError("Failed to upload file directly to storage.");
+        return;
+      }
+
       onChange(data.url);
     } catch (err) {
       console.error(err);
