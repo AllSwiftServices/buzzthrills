@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { Upload, X, Loader2, Music, Mic, Video, Image as ImageIcon } from "lucide-react";
 import { LETTER_MEDIA_LIMITS } from "@/lib/letters";
+import { useAuth } from "@/context/AuthContext";
 
 type Kind = "music" | "voice" | "video" | "photo";
 
@@ -28,6 +29,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { refresh } = useAuth();
 
   const handleSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -57,7 +59,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
     setUploading(true);
     try {
       // 3. Request signed upload URL from Next.js server
-      const res = await fetch("/api/letters/upload", {
+      let res = await fetch("/api/letters/upload", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -69,7 +71,29 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
         }),
       });
 
-      const data = await res.json();
+      let data = await res.json();
+
+      // If unauthorized, attempt to refresh the token and retry once
+      if (res.status === 401) {
+        try {
+          await refresh();
+          res = await fetch("/api/letters/upload", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              filename: file.name,
+              filetype: file.type || "application/octet-stream",
+              filesize: file.size,
+              kind,
+              letterId: letterId || null,
+            }),
+          });
+          data = await res.json();
+        } catch (refreshErr) {
+          console.error("Token refresh failed during upload retry:", refreshErr);
+        }
+      }
+
       if (!res.ok) {
         setError(data.error || "Failed to initiate upload");
         return;

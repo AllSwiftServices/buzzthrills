@@ -62,7 +62,7 @@ interface FormProps {
 function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { user } = useAuth();
+  const { user, refresh } = useAuth();
   const isAdmin = mode === "admin";
   const isEditing = !!existing;
 
@@ -120,7 +120,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
 
   const ensureDraftSaved = async (): Promise<{ id: string; code: string } | null> => {
     if (draft.id && draft.code) return { id: draft.id, code: draft.code };
-    const res = await fetch("/api/letters/create", {
+    let res = await fetch("/api/letters/create", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -136,6 +136,31 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
         additional_comments: draft.additionalComments || null,
       }),
     });
+
+    if (res.status === 401) {
+      try {
+        await refresh();
+        res = await fetch("/api/letters/create", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            recipient_name: draft.recipientName || "Recipient",
+            recipient_phone: draft.recipientPhone || null,
+            recipient_photo_url: draft.recipientPhotoUrl || null,
+            message: draft.message || "(draft)",
+            theme: draft.theme,
+            tier: "standard",
+            wants_scannable: draft.wantsScannable,
+            request_admin_voice: draft.requestAdminVoice,
+            request_admin_letter: draft.requestAdminLetter,
+            additional_comments: draft.additionalComments || null,
+          }),
+        });
+      } catch (err) {
+        console.error("Token refresh failed during draft save:", err);
+      }
+    }
+
     const data = await res.json();
     if (!res.ok) {
       alert(data.error || "Could not save draft");
@@ -162,11 +187,24 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
   }>) => {
     if (!draft.id) return;
     try {
-      await fetch(`/api/letters/${draft.id}`, {
+      let res = await fetch(`/api/letters/${draft.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(patch),
       });
+
+      if (res.status === 401) {
+        try {
+          await refresh();
+          res = await fetch(`/api/letters/${draft.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(patch),
+          });
+        } catch (refreshErr) {
+          console.error("Token refresh failed during persistField:", refreshErr);
+        }
+      }
     } catch (e) {
       console.error("Patch failure", e);
     }
@@ -235,11 +273,24 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
     if (!draft.id) return;
     setLoading(true);
     try {
-      await fetch(`/api/letters/${draft.id}`, {
+      let res = await fetch(`/api/letters/${draft.id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: "published" }),
       });
+
+      if (res.status === 401) {
+        try {
+          await refresh();
+          res = await fetch(`/api/letters/${draft.id}`, {
+            method: "PATCH",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ status: "published" }),
+          });
+        } catch (refreshErr) {
+          console.error("Token refresh failed during finalizeAdmin:", refreshErr);
+        }
+      }
       router.push(`/admin/letters`);
     } finally {
       setLoading(false);
