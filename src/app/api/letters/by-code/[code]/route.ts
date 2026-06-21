@@ -9,7 +9,7 @@ export async function GET(_request: Request, { params }: { params: Promise<{ cod
     const { data: letter, error } = await supabaseAdmin
       .from("digital_letters")
       .select(
-        "id, recipient_name, message, theme, tier, background_music_url, voice_note_url, video_url, qr_identifier, unfurled_count, status, created_at, sender_id, recipient_photo_url"
+        "id, recipient_name, message, theme, tier, background_music_url, voice_note_url, video_url, qr_identifier, unfurled_count, status, created_at, sender_id, recipient_photo_url, recipient_email"
       )
       .eq("qr_identifier", code)
       .single();

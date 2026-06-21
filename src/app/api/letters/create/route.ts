@@ -19,6 +19,7 @@ export async function POST(request: Request) {
     const {
       recipient_name,
       recipient_phone,
+      recipient_email,
       recipient_photo_url,
       message,
       theme,
@@ -56,6 +57,7 @@ export async function POST(request: Request) {
         sender_id: payload.id,
         recipient_name,
         recipient_phone: recipient_phone || null,
+        recipient_email: recipient_email || null,
         recipient_photo_url: recipient_photo_url || null,
         message,
         theme: themeSpec.id,

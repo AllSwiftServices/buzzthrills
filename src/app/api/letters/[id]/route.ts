@@ -63,6 +63,7 @@ export async function PATCH(request: Request, { params }: { params: Promise<{ id
     const writable = [
       "recipient_name",
       "recipient_phone",
+      "recipient_email",
       "recipient_photo_url",
       "message",
       "background_music_url",

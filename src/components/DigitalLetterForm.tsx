@@ -15,6 +15,7 @@ import {
   Mic,
   Video,
   QrCode,
+  Mail,
 } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
@@ -41,6 +42,7 @@ interface Draft {
   message: string;
   recipientName: string;
   recipientPhone: string;
+  recipientEmail: string;
   recipientPhotoUrl: string | null;
   theme: LetterTheme;
   tier: LetterTier;
@@ -78,6 +80,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
     message: existing?.message || "",
     recipientName: existing?.recipient_name || "",
     recipientPhone: existing?.recipient_phone || "",
+    recipientEmail: existing?.recipient_email || "",
     recipientPhotoUrl: existing?.recipient_photo_url || null,
     theme: (existing?.theme as LetterTheme) || "parchment",
     tier: "standard",
@@ -126,6 +129,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
       body: JSON.stringify({
         recipient_name: draft.recipientName || "Recipient",
         recipient_phone: draft.recipientPhone || null,
+        recipient_email: draft.recipientEmail || null,
         recipient_photo_url: draft.recipientPhotoUrl || null,
         message: draft.message || "(draft)",
         theme: draft.theme,
@@ -146,6 +150,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
           body: JSON.stringify({
             recipient_name: draft.recipientName || "Recipient",
             recipient_phone: draft.recipientPhone || null,
+            recipient_email: draft.recipientEmail || null,
             recipient_photo_url: draft.recipientPhotoUrl || null,
             message: draft.message || "(draft)",
             theme: draft.theme,
@@ -174,6 +179,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
     message: string;
     recipient_name: string;
     recipient_phone: string | null;
+    recipient_email: string | null;
     recipient_photo_url: string | null;
     theme: LetterTheme;
     tier: LetterTier;
@@ -234,6 +240,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
           message: draft.message,
           recipient_name: draft.recipientName,
           recipient_phone: draft.recipientPhone || null,
+          recipient_email: draft.recipientEmail || null,
           recipient_photo_url: draft.recipientPhotoUrl || null,
           theme: draft.theme,
         });
@@ -552,6 +559,22 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                   onChange={(e) => setDraft({ ...draft, recipientPhone: e.target.value })}
                   className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary outline-none font-bold"
                   placeholder="+234 ..."
+                />
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
+                Email Address <span className="text-muted-foreground/60 normal-case font-bold italic">— optional, in case we email them the link for you</span>
+              </label>
+              <div className="relative group">
+                <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                <input
+                  type="email"
+                  value={draft.recipientEmail}
+                  onChange={(e) => setDraft({ ...draft, recipientEmail: e.target.value })}
+                  className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary outline-none font-bold"
+                  placeholder="recipient@example.com"
                 />
               </div>
             </div>
