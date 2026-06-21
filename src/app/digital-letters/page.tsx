@@ -68,52 +68,34 @@ export default function DigitalLettersPage() {
 
       {/* Preview Section */}
       <section id="preview" className="py-24 px-4 sm:px-6 relative z-10 overflow-hidden">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-            <Reveal direction="left">
-              <div className="relative group">
-                <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full -z-10 animate-pulse" />
-                <h2 className="text-4xl md:text-5xl font-medium mb-8 tracking-tight font-serif italic">Not Just a <span className="gradient-text italic">Message</span>. <br />A Digital Letter.</h2>
-                <p className="text-lg text-muted-foreground leading-relaxed font-serif italic mb-10">
-                  Standard texts vanish in the noise. Our digital letters are built to be kept. Every letter is a handcrafted experience that the recipient can revisit whenever they need a reminder of how much they mean to you.
-                </p>
-                
-                <div className="space-y-8 pt-10">
-                  {[
-                    { title: "Animated Reveal", desc: "Smooth CSS-driven scroll unrolling animation for that premium physical unboxing feel.", icon: <MessageSquareQuote className="text-primary" /> },
-                    { title: "Emotional Voiceover", desc: "Embed professional narration or your own voice notes that sync with the reading experience.", icon: <Volume2 className="text-secondary" /> },
-                    { title: "QR Card Support", desc: "Optional physical delivery of a collectible card that unlocks the digital experience.", icon: <Zap className="text-amber-400" /> }
-                  ].map((feature, i) => (
-                    <div key={i} className="flex gap-6 items-start group">
-                      <div className="w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center shrink-0 border border-border group-hover:border-primary/20 transition-all duration-500 shadow-sm">
-                        {feature.icon}
-                      </div>
-                      <div>
-                        <div className="text-lg font-bold mb-1 tracking-tight">{feature.title}</div>
-                        <div className="text-sm text-muted-foreground font-medium leading-relaxed">{feature.desc}</div>
-                      </div>
+        <div className="max-w-3xl mx-auto">
+          <Reveal>
+            <div className="relative group">
+              <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full -z-10 animate-pulse" />
+              <h2 className="text-4xl md:text-5xl font-medium mb-8 tracking-tight font-serif italic text-center">Not Just a <span className="gradient-text italic">Message</span>. <br />A Digital Letter.</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed font-serif italic mb-10 text-center">
+                Standard texts vanish in the noise. Our digital letters are built to be kept. Every letter is a handcrafted experience that the recipient can revisit whenever they need a reminder of how much they mean to you.
+              </p>
+              
+              <div className="space-y-8 pt-10 max-w-xl mx-auto">
+                {[
+                  { title: "Animated Reveal", desc: "Smooth CSS-driven scroll unrolling animation for that premium physical unboxing feel.", icon: <MessageSquareQuote className="text-primary" /> },
+                  { title: "Emotional Voiceover", desc: "Embed professional narration or your own voice notes that sync with the reading experience.", icon: <Volume2 className="text-secondary" /> },
+                  { title: "QR Card Support", desc: "Optional physical delivery of a collectible card that unlocks the digital experience.", icon: <Zap className="text-amber-400" /> }
+                ].map((feature, i) => (
+                  <div key={i} className="flex gap-6 items-start group">
+                    <div className="w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center shrink-0 border border-border group-hover:border-primary/20 transition-all duration-500 shadow-sm">
+                      {feature.icon}
                     </div>
-                  ))}
-                </div>
-              </div>
-            </Reveal>
-
-            <Reveal direction="right">
-              <div className="relative p-2 glass border border-border rounded-[64px] shadow-huge overflow-hidden group bg-background/40">
-                <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity duration-1000" />
-                <div className="aspect-[3/4] rounded-[56px] bg-background/50 border border-border flex flex-col items-center justify-center p-12 text-center relative z-10">
-                  <div className="w-24 h-24 bg-accent/20 backdrop-blur-xl rounded-full flex items-center justify-center mb-8 animate-bounce shadow-huge border border-white/30">
-                    <Volume2 size={40} className="text-accent" />
+                    <div>
+                      <div className="text-lg font-bold mb-1 tracking-tight">{feature.title}</div>
+                      <div className="text-sm text-muted-foreground font-medium leading-relaxed">{feature.desc}</div>
+                    </div>
                   </div>
-                  <div className="text-2xl font-medium mb-4 font-serif italic tracking-tight">Letter <span className="gradient-text italic">Demo</span></div>
-                  <p className="text-sm text-muted-foreground font-medium leading-relaxed px-4">Interact with a sample letter to feel the premium scroll and voice-over integration.</p>
-                  <button className="mt-10 px-10 py-4 rounded-2xl glass font-bold text-xs uppercase tracking-widest border border-border hover:bg-foreground/5 transition-all active:scale-95 shadow-xl">
-                    Launch Preview
-                  </button>
-                </div>
+                ))}
               </div>
-            </Reveal>
-          </div>
+            </div>
+          </Reveal>
         </div>
       </section>
 
