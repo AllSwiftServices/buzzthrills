@@ -71,6 +71,7 @@ export async function POST(req: Request) {
       signedUrl: uploadData.signedUrl,
       url: publicUrl,
       kind: selectedKind,
+      apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "",
     });
   } catch (err: any) {
     console.error("Letter upload URL generation error:", err);

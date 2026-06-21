@@ -99,11 +99,12 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
         return;
       }
 
-      // 4. Perform direct upload to the signedUrl
+      // 4. Perform direct upload to the signedUrl using raw fetch API and apikey returned from backend
       const uploadRes = await fetch(data.signedUrl, {
         method: "PUT",
         headers: {
           "Content-Type": file.type || "application/octet-stream",
+          "apikey": data.apikey,
         },
         body: file,
       });
