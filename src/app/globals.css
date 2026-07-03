@@ -18,24 +18,25 @@
 }
 
 :root {
-  --background: #fdfcff;
+  --background: #ffffff;
   --foreground: #1a0a2e;
   --primary: #5A0C7E;
-  --secondary: #360171;
+  --secondary: #8B1299;
   --accent: #D9BE18;
-  --muted: #f3f0f8;
+  --muted: #f7f4fc;
   --muted-foreground: #6b5b7b;
-  --border: rgba(90, 12, 126, 0.12);
+  --border: rgba(90, 12, 126, 0.08);
 }
 
 .dark {
-  --background: #0a0414;
-  --foreground: #ffffff;
-  --muted: #1a0d2e;
-  --muted-foreground: #a090b8;
-  --border: rgba(90, 12, 126, 0.2);
-  --primary: #7b1fa2;
+  --background: #090214;
+  --foreground: #f3eefc;
+  --primary: #b026ff;
+  --secondary: #d946ef;
   --accent: #D9BE18;
+  --muted: #140827;
+  --muted-foreground: #9a86b3;
+  --border: rgba(176, 38, 255, 0.15);
 }
 
 @layer base {
@@ -65,11 +66,22 @@
 @layer components {
   .glass {
     @apply bg-foreground/3 backdrop-blur-[12px] border border-border;
-    /* Hardware acceleration hints - localized for stability */
     -webkit-backdrop-filter: blur(12px);
     -webkit-transform: translateZ(0);
     transform: translateZ(0);
     backface-visibility: hidden;
+  }
+
+  .glass-card {
+    @apply backdrop-blur-[16px] border border-border;
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 10px 40px -10px rgba(90, 12, 126, 0.05);
+  }
+
+  .dark .glass-card {
+    background: rgba(16, 7, 30, 0.45);
+    box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.5), 0 0 20px -5px rgba(176, 38, 255, 0.1);
+    border-color: rgba(176, 38, 255, 0.12);
   }
 
   .gpu-accelerated {
@@ -88,17 +100,6 @@
 
   .animate-float {
     animation: float 8s ease-in-out infinite;
-  }
-
-  /* Force purple texts and gradients to be white in dark mode */
-  .dark .text-primary {
-    color: #ffffff !important;
-  }
-  
-  .dark .gradient-text {
-    background: none !important;
-    -webkit-text-fill-color: #ffffff !important;
-    color: #ffffff !important;
   }
 }
 

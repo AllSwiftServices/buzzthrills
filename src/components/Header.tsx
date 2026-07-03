@@ -1,6 +1,6 @@
 "use client";
 
-import { User, Menu, X, Home, BookOpen, CreditCard, Mail, LayoutDashboard } from "lucide-react";
+import { User, Menu, X, Home, BookOpen, CreditCard, Mail, LayoutDashboard, Phone } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import ThemeToggle from "./ThemeToggle";
@@ -29,10 +29,10 @@ export default function Header() {
   useEffect(() => { setIsOpen(false); }, [pathname]);
 
   const mainLinks = [
-    { href: "/",                matchPath: "/",                label: "Home",            icon: <Home size={14} /> },
-    { href: "/about",           matchPath: "/about",           label: "Our Story",       icon: <BookOpen size={14} /> },
-    { href: "/pricing",         matchPath: "/pricing",         label: "Plans & Pricing", icon: <CreditCard size={14} /> },
-    { href: mounted ? (user ? "/digital-letters" : "/auth?redirect=/digital-letters/create") : "/digital-letters", matchPath: "/digital-letters", label: "Digital Letters", icon: <Mail size={14} /> },
+    { href: "/#how-it-works",   matchPath: "/#how-it-works",   label: "How It Works",    icon: <Home size={14} /> },
+    { href: "/surprise-calls",  matchPath: "/surprise-calls",  label: "Services",        icon: <BookOpen size={14} /> },
+    { href: "/#testimonials",    matchPath: "/#testimonials",    label: "Testimonials",    icon: <CreditCard size={14} /> },
+    { href: "/about",           matchPath: "/about",           label: "About Us",        icon: <User size={14} /> },
   ];
 
   const isDark = mounted && resolvedTheme === "dark";
@@ -77,8 +77,8 @@ export default function Header() {
               src={isDark ? "/logo-dark.png" : "/logo-light.png"}
               alt="BuzzThrills"
               width={200}
-              height={40}
-              className="h-10 w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
+              height={10}
+              className="h-[50px] w-auto object-contain transition-opacity duration-300 group-hover:opacity-80"
               priority
             />
           ) : (
@@ -102,32 +102,26 @@ export default function Header() {
               {link.label}
             </Link>
           ))}
-
-          {/* Divider */}
-          <div className="w-px h-4 bg-border mx-2" />
-
-          <Link
-            href={user ? "/profile" : "/auth"}
-            className={`px-4 py-2 rounded-xl transition-all hover:text-primary flex items-center gap-1.5 ${
-              isActive("/profile") || isActive("/auth")
-                ? "text-primary font-semibold"
-                : "hover:bg-foreground/5"
-            }`}
-          >
-            <LayoutDashboard size={14} />
-            Dashboard
-          </Link>
         </nav>
 
         {/* Desktop Right */}
         <div className="hidden lg:flex items-center gap-3">
           <ThemeToggle />
+          {mounted && user && (
+            <Link
+              href="/profile"
+              className="px-4 py-2 rounded-xl hover:bg-foreground/5 transition-all text-sm font-medium flex items-center gap-1.5"
+            >
+              <LayoutDashboard size={14} />
+              Dashboard
+            </Link>
+          )}
           <Link
-            href={user ? "/profile" : "/auth"}
-            className="px-5 py-2.5 rounded-xl gradient-bg text-white font-semibold text-sm shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 whitespace-nowrap"
+            href="/book"
+            className="px-6 py-2.5 rounded-full gradient-bg text-white font-semibold text-xs shadow-lg shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center gap-2 whitespace-nowrap"
           >
-            <User size={15} />
-            {user ? "My Account" : "Log In / Get Started"}
+            <Phone size={14} />
+            Book a Call
           </Link>
         </div>
 
