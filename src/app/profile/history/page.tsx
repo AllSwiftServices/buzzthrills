@@ -3,19 +3,19 @@
 import { useAuth } from "@/context/AuthContext";
 import DashboardLayout from "@/components/DashboardLayout";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Calendar, Clock, ChevronRight, Search, Filter, Loader2, Play, FileText, AlertTriangle, User, MessageSquare, ChevronDown } from "lucide-react";
+import { Phone, Calendar, Search, Loader2, Play, FileText, AlertTriangle, User, MessageSquare, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function HistoryPage() {
   const { user } = useAuth();
-
-  if (!user) return null;
-
   const [history, setHistory] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
+    if (!user) return;
+
     async function fetchHistory() {
       try {
         const res = await fetch("/api/user/profile");
@@ -30,35 +30,40 @@ export default function HistoryPage() {
       }
     }
     fetchHistory();
-  }, []);
+  }, [user]);
+
+  const filteredHistory = history.filter((item) => {
+    if (!query.trim()) return true;
+    const q = query.toLowerCase();
+    return item.occasion_type?.toLowerCase().includes(q) || item.recipient_name?.toLowerCase().includes(q);
+  });
+
+  if (!user) return null;
 
   return (
     <DashboardLayout>
       <div className="max-w-5xl mx-auto">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8 sm:mb-12">
           <div>
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-2xl sm:text-4xl md:text-5xl font-black mb-2 tracking-tighter uppercase italic"
+              className="text-2xl sm:text-4xl md:text-5xl font-black mb-2 tracking-tighter uppercase"
             >
-              Thrills <span className="gradient-text italic">History</span>
+              Call <span className="gradient-text">History</span>
             </motion.h1>
-            <p className="text-muted-foreground font-black uppercase text-[9px] sm:text-xs tracking-widest pl-1 leading-none">Relive your most heroic surprises.</p>
+            <p className="text-muted-foreground font-black uppercase text-[9px] sm:text-xs tracking-widest pl-1 leading-none">Every call you've booked, in one place.</p>
           </div>
-          
-          <div className="flex items-center gap-2 sm:gap-3 w-full md:w-auto">
-             <div className="relative flex-1 md:w-64">
-                <Search className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-[18px] sm:h-[18px]" />
-                <input 
-                  type="text" 
-                  placeholder="Search..." 
-                  className="w-full bg-foreground/5 border border-border rounded-xl sm:rounded-2xl py-2.5 sm:py-3 pl-10 sm:pl-12 pr-4 outline-none focus:border-primary transition-all text-xs sm:text-sm font-black tracking-tight"
-                />
-             </div>
-             <button className="p-2.5 sm:p-3.5 rounded-xl sm:rounded-2xl glass border border-border text-muted-foreground hover:text-primary transition-all shrink-0 active:scale-95">
-                <Filter size={18} className="sm:size-5" />
-             </button>
+
+          <div className="relative w-full md:w-72">
+            <Search className="absolute left-3.5 sm:left-4 top-1/2 -translate-y-1/2 text-muted-foreground w-4 h-4 sm:w-[18px] sm:h-[18px]" />
+            <input
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search by occasion or recipient…"
+              className="w-full bg-foreground/5 border border-border rounded-xl sm:rounded-2xl py-2.5 sm:py-3 pl-10 sm:pl-12 pr-4 outline-none focus:border-primary transition-all text-xs sm:text-sm font-black tracking-tight"
+            />
           </div>
         </div>
 
@@ -68,7 +73,7 @@ export default function HistoryPage() {
                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
               <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Retrieving Logs...</div>
             </div>
-          ) : history.length > 0 ? history.map((item, i) => (
+          ) : filteredHistory.length > 0 ? filteredHistory.map((item, i) => (
             <div key={item.id} className="relative">
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -89,7 +94,7 @@ export default function HistoryPage() {
                       <Phone size={20} className="sm:size-6" />
                     </div>
                     <div>
-                      <div className="font-black text-lg sm:text-2xl tracking-tighter uppercase italic leading-tight group-hover:text-primary transition-colors">{item.occasion_type}</div>
+                      <div className="font-black text-lg sm:text-2xl tracking-tighter uppercase leading-tight group-hover:text-primary transition-colors">{item.occasion_type}</div>
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-1">
                         <div className="text-[10px] text-muted-foreground font-black uppercase tracking-widest flex items-center gap-1.5">
                            <User size={12} className="text-primary/60" />
@@ -131,17 +136,17 @@ export default function HistoryPage() {
                             <div className="space-y-3">
                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
                                   <FileText size={12} className="text-primary" />
-                                  Engagement Outcome
+                                  Call Outcome
                                </label>
                                <div className="p-6 rounded-[32px] bg-foreground/5 border border-border min-h-[120px]">
                                   {item.status === 'delivered' ? (
                                      item.recording_url ? (
                                         <div className="space-y-4">
-                                           <div className="text-sm font-medium text-foreground/80 leading-relaxed italic">
-                                              "Our agent successfully delivered your message. You can listen to the full interaction below."
+                                           <div className="text-sm font-medium text-foreground/80 leading-relaxed">
+                                              Our team delivered your message. You can listen to the recording below.
                                            </div>
-                                           <a 
-                                              href={item.recording_url} 
+                                           <a
+                                              href={item.recording_url}
                                               target="_blank"
                                               className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-primary text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 transition-all"
                                               onClick={(e) => e.stopPropagation()}
@@ -151,16 +156,16 @@ export default function HistoryPage() {
                                            </a>
                                         </div>
                                      ) : (
-                                        <div className="text-xs font-bold text-muted-foreground italic">Voice proof is being processed...</div>
+                                        <div className="text-xs font-bold text-muted-foreground">Voice proof is being processed…</div>
                                      )
                                   ) : item.status === 'failed' ? (
                                      <div className="space-y-3">
                                         <div className="flex items-center gap-2 text-red-500">
                                            <AlertTriangle size={16} />
-                                           <span className="text-[10px] font-black uppercase tracking-widest">Delivery Failure</span>
+                                           <span className="text-[10px] font-black uppercase tracking-widest">Delivery Failed</span>
                                         </div>
-                                        <div className="text-sm font-medium text-red-500/80 leading-relaxed italic">
-                                           {item.failure_reason || "Unfortunately, we were unable to complete this engagement as scheduled."}
+                                        <div className="text-sm font-medium text-red-500/80 leading-relaxed">
+                                           {item.failure_reason || "Unfortunately, we weren't able to complete this call as scheduled."}
                                         </div>
                                      </div>
                                   ) : (
@@ -179,10 +184,10 @@ export default function HistoryPage() {
                                <div className="space-y-3">
                                   <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
                                      <MessageSquare size={12} className="text-secondary" />
-                                     Notes from our Agent
+                                     Notes from our team
                                   </label>
                                   <div className="p-6 rounded-[32px] bg-secondary/5 border border-secondary/10">
-                                     <p className="text-sm font-medium text-foreground/80 leading-relaxed italic">
+                                     <p className="text-sm font-medium text-foreground/80 leading-relaxed">
                                         "{item.admin_notes}"
                                      </p>
                                   </div>
@@ -192,7 +197,7 @@ export default function HistoryPage() {
                             <div className="space-y-3">
                                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Original Booking Message</label>
                                <div className="p-6 rounded-[32px] bg-foreground/2 border border-border">
-                                  <p className="text-xs font-medium text-muted-foreground/60 leading-relaxed italic">
+                                  <p className="text-xs font-medium text-muted-foreground/60 leading-relaxed">
                                      "{item.custom_message || "No specific message provided."}"
                                   </p>
                                </div>
@@ -207,7 +212,9 @@ export default function HistoryPage() {
           )) : (
             <div className="py-20 flex flex-col items-center justify-center border-2 border-dashed border-border rounded-[48px] bg-foreground/2">
                <Calendar size={48} className="text-foreground/5 mb-4" />
-               <div className="text-xs font-black uppercase tracking-widest opacity-20">No engagements found in your history.</div>
+               <div className="text-xs font-black uppercase tracking-widest opacity-40">
+                 {history.length === 0 ? "You haven't booked any calls yet." : "No calls match your search."}
+               </div>
             </div>
           )}
         </div>

@@ -12,12 +12,12 @@ export default function Sidebar() {
 
   const menuItems = [
     { href: "/profile", icon: <User size={20} />, label: "Dashboard" },
-    { href: "/profile/history", icon: <Calendar size={20} />, label: "Thrills History" },
+    { href: "/profile/history", icon: <Calendar size={20} />, label: "Call History" },
     { href: "/profile/settings", icon: <Settings size={20} />, label: "Settings" },
   ];
 
   if (user?.role === 'admin') {
-    menuItems.splice(1, 0, { href: "/admin", icon: <ShieldCheck size={20} />, label: "Operator Console" });
+    menuItems.splice(1, 0, { href: "/admin", icon: <ShieldCheck size={20} />, label: "Admin" });
   }
 
   return (

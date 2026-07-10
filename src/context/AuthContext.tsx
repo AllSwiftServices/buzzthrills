@@ -76,6 +76,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     refresh();
+
+    // The access token cookie expires after 15 minutes (ACCESS_TOKEN_EXPIRES),
+    // but nothing else here ever re-checks it — so the header/nav can sit
+    // showing a logged-in user for an already-dead session until the next
+    // protected-route navigation gets bounced by the server. Refresh
+    // proactively so the client stays in sync with the actual session.
+    const interval = setInterval(refresh, 10 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   return (

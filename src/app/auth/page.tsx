@@ -1,11 +1,39 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import AuthForm from "@/components/AuthForm";
 import Header from "@/components/Header";
 import Reveal from "@/components/Reveal";
+import { useAuth } from "@/context/AuthContext";
 
 export default function AuthPage() {
+  const { user, refresh } = useAuth();
+  const router = useRouter();
+  const [verified, setVerified] = useState(false);
+
+  useEffect(() => {
+    // AuthContext's `user` can be stale here — it's only refreshed once on
+    // app load, so a session that expired since then still shows as logged
+    // in until a protected route bounces you. Re-verify against the server
+    // before trusting it, instead of rendering the login form under a
+    // header that claims you're already signed in.
+    let active = true;
+    refresh().finally(() => {
+      if (active) setVerified(true);
+    });
+    return () => {
+      active = false;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (verified && user) {
+      router.replace(user.role === "admin" ? "/admin" : "/profile");
+    }
+  }, [verified, user, router]);
+
   return (
     <main className="min-h-screen bg-background flex flex-col justify-center items-center px-6 relative overflow-hidden transition-colors duration-500 font-outfit">
       <Header />

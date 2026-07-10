@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
-import { supabase } from "@/lib/supabase";
+import { supabaseAdmin } from "@/lib/supabase";
 import { verifyToken } from "@/lib/auth";
 import { cookies } from "next/headers";
+import bcrypt from "bcryptjs";
 
 export async function POST(request: Request) {
   try {
@@ -24,25 +25,45 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Missing fields" }, { status: 400 });
     }
 
-    // 1. Verify current password by attempting a sign-in
-    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-      email: payload.email,
-      password: currentPassword,
-    });
+    if (newPassword.length < 8) {
+      return NextResponse.json({ error: "New password must be at least 8 characters" }, { status: 400 });
+    }
 
-    if (signInError || !signInData.user) {
+    if (!supabaseAdmin) {
+      throw new Error("Admin client initialization failure");
+    }
+
+    // 1. Verify current password against the real credential store (auth_accounts).
+    // The previous implementation checked Supabase's legacy auth.users via
+    // signInWithPassword, but this app's real credentials live in
+    // auth_accounts.password_hash (bcrypt) — that store was never touched by
+    // password changes made here, so this always failed for custom-auth users
+    // and silently no-op'd their real login password even when it "succeeded".
+    const { data: account, error: accountError } = await supabaseAdmin
+      .from("auth_accounts")
+      .select("id, password_hash")
+      .eq("id", payload.id)
+      .single();
+
+    if (accountError || !account) {
+      return NextResponse.json({ error: "Account not found" }, { status: 404 });
+    }
+
+    const isMatched = await bcrypt.compare(currentPassword, account.password_hash);
+    if (!isMatched) {
       return NextResponse.json({ error: "Incorrect current password" }, { status: 401 });
     }
 
     // 2. Update to new password
-    // Note: We use the session-less client if possible, but here we can just use the auth instance
-    const { error: updateError } = await supabase.auth.updateUser({
-      password: newPassword,
-    });
+    const newHash = await bcrypt.hash(newPassword, 10);
+    const { error: updateError } = await supabaseAdmin
+      .from("auth_accounts")
+      .update({ password_hash: newHash, updated_at: new Date().toISOString() })
+      .eq("id", account.id);
 
     if (updateError) {
       console.error("Password update error:", updateError);
-      return NextResponse.json({ error: updateError.message }, { status: 500 });
+      return NextResponse.json({ error: "Failed to update password" }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, message: "Password updated successfully" });

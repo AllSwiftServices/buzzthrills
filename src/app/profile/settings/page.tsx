@@ -2,8 +2,9 @@
 import { useAuth } from "@/context/AuthContext";
 import DashboardLayout from "@/components/DashboardLayout";
 import { motion, AnimatePresence } from "framer-motion";
-import { User, Shield, Bell, CreditCard, ChevronRight, Save, LogOut, Check, Star, Sparkles, Zap } from "lucide-react";
+import { User, Shield, CreditCard, ChevronRight, Save, LogOut, Star, Sparkles, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function SettingsPage() {
   const { user, logout, setAuth } = useAuth();
@@ -97,9 +98,9 @@ export default function SettingsPage() {
             <motion.h1 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 italic uppercase tracking-tighter"
+              className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 uppercase tracking-tighter"
             >
-              Account <span className="gradient-text italic">Settings</span>
+              Account <span className="gradient-text">Settings</span>
             </motion.h1>
             <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest pl-1">Manage your account credentials.</p>
           </div>
@@ -160,24 +161,30 @@ export default function SettingsPage() {
                   >
                      <div className="flex items-center gap-6 mb-12">
                         <div className="w-24 h-24 rounded-[32px] gradient-bg flex items-center justify-center text-white text-3xl font-black ring-8 ring-primary/5 shadow-2xl">
-                           {fullName?.[0] || 'S'}
+                           {fullName?.[0] || email?.[0] || '?'}
                         </div>
-                        <button className="text-[10px] font-black uppercase tracking-widest text-primary hover:underline">Change Profile Avatar</button>
+                        <button
+                          disabled
+                          title="Custom avatars are coming soon."
+                          className="text-[10px] font-black uppercase tracking-widest text-primary/50 cursor-not-allowed"
+                        >
+                          Change Profile Avatar
+                        </button>
                      </div>
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Full Legal Name</label>
-                          <input 
-                            type="text" 
+                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Full Name</label>
+                          <input
+                            type="text"
                             value={fullName}
                             onChange={(e) => setFullName(e.target.value)}
                             className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 outline-none focus:border-primary transition-all text-sm font-bold"
                           />
                        </div>
                         <div className="space-y-2">
-                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Registered Email</label>
-                          <input 
+                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Email Address</label>
+                          <input
                             type="email" 
                             value={email}
                             disabled
@@ -209,8 +216,8 @@ export default function SettingsPage() {
                     <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 flex items-center gap-4 mb-8">
                         <Shield size={24} className="text-primary" />
                         <div>
-                            <div className="font-black text-[10px] uppercase italic tracking-tight">Encryption Active</div>
-                            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Your account data is secured with AES-256.</div>
+                            <div className="font-black text-[10px] uppercase tracking-tight">Password Protected</div>
+                            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Your password is hashed and never stored in plain text.</div>
                         </div>
                     </div>
 
@@ -253,7 +260,7 @@ export default function SettingsPage() {
                       <div className="flex justify-between items-start mb-8 relative z-10">
                         <div>
                           <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mb-2">Current Active Plan</div>
-                          <h3 className="text-4xl font-black italic uppercase tracking-tighter">
+                          <h3 className="text-4xl font-black uppercase tracking-tighter">
                             {subscription?.plan ? subscription.plan : 'No Active Plan'}
                           </h3>
                         </div>
@@ -282,10 +289,10 @@ export default function SettingsPage() {
                           </div>
                           <div className="font-black text-[10px] uppercase tracking-widest">Upgrade Account</div>
                         </div>
-                        <p className="text-xs text-muted-foreground font-medium mb-6 italic">Unlock premium voices, more calls, and extended letters.</p>
-                        <button className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-2 hover:gap-3 transition-all">
+                        <p className="text-xs text-muted-foreground font-medium mb-6">Unlock premium voices, more calls, and extended letters.</p>
+                        <Link href="/pricing" className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-2 hover:gap-3 transition-all w-fit">
                           View Plans <ChevronRight size={12} />
-                        </button>
+                        </Link>
                       </div>
 
                       <div className="p-8 rounded-[32px] glass border border-border hover:border-red-500/20 transition-all group">
@@ -295,8 +302,12 @@ export default function SettingsPage() {
                           </div>
                           <div className="font-black text-[10px] uppercase tracking-widest">Cancel Plan</div>
                         </div>
-                        <p className="text-xs text-muted-foreground font-medium mb-6 italic">We'll be sad to see you go. Your benefits continue until period end.</p>
-                        <button className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500 flex items-center gap-2 hover:gap-3 transition-all">
+                        <p className="text-xs text-muted-foreground font-medium mb-6">We'll be sad to see you go. Your benefits continue until period end.</p>
+                        <button
+                          disabled
+                          title="Cancelling from here is coming soon — email support to cancel for now."
+                          className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500/50 flex items-center gap-2 cursor-not-allowed"
+                        >
                           Manage Subscription <ChevronRight size={12} />
                         </button>
                       </div>

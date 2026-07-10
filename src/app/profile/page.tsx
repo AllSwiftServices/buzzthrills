@@ -78,7 +78,9 @@ export default function ProfilePage() {
 
   if (!user) return null;
 
-  const totalThrills = history.length; // Simplified for now, or fetch count
+  // /api/user/profile caps this at the 5 most recent calls, so this is a
+  // "recent" count, not a lifetime total — label accordingly below.
+  const recentCallsCount = history.length;
 
   return (
     <DashboardLayout>
@@ -86,14 +88,14 @@ export default function ProfilePage() {
         {/* Hero Header */}
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
           <div>
-            <motion.h1 
+            <motion.h1
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-3xl sm:text-4xl md:text-6xl font-black mb-2 tracking-tighter uppercase italic"
+              className="text-3xl sm:text-4xl md:text-6xl font-black mb-2 tracking-tighter uppercase"
             >
-              Welcome, <span className="gradient-text italic">{user.fullName || "Client"}</span>!
+              Welcome, <span className="gradient-text">{user.fullName || "Client"}</span>!
             </motion.h1>
-            <p className="text-muted-foreground font-black uppercase text-[9px] sm:text-[10px] tracking-widest pl-1">Manage your upcoming thrills and account details.</p>
+            <p className="text-muted-foreground font-black uppercase text-[9px] sm:text-[10px] tracking-widest pl-1">Manage your upcoming calls and account details.</p>
           </div>
         </div>
 
@@ -106,7 +108,7 @@ export default function ProfilePage() {
               <div className="relative z-10 flex flex-wrap justify-between items-center gap-8 w-full">
                 <div className="text-left w-full lg:w-auto flex-1 min-w-[280px]">
                   <div className="flex items-center gap-3">
-                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] italic flex items-center justify-start gap-2">
+                    <span className="text-[9px] sm:text-[10px] font-black uppercase tracking-[0.2em] flex items-center justify-start gap-2">
                       <Zap size={10} className="text-primary animate-pulse" />
                       Subscription Status
                     </span>
@@ -118,13 +120,13 @@ export default function ProfilePage() {
                       </span>
                     )}
                   </div>
-                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-black italic uppercase tracking-tighter leading-none my-2 sm:my-3">
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-black uppercase tracking-tighter leading-none my-2 sm:my-3">
                     {subscription?.plan || 'Member'}
                   </h2>
-                  <p className="font-bold text-xs sm:text-sm md:text-lg opacity-80 italic">
-                    {subscription?.status !== 'active' && subscription 
+                  <p className="font-bold text-xs sm:text-sm md:text-lg opacity-80">
+                    {subscription?.status !== 'active' && subscription
                       ? "Your plan has expired. Please renew to continue."
-                      : `${subscription?.calls_made || 0}/${subscription?.total_calls || (subscription?.plan === 'Orbit' ? '∞' : subscription?.plan === 'Plus' ? 15 : 5)} Engagements remaining this month`
+                      : `${Math.max((subscription?.total_calls || 0) - (subscription?.calls_made || 0), 0)}/${subscription?.total_calls || 0} calls remaining this month`
                     }
                   </p>
                 </div>
@@ -167,7 +169,7 @@ export default function ProfilePage() {
                 </div>
                 <div className="flex-1">
                   <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-1">New</div>
-                  <h3 className="text-lg sm:text-xl font-black italic uppercase tracking-tighter leading-tight">Create a <span className="gradient-text italic">Digital Letter</span></h3>
+                  <h3 className="text-lg sm:text-xl font-black uppercase tracking-tighter leading-tight">Create a <span className="gradient-text">Digital Letter</span></h3>
                   <p className="text-xs text-muted-foreground font-medium mt-1 leading-relaxed">Send a heartfelt animated scroll with your voice or video to someone special.</p>
                 </div>
                 <div className="shrink-0 w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary group-hover:text-white transition-all">
@@ -182,8 +184,8 @@ export default function ProfilePage() {
                
                <div className="flex items-center justify-between mb-8 sm:mb-10 relative z-10">
                  <Link href="/profile/history" className="group/title flex items-center gap-3">
-                   <h3 className="text-lg sm:text-xl font-black italic uppercase tracking-tighter group-hover/title:text-primary transition-colors">
-                    Activity <span className="gradient-text italic">History</span>
+                   <h3 className="text-lg sm:text-xl font-black uppercase tracking-tighter group-hover/title:text-primary transition-colors">
+                    Recent <span className="gradient-text">Calls</span>
                    </h3>
                    <ChevronRight size={16} className="text-primary opacity-0 -translate-x-2 group-hover/title:opacity-100 group-hover/title:translate-x-0 transition-all" />
                  </Link>
@@ -226,7 +228,7 @@ export default function ProfilePage() {
                  )) : (
                    <div className="flex-1 rounded-[40px] border-2 border-dashed border-border flex flex-col items-center justify-center p-8 text-center bg-foreground/2">
                      <Phone size={48} className="text-foreground/5 mb-4" />
-                     <div className="text-sm font-black uppercase tracking-[0.2em] opacity-10">No History recorded.</div>
+                     <div className="text-sm font-black uppercase tracking-[0.2em] opacity-40">No calls yet.</div>
                    </div>
                  )}
                </div>
@@ -237,8 +239,8 @@ export default function ProfilePage() {
               <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -mr-32 -mt-32 group-hover:scale-110 transition-transform duration-1000" />
 
               <div className="flex items-center justify-between mb-8 relative z-10">
-                <h3 className="text-lg sm:text-xl font-black italic uppercase tracking-tighter">
-                  My Digital <span className="gradient-text italic">Letters</span>
+                <h3 className="text-lg sm:text-xl font-black uppercase tracking-tighter">
+                  My Digital <span className="gradient-text">Letters</span>
                 </h3>
                 <Link
                   href="/digital-letters/create"
@@ -323,19 +325,19 @@ export default function ProfilePage() {
           <div className="space-y-8">
             <div className="p-10 rounded-[56px] bg-linear-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 shadow-huge shadow-primary/5 backdrop-blur-3xl relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-48 h-48 bg-primary/10 blur-[60px] rounded-full -mr-24 -mt-24" />
-                <h3 className="text-xl font-black italic uppercase tracking-tighter mb-8 relative z-10">Activity <span className="gradient-text italic">Stats</span></h3>
+                <h3 className="text-xl font-black uppercase tracking-tighter mb-8 relative z-10">Activity Stats</h3>
                 <div className="grid grid-cols-2 gap-4">
                   <div className="p-6 rounded-[32px] bg-foreground/5 border border-border flex flex-col items-center justify-center text-center col-span-2">
-                    <div className="text-4xl font-black italic mb-1">{totalThrills}</div>
-                    <div className="text-[10px] font-black uppercase tracking-widest opacity-20">Recent Engagements</div>
+                    <div className="text-4xl font-black mb-1">{recentCallsCount}</div>
+                    <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Recent Calls</div>
                   </div>
                 </div>
             </div>
 
             {/* Quick Tips or Announcements could go here */}
             <div className="p-10 rounded-[56px] bg-linear-to-br from-accent/10 via-accent/5 to-transparent border border-accent/20 shadow-huge backdrop-blur-3xl relative overflow-hidden group">
-               <h3 className="text-xl font-black italic uppercase tracking-tighter mb-4 relative z-10">Quick <span className="gradient-text italic">Tip</span></h3>
-               <p className="text-xs text-muted-foreground font-medium leading-relaxed relative z-10 italic opacity-80">
+               <h3 className="text-xl font-black uppercase tracking-tighter mb-4 relative z-10">Quick Tip</h3>
+               <p className="text-xs text-muted-foreground font-medium leading-relaxed relative z-10 opacity-80">
                  "A surprise call is a core memory in the making. Make sure to provide specific details about the recipient for the best experience."
                </p>
             </div>

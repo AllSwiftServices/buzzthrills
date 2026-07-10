@@ -11,14 +11,14 @@ export default function BottomTabNav() {
   const { user } = useAuth();
 
   const tabs = [
-    { href: "/profile", icon: <User size={20} />, label: "Profile" },
+    { href: "/profile", icon: <User size={20} />, label: "Dashboard" },
     { href: "/profile/history", icon: <Calendar size={20} />, label: "History" },
     { href: "/profile/settings", icon: <Settings size={20} />, label: "Settings" },
   ];
 
   // Add Admin tab for authorized operators
   if (user?.role === 'admin') {
-    tabs.splice(1, 0, { href: "/admin", icon: <ShieldCheck size={20} />, label: "Operations" });
+    tabs.splice(1, 0, { href: "/admin", icon: <ShieldCheck size={20} />, label: "Admin" });
   }
 
   return (
