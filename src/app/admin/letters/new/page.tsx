@@ -14,8 +14,8 @@ export default function AdminNewLetterPage() {
         <ArrowLeft size={14} />
         Back to letters
       </Link>
-      <h1 className="text-3xl md:text-4xl font-black italic tracking-tighter leading-none mb-8">
-        Create Letter <span className="gradient-text italic">(Admin)</span>
+      <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter leading-none mb-8">
+        Create Letter <span className="gradient-text">(Admin)</span>
       </h1>
       <DigitalLetterForm mode="admin" />
     </div>

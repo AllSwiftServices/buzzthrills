@@ -39,11 +39,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 });
     }
 
+    // 3b. Check Suspension
+    if (account.is_suspended) {
+      return NextResponse.json({ error: "This account has been suspended" }, { status: 403 });
+    }
+
     // 4. Issue Tokens (Skip OTP on login as per user request)
     const accessToken = await signAccessToken({
       id: account.id,
       email: account.email,
       role: account.role,
+      is_suspended: account.is_suspended,
     });
 
     const refreshToken = uuidv4();

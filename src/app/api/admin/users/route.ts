@@ -59,6 +59,22 @@ export async function PATCH(req: NextRequest) {
 
     if (error) throw error;
 
+    // auth_accounts is the source of truth for the JWT (role/is_suspended are
+    // signed from there on login/refresh), so keep it in sync with profiles
+    // or changes made here never actually take effect for the affected user.
+    const authAccountUpdates: Record<string, unknown> = {};
+    if ("role" in updates) authAccountUpdates.role = updates.role;
+    if ("is_suspended" in updates) authAccountUpdates.is_suspended = updates.is_suspended;
+
+    if (Object.keys(authAccountUpdates).length > 0) {
+      const { error: authAccountError } = await supabaseAdmin
+        .from("auth_accounts")
+        .update(authAccountUpdates)
+        .eq("id", userId);
+
+      if (authAccountError) throw authAccountError;
+    }
+
     return NextResponse.json(data);
   } catch (error) {
     console.error("Admin Users PATCH failure:", error);

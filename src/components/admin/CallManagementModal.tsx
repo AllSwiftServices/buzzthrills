@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, CheckCircle2, AlertCircle, Loader2, Play, Trash2, User, Heart, MessageSquare, Phone, Calendar, Clock, UserCheck, FileText, AlertTriangle } from "lucide-react";
+import { X, Upload, CheckCircle2, AlertCircle, Loader2, Play, Trash2, User, Heart, MessageSquare, Phone, Calendar, Clock, UserCheck, AlertTriangle } from "lucide-react";
 
 interface CallManagementModalProps {
   call: any;
@@ -104,8 +104,8 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
       >
         <div className="p-5 sm:p-8 border-b border-foreground/5 flex justify-between items-center bg-linear-to-b from-white/5 to-transparent">
           <div>
-            <h2 className="text-lg sm:text-2xl font-black italic uppercase tracking-tighter text-foreground">Engagement <span className="gradient-text italic">Intelligence</span></h2>
-            <p className="text-[8px] sm:text-[10px] font-black text-foreground/40 uppercase tracking-widest mt-1">Strategic oversight for active engagement audit.</p>
+            <h2 className="text-lg sm:text-2xl font-black uppercase tracking-tighter text-foreground">Call Details</h2>
+            <p className="text-[8px] sm:text-[10px] font-black text-foreground/40 uppercase tracking-widest mt-1">Review and update this call booking.</p>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             <div className={`px-3 py-1 sm:px-4 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border ${
@@ -133,7 +133,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                       </div>
                       <div className="overflow-hidden">
                          <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">Name</div>
-                         <div className="text-lg font-black text-foreground italic truncate">{call.recipient_name}</div>
+                         <div className="text-lg font-black text-foreground truncate">{call.recipient_name}</div>
                       </div>
                    </div>
                    <div className="flex items-center gap-4 pt-4 border-t border-foreground/5">
@@ -149,13 +149,13 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
               </div>
 
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">The Booker</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Booked By</label>
                 <div className="p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-foreground/5 border border-foreground/10 flex items-center gap-3 sm:gap-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl sm:rounded-2xl bg-secondary/20 flex items-center justify-center text-secondary shadow-xl">
                     <UserCheck size={20} className="sm:size-6" />
                   </div>
                   <div className="overflow-hidden">
-                    <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">User</div>
+                    <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">Customer</div>
                     <div className="text-sm font-black text-foreground truncate">{call.profiles?.full_name || "Anonymous"}</div>
                   </div>
                 </div>
@@ -165,7 +165,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
            {/* Column 2: Context */}
            <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-b border-foreground/5">
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Engagement Context</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Call Details</label>
                 <div className="grid grid-cols-2 gap-3">
                    <div className="p-3 sm:p-4 rounded-xl sm:rounded-2xl bg-foreground/5 border border-foreground/10">
                       <div className="flex items-center gap-2 text-foreground/40 mb-1">
@@ -198,17 +198,17 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                 <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Message</label>
                 <div className="p-6 rounded-3xl bg-foreground/5 border border-foreground/10 relative overflow-hidden group min-h-[120px]">
                   <MessageSquare size={40} className="absolute -bottom-4 -right-4 text-foreground/[0.02] group-hover:scale-110 transition-transform duration-500" />
-                  <div className="text-xs font-medium text-foreground/80 leading-relaxed italic relative z-10">
+                  <div className="text-xs font-medium text-foreground/80 leading-relaxed relative z-10">
                     "{call.custom_message || "No custom message provided."}"
                   </div>
                 </div>
               </div>
            </div>
 
-           {/* Column 3: Operator Actions (Notes & Proof) */}
+           {/* Column 3: Admin actions (notes & proof) */}
            <div className="p-5 sm:p-8 space-y-6 sm:space-y-8 border-b lg:border-b-0 lg:border-r border-foreground/5 bg-foreground/[0.01]">
               <div className="space-y-4">
-                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Operator Notes (Sent to Booker)</label>
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40">Notes to customer</label>
                 <textarea 
                   value={adminNotes}
                   onChange={(e) => setAdminNotes(e.target.value)}
@@ -312,17 +312,17 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                   >
                     <div className="flex items-center gap-2">
                       {uploading ? <Loader2 size={18} className="animate-spin" /> : <ShieldCheck size={18} />}
-                      Complete Engagement
+                      Mark as Complete
                     </div>
-                    <span className="text-[8px] font-bold text-foreground/40 tracking-[0.2em]">Syncing Results & Notifying Booker</span>
+                    <span className="text-[8px] font-bold text-foreground/40 tracking-[0.2em]">Saves changes and notifies the customer</span>
                   </button>
                 ) : (
                   <div className="w-full py-6 rounded-[24px] bg-foreground/5 border border-foreground/10 text-foreground/40 font-black text-[12px] uppercase tracking-widest flex flex-col items-center justify-center gap-1">
                     <div className="flex items-center gap-2">
                       <CheckCircle2 size={18} />
-                      Engagement Completed
+                      Call Completed
                     </div>
-                    <span className="text-[8px] font-bold tracking-[0.2em]">This thrill has already been processed.</span>
+                    <span className="text-[8px] font-bold tracking-[0.2em]">This call has already been processed.</span>
                   </div>
                 )}
               </div>

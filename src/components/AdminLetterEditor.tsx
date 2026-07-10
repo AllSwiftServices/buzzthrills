@@ -79,7 +79,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
               {letter.additional_comments && (
                 <>
                   {" "}Their brief:{" "}
-                  <span className="italic font-medium text-amber-200/80">
+                  <span className="font-medium text-amber-200/80">
                     "{letter.additional_comments}"
                   </span>
                 </>

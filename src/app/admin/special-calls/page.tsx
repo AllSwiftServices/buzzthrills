@@ -154,8 +154,8 @@ export default function AdminSpecialCallsPage() {
       {/* Header */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 italic text-foreground uppercase tracking-tighter">
-            Special <span className="gradient-text italic">Calls</span>
+          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 text-foreground uppercase tracking-tighter">
+            Special Calls
           </h1>
           <p className="text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.2em]">
             Create occasion-based call banners shown on the homepage.
@@ -190,7 +190,7 @@ export default function AdminSpecialCallsPage() {
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-3 mb-1.5">
-                    <h3 className="text-xl sm:text-2xl font-black text-foreground italic uppercase tracking-tighter">{call.title}</h3>
+                    <h3 className="text-xl sm:text-2xl font-black text-foreground uppercase tracking-tighter">{call.title}</h3>
                     <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 ${
                       call.active
                         ? "bg-green-500/10 text-green-500 border border-green-500/20"
@@ -200,7 +200,7 @@ export default function AdminSpecialCallsPage() {
                       {call.active ? "Live" : "Inactive"}
                     </div>
                   </div>
-                  <p className="text-sm text-foreground/50 font-medium italic max-w-md">{call.description}</p>
+                  <p className="text-sm text-foreground/50 font-medium max-w-md">{call.description}</p>
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2">
                     <span className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">
                       ₦{call.price.toLocaleString()} {call.currency}
@@ -249,8 +249,8 @@ export default function AdminSpecialCallsPage() {
         )) : (
           <div className="flex flex-col items-center justify-center py-24 px-8 rounded-[40px] border-2 border-dashed border-foreground/5 bg-foreground/[0.02] text-center">
             <Sparkles size={48} className="text-foreground/10 mb-4" />
-            <div className="text-xl font-black text-foreground italic uppercase tracking-tighter">No Special Calls Yet</div>
-            <div className="text-[10px] font-black text-foreground/20 uppercase tracking-widest mt-2 mb-8">
+            <div className="text-xl font-black text-foreground uppercase tracking-tighter">No special calls yet</div>
+            <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mt-2 mb-8">
               Create your first occasion banner for Valentine's, Mother's Day, and more.
             </div>
             <button
@@ -373,7 +373,7 @@ export default function AdminSpecialCallsPage() {
                 {/* Call Date */}
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">
-                    Occasion Date <span className="text-foreground/30 normal-case font-bold italic">— optional</span>
+                    Occasion Date <span className="text-foreground/30 normal-case font-bold">— optional</span>
                   </label>
                   <div className="relative">
                     <Calendar size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/30" />

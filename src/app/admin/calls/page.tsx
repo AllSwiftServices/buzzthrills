@@ -1,8 +1,8 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { PhoneCall, Search, Filter, Calendar, Clock, ChevronRight, CheckCircle2, XCircle, AlertCircle, User, Phone, UserCheck, ShieldCheck } from "lucide-react";
-import { useEffect, useState } from "react";
+import { PhoneCall, Search, Calendar, Clock, ChevronRight, CheckCircle2, XCircle, AlertCircle, User, Phone, UserCheck, ShieldCheck } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import CallManagementModal from "@/components/admin/CallManagementModal";
 
@@ -12,10 +12,11 @@ export default function AdminCalls() {
   const [loading, setLoading] = useState(true);
   const [calls, setCalls] = useState<any[]>([]);
   const [selectedCall, setSelectedCall] = useState<any | null>(null);
+  const [query, setQuery] = useState("");
 
   async function fetchCalls() {
     if (authLoading || !user || user.role !== 'admin') return;
-    
+
     try {
       const res = await fetch("/api/admin/calls");
       if (!res.ok) throw new Error("Failed to fetch calls");
@@ -32,6 +33,16 @@ export default function AdminCalls() {
     fetchCalls();
   }, [user, authLoading]);
 
+  const filteredCalls = useMemo(() => {
+    if (!query.trim()) return calls;
+    const q = query.toLowerCase();
+    return calls.filter((call) =>
+      call.recipient_name?.toLowerCase().includes(q) ||
+      call.recipient_phone?.toLowerCase().includes(q) ||
+      call.profiles?.full_name?.toLowerCase().includes(q)
+    );
+  }, [calls, query]);
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'delivered': return <CheckCircle2 className="text-green-500" size={12} />;
@@ -44,32 +55,33 @@ export default function AdminCalls() {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/20">Loading Engagement Data...</div>
+        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40">Loading calls…</div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8 sm:space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 italic text-foreground uppercase tracking-tighter">Engagement <span className="gradient-text italic">Operations</span></h1>
-          <p className="text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.2em]">Strategic oversight of active platform thrills.</p>
+          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 text-foreground uppercase tracking-tighter">Calls</h1>
+          <p className="text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.2em]">Every call booking and its delivery status.</p>
         </div>
-        
-        <div className="flex items-center gap-3 w-full md:w-auto">
-          <div className="relative flex-1 md:w-64">
-            <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/20" />
-            <input type="text" className="w-full bg-foreground/5 border border-foreground/10 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 pl-10 sm:pl-12 pr-4 text-xs sm:text-sm outline-none focus:border-primary transition-all font-bold text-foreground placeholder:text-foreground/10" placeholder="Search call history..." />
-          </div>
-          <button className="p-3 sm:p-3.5 rounded-xl sm:rounded-2xl bg-foreground/5 border border-foreground/10 text-foreground/20 hover:text-primary transition-all">
-            <Filter size={18} />
-          </button>
+
+        <div className="relative w-full md:w-72">
+          <Search size={14} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-foreground/30" />
+          <input
+            type="text"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            className="w-full bg-foreground/5 border border-foreground/10 rounded-xl sm:rounded-2xl py-2.5 sm:py-3 pl-10 sm:pl-12 pr-4 text-xs sm:text-sm outline-none focus:border-primary transition-all font-bold text-foreground placeholder:text-foreground/30"
+            placeholder="Search by recipient, phone, or booker…"
+          />
         </div>
       </header>
 
       <div className="grid grid-cols-1 gap-6">
-        {calls.length > 0 ? calls.map((call, i) => (
+        {filteredCalls.length > 0 ? filteredCalls.map((call, i) => (
           <motion.div
             key={call.id}
             initial={{ opacity: 0, y: 20 }}
@@ -86,7 +98,7 @@ export default function AdminCalls() {
                 </div>
                 <div>
                    <div className="flex flex-wrap items-center gap-3 mb-2">
-                      <h3 className="text-2xl font-black text-foreground italic uppercase tracking-tighter">{call.recipient_name}</h3>
+                      <h3 className="text-xl sm:text-2xl font-black text-foreground uppercase tracking-tighter">{call.recipient_name}</h3>
                       <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 ${
                         call.status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
                         call.status === 'failed' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 
@@ -136,8 +148,12 @@ export default function AdminCalls() {
         )) : (
           <div className="flex flex-col items-center justify-center py-20 px-8 rounded-[40px] border-2 border-dashed border-foreground/5 bg-foreground/[0.02] text-center">
              <ShieldCheck size={48} className="text-foreground/10 mb-4" />
-             <div className="text-xl font-black text-foreground italic uppercase tracking-tighter">No Active Engagements</div>
-             <div className="text-[10px] font-black text-foreground/20 uppercase tracking-widest mt-2">All scheduled calls will appear here.</div>
+             <div className="text-xl font-black text-foreground uppercase tracking-tighter">
+               {calls.length === 0 ? "No calls yet" : "No calls match your search"}
+             </div>
+             <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mt-2">
+               {calls.length === 0 ? "Scheduled calls will appear here." : "Try a different name or phone number."}
+             </div>
           </div>
         )}
       </div>

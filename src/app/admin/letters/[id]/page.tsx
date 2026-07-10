@@ -137,8 +137,8 @@ export default function AdminEditLetterPage() {
         </Link>
         <div className="flex items-end justify-between gap-6 flex-wrap">
           <div>
-            <h1 className="text-3xl md:text-4xl font-black italic tracking-tighter leading-none">
-              Edit Letter <span className="gradient-text italic">·</span> {letter.recipient_name}
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter leading-none">
+              Edit Letter <span className="gradient-text">·</span> {letter.recipient_name}
             </h1>
             <p className="text-foreground/40 mt-2 font-medium text-xs">
               Status:{" "}

@@ -351,6 +351,30 @@ export async function sendCallStatusUpdate(email: string, details: {
   }
 }
 
+export async function sendAdminAlertEmail(subject: string, message: string, context?: Record<string, unknown>) {
+  if (!brevo) {
+    console.warn("⚠️ Email service not configured. Skipping admin alert:", subject, message, context);
+    return;
+  }
+
+  try {
+    await brevo.transactionalEmails.sendTransacEmail({
+      subject: `⚠️ ${subject}`,
+      sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      to: [{ email: SENDER_EMAIL }],
+      htmlContent: `
+        <div style="font-family: sans-serif; padding: 40px; background: #fff;">
+          <h1 style="color: #b91c1c; font-size: 22px; font-weight: 900; margin-bottom: 20px;">${subject}</h1>
+          <p style="font-size: 15px; color: #333; margin-bottom: 20px; white-space: pre-wrap;">${message}</p>
+          ${context ? `<pre style="background:#f8f8f8; padding: 16px; border-radius: 12px; font-size: 12px; overflow-x: auto;">${JSON.stringify(context, null, 2)}</pre>` : ""}
+        </div>
+      `,
+    });
+  } catch (error) {
+    console.error("Failed to send admin alert email:", error);
+  }
+}
+
 export async function sendAdminCallNotification(callDetails: any[]) {
   if (!brevo) {
     console.warn("⚠️ Email service not configured. Skipping admin notification.");

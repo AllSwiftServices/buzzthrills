@@ -3,11 +3,12 @@
 import { useAuth } from "@/context/AuthContext";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { Loader2, LayoutDashboard, PhoneCall, Users, Tag, BarChart3, LogOut, ShieldCheck, User, Mail, Sparkles } from "lucide-react";
+import { Loader2, LogOut, ShieldCheck, User } from "lucide-react";
 import Link from "next/link";
 import AdminBottomTabNav from "@/components/AdminBottomTabNav";
 import ThemeToggle from "@/components/ThemeToggle";
 import { motion } from "framer-motion";
+import { adminNavItems } from "@/lib/adminNav";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, logout } = useAuth();
@@ -28,15 +29,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     );
   }
 
-  const menuItems = [
-    { href: "/admin",                icon: <LayoutDashboard size={18} />, label: "Overview" },
-    { href: "/admin/calls",          icon: <PhoneCall size={18} />,       label: "Call History" },
-    { href: "/admin/letters",        icon: <Mail size={18} />,            label: "Digital Letters" },
-    { href: "/admin/special-calls",  icon: <Sparkles size={18} />,        label: "Special Calls" },
-    { href: "/admin/crm",            icon: <Users size={18} />,           label: "Client Directory" },
-    { href: "/admin/offers",         icon: <Tag size={18} />,             label: "Promotions" },
-    { href: "/admin/analytics",      icon: <BarChart3 size={18} />,       label: "Analytics" },
-  ];
+  const menuItems = adminNavItems;
 
   return (
     <div className="h-screen bg-background text-foreground flex flex-col lg:flex-row overflow-hidden transition-colors duration-300">

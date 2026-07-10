@@ -47,12 +47,30 @@ export async function GET() {
       .select("*", { count: "exact", head: true })
       .eq("status", "active");
 
+    // Geographic distribution, same computation used on the main dashboard
+    // so the two pages don't show conflicting (or fabricated) numbers.
+    const { data: locations } = await supabaseAdmin
+      .from("profiles")
+      .select("location");
+
+    const locationCounts: Record<string, number> = {};
+    (locations || []).forEach((p) => {
+      const loc = p.location || "Unknown";
+      locationCounts[loc] = (locationCounts[loc] || 0) + 1;
+    });
+
+    const geoSummary = Object.entries(locationCounts)
+      .map(([label, count]) => ({ label, count }))
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 6);
+
     return NextResponse.json({
       analytics: analytics || null,
       totalUsers: totalUsers || 0,
       totalCalls: totalCalls || 0,
       pendingCalls: pendingCalls || 0,
       activeSubs: activeSubs || 0,
+      geoSummary,
     });
   } catch (error: any) {
     console.error("Admin analytics fetch error:", error);

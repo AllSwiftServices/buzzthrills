@@ -64,8 +64,8 @@ export default function AdminLettersPage() {
             <Mail size={14} />
             Digital Letters
           </div>
-          <h1 className="text-4xl md:text-5xl font-black italic tracking-tighter leading-none">
-            Letter <span className="gradient-text italic">Operations</span>
+          <h1 className="text-3xl md:text-5xl font-black tracking-tighter leading-none">
+            Digital Letters
           </h1>
           <p className="text-foreground/40 mt-3 font-medium text-sm">
             Manage every published letter, augment drafts, or create one on behalf of a client.
@@ -91,7 +91,7 @@ export default function AdminLettersPage() {
             className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl py-3 pl-12 pr-4 text-sm font-medium outline-none focus:border-primary/40"
           />
         </div>
-        <div className="flex gap-2">
+        <div className="flex flex-wrap gap-2">
           {["all", "draft", "published", "archived"].map((s) => (
             <button
               key={s}

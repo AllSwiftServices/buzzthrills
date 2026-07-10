@@ -77,7 +77,15 @@ export async function GET(request: Request) {
           if (plan && user_id) {
             const planConfig = getPlan(plan);
             if (!planConfig || planConfig.isCustom) {
-              // Corporate plans are provisioned manually; self-serve checkout shouldn't reach here.
+              // Paystack has already charged the customer at this point — a plan
+              // that isn't self-serve eligible means we took their money with no
+              // way to provision it automatically, so this needs a human now.
+              const { sendAdminAlertEmail } = await import('@/lib/email');
+              await sendAdminAlertEmail(
+                'Charged customer for a non-self-serve plan',
+                'A payment succeeded on Paystack but the plan is not eligible for automatic provisioning. Manually set up their subscription.',
+                { reference, plan, user_id, customerEmail, amount }
+              );
               return NextResponse.json(
                 { success: false, message: 'Plan not available for self-serve checkout.' },
                 { status: 400 }
@@ -89,7 +97,7 @@ export async function GET(request: Request) {
             const nextBillingDate = new Date();
             nextBillingDate.setDate(nextBillingDate.getDate() + daysToAdd);
 
-            await supabaseAdmin
+            const { error: subError } = await supabaseAdmin
               .from('subscriptions')
               .upsert({
                 user_id: user_id,
@@ -101,6 +109,19 @@ export async function GET(request: Request) {
                 start_date: new Date().toISOString(),
                 next_billing_date: nextBillingDate.toISOString(),
               }, { onConflict: 'user_id' });
+
+            if (subError) {
+              // Customer was already charged by Paystack — this write failing
+              // silently is exactly what leaves a paying user with no visible
+              // subscription, so surface it instead of swallowing it.
+              console.error('Subscription upsert failed after successful payment:', subError, { reference, plan, user_id });
+              const { sendAdminAlertEmail } = await import('@/lib/email');
+              await sendAdminAlertEmail(
+                'Payment succeeded but subscription record failed to save',
+                'A customer was charged on Paystack but their subscription row failed to write. Check and fix manually.',
+                { reference, plan, user_id, customerEmail, amount, error: subError }
+              );
+            }
           }
 
           // 2. Handle One-Off Bookings (Calls)

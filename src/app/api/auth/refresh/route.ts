@@ -38,11 +38,21 @@ export async function POST(req: Request) {
 
     const account = session.auth_accounts;
 
+    // 1b. Check Suspension (revoke the session outright so it can't be refreshed again)
+    if (account.is_suspended) {
+      await supabaseAdmin.from("auth_sessions").delete().eq("id", session.id);
+      const res = NextResponse.json({ error: "Account suspended" }, { status: 403 });
+      res.cookies.delete("access_token");
+      res.cookies.delete("refresh_token");
+      return res;
+    }
+
     // 2. Issue New Tokens (Rotation)
     const newAccessToken = await signAccessToken({
       id: account.id,
       email: account.email,
       role: account.role,
+      is_suspended: account.is_suspended,
     });
 
     const newRefreshToken = uuidv4();

@@ -1,17 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { 
-  Tag, 
-  Plus, 
-  Calendar, 
-  Star, 
-  ChevronRight, 
-  Edit3, 
-  Trash2, 
-  Zap, 
-  LayoutGrid, 
-  Image as ImageIcon 
+import {
+  Tag,
+  Plus,
+  Edit3,
+  Trash2,
+  Zap,
+  Image as ImageIcon
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -42,20 +38,24 @@ export default function AdminOffers() {
   }, [user, authLoading]);
 
   return (
-    <div className="space-y-12">
+    <div className="space-y-8 sm:space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-4xl font-black mb-2 tracking-tighter uppercase italic">Promotion <span className="gradient-text">Manager</span></h1>
-          <p className="text-muted-foreground font-bold tracking-tight uppercase text-[10px] tracking-widest">Manage platform-wide promotions and seasonal packages.</p>
+          <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter uppercase">Promotions</h1>
+          <p className="text-muted-foreground font-bold uppercase text-[9px] sm:text-[10px] tracking-widest">Discounts and seasonal packages shown to clients.</p>
         </div>
-        
-        <button className="w-full md:w-auto px-8 py-4 rounded-2xl gradient-bg text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2">
+
+        <button
+          disabled
+          title="Creating promotions from the dashboard is coming soon — ask engineering to add one directly for now."
+          className="w-full md:w-auto px-8 py-4 rounded-2xl gradient-bg text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
+        >
           <Plus size={20} />
-          Create Campaign
+          Create promotion (coming soon)
         </button>
       </header>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
         {offers.map((offer, i) => (
           <motion.div
             key={offer.id}
@@ -74,7 +74,7 @@ export default function AdminOffers() {
                  />
                ) : (
                   <div className="absolute inset-0 gradient-bg opacity-10 group-hover:opacity-20 transition-opacity flex items-center justify-center">
-                     <div className="text-foreground/5 font-black text-6xl italic uppercase tracking-tighter rotate-[-10deg]">No Asset</div>
+                     <div className="text-foreground/10 font-black text-4xl uppercase tracking-tighter">No image</div>
                   </div>
                )}
                
@@ -92,42 +92,35 @@ export default function AdminOffers() {
                </div>
             </div>
 
-            <div className="p-10 relative z-10 -mt-12 group-hover:mt-[-56px] transition-all duration-500">
-               <div className="p-8 rounded-[40px] glass border border-border shadow-huge bg-background/40 backdrop-blur-2xl">
-                  <div className="flex justify-between items-start mb-6">
-                     <div>
-                       <h3 className="text-3xl font-black mb-2 tracking-tighter group-hover:text-primary transition-colors">{offer.title}</h3>
-                       <p className="text-foreground/40 text-sm font-bold tracking-tight line-clamp-2 max-w-sm leading-relaxed">{offer.description}</p>
+            <div className="p-5 sm:p-10 relative z-10 -mt-12 group-hover:mt-[-56px] transition-all duration-500">
+               <div className="p-5 sm:p-8 rounded-[32px] sm:rounded-[40px] glass border border-border shadow-huge bg-background/40 backdrop-blur-2xl">
+                  <div className="flex justify-between items-start gap-4 mb-6">
+                     <div className="min-w-0">
+                       <h3 className="text-xl sm:text-3xl font-black mb-2 tracking-tighter group-hover:text-primary transition-colors truncate">{offer.title}</h3>
+                       <p className="text-foreground/40 text-sm font-bold line-clamp-2 max-w-sm leading-relaxed">{offer.description}</p>
                      </div>
-                     <div className="w-20 h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-black text-2xl shadow-huge tabular-nums">
+                     <div className="w-16 h-12 sm:w-20 sm:h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-black text-lg sm:text-2xl shadow-huge tabular-nums shrink-0">
                        {offer.discount_percent}%
                      </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-4 mb-8">
-                     <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-primary/60 bg-primary/5 px-4 py-2 rounded-xl border border-primary/10 transition-all group-hover:scale-105">
-                        <Calendar size={14} />
-                        Seasonal
-                     </div>
-                      <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-widest text-foreground/20 px-4 py-2 rounded-xl border border-border">
-                         <Zap size={14} />
-                         Premium
-                      </div>
-                  </div>
-
                   <div className="flex items-center justify-between pt-8 border-t border-border">
                      <div className="flex items-center gap-3">
-                        <button className="p-4 rounded-2xl bg-foreground/5 text-foreground/40 hover:text-foreground hover:bg-foreground/10 hover:scale-110 active:scale-95 transition-all shadow-xl">
+                        <button
+                          disabled
+                          title="Editing promotions from the dashboard is coming soon."
+                          className="p-4 rounded-2xl bg-foreground/5 text-foreground/20 shadow-xl opacity-60 cursor-not-allowed"
+                        >
                            <Edit3 size={18} />
                         </button>
-                        <button className="p-4 rounded-2xl bg-red-400/5 text-red-400/20 hover:text-red-400 hover:bg-red-400/10 hover:scale-110 active:scale-95 transition-all border border-transparent hover:border-red-400/20 shadow-xl">
+                        <button
+                          disabled
+                          title="Deleting promotions from the dashboard is coming soon."
+                          className="p-4 rounded-2xl bg-red-400/5 text-red-400/20 shadow-xl opacity-60 cursor-not-allowed"
+                        >
                            <Trash2 size={18} />
                         </button>
                      </div>
-                     <button className="px-8 py-4 rounded-2xl border border-primary/40 text-primary hover:bg-primary hover:text-white font-black text-xs uppercase tracking-widest transition-all scale-95 group-hover:scale-100 shadow-huge shadow-primary/5 flex items-center gap-3">
-                        Performance
-                        <ChevronRight size={16} />
-                     </button>
                   </div>
                </div>
             </div>
@@ -135,10 +128,10 @@ export default function AdminOffers() {
         ))}
 
         {!loading && offers.length === 0 && (
-          <div className="lg:col-span-2 p-24 rounded-[48px] glass border border-dashed border-border flex flex-col items-center justify-center text-center group hover:border-primary/40 transition-all cursor-pointer bg-background/10">
-              <Tag size={64} className="text-foreground/10 mb-6 group-hover:scale-110 transition-transform group-hover:text-primary/40" />
-              <h3 className="text-2xl font-black mb-2 opacity-40 italic uppercase tracking-tighter">No Promotions Active</h3>
-              <p className="text-foreground/20 font-black italic tracking-widest text-[9px] uppercase">Create your first promotion now.</p>
+          <div className="lg:col-span-2 p-12 sm:p-24 rounded-[48px] glass border border-dashed border-border flex flex-col items-center justify-center text-center bg-background/10">
+              <Tag size={64} className="text-foreground/10 mb-6" />
+              <h3 className="text-xl sm:text-2xl font-black mb-2 opacity-40 uppercase tracking-tighter">No promotions yet</h3>
+              <p className="text-foreground/30 font-black tracking-widest text-[9px] uppercase">Promotions you create will appear here.</p>
           </div>
         )}
       </div>
