@@ -93,8 +93,8 @@ export default function Home() {
               </p>
             </Reveal>
 
-            <Reveal delay={0.3}>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 w-full">
+            <Reveal delay={0.3} className="w-full">
+              <div className="flex flex-col sm:flex-row items-center sm:items-center gap-4 sm:gap-6 w-full">
                 <Link
                   href="/book"
                   className="w-full sm:w-auto px-6 py-4 rounded-full gradient-bg text-white font-bold text-sm sm:text-base hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center justify-center gap-2 whitespace-nowrap group"
@@ -105,7 +105,7 @@ export default function Home() {
                 </Link>
                 <Link
                   href="/pricing"
-                  className="w-full sm:w-auto text-left text-foreground hover:text-primary font-bold text-sm sm:text-base transition-colors whitespace-nowrap py-2"
+                  className="w-full sm:w-auto px-6 py-4 rounded-full border-2 border-foreground/30 hover:border-primary text-foreground hover:text-primary font-bold text-sm sm:text-base transition-all whitespace-nowrap flex items-center justify-center"
                 >
                   Join BuzzThrills Prime
                 </Link>
@@ -119,13 +119,11 @@ export default function Home() {
               <div className="relative w-72 h-72 sm:w-96 sm:h-96 aspect-square overflow-visible">
                 {/* Main image with subtle shadow */}
                 <div className="w-full h-full rounded-[40px] overflow-hidden border-4 border-border/20 shadow-2xl relative bg-muted">
-                  <Image
-                    src="/hero-woman.png"
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/hero-phone.gif"
                     alt="Smiling customer talking on the phone"
-                    fill
-                    sizes="(max-w-770px) 288px, 384px"
-                    className="object-cover scale-105"
-                    priority
+                    className="w-full h-full object-cover scale-105"
                   />
                 </div>
 
@@ -341,8 +339,9 @@ export default function Home() {
                       src={card.img}
                       alt={card.title}
                       fill
-                      sizes="(max-w-640px) 130px, (max-w-1024px) 180px, 260px"
+                      sizes="(max-width: 640px) 130px, (max-width: 1024px) 180px, 260px"
                       className="object-cover"
+                      priority
                     />
                   </div>
                   
@@ -368,9 +367,33 @@ export default function Home() {
           {/* Radial accent glow */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[90px] rounded-full -mr-36 -mt-36 pointer-events-none" />
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center relative z-10">
+
+            {/* Phone image — shown above text on mobile, right column on desktop */}
+            <div className="lg:col-span-5 lg:order-2 flex items-center justify-center relative">
+              <Reveal delay={0.2} direction="right">
+                <div className="relative flex items-center justify-center">
+                  {/* Decorative spiral path */}
+                  <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full text-primary/15 stroke-current fill-none stroke-[1.5]" aria-hidden="true">
+                    <path d="M50,10 C70,10 90,30 90,50 C90,70 70,90 50,90 C30,90 10,70 10,50" />
+                  </svg>
+
+                  {/* Bordered image container */}
+                  <div className="relative w-44 h-44 sm:w-56 sm:h-56 lg:w-64 lg:h-64 rounded-3xl overflow-hidden border-2 border-primary/30 shadow-xl">
+                    <Image
+                      src="/vintage-phone.png"
+                      alt="Vintage black rotary telephone"
+                      fill
+                      sizes="(max-width: 640px) 176px, (max-width: 1024px) 224px, 256px"
+                      className="object-cover rounded-3xl"
+                    />
+                  </div>
+                </div>
+              </Reveal>
+            </div>
+
             {/* CTA Left text & button */}
-            <div className="lg:col-span-7 text-left">
+            <div className="lg:col-span-7 lg:order-1 text-left">
               <Reveal>
                 <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-4 leading-[1.1]">
                   Ready to create <br />
@@ -382,35 +405,13 @@ export default function Home() {
                 </p>
                 <Link
                   href="/book"
-                  className="inline-flex px-8 py-4 rounded-full bg-accent hover:bg-accent/90 text-background font-bold text-sm sm:text-base hover:scale-105 active:scale-95 transition-all shadow-lg flex items-center gap-2 group"
+                  className="flex sm:inline-flex items-center justify-center px-8 py-4 rounded-full bg-accent hover:bg-accent/90 text-background font-bold text-sm sm:text-base hover:scale-105 active:scale-95 transition-all shadow-lg gap-2 group"
                 >
                   Book Your First Surprise Call 💛
                 </Link>
               </Reveal>
             </div>
 
-            {/* CTA Right vintage phone & rings */}
-            <div className="lg:col-span-5 flex items-center justify-center relative">
-              <Reveal delay={0.2} direction="right">
-                <div className="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center overflow-visible">
-                  {/* Decorative spiral path */}
-                  <svg viewBox="0 0 100 100" className="absolute inset-0 w-full h-full text-primary/15 stroke-current fill-none stroke-[1.5]" aria-hidden="true">
-                    <path d="M50,10 C70,10 90,30 90,50 C90,70 70,90 50,90 C30,90 10,70 10,50" />
-                  </svg>
-                  
-                  {/* Image container */}
-                  <div className="relative w-48 h-48 sm:w-64 sm:h-64">
-                    <Image
-                      src="/vintage-phone.png"
-                      alt="Vintage black rotary telephone"
-                      fill
-                      sizes="256px"
-                      className="object-contain"
-                    />
-                  </div>
-                </div>
-              </Reveal>
-            </div>
           </div>
         </div>
       </section>
