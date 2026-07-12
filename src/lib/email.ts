@@ -351,6 +351,53 @@ export async function sendCallStatusUpdate(email: string, details: {
   }
 }
 
+export async function sendCallAssignmentEmail(email: string, details: {
+  staffName: string;
+  recipientName: string;
+  recipientPhone: string;
+  occasionType: string;
+  occasionDate: string;
+  scheduledSlot: string;
+}) {
+  if (!brevo) {
+    console.warn("⚠️ Email service not configured. Skipping call assignment email.");
+    return;
+  }
+
+  try {
+    await brevo.transactionalEmails.sendTransacEmail({
+      subject: `New Call Assigned: ${details.recipientName}`,
+      sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      to: [{ email }],
+      htmlContent: `
+        <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
+          <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+            <h1 style="color: #8b5cf6; font-size: 26px; font-weight: 900; margin-bottom: 24px;">A call has been assigned to you</h1>
+
+            <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 32px;">
+              Hi ${details.staffName}, you've been assigned to handle the following call:
+            </p>
+
+            <div style="padding: 24px; background: #f8f8fb; border-radius: 16px; border: 1px solid #eee; margin-bottom: 32px;">
+              <p style="margin: 0 0 10px; font-size: 14px; color: #444;"><strong>Recipient:</strong> ${details.recipientName} (${details.recipientPhone})</p>
+              <p style="margin: 0 0 10px; font-size: 14px; color: #444;"><strong>Occasion:</strong> ${details.occasionType}</p>
+              <p style="margin: 0; font-size: 14px; color: #444;"><strong>Scheduled:</strong> ${details.occasionDate} &middot; ${details.scheduledSlot}</p>
+            </div>
+
+            <div style="text-align: center;">
+              <a href="https://buzzthrills.com/admin/calls" style="display: inline-block; padding: 16px 32px; background: #000; color: #fff; text-decoration: none; border-radius: 12px; font-weight: bold;">
+                View in Admin Dashboard
+              </a>
+            </div>
+          </div>
+        </div>
+      `,
+    });
+  } catch (error) {
+    console.error("Failed to send call assignment email:", error);
+  }
+}
+
 export async function sendAdminAlertEmail(subject: string, message: string, context?: Record<string, unknown>) {
   if (!brevo) {
     console.warn("⚠️ Email service not configured. Skipping admin alert:", subject, message, context);

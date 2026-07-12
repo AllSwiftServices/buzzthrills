@@ -2,23 +2,53 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, CheckCircle2, AlertCircle, Loader2, Play, Trash2, User, Heart, MessageSquare, Phone, Calendar, Clock, UserCheck, AlertTriangle } from "lucide-react";
+import { X, Upload, CheckCircle2, AlertCircle, Loader2, Play, Trash2, User, Heart, MessageSquare, Phone, Calendar, Clock, UserCheck, AlertTriangle, UserCog } from "lucide-react";
+
+interface StaffMember {
+  id: string;
+  full_name: string;
+  role: string;
+}
 
 interface CallManagementModalProps {
   call: any;
   isOpen: boolean;
   onClose: () => void;
   onUpdate: () => void;
+  staff: StaffMember[];
 }
 
-export default function CallManagementModal({ call, isOpen, onClose, onUpdate }: CallManagementModalProps) {
+export default function CallManagementModal({ call, isOpen, onClose, onUpdate, staff }: CallManagementModalProps) {
   const [status, setStatus] = useState(call.status || "pending");
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
   const [recordingUrl, setRecordingUrl] = useState(call.recording_url || "");
   const [adminNotes, setAdminNotes] = useState(call.admin_notes || "");
   const [failureReason, setFailureReason] = useState(call.failure_reason || "");
+  const [assignedTo, setAssignedTo] = useState(call.assigned_to || "");
+  const [assigning, setAssigning] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const handleAssign = async (newAssignedTo: string) => {
+    const previous = assignedTo;
+    setAssignedTo(newAssignedTo);
+    setAssigning(true);
+    try {
+      const res = await fetch("/api/admin/calls/update", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ callId: call.id, assignedTo: newAssignedTo || null }),
+      });
+      if (!res.ok) throw new Error("Assignment failed");
+      onUpdate();
+    } catch (err) {
+      console.error("Assignment error:", err);
+      setAssignedTo(previous);
+      setError("Failed to update assignment. Please try again.");
+    } finally {
+      setAssigning(false);
+    }
+  };
 
   const handleUpload = async () => {
     if (!file) return;
@@ -158,6 +188,31 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate }:
                     <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">Customer</div>
                     <div className="text-sm font-black text-foreground truncate">{call.profiles?.full_name || "Anonymous"}</div>
                   </div>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-foreground/40 flex items-center gap-2">
+                  <UserCog size={12} />
+                  Assigned To
+                </label>
+                <div className="relative">
+                  <select
+                    value={assignedTo}
+                    onChange={(e) => handleAssign(e.target.value)}
+                    disabled={assigning}
+                    className="w-full appearance-none p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-foreground/5 border border-foreground/10 text-sm font-black text-foreground outline-none focus:border-primary transition-all disabled:opacity-50 cursor-pointer"
+                  >
+                    <option value="">Unassigned</option>
+                    {staff.map((member) => (
+                      <option key={member.id} value={member.id}>
+                        {member.full_name} ({member.role})
+                      </option>
+                    ))}
+                  </select>
+                  {assigning && (
+                    <Loader2 size={16} className="animate-spin absolute right-5 top-1/2 -translate-y-1/2 text-primary pointer-events-none" />
+                  )}
                 </div>
               </div>
            </div>

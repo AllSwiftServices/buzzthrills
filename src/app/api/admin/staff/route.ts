@@ -3,6 +3,7 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { verifyToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 
+// Staff = anyone who can be assigned a call: admins and callers.
 export async function GET() {
   try {
     const cookieStore = await cookies();
@@ -21,16 +22,17 @@ export async function GET() {
       throw new Error("Admin client initialization failure");
     }
 
-    const { data: calls, error } = await supabaseAdmin
-      .from("calls")
-      .select("*, profiles!user_id(full_name, email), assigned_staff:profiles!assigned_to(id, full_name, role)")
-      .order("created_at", { ascending: false });
+    const { data: staff, error } = await supabaseAdmin
+      .from("profiles")
+      .select("id, full_name, role")
+      .in("role", ["admin", "caller"])
+      .order("full_name", { ascending: true });
 
     if (error) throw error;
 
-    return NextResponse.json({ calls: calls || [] });
+    return NextResponse.json({ staff: staff || [] });
   } catch (error: any) {
-    console.error("Admin calls fetch error:", error);
+    console.error("Admin staff fetch error:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }

@@ -1,13 +1,27 @@
 import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
-import { sendCallStatusUpdate } from "@/lib/email";
+import { verifyToken } from "@/lib/auth";
+import { cookies } from "next/headers";
+import { sendCallStatusUpdate, sendCallAssignmentEmail } from "@/lib/email";
 
 export async function PATCH(req: Request) {
   try {
-    const { callId, status, recordingUrl, adminNotes, failureReason } = await req.json();
+    const cookieStore = await cookies();
+    const token = cookieStore.get("access_token")?.value;
 
-    if (!callId || !status) {
-      return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
+    if (!token) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const payload = await verifyToken(token);
+    if (!payload || payload.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden: Admin access required" }, { status: 403 });
+    }
+
+    const { callId, status, recordingUrl, adminNotes, failureReason, assignedTo } = await req.json();
+
+    if (!callId) {
+      return NextResponse.json({ error: "Missing call ID" }, { status: 400 });
     }
 
     if (!supabaseAdmin) {
@@ -25,21 +39,29 @@ export async function PATCH(req: Request) {
       throw new Error("Call not found");
     }
 
-    // 2. Update the call status and notes
+    // 2. Update only the fields that were actually provided — this route is
+    // used both for the full status/recording workflow and for a lightweight
+    // "assign this call to a staff member" action that doesn't touch status.
+    const updates: Record<string, unknown> = {};
+    if (status !== undefined) updates.status = status;
+    if (recordingUrl !== undefined) updates.recording_url = recordingUrl;
+    if (adminNotes !== undefined) updates.admin_notes = adminNotes;
+    if (failureReason !== undefined) updates.failure_reason = failureReason;
+    if (assignedTo !== undefined) updates.assigned_to = assignedTo || null;
+
+    if (Object.keys(updates).length === 0) {
+      return NextResponse.json({ error: "No fields to update" }, { status: 400 });
+    }
+
     const { error: updateError } = await supabaseAdmin
       .from("calls")
-      .update({
-        status,
-        recording_url: recordingUrl,
-        admin_notes: adminNotes,
-        failure_reason: failureReason,
-      })
+      .update(updates)
       .eq("id", callId);
 
     if (updateError) throw updateError;
 
-    // 3. Send notification email to the booker
-    if (call.profiles?.email) {
+    // 3. Send notification email to the booker, only when the status actually changed
+    if (status !== undefined && call.profiles?.email) {
       await sendCallStatusUpdate(call.profiles.email, {
         status,
         recipientName: call.recipient_name,
@@ -47,6 +69,27 @@ export async function PATCH(req: Request) {
         adminNotes,
         failureReason,
       });
+    }
+
+    // 4. Notify the newly assigned staff member — only when assignment is
+    // actually being set to someone new, not cleared or left unchanged.
+    if (assignedTo && assignedTo !== call.assigned_to) {
+      const { data: staffMember } = await supabaseAdmin
+        .from("profiles")
+        .select("full_name, email")
+        .eq("id", assignedTo)
+        .single();
+
+      if (staffMember?.email) {
+        await sendCallAssignmentEmail(staffMember.email, {
+          staffName: staffMember.full_name || "there",
+          recipientName: call.recipient_name,
+          recipientPhone: call.recipient_phone,
+          occasionType: call.occasion_type,
+          occasionDate: new Date(call.occasion_date).toLocaleDateString(),
+          scheduledSlot: call.scheduled_slot,
+        });
+      }
     }
 
     return NextResponse.json({ message: "Call updated successfully" });
