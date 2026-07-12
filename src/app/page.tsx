@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import Link from "next/link";
 import Reveal from "@/components/Reveal";
 import Footer from "@/components/Footer";
+import NewsletterSignup from "@/components/NewsletterSignup";
 import SpecialCallBanner from "@/components/SpecialCallBanner";
 import Image from "next/image";
 import { useState, useEffect } from "react";
@@ -563,6 +564,8 @@ export default function Home() {
           </Reveal>
         </div>
       </section>
+
+      <NewsletterSignup />
 
       <Footer />
     </main>

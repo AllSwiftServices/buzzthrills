@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, PhoneCall, Mail, MoreHorizontal, X, User, LogOut, Users, Tag, BarChart3, Sparkles } from "lucide-react";
+import { LayoutDashboard, PhoneCall, Mail, MoreHorizontal, X, User, LogOut, Users, Tag, BarChart3, Sparkles, Send } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -21,6 +21,7 @@ const moreLinks = [
   { href: "/admin/crm",           icon: <Users size={18} />,     label: "Clients" },
   { href: "/admin/special-calls", icon: <Sparkles size={18} />,  label: "Special Calls" },
   { href: "/admin/offers",        icon: <Tag size={18} />,       label: "Promotions" },
+  { href: "/admin/newsletter",    icon: <Send size={18} />,      label: "Newsletter" },
   { href: "/admin/analytics",     icon: <BarChart3 size={18} />, label: "Analytics" },
 ];
 

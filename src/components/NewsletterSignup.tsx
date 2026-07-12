@@ -1,9 +1,11 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { Mail, ShieldCheck, ArrowRight, Heart, CheckCircle2, Loader2, Sparkles, X } from "lucide-react";
+import { Mail, ShieldCheck, ArrowRight, Heart, CheckCircle2, AlertCircle, Loader2, Sparkles, X } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
+
+const DISMISSED_KEY = "newsletter_popup_dismissed";
 
 export default function NewsletterSignup() {
   const [email, setEmail] = useState("");
@@ -11,26 +13,35 @@ export default function NewsletterSignup() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    // Show after 10 seconds of platform exploration
+    // Only show the popup once per visitor — otherwise it re-interrupts
+    // every single homepage visit, including for people who already
+    // subscribed or explicitly closed it.
+    if (typeof window === "undefined" || localStorage.getItem(DISMISSED_KEY)) return;
+
     const timer = setTimeout(() => setIsVisible(true), 10000);
     return () => clearTimeout(timer);
   }, []);
+
+  const dismiss = () => {
+    setIsVisible(false);
+    localStorage.setItem(DISMISSED_KEY, "1");
+  };
 
   const handleJoin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
 
     setStatus("loading");
-    
+
     const { error } = await supabase
       .from('newsletter_subscribers')
       .insert([{ email, is_active: true }]);
 
-    if (error && error.code !== '23505') { 
+    if (error && error.code !== '23505') {
        setStatus("error");
     } else {
        setStatus("success");
-       console.log("New community member connected!", { email, source: "homepage_popup" });
+       localStorage.setItem(DISMISSED_KEY, "1");
        setTimeout(() => setIsVisible(false), 3000);
     }
   };
@@ -46,8 +57,8 @@ export default function NewsletterSignup() {
                exit={{ opacity: 0, scale: 0.9, y: 20 }}
                className="w-full max-w-lg glass p-7 sm:p-10 md:p-14 rounded-[32px] sm:rounded-[56px] border border-border shadow-huge relative overflow-hidden text-center"
              >
-                <button 
-                  onClick={() => setIsVisible(false)}
+                <button
+                  onClick={dismiss}
                   className="absolute top-8 right-8 text-foreground/20 hover:text-foreground transition-all p-2 rounded-xl"
                 >
                   <X size={20} />
@@ -79,9 +90,15 @@ export default function NewsletterSignup() {
                      </motion.div>
                    ) : (
                      <form onSubmit={handleJoin} className="space-y-6">
+                        {status === "error" && (
+                          <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 flex items-center gap-3 text-sm font-bold text-left">
+                            <AlertCircle size={18} className="shrink-0" />
+                            Something went wrong. Please try again.
+                          </div>
+                        )}
                         <div className="relative group">
                            <Mail size={20} className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                           <input 
+                           <input
                              type="email"
                              required
                              value={email}
@@ -90,7 +107,7 @@ export default function NewsletterSignup() {
                              className="w-full bg-foreground/5 border border-border rounded-[28px] py-6 pl-16 pr-8 focus:border-primary transition-all shadow-xl font-bold outline-none"
                            />
                         </div>
-                        <button 
+                        <button
                           disabled={status === "loading"}
                           className="w-full py-6 rounded-[32px] gradient-bg text-white font-black text-xs uppercase tracking-[0.3em] shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                         >
@@ -134,26 +151,47 @@ export default function NewsletterSignup() {
             </div>
 
             <div className="w-full max-w-sm relative z-10">
-               <form onSubmit={handleJoin} className="space-y-4">
-                  <div className="relative group">
-                     <Mail size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
-                     <input 
-                       type="email"
-                       required
-                       value={email}
-                       onChange={(e) => setEmail(e.target.value)}
-                       placeholder="your@email.com"
-                       className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold"
-                     />
-                  </div>
-                  <button 
-                    disabled={status === "loading"}
-                    className="w-full py-5 rounded-[24px] gradient-bg text-white font-black text-[10px] uppercase tracking-[0.3em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3"
-                  >
-                    Join our Community
-                    <Heart size={16} />
-                  </button>
-               </form>
+               {status === "success" ? (
+                 <motion.div
+                   initial={{ opacity: 0, y: 10 }}
+                   animate={{ opacity: 1, y: 0 }}
+                   className="p-6 rounded-[24px] bg-green-500/10 border border-green-500/20 text-green-500 flex items-center justify-center gap-3 font-black text-sm"
+                 >
+                    <CheckCircle2 size={22} />
+                    You're on the list!
+                 </motion.div>
+               ) : (
+                 <form onSubmit={handleJoin} className="space-y-4">
+                    {status === "error" && (
+                      <div className="p-4 rounded-2xl bg-red-500/10 border border-red-500/20 text-red-500 flex items-center gap-3 text-sm font-bold">
+                        <AlertCircle size={16} className="shrink-0" />
+                        Something went wrong. Please try again.
+                      </div>
+                    )}
+                    <div className="relative group">
+                       <Mail size={18} className="absolute left-6 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
+                       <input
+                         type="email"
+                         required
+                         value={email}
+                         onChange={(e) => setEmail(e.target.value)}
+                         placeholder="your@email.com"
+                         className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 pl-14 pr-6 focus:border-primary transition-all outline-none font-bold"
+                       />
+                    </div>
+                    <button
+                      disabled={status === "loading"}
+                      className="w-full py-5 rounded-[24px] gradient-bg text-white font-black text-[10px] uppercase tracking-[0.3em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                    >
+                      {status === "loading" ? <Loader2 size={18} className="animate-spin" /> : (
+                        <>
+                          Join our Community
+                          <Heart size={16} />
+                        </>
+                      )}
+                    </button>
+                 </form>
+               )}
                 <div className="mt-4 text-[10px] font-black text-foreground/20 uppercase tracking-widest text-center">No Spam. Pure Care.</div>
             </div>
          </div>
