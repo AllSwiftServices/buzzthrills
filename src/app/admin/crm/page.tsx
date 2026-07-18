@@ -111,7 +111,7 @@ export default function AdminCRM() {
            >
               <option className="bg-background text-foreground" value="all">Every role</option>
               <option className="bg-background text-foreground" value="user">Clients</option>
-              <option className="bg-background text-foreground" value="caller">Service agents</option>
+              <option className="bg-background text-foreground" value="caller">Callers</option>
               <option className="bg-background text-foreground" value="admin">Admins</option>
            </select>
         </div>
@@ -188,7 +188,7 @@ export default function AdminCRM() {
                          className="px-3 py-2 rounded-xl bg-foreground/5 border border-border text-[10px] font-black uppercase outline-none hover:border-primary/20 transition-all cursor-pointer"
                        >
                           <option className="bg-background" value="user">Client</option>
-                          <option className="bg-background" value="caller">Agent</option>
+                          <option className="bg-background" value="caller">Caller</option>
                           <option className="bg-background" value="admin">Admin</option>
                        </select>
 

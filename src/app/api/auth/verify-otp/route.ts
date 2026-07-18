@@ -46,7 +46,6 @@ export async function POST(req: Request) {
         full_name: account.full_name,
         email: email,
         role: account.role,
-        account_id: account.id
       }, { onConflict: 'email' });
 
     if (profileError) throw profileError;

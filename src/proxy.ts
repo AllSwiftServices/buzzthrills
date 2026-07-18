@@ -11,6 +11,7 @@ export async function proxy(req: NextRequest) {
   // 1. Define Protected Routes
   const isProfileRoute = pathname.startsWith("/profile");
   const isAdminRoute = pathname.startsWith("/admin");
+  const isCallerRoute = pathname.startsWith("/caller");
   const isAuthRoute = pathname.startsWith("/auth");
   const isBookingRoute = pathname.startsWith("/book") || pathname.startsWith("/checkout");
 
@@ -24,14 +25,14 @@ export async function proxy(req: NextRequest) {
   }
 
   // 3. Logic for Protected Routes
-  if (isProfileRoute || isAdminRoute || isBookingRoute) {
+  if (isProfileRoute || isAdminRoute || isCallerRoute || isBookingRoute) {
     if (!token) {
       return NextResponse.redirect(new URL("/auth", req.url));
     }
 
     try {
       const { payload } = await jwtVerify(token, SECRET);
-      
+
       // Suspension Check
       if (payload.is_suspended) {
         return NextResponse.redirect(new URL("/auth?error=suspended", req.url));
@@ -41,7 +42,12 @@ export async function proxy(req: NextRequest) {
       if (isAdminRoute && payload.role !== "admin") {
         return NextResponse.redirect(new URL("/profile", req.url));
       }
-      
+
+      // Caller Role Check — callers only get their own dedicated section
+      if (isCallerRoute && payload.role !== "caller") {
+        return NextResponse.redirect(new URL("/profile", req.url));
+      }
+
       // If valid, continue
       return NextResponse.next();
     } catch (error) {
@@ -69,6 +75,7 @@ export const config = {
   matcher: [
     "/profile/:path*",
     "/admin/:path*",
+    "/caller/:path*",
     "/auth/:path*",
     "/book/:path*",
     "/checkout/:path*",

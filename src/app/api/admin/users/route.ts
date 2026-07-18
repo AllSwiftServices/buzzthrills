@@ -59,21 +59,9 @@ export async function PATCH(req: NextRequest) {
 
     if (error) throw error;
 
-    // auth_accounts is the source of truth for the JWT (role/is_suspended are
-    // signed from there on login/refresh), so keep it in sync with profiles
-    // or changes made here never actually take effect for the affected user.
-    const authAccountUpdates: Record<string, unknown> = {};
-    if ("role" in updates) authAccountUpdates.role = updates.role;
-    if ("is_suspended" in updates) authAccountUpdates.is_suspended = updates.is_suspended;
-
-    if (Object.keys(authAccountUpdates).length > 0) {
-      const { error: authAccountError } = await supabaseAdmin
-        .from("auth_accounts")
-        .update(authAccountUpdates)
-        .eq("id", userId);
-
-      if (authAccountError) throw authAccountError;
-    }
+    // full_name/email/role/is_suspended are kept in sync with auth_accounts by
+    // a DB trigger (see src/db/migrations/0002_sync_profiles_auth_accounts_fields.sql)
+    // — no need to write auth_accounts here too.
 
     return NextResponse.json(data);
   } catch (error) {
@@ -96,17 +84,16 @@ export async function DELETE(req: NextRequest) {
 
     if (!supabaseAdmin) throw new Error("Supabase Admin client missing");
 
-    // Also delete from auth.users (requires service role)
-    const { error: authError } = await supabaseAdmin.auth.admin.deleteUser(userId);
-    if (authError) throw authError;
-
-    // profiles deletion should be cascading if foreign keys are set correctly
-    const { error: profileError } = await supabaseAdmin
-      .from("profiles")
+    // Accounts live in auth_accounts (custom auth, not Supabase Auth — there
+    // is no matching auth.users row to delete). profiles.id references
+    // auth_accounts.id ON DELETE CASCADE, so removing the account row here
+    // also removes the profile in the same statement.
+    const { error: authAccountError } = await supabaseAdmin
+      .from("auth_accounts")
       .delete()
       .eq("id", userId);
 
-    if (profileError) throw profileError;
+    if (authAccountError) throw authAccountError;
 
     return NextResponse.json({ success: true });
   } catch (error) {

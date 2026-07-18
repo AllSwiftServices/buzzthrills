@@ -1,3 +1,10 @@
+-- ⚠️ HISTORICAL — superseded by src/db/schema/index.ts (Drizzle ORM schema-as-code).
+-- This file (and the other supabase_migration_*.sql / migrations/*.sql / custom_auth.sql /
+-- rls_integration.sql files alongside it) documents how the schema evolved by hand over time,
+-- but is no longer the source of truth and should not be re-run.
+-- To see the current live schema, read src/db/schema/index.ts. To change the schema, edit that
+-- file and run `npm run db:generate` then `npm run db:migrate` — see CLAUDE.md.
+
 -- 1. AUTHENTICATION HELPERS (For Custom Auth Schema)
 -- These functions extract the superhero ID and role from the custom JWT claims.
 

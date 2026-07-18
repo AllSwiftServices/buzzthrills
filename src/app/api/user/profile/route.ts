@@ -112,17 +112,9 @@ export async function PATCH(request: Request) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }
 
-    // auth_accounts.full_name is what login/refresh actually return as the
-    // signed-in user's name — without this, a name change here would look
-    // like it saved, then silently revert on the next session refresh.
-    const { error: authAccountError } = await supabaseAdmin
-      .from("auth_accounts")
-      .update({ full_name: fullName, updated_at: new Date().toISOString() })
-      .eq("id", payload.id);
-
-    if (authAccountError) {
-      console.error("auth_accounts full_name sync error:", authAccountError);
-    }
+    // full_name is kept in sync with auth_accounts by a DB trigger (see
+    // src/db/migrations/0002_sync_profiles_auth_accounts_fields.sql) — no
+    // need to write auth_accounts here too.
 
     return NextResponse.json({ success: true, profile: data });
   } catch (error) {

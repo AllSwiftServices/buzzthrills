@@ -33,18 +33,11 @@ export async function POST(req: Request) {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
-    // 3. Upsert OTP (Update if exists, else insert)
-    // We use email as the identifier for OTPs
+    // 3. Replace any existing OTP row(s) for this email with the new one
+    await supabaseAdmin.from("auth_otps").delete().eq("email", email);
     const { error: otpError } = await supabaseAdmin
       .from("auth_otps")
       .insert({ email, code: otp, expires_at: expiresAt });
-
-    // Note: If there's a unique constraint on email in auth_otps, 
-    // we might need to delete existing one first or use a true upsert.
-    // For now, our schema allows multiple but we verify the latest/matching one.
-    // Let's delete existing ones for this email to keep it clean.
-    await supabaseAdmin.from("auth_otps").delete().eq("email", email);
-    await supabaseAdmin.from("auth_otps").insert({ email, code: otp, expires_at: expiresAt });
 
     if (otpError) throw otpError;
 

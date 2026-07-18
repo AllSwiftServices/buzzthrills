@@ -30,7 +30,7 @@ export default function AuthPage() {
 
   useEffect(() => {
     if (verified && user) {
-      router.replace(user.role === "admin" ? "/admin" : "/profile");
+      router.replace(user.role === "admin" ? "/admin" : user.role === "caller" ? "/caller" : "/profile");
     }
   }, [verified, user, router]);
 

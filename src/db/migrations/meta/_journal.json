@@ -1,0 +1,27 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1784376354220,
+      "tag": "0000_nebulous_alex_wilder",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784378109317,
+      "tag": "0001_thin_agent_brand",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784378336265,
+      "tag": "0002_sync_profiles_auth_accounts_fields",
+      "breakpoints": true
+    }
+  ]
+}

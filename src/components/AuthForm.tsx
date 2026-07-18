@@ -78,7 +78,23 @@ export default function AuthForm() {
         if (data.error) {
           if (data.unverified) {
              setMode('verify');
-             setMessage({ type: 'success', text: "Please verify your email to continue." });
+             // Login only *tells* us the account is unverified — it never
+             // sends a code itself, so without this the user lands on the
+             // OTP screen with nothing in their inbox and no obvious reason
+             // why, unless they notice and click "Resend Code" themselves.
+             try {
+               const resendRes = await fetch("/api/auth/resend-otp", {
+                 method: "POST",
+                 headers: { "Content-Type": "application/json" },
+                 body: JSON.stringify({ email: formData.email }),
+               });
+               const resendData = await resendRes.json();
+               if (resendData.error) throw new Error(resendData.error);
+               setMessage({ type: 'success', text: "Please verify your email to continue — we've sent a new code." });
+               startResendCooldown();
+             } catch {
+               setMessage({ type: 'error', text: "Please verify your email to continue. We couldn't send a new code automatically — tap \"Resend Code\" below." });
+             }
           } else {
              throw new Error(data.error);
           }
@@ -91,7 +107,7 @@ export default function AuthForm() {
            } else if (redirectParams.mode) {
              window.location.href = redirectParams.mode;
            } else {
-             window.location.href = data.user.role === 'admin' ? '/admin' : '/profile';
+             window.location.href = data.user.role === 'admin' ? '/admin' : data.user.role === 'caller' ? '/caller' : '/profile';
            }
         }
       } else if (mode === 'signup') {
@@ -143,7 +159,7 @@ export default function AuthForm() {
           } else if (redirectParams.mode) {
              window.location.href = redirectParams.mode;
           } else {
-            window.location.href = data.user.role === 'admin' ? '/admin' : '/profile';
+            window.location.href = data.user.role === 'admin' ? '/admin' : data.user.role === 'caller' ? '/caller' : '/profile';
           }
         }
 
