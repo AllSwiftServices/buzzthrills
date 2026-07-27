@@ -4,7 +4,7 @@ import { sendOTPEmail } from "@/lib/email";
 
 export async function POST(req: Request) {
   try {
-    const { email } = await req.json();
+    const { email, purpose } = await req.json();
 
     if (!email) {
       return NextResponse.json({ error: "Missing email" }, { status: 400 });
@@ -25,7 +25,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Account not found" }, { status: 404 });
     }
 
-    if (account.is_verified) {
+    // Being verified is the normal case for a forgot-password resend, so only
+    // block resends for the signup flow, where an already-verified account
+    // has nothing left to verify.
+    if (account.is_verified && purpose !== 'forgot') {
       return NextResponse.json({ error: "Account already verified" }, { status: 400 });
     }
 

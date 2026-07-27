@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from "uuid";
 
 export async function POST(req: Request) {
   try {
-    const { email, code } = await req.json();
+    const { email, code, purpose } = await req.json();
 
     if (!email || !code) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -26,6 +26,14 @@ export async function POST(req: Request) {
 
     if (otpError || !otp) {
       return NextResponse.json({ error: "Invalid or expired code" }, { status: 401 });
+    }
+
+    // Forgot-password verification is just a pre-check before the reset-password
+    // step, which re-validates and consumes this same OTP. Don't delete it here
+    // or run signup-only side effects (verify account, issue session), or the
+    // subsequent reset-password call always fails with "already used" OTP.
+    if (purpose === 'forgot') {
+      return NextResponse.json({ message: "Code verified!" });
     }
 
     // 2. Mark Account as Verified & Create Profile

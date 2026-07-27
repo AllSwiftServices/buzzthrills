@@ -50,11 +50,11 @@ export default function AuthForm() {
       const res = await fetch("/api/auth/resend-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: formData.email }),
+        body: JSON.stringify({ email: formData.email, purpose: authType }),
       });
       const data = await res.json();
       if (data.error) throw new Error(data.error);
-      
+
       setMessage({ type: 'success', text: "New magic code sent! ✨" });
       startResendCooldown();
     } catch (error: any) {
@@ -143,7 +143,7 @@ export default function AuthForm() {
         const res = await fetch("/api/auth/verify-otp", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: formData.email, code: formData.otp }),
+          body: JSON.stringify({ email: formData.email, code: formData.otp, purpose: authType }),
         });
         const data = await res.json();
         if (data.error) throw new Error(data.error);
