@@ -18,7 +18,7 @@ export async function GET() {
     const { data: letters, error } = await supabaseAdmin
       .from("digital_letters")
       .select(
-        "id, sender_id, recipient_name, recipient_phone, theme, tier, status, qr_identifier, unfurled_count, created_by_admin, created_at, updated_at, wants_scannable, scannable_status"
+        "id, sender_id, recipient_name, recipient_phone, theme, tier, status, qr_identifier, unfurled_count, created_by_admin, created_at, updated_at, wants_scannable, scannable_status, request_admin_letter, request_admin_voice"
       )
       .order("created_at", { ascending: false })
       .limit(200);

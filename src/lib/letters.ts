@@ -1,6 +1,6 @@
 export type LetterTheme = "parchment" | "royal" | "modern";
 export type LetterTier = "standard" | "premium";
-export type LetterStatus = "draft" | "published" | "archived";
+export type LetterStatus = "draft" | "published" | "archived" | "processing";
 
 export interface ThemeSpec {
   id: LetterTheme;
@@ -57,7 +57,7 @@ export const LETTER_THEMES: ThemeSpec[] = [
 export const LETTER_PRICING = {
   base: 10000,
   audioVideoAddon: 2000,
-  scannableAddon: 5000,
+  scannableAddon: 3000,
 } as const;
 
 export interface PriceBreakdown {

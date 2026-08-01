@@ -14,6 +14,7 @@ type BookingSummary = {
   amount: number;
   remaining?: number;
   isExpress?: boolean;
+  isInternational?: boolean;
   recipients?: Array<{ name: string; phone: string; occasion: string; date: string; time: string }>;
   createdAt?: string;
 };
@@ -186,6 +187,10 @@ export default function CheckoutSuccess() {
               <tr className="border-b border-neutral-200">
                 <td className="py-2 text-neutral-500">Express Delivery</td>
                 <td className="py-2 text-right font-bold">{summary?.isExpress ? "Yes" : "No"}</td>
+              </tr>
+              <tr className="border-b border-neutral-200">
+                <td className="py-2 text-neutral-500">International Recipient</td>
+                <td className="py-2 text-right font-bold">{summary?.isInternational ? "Yes" : "No"}</td>
               </tr>
               <tr className="border-b border-neutral-200">
                 <td className="py-2 text-neutral-500">Recipients</td>

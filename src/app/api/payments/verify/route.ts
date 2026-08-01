@@ -22,7 +22,7 @@ export async function GET(request: Request) {
 
       if (data.status && data.data.status === 'success') {
         const metadata = data.data.metadata;
-        const { service, variant, user_id, recipients, is_express, cycle, plan, purchase_type, letter_id } = metadata || {};
+        const { service, variant, user_id, recipients, is_express, is_international, cycle, plan, purchase_type, letter_id } = metadata || {};
         const customerEmail = data.data.customer.email;
         const amount = (data.data.amount / 100).toLocaleString();
 
@@ -40,12 +40,24 @@ export async function GET(request: Request) {
           const needsAdminWork = !!(letterFull?.request_admin_letter || letterFull?.request_admin_voice);
           const newStatus = needsAdminWork ? 'processing' : 'published';
 
-          const { data: letterRow } = await supabaseAdmin
+          const { data: letterRow, error: letterUpdateError } = await supabaseAdmin
             .from('digital_letters')
             .update({ status: newStatus, updated_at: new Date().toISOString() })
             .eq('id', letter_id)
             .select('id, qr_identifier, recipient_name, request_admin_letter, request_admin_voice')
             .single();
+
+          if (letterUpdateError) {
+            // Paystack has already charged the customer at this point — if the status
+            // update fails, the letter is stuck in 'draft' with no visibility anywhere,
+            // so this needs a human now rather than failing silently.
+            const { sendAdminAlertEmail } = await import('@/lib/email');
+            await sendAdminAlertEmail(
+              'Digital letter status update failed after payment',
+              'A letter payment succeeded on Paystack but updating its status failed. The letter is likely stuck as draft — check and publish/process it manually.',
+              { reference, letter_id, newStatus, customerEmail, amount, error: letterUpdateError }
+            );
+          }
 
           try {
             const origin = new URL(request.url).origin;
@@ -137,6 +149,7 @@ export async function GET(request: Request) {
               call_type: variant || 'standard',
               scheduled_slot: r.time || 'morning',
               is_express: !!is_express,
+              is_international: !!is_international,
               status: 'pending',
               metadata: {
                 ...bookingMetadata,

@@ -130,6 +130,7 @@ function BookingContent() {
   );
   const [selectedVariant, setSelectedVariant] = useState<CallVariant>(service.tiers[0].variant);
   const [isExpress, setIsExpress] = useState(false);
+  const [isInternational, setIsInternational] = useState(false);
   const [loading, setLoading] = useState(false);
   const [subscription, setSubscription] = useState<any>(null);
   const [clientData, setClientData] = useState({
@@ -176,8 +177,11 @@ function BookingContent() {
 
   const selectedTier = service.tiers.find(t => t.variant === selectedVariant) || service.tiers[0];
   const basePrice = isSpecialCall ? (specialCallPrice as number) : selectedTier.price;
+  // International calls are double the regular local price — same non-subscriber-only
+  // treatment as the express fee, since subscribers pay via quota, not per-call price.
+  const internationalSurcharge = !isSubscriber && isInternational && !isSpecialCall ? basePrice : 0;
   const expressCharge = !isSubscriber && isExpress && !isSpecialCall ? 2000 : 0;
-  const totalPrice = basePrice + expressCharge;
+  const totalPrice = basePrice + internationalSurcharge + expressCharge;
 
   const addRecipient = () => {
     setRecipients([...recipients, emptyRecipient(service.name)]);
@@ -246,6 +250,7 @@ function BookingContent() {
     serviceId: service.id,
     variant: selectedVariant,
     isExpress,
+    isInternational,
   });
 
   const persistBookingSummary = (payload: {
@@ -269,6 +274,7 @@ function BookingContent() {
             time: r.time,
           })),
           isExpress,
+          isInternational,
           createdAt: new Date().toISOString(),
         })
       );
@@ -296,6 +302,7 @@ function BookingContent() {
           variant: selectedVariant,
           recipients,
           isExpress,
+          isInternational,
           metadata: buildBookingMetadata(),
         }),
       });
@@ -352,6 +359,7 @@ function BookingContent() {
         variant: selectedVariant,
         user_id: user?.id,
         is_express: isExpress,
+        is_international: isInternational,
         client_name: clientData.name,
         recipients: recipients,
         booking: buildBookingMetadata(),
@@ -1384,6 +1392,34 @@ function BookingContent() {
                    </div>
                 </div>
               </div>
+
+              <div
+                onClick={() => setIsInternational(!isInternational)}
+                className={`p-4 sm:p-8 rounded-2xl sm:rounded-[40px] border-2 cursor-pointer transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 group ${
+                  isInternational ? 'bg-primary/10 border-primary shadow-2xl shadow-primary/20' : 'glass border-border hover:border-foreground/10'
+                }`}
+              >
+                <div className="flex items-center gap-4 sm:gap-6">
+                   <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[32px] flex items-center justify-center transition-all ${isInternational ? 'bg-primary text-white scale-110 sm:rotate-12' : 'bg-foreground/5 text-foreground/20'}`}>
+                      <Globe size={24} className="sm:w-8 sm:h-8" />
+                   </div>
+                   <div>
+                      <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight uppercase italic ${isInternational ? 'text-primary' : 'text-foreground'}`}>International <span className="gradient-text italic">Recipient</span> 🌍</div>
+                      <div className="text-muted-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Recipient is outside Nigeria — international calls are double the local price.</div>
+                   </div>
+                </div>
+                <div className="flex items-center gap-6">
+                   <span className={`text-xl font-black italic transition-colors ${isInternational ? 'text-primary' : 'text-foreground/20'}`}>
+                     {isSubscriber ? "Included" : "2x Price"}
+                   </span>
+                   <div className={`w-14 h-8 rounded-full transition-all relative p-1 ${isInternational ? 'bg-primary' : 'bg-foreground/10'}`}>
+                      <motion.div
+                        animate={{ x: isInternational ? 24 : 0 }}
+                        className="w-6 h-6 rounded-full bg-white shadow-xl"
+                      />
+                   </div>
+                </div>
+              </div>
             </div>
           </motion.div>
         )}
@@ -1433,6 +1469,12 @@ function BookingContent() {
                           <span className="font-black text-base sm:text-lg">Included</span>
                         </div>
                       )}
+                      {isInternational && (
+                        <div className="flex justify-between items-center text-primary">
+                          <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">International Recipient</span>
+                          <span className="font-black text-base sm:text-lg">Included</span>
+                        </div>
+                      )}
                       <div className="pt-6 border-t border-border flex justify-between items-center bg-foreground/2 -mx-5 -mb-5 p-5 sm:p-10 sm:-mx-10 sm:-mb-10 mt-6 sm:mt-8">
                         <span className="text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] italic">Calls Deducted</span>
                         <span className="text-xl sm:text-3xl font-black gradient-text tracking-tighter">
@@ -1454,6 +1496,12 @@ function BookingContent() {
                         </span>
                         <span className="font-black text-base sm:text-lg">₦{basePrice.toLocaleString()}</span>
                       </div>
+                      {isInternational && !isSpecialCall && (
+                        <div className="flex justify-between items-center text-primary">
+                          <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">International Recipient (2x)</span>
+                          <span className="font-black text-base sm:text-lg">+₦{internationalSurcharge.toLocaleString()}</span>
+                        </div>
+                      )}
                       {isExpress && !isSpecialCall && (
                         <div className="flex justify-between items-center text-primary">
                           <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Express Service</span>

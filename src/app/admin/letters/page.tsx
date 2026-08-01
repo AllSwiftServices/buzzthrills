@@ -19,10 +19,13 @@ type Letter = {
   sender_name: string | null;
   wants_scannable: boolean;
   scannable_status: string | null;
+  request_admin_letter: boolean;
+  request_admin_voice: boolean;
 };
 
 const statusStyles: Record<string, string> = {
   draft: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  processing: "bg-orange-500/10 text-orange-400 border-orange-500/20",
   published: "bg-green-500/10 text-green-400 border-green-500/20",
   archived: "bg-foreground/5 text-foreground/40 border-foreground/10",
 };
@@ -92,7 +95,7 @@ export default function AdminLettersPage() {
           />
         </div>
         <div className="flex flex-wrap gap-2">
-          {["all", "draft", "published", "archived"].map((s) => (
+          {["all", "draft", "processing", "published", "archived"].map((s) => (
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
@@ -141,6 +144,16 @@ export default function AdminLettersPage() {
                     {l.created_by_admin && (
                       <span className="text-[9px] font-black uppercase tracking-widest text-primary">
                         Admin-created
+                      </span>
+                    )}
+                    {l.request_admin_letter && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border bg-amber-500/10 text-amber-400 border-amber-500/20">
+                        ✨ Needs writing
+                      </span>
+                    )}
+                    {l.request_admin_voice && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border bg-amber-500/10 text-amber-400 border-amber-500/20">
+                        🎙 Needs voice
                       </span>
                     )}
                     {l.wants_scannable && (

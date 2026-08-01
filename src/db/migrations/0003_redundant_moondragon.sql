@@ -1,0 +1,2 @@
+ALTER TABLE "digital_letters" DROP CONSTRAINT "digital_letters_status_check";--> statement-breakpoint
+ALTER TABLE "digital_letters" ADD CONSTRAINT "digital_letters_status_check" CHECK (status = ANY (ARRAY['draft'::text, 'published'::text, 'archived'::text, 'processing'::text]));

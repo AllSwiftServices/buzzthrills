@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       throw new Error("Admin Client initialization failure");
     }
 
-    const { recipients, service, variant, isExpress, metadata } = await request.json();
+    const { recipients, service, variant, isExpress, isInternational, metadata } = await request.json();
 
     if (!Array.isArray(recipients) || recipients.length === 0) {
       return NextResponse.json({ error: "At least one recipient is required" }, { status: 400 });
@@ -69,6 +69,7 @@ export async function POST(request: Request) {
       call_type: variant || "standard",
       scheduled_slot: r.time || "morning",
       is_express: !!isExpress,
+      is_international: !!isInternational,
       status: "pending",
       metadata: {
         ...bookingMetadata,
