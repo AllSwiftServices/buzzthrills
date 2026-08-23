@@ -54,7 +54,7 @@ export async function GET(request: Request) {
             const { sendAdminAlertEmail } = await import('@/lib/email');
             await sendAdminAlertEmail(
               'Digital letter status update failed after payment',
-              'A letter payment succeeded on Paystack but updating its status failed. The letter is likely stuck as draft — check and publish/process it manually.',
+              'A letter payment succeeded on Paystack but updating its status failed. The letter is likely stuck as draft. Check and publish/process it manually.',
               { reference, letter_id, newStatus, customerEmail, amount, error: letterUpdateError }
             );
           }

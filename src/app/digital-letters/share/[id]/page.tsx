@@ -74,7 +74,7 @@ export default function LetterSharePage() {
             Your Letter is <span className="gradient-text italic">Live</span>
           </h1>
           <p className="text-muted-foreground font-medium italic font-serif">
-            Share this link with {letter.recipient_name} — they'll see your message animate to life.
+            Share this link with {letter.recipient_name}. They'll see your message animate to life.
           </p>
         </motion.div>
 

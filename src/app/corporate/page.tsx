@@ -82,7 +82,7 @@ export default function CorporatePage() {
               Foster employee retention and build deep client loyalty through professional, human-led voice experiences and digital letters.
             </p>
             <p className="text-base md:text-lg text-muted-foreground font-medium max-w-3xl mx-auto mb-12 leading-relaxed">
-              From team-wide live affirmations to tailored client recognition campaigns, we help businesses protect team drive, combat burnout, and elevate culture — seamlessly combining your company&apos;s brand identity with our signature warmth and high-energy touch.
+              From team-wide live affirmations to tailored client recognition campaigns, we help businesses protect team drive, combat burnout, and elevate culture, seamlessly combining your company&apos;s brand identity with our signature warmth and high-energy touch.
             </p>
           </Reveal>
           <Reveal delay={0.3}>

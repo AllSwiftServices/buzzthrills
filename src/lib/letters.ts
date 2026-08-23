@@ -19,7 +19,7 @@ export const LETTER_THEMES: ThemeSpec[] = [
   {
     id: "parchment",
     name: "Parchment",
-    tagline: "Classic warm scroll — included in every letter.",
+    tagline: "Classic warm scroll, included in every letter.",
     premiumOnly: false,
     preview: {
       paperBg: "#fcf5e5",
@@ -126,6 +126,8 @@ export function generateLetterCode(length = 8): string {
   return out;
 }
 
+export type LetterMediaKind = "music" | "voice" | "video" | "photo";
+
 export const LETTER_MEDIA_LIMITS = {
   maxFileBytes: 20 * 1024 * 1024,
   acceptedMusic: ["audio/mpeg", "audio/mp3", "audio/wav", "audio/ogg", "audio/m4a", "audio/mp4"],
@@ -133,3 +135,13 @@ export const LETTER_MEDIA_LIMITS = {
   acceptedVideo: ["video/mp4", "video/webm", "video/quicktime"],
   acceptedPhoto: ["image/jpeg", "image/png", "image/webp", "image/heic"],
 } as const;
+
+// Browsers/OSes report a long tail of MIME variants for the same file (e.g. macOS/Chrome
+// report .m4a as "audio/x-m4a", not "audio/m4a" or "audio/mp4") — matching the broad
+// audio/video/image category is what actually matters here, an exact-string allowlist
+// just rejects real files with an unanticipated but perfectly valid MIME string.
+export function isAcceptedLetterMedia(kind: LetterMediaKind, mimetype: string | null | undefined): boolean {
+  if (!mimetype) return true;
+  const prefix = kind === "photo" ? "image/" : kind === "video" ? "video/" : "audio/";
+  return mimetype.toLowerCase().startsWith(prefix);
+}

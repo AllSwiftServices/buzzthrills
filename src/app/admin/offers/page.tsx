@@ -47,7 +47,7 @@ export default function AdminOffers() {
 
         <button
           disabled
-          title="Creating promotions from the dashboard is coming soon — ask engineering to add one directly for now."
+          title="Creating promotions from the dashboard is coming soon. Ask engineering to add one directly for now."
           className="w-full md:w-auto px-8 py-4 rounded-2xl gradient-bg text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
         >
           <Plus size={20} />

@@ -90,7 +90,7 @@ export default function Home() {
 
             <Reveal delay={0.2}>
               <p className="text-base sm:text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed font-medium">
-                Imagine never missing a special moment or date again, because we won&apos;t let you. We handle the remembering and the delivery of heartfelt surprise calls, scannable audio/visual letters, and beautiful love experiences — so your favorite people always feel deeply cherished.
+                Imagine never missing a special moment or date again, because we won&apos;t let you. We handle the remembering and the delivery of heartfelt surprise calls, scannable audio/visual letters, and beautiful love experiences, so your favorite people always feel deeply cherished.
               </p>
             </Reveal>
 
@@ -402,13 +402,13 @@ export default function Home() {
                   moment?
                 </h2>
                 <p className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed font-semibold max-w-xl">
-                  Whether it&apos;s a call, a letter, or a full surprise experience — we&apos;ve got you covered.
+                  Whether it&apos;s a call, a letter, or a full surprise experience, we&apos;ve got you covered.
                 </p>
                 <Link
                   href="/book"
-                  className="flex sm:inline-flex items-center justify-center px-8 py-4 rounded-full bg-accent hover:bg-accent/90 text-background font-bold text-sm sm:text-base hover:scale-105 active:scale-95 transition-all shadow-lg gap-2 group"
+                  className="flex sm:inline-flex items-center justify-center px-8 py-5 rounded-full bg-accent hover:bg-accent/90 text-background font-black text-base sm:text-lg hover:scale-105 active:scale-95 transition-all shadow-lg gap-2 group"
                 >
-                  Book Your First Surprise Call 💛
+                  Book Your First Surprise Call
                 </Link>
               </Reveal>
             </div>
@@ -541,7 +541,7 @@ export default function Home() {
               <ul className="space-y-4 mb-8 text-left w-full max-w-xs mx-auto">
                 {[
                   "Priority booking",
-                  "Premium call styles",
+                  "Never forget important dates (we remember for you)",
                   "Exclusive offers",
                   "Early access to new features",
                 ].map((item) => (
@@ -558,7 +558,7 @@ export default function Home() {
                 href="/pricing"
                 className="w-full py-4 rounded-full gradient-bg text-white font-bold text-sm hover:scale-105 active:scale-95 transition-all shadow-lg block text-center"
               >
-                Join Prime Now
+                Subscribe Now
               </Link>
             </div>
           </Reveal>

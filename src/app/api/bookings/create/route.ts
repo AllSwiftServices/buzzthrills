@@ -21,7 +21,7 @@ export async function POST(request: Request) {
       throw new Error("Admin Client initialization failure");
     }
 
-    const { recipients, service, variant, isExpress, isInternational, metadata } = await request.json();
+    const { recipients, service, variant, isExpress, isInternational, preferredCallerId, metadata } = await request.json();
 
     if (!Array.isArray(recipients) || recipients.length === 0) {
       return NextResponse.json({ error: "At least one recipient is required" }, { status: 400 });
@@ -57,10 +57,24 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. Create Call Records
+    // 4. "Choose your preferred caller" is an Orbit-only perk — re-check plan and
+    // caller identity server-side rather than trusting the client's request body.
+    let assignedTo: string | null = null;
+    if (preferredCallerId && subscription.plan === "orbit") {
+      const { data: caller } = await supabaseAdmin
+        .from("profiles")
+        .select("id")
+        .eq("id", preferredCallerId)
+        .eq("role", "caller")
+        .single();
+      if (caller) assignedTo = caller.id;
+    }
+
+    // 5. Create Call Records
     const bookingMetadata = metadata && typeof metadata === "object" ? metadata : {};
     const callEntries = recipients.map((r: any, idx: number) => ({
       user_id: payload.id,
+      assigned_to: assignedTo,
       recipient_name: r.name,
       recipient_phone: r.phone,
       relationship: r.relationship || null,
@@ -83,13 +97,13 @@ export async function POST(request: Request) {
 
     if (insertError) throw insertError;
 
-    // 5. Deduct from quota
+    // 6. Deduct from quota
     await supabaseAdmin
       .from("subscriptions")
       .update({ calls_made: (subscription.calls_made || 0) + callEntries.length })
       .eq("id", subscription.id);
 
-    // 6. Send confirmation + admin notification
+    // 7. Send confirmation + admin notification
     try {
       const { data: profile } = await supabaseAdmin
         .from("profiles")

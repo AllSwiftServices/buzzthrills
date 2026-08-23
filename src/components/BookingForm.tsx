@@ -3,7 +3,7 @@
 import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Sparkles, Loader2, Star, Zap, PhoneCall, Globe, Heart, Music, Laugh, Crown, Calendar, Wand2 } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Sparkles, Loader2, Star, Zap, PhoneCall, Globe, Heart, Music, Laugh, Crown, Calendar, Wand2, UserCog } from "lucide-react";
 import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
 import { useAuth } from "@/context/AuthContext";
 import { CALL_SERVICES, CallService, CallVariant, ICON_MAP } from "@/lib/pricing_config";
@@ -21,10 +21,10 @@ const VARIANT_META: Record<CallVariant, { icon: any; blurb: string }> = {
   standard: { icon: Star, blurb: "The signature Buzzthrills delivery." },
   prank: { icon: Laugh, blurb: "Playful prank twist before the real moment." },
   music: { icon: Music, blurb: "A surprise jingle to set the mood." },
-  both: { icon: Wand2, blurb: "Prank + music — the full thrill bundle." },
+  both: { icon: Wand2, blurb: "Prank + music: the full thrill bundle." },
   special: { icon: Crown, blurb: "Custom premium touch, extended voice or theme." },
   "one-off": { icon: Zap, blurb: "A single, standalone surprise." },
-  monthly: { icon: Calendar, blurb: "Delivered every month — set it and forget it." },
+  monthly: { icon: Calendar, blurb: "Delivered every month, set it and forget it." },
 };
 
 const TITLE_OPTIONS = ["", "Miss", "Mr.", "Mrs.", "Ms.", "Dr."] as const;
@@ -133,6 +133,8 @@ function BookingContent() {
   const [isInternational, setIsInternational] = useState(false);
   const [loading, setLoading] = useState(false);
   const [subscription, setSubscription] = useState<any>(null);
+  const [callers, setCallers] = useState<{ id: string; full_name: string }[]>([]);
+  const [preferredCallerId, setPreferredCallerId] = useState<string>("");
   const [clientData, setClientData] = useState({
     name: "",
     email: "",
@@ -161,6 +163,16 @@ function BookingContent() {
     }
     checkSubscription();
   }, [user]);
+
+  // Only the Orbit plan advertises "choose your preferred caller" — fetch the
+  // caller list lazily, only once we know that's actually the active plan.
+  useEffect(() => {
+    if (subscription?.status !== 'active' || subscription?.plan !== 'orbit') return;
+    fetch("/api/callers/list")
+      .then((r) => r.json())
+      .then((data) => setCallers(data.callers || []))
+      .catch((e) => console.error("Callers fetch failure", e));
+  }, [subscription?.status, subscription?.plan]);
 
   // Update occasion and variant when service changes
   useEffect(() => {
@@ -251,6 +263,7 @@ function BookingContent() {
     variant: selectedVariant,
     isExpress,
     isInternational,
+    preferredCallerId: preferredCallerId || null,
   });
 
   const persistBookingSummary = (payload: {
@@ -303,6 +316,7 @@ function BookingContent() {
           recipients,
           isExpress,
           isInternational,
+          preferredCallerId: preferredCallerId || null,
           metadata: buildBookingMetadata(),
         }),
       });
@@ -682,7 +696,7 @@ function BookingContent() {
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                  Phone Number <span className="text-muted-foreground/60 normal-case font-bold italic">— optional, for feedback</span>
+                  Phone Number <span className="text-muted-foreground/60 normal-case font-bold italic">(optional, for feedback)</span>
                 </label>
                 <div className="relative group">
                   <Phone size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -697,7 +711,7 @@ function BookingContent() {
               </div>
               <div className="space-y-3">
                 <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                  Gender <span className="text-muted-foreground/60 normal-case font-bold italic">— optional</span>
+                  Gender <span className="text-muted-foreground/60 normal-case font-bold italic">(optional)</span>
                 </label>
                 <div className="relative">
                   <select
@@ -713,7 +727,7 @@ function BookingContent() {
                 </div>
               </div>
               <div className="space-y-3 md:col-span-2">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Your Location <span className="text-muted-foreground/60 normal-case font-bold italic">— state / country</span></label>
+                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Your Location <span className="text-muted-foreground/60 normal-case font-bold italic">(state / country)</span></label>
                 <div className="relative group">
                   <Globe size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <input
@@ -740,7 +754,7 @@ function BookingContent() {
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
               <div>
                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Choose <span className="gradient-text italic">Package</span></h2>
-                <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Pick the level of thrill — every package keeps the heartfelt core.</p>
+                <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Pick the level of thrill; every package keeps the heartfelt core.</p>
               </div>
               {isSubscriber && (
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 self-start sm:self-auto">
@@ -879,7 +893,7 @@ function BookingContent() {
                     <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Subscription Balance</div>
                     <div className="text-sm font-black mt-1">
                       {overQuota
-                        ? `Only ${remainingCalls} call${remainingCalls === 1 ? "" : "s"} left this cycle — remove ${recipients.length - remainingCalls} recipient${recipients.length - remainingCalls === 1 ? "" : "s"} to continue.`
+                        ? `Only ${remainingCalls} call${remainingCalls === 1 ? "" : "s"} left this cycle. Remove ${recipients.length - remainingCalls} recipient${recipients.length - remainingCalls === 1 ? "" : "s"} to continue.`
                         : `${remainingCalls} of ${subscription?.total_calls} calls remaining this cycle.`}
                     </div>
                   </div>
@@ -938,7 +952,7 @@ function BookingContent() {
                     </div>
                     <div className="space-y-2 md:col-span-6">
                       <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
-                        Gender <span className="text-muted-foreground/50 normal-case font-bold italic">— optional</span>
+                        Gender <span className="text-muted-foreground/50 normal-case font-bold italic">(optional)</span>
                       </label>
                       <select
                         value={r.gender}
@@ -953,7 +967,7 @@ function BookingContent() {
                     </div>
 
                     <div className="space-y-2 md:col-span-6">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Location <span className="text-muted-foreground/50 normal-case font-bold italic">— state / country</span></label>
+                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Location <span className="text-muted-foreground/50 normal-case font-bold italic">(state / country)</span></label>
                       <input
                         type="text"
                         value={r.location}
@@ -993,7 +1007,7 @@ function BookingContent() {
                   </div>
 
                   <div className="mt-6 pt-6 border-t border-border/50">
-                    <div className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary/70 mb-3">Personal Connection <span className="text-muted-foreground/50 normal-case italic">— optional, helps us sound natural</span></div>
+                    <div className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary/70 mb-3">Personal Connection <span className="text-muted-foreground/50 normal-case italic">(optional, helps us sound natural)</span></div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
                         <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">What you call them</label>
@@ -1033,7 +1047,7 @@ function BookingContent() {
           >
             <div>
               <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Tell Us About <span className="gradient-text italic">The Call</span></h2>
-              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">A few quick details so we sound like you — every field is optional unless marked.</p>
+              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">A few quick details so we sound like you. Every field is optional unless marked.</p>
             </div>
 
             <div className="space-y-6 max-h-[560px] overflow-y-auto pr-4 custom-scrollbar">
@@ -1051,7 +1065,7 @@ function BookingContent() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any fun or special moments you&apos;ve shared? <span className="italic text-muted-foreground/60">— optional</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any fun or special moments you&apos;ve shared? <span className="italic text-muted-foreground/60">(optional)</span></label>
                     <textarea
                       value={callMessage.sharedMoments}
                       onChange={(e) => updateMessage("sharedMoments", e.target.value)}
@@ -1077,7 +1091,7 @@ function BookingContent() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Has this person ever shown up for you in a special way you&apos;d like mentioned? <span className="italic text-muted-foreground/60">— optional</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Has this person ever shown up for you in a special way you&apos;d like mentioned? <span className="italic text-muted-foreground/60">(optional)</span></label>
                     <textarea
                       value={callMessage.requestSpecial}
                       onChange={(e) => updateMessage("requestSpecial", e.target.value)}
@@ -1093,7 +1107,7 @@ function BookingContent() {
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
                   <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Support Context</div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">What&apos;s been going on, and how can we best support them? <span className="italic text-muted-foreground/60">— gentle wording, optional</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">What&apos;s been going on, and how can we best support them? <span className="italic text-muted-foreground/60">(gentle wording, optional)</span></label>
                     <textarea
                       value={callMessage.supportContext}
                       onChange={(e) => updateMessage("supportContext", e.target.value)}
@@ -1103,7 +1117,7 @@ function BookingContent() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Should this call be more: <span className="italic text-muted-foreground/60">— pick any</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Should this call be more: <span className="italic text-muted-foreground/60">(pick any)</span></label>
                     <div className="flex flex-wrap gap-2">
                       {SUPPORT_TONES.map((tone) => {
                         const active = callMessage.supportTone.includes(tone);
@@ -1192,7 +1206,7 @@ function BookingContent() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">What kind of affirmations would you love to hear? <span className="italic text-muted-foreground/60">— optional</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">What kind of affirmations would you love to hear? <span className="italic text-muted-foreground/60">(optional)</span></label>
                     <textarea
                       value={callMessage.selfLoveAffirmations}
                       onChange={(e) => updateMessage("selfLoveAffirmations", e.target.value)}
@@ -1208,7 +1222,7 @@ function BookingContent() {
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
                   <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Lullaby Vibe</div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any preferred song, hymn, or vibe? <span className="italic text-muted-foreground/60">— soft / humming / spoken words</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any preferred song, hymn, or vibe? <span className="italic text-muted-foreground/60">(soft / humming / spoken words)</span></label>
                     <textarea
                       value={callMessage.lullabyVibe}
                       onChange={(e) => updateMessage("lullabyVibe", e.target.value)}
@@ -1234,7 +1248,7 @@ function BookingContent() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any words or names that must be mentioned? <span className="italic text-muted-foreground/60">— optional</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any words or names that must be mentioned? <span className="italic text-muted-foreground/60">(optional)</span></label>
                     <textarea
                       value={callMessage.videoMustMention}
                       onChange={(e) => updateMessage("videoMustMention", e.target.value)}
@@ -1252,7 +1266,7 @@ function BookingContent() {
                     <Music size={14} />
                     Music Thrills Selected
                   </div>
-                  <label className="text-[11px] font-bold text-muted-foreground ml-1 block">What song would you like us to sing or play? <span className="italic text-muted-foreground/60">— song title + artist</span></label>
+                  <label className="text-[11px] font-bold text-muted-foreground ml-1 block">What song would you like us to sing or play? <span className="italic text-muted-foreground/60">(song title + artist)</span></label>
                   <input
                     type="text"
                     value={callMessage.songRequest}
@@ -1269,7 +1283,7 @@ function BookingContent() {
                     <Laugh size={14} />
                     Prank Thrills Selected
                   </div>
-                  <label className="text-[11px] font-bold text-muted-foreground ml-1 block">Any prank boundaries we should respect? <span className="italic text-muted-foreground/60">— keeps trust</span></label>
+                  <label className="text-[11px] font-bold text-muted-foreground ml-1 block">Any prank boundaries we should respect? <span className="italic text-muted-foreground/60">(keeps trust)</span></label>
                   <textarea
                     value={callMessage.prankBoundaries}
                     onChange={(e) => updateMessage("prankBoundaries", e.target.value)}
@@ -1281,7 +1295,7 @@ function BookingContent() {
               )}
 
               <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Final Notes <span className="italic text-muted-foreground/60 normal-case">— optional</span></div>
+                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Final Notes <span className="italic text-muted-foreground/60 normal-case">(optional)</span></div>
                 <div className="space-y-2">
                   <label className="text-[11px] font-bold text-muted-foreground ml-1">Is there anything you&apos;d like us to avoid or be extra mindful of?</label>
                   <textarea
@@ -1361,7 +1375,7 @@ function BookingContent() {
                   />
                 </div>
                 <p className="text-[10px] font-bold italic text-muted-foreground/70 ml-1">
-                  Auto-detected from your device — edit if you&apos;re booking for a different region.
+                  Auto-detected from your device. Edit if you&apos;re booking for a different region.
                 </p>
               </div>
 
@@ -1405,7 +1419,7 @@ function BookingContent() {
                    </div>
                    <div>
                       <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight uppercase italic ${isInternational ? 'text-primary' : 'text-foreground'}`}>International <span className="gradient-text italic">Recipient</span> 🌍</div>
-                      <div className="text-muted-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Recipient is outside Nigeria — international calls are double the local price.</div>
+                      <div className="text-muted-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Recipient is outside Nigeria; international calls are double the local price.</div>
                    </div>
                 </div>
                 <div className="flex items-center gap-6">
@@ -1420,6 +1434,30 @@ function BookingContent() {
                    </div>
                 </div>
               </div>
+
+              {isSubscriber && subscriberPlan?.id === 'orbit' && (
+                <div className="p-4 sm:p-8 rounded-2xl sm:rounded-[40px] border-2 border-border glass space-y-4">
+                  <div className="flex items-center gap-4 sm:gap-6">
+                     <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[32px] flex items-center justify-center bg-primary/10 text-primary">
+                        <UserCog size={24} className="sm:w-8 sm:h-8" />
+                     </div>
+                     <div>
+                        <div className="font-black text-lg sm:text-xl mb-1 tracking-tight uppercase italic">Preferred <span className="gradient-text italic">Caller</span></div>
+                        <div className="text-muted-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px]">An Orbit perk: pick who delivers this call.</div>
+                     </div>
+                  </div>
+                  <select
+                    value={preferredCallerId}
+                    onChange={(e) => setPreferredCallerId(e.target.value)}
+                    className="w-full bg-foreground/5 border border-border rounded-[24px] py-4 px-6 focus:border-primary transition-all outline-none font-bold text-sm appearance-none cursor-pointer"
+                  >
+                    <option value="">No preference, any available caller</option>
+                    {callers.map((c) => (
+                      <option key={c.id} value={c.id}>{c.full_name}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
             </div>
           </motion.div>
         )}
@@ -1473,6 +1511,12 @@ function BookingContent() {
                         <div className="flex justify-between items-center text-primary">
                           <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">International Recipient</span>
                           <span className="font-black text-base sm:text-lg">Included</span>
+                        </div>
+                      )}
+                      {preferredCallerId && (
+                        <div className="flex justify-between items-center text-primary">
+                          <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Preferred Caller</span>
+                          <span className="font-black text-base sm:text-lg">{callers.find((c) => c.id === preferredCallerId)?.full_name || "Selected"}</span>
                         </div>
                       )}
                       <div className="pt-6 border-t border-border flex justify-between items-center bg-foreground/2 -mx-5 -mb-5 p-5 sm:p-10 sm:-mx-10 sm:-mb-10 mt-6 sm:mt-8">

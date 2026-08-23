@@ -83,7 +83,7 @@ export default function CheckoutSuccess() {
             <span className="gradient-text italic">Confirmed.</span>
           </h1>
           <p className="text-muted-foreground font-medium italic font-serif text-base md:text-lg mb-8 md:mb-12 max-w-sm mx-auto leading-relaxed">
-            We&apos;ve got it from here — your surprise is being prepared with love.
+            We&apos;ve got it from here. Your surprise is being prepared with love.
           </p>
 
           <div className="grid grid-cols-1 gap-3 mb-10 md:mb-12">

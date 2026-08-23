@@ -54,10 +54,10 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
         onSaved?.();
       } else {
         const d = await res.json();
-        setSaveError(d.error || "Save failed — please try again.");
+        setSaveError(d.error || "Save failed. Please try again.");
       }
     } catch {
-      setSaveError("Network error — check your connection.");
+      setSaveError("Network error. Check your connection.");
     } finally {
       setSaving(false);
     }
@@ -154,7 +154,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
           <div className="flex items-center gap-3 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
             <Mic size={15} className="text-amber-400 shrink-0" />
             <p className="text-xs font-bold text-amber-300">
-              User requested a BuzzThrills voice recording — upload it below.
+              User requested a BuzzThrills voice recording. Upload it below.
             </p>
           </div>
         )}
@@ -212,7 +212,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
         <div className="flex items-center gap-3 p-4 rounded-2xl bg-green-500/10 border border-green-500/30 text-green-400">
           <CheckCircle2 size={16} className="shrink-0" />
           <span className="text-xs font-black uppercase tracking-widest">
-            Changes saved — ready to publish when you're done.
+            Changes saved. Ready to publish when you're done.
           </span>
         </div>
       )}

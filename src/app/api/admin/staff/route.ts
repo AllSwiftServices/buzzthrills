@@ -3,7 +3,9 @@ import { supabaseAdmin } from "@/lib/supabase";
 import { verifyToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 
-// Staff = anyone who can be assigned a call: admins and callers.
+// Only callers actually deliver calls, so the assignment dropdown offers callers
+// only — admins can still be set as assigned_to directly via the DB/API if ever
+// needed, this just keeps the UI list focused on who calls actually get worked by.
 export async function GET() {
   try {
     const cookieStore = await cookies();
@@ -25,7 +27,7 @@ export async function GET() {
     const { data: staff, error } = await supabaseAdmin
       .from("profiles")
       .select("id, full_name, role")
-      .in("role", ["admin", "caller"])
+      .eq("role", "caller")
       .order("full_name", { ascending: true });
 
     if (error) throw error;

@@ -83,7 +83,6 @@ export default function NewsletterSignup() {
                     </button>
                  </form>
                )}
-                <div className="mt-4 text-[10px] font-black text-foreground/20 uppercase tracking-widest text-center">No Spam. Pure Care.</div>
             </div>
          </div>
       </section>

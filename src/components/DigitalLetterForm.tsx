@@ -314,7 +314,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
       return;
     }
     if (!draft.id) {
-      alert("Letter draft missing — please go back a step.");
+      alert("Letter draft missing. Please go back a step.");
       return;
     }
 
@@ -442,7 +442,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                 <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 flex gap-3">
                   <span className="text-lg shrink-0">✨</span>
                   <p className="text-[11px] text-amber-300 font-medium leading-relaxed">
-                    Our team will craft a beautiful, personalised letter on your behalf. Just tell us a little about the occasion and recipient — we'll take care of the rest before your letter is published.
+                    Our team will craft a beautiful, personalised letter on your behalf. Just tell us a little about the occasion and recipient. We'll take care of the rest before your letter is published.
                   </p>
                 </div>
                 <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
@@ -549,7 +549,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
 
             <div className="space-y-3">
               <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                Phone Number <span className="text-muted-foreground/60 normal-case font-bold italic">— optional, in case we WhatsApp them the link for you</span>
+                Phone Number <span className="text-muted-foreground/60 normal-case font-bold italic">(optional, in case we WhatsApp them the link for you)</span>
               </label>
               <div className="relative group">
                 <Phone size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -565,7 +565,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
 
             <div className="space-y-3">
               <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                Email Address <span className="text-muted-foreground/60 normal-case font-bold italic">— optional, in case we email them the link for you</span>
+                Email Address <span className="text-muted-foreground/60 normal-case font-bold italic">(optional, in case we email them the link for you)</span>
               </label>
               <div className="relative group">
                 <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -584,7 +584,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
               value={draft.recipientPhotoUrl}
               letterId={draft.id}
               onChange={(url) => setDraft({ ...draft, recipientPhotoUrl: url })}
-              hint="Shows at the top of the letter — optional but recommended"
+              hint="Shows at the top of the letter (optional but recommended)"
             />
           </motion.div>
         )}
@@ -616,7 +616,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
 
             <div className="space-y-3">
               <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/70">
-                Personal Touch <span className="text-muted-foreground/50 normal-case italic">— pick one</span>
+                Personal Touch <span className="text-muted-foreground/50 normal-case italic">(pick one)</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {([
@@ -720,14 +720,14 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             {/* Additional comments */}
             <div className="space-y-2">
               <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                Additional Comments <span className="text-muted-foreground/60 normal-case font-bold italic">— optional</span>
+                Additional Comments <span className="text-muted-foreground/60 normal-case font-bold italic">(optional)</span>
               </label>
               <textarea
                 value={draft.additionalComments}
                 onChange={(e) => setDraft({ ...draft, additionalComments: e.target.value })}
                 rows={3}
                 className="w-full bg-foreground/5 border border-border rounded-[20px] py-4 px-5 focus:border-primary outline-none font-medium text-sm leading-relaxed resize-none"
-                placeholder="Any special instructions — tone, style, timing, language preference…"
+                placeholder="Any special instructions: tone, style, timing, language preference…"
               />
             </div>
 

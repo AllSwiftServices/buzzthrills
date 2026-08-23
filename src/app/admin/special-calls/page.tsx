@@ -373,7 +373,7 @@ export default function AdminSpecialCallsPage() {
                 {/* Call Date */}
                 <div className="space-y-2">
                   <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">
-                    Occasion Date <span className="text-foreground/30 normal-case font-bold">— optional</span>
+                    Occasion Date <span className="text-foreground/30 normal-case font-bold">(optional)</span>
                   </label>
                   <div className="relative">
                     <Calendar size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-foreground/30" />

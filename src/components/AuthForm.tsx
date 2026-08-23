@@ -90,10 +90,10 @@ export default function AuthForm() {
                });
                const resendData = await resendRes.json();
                if (resendData.error) throw new Error(resendData.error);
-               setMessage({ type: 'success', text: "Please verify your email to continue — we've sent a new code." });
+               setMessage({ type: 'success', text: "Please verify your email to continue. We've sent a new code." });
                startResendCooldown();
              } catch {
-               setMessage({ type: 'error', text: "Please verify your email to continue. We couldn't send a new code automatically — tap \"Resend Code\" below." });
+               setMessage({ type: 'error', text: "Please verify your email to continue. We couldn't send a new code automatically. Tap \"Resend Code\" below." });
              }
           } else {
              throw new Error(data.error);

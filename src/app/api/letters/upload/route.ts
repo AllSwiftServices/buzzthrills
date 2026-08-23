@@ -3,16 +3,9 @@ import { cookies } from "next/headers";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyToken } from "@/lib/auth";
 import { v4 as uuidv4 } from "uuid";
-import { LETTER_MEDIA_LIMITS } from "@/lib/letters";
+import { LETTER_MEDIA_LIMITS, isAcceptedLetterMedia, type LetterMediaKind } from "@/lib/letters";
 
-type Kind = "music" | "voice" | "video" | "photo";
-
-function acceptedFor(kind: Kind): readonly string[] {
-  if (kind === "music") return LETTER_MEDIA_LIMITS.acceptedMusic;
-  if (kind === "voice") return LETTER_MEDIA_LIMITS.acceptedVoice;
-  if (kind === "video") return LETTER_MEDIA_LIMITS.acceptedVideo;
-  return LETTER_MEDIA_LIMITS.acceptedPhoto;
-}
+type Kind = LetterMediaKind;
 
 export async function POST(req: Request) {
   try {
@@ -46,8 +39,7 @@ export async function POST(req: Request) {
       );
     }
 
-    const accepted = acceptedFor(selectedKind);
-    if (filetype && !accepted.includes(filetype)) {
+    if (!isAcceptedLetterMedia(selectedKind, filetype)) {
       return NextResponse.json(
         { error: `Unsupported file type for ${selectedKind}: ${filetype}` },
         { status: 415 }

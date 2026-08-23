@@ -19,7 +19,7 @@ const lifeValues = [
   {
     letter: "I",
     word: "Intentionality",
-    desc: "Every word is thoughtfully curated. We believe that happiness and thoughtfulness shouldn't be expensive — it is the thoughts that count truly.",
+    desc: "Every word is thoughtfully curated. We believe that happiness and thoughtfulness shouldn't be expensive; it is the thoughts that count truly.",
     icon: <Star size={22} />,
     color: "text-amber-500",
     bg: "bg-amber-500/10",
@@ -128,13 +128,13 @@ export default function AboutPage() {
               </h2>
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed font-medium">
                 <p>
-                  Buzzthrills started with a simple, powerful goal: to help everyday people put smiles on faces and create unforgettable memories through an affordable surprise service. We believed — and still believe — that true thoughtfulness shouldn&apos;t break the bank, because it truly is the thoughts that count.
+                  Buzzthrills started with a simple, powerful goal: to help everyday people put smiles on faces and create unforgettable memories through an affordable surprise service. We believed, and still believe, that true thoughtfulness shouldn&apos;t break the bank, because it truly is the thoughts that count.
                 </p>
                 <p>
                   From those grassroots beginnings in 2022, we have completely metamorphosed. We realized that as life gets busy, the people who drive your personal life and your business shouldn&apos;t pay the price for a hectic schedule.
                 </p>
                 <p>
-                  Modern life has become fast, fragmented, and increasingly digital. Text messages get buried, automated notifications are ignored, and standard corporate emails lack real human connection. Because of this, Buzzthrills evolved into a premium communication platform designed to bring unfiltered human emotion, presence, and positive energy back to relationships — both personal and professional.
+                  Modern life has become fast, fragmented, and increasingly digital. Text messages get buried, automated notifications are ignored, and standard corporate emails lack real human connection. Because of this, Buzzthrills evolved into a premium communication platform designed to bring unfiltered human emotion, presence, and positive energy back to relationships, both personal and professional.
                 </p>
                 <p>
                   Today, we act as an intentional bridge for long-distance partners, families, and organizations alike. We use the raw psychological power of the human voice and thoughtfully curated digital written words to alter moods, build deep loyalty, mend fractures, and create unforgettable core memories.
@@ -173,7 +173,7 @@ export default function AboutPage() {
                 We Give <span className="gradient-text italic">L.I.F.E.</span>
               </h2>
               <p className="text-muted-foreground text-lg font-medium max-w-2xl mx-auto mt-6 leading-relaxed">
-                Every experience we engineer — whether for an individual or an entire corporate team — is executed under our original core values.
+                Every experience we engineer, whether for an individual or an entire corporate team, is executed under our original core values.
               </p>
             </div>
           </Reveal>
@@ -215,7 +215,7 @@ export default function AboutPage() {
                 Our Communication <span className="gradient-text italic">Mediums</span>
               </h2>
               <p className="text-muted-foreground text-lg font-medium max-w-2xl mx-auto mt-6 leading-relaxed">
-                We have stripped away automated AI scripts and robotic recordings. Instead, Buzzthrills utilizes a real, trained team of Callers — our Thrillers — to execute impact across two core delivery systems.
+                We have stripped away automated AI scripts and robotic recordings. Instead, Buzzthrills utilizes a real, trained team of Callers (our Thrillers) to execute impact across two core delivery systems.
               </p>
             </div>
           </Reveal>
@@ -243,7 +243,7 @@ export default function AboutPage() {
                   Premium Digital Letters
                 </h3>
                 <p className="text-muted-foreground font-medium leading-relaxed">
-                  For moments that require permanence, we design and deliver high-impact Digital Letters — beautifully formatted, emotionally resonant written messages built for deep encouragement, romantic intimacy, or official corporate recognition that recipients can hold onto forever.
+                  For moments that require permanence, we design and deliver high-impact Digital Letters: beautifully formatted, emotionally resonant written messages built for deep encouragement, romantic intimacy, or official corporate recognition that recipients can hold onto forever.
                 </p>
               </div>
             </Reveal>

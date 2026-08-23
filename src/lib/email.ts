@@ -150,7 +150,7 @@ export async function sendSubscriptionConfirmation(email: string, details: {
           <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
             <h1 style="color: #8b5cf6; font-size: 28px; font-weight: 900; margin-bottom: 24px;">Welcome to ${details.planName}! 💜</h1>
             <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 32px;">
-              Your subscription is now active. You have <strong>${details.totalCalls} heartfelt calls</strong> ready to send this cycle. Book them whenever you're ready — we'll handle the rest.
+              Your subscription is now active. You have <strong>${details.totalCalls} heartfelt calls</strong> ready to send this cycle. Book them whenever you're ready. We'll handle the rest.
             </p>
 
             <div style="padding: 24px; background: #fdfaf6; border-radius: 16px; border: 1px solid #eee; margin-bottom: 32px;">
@@ -213,7 +213,7 @@ export async function sendLetterReadyEmail(email: string, details: { recipientNa
           <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
             <h1 style="color: #8b5cf6; font-size: 28px; font-weight: 900; margin-bottom: 24px;">Your Letter is Live 💜</h1>
             <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 32px;">
-              The digital letter you created for <strong>${details.recipientName}</strong> is ready to share. Send them the link below — they'll see your message animate to life.
+              The digital letter you created for <strong>${details.recipientName}</strong> is ready to share. Send them the link below. They'll see your message animate to life.
             </p>
 
             <div style="text-align: center; margin-bottom: 32px;">
@@ -255,7 +255,7 @@ export async function sendLetterProcessingEmail(email: string, details: { recipi
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
           <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
-            <h1 style="color: #5A0C7E; font-size: 28px; font-weight: 900; margin-bottom: 24px;">Payment Confirmed — We're On It! ✨</h1>
+            <h1 style="color: #5A0C7E; font-size: 28px; font-weight: 900; margin-bottom: 24px;">Payment Confirmed: We're On It! ✨</h1>
             <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 32px;">
               Your digital letter for <strong>${details.recipientName}</strong> has been paid for and is now being prepared by our team.
               We'll personalise every detail and notify you the moment it's ready to share.
@@ -267,7 +267,7 @@ export async function sendLetterProcessingEmail(email: string, details: { recipi
                 <li>Our team reviews your brief and crafts your letter</li>
                 <li>We add the requested voice recording or other touches</li>
                 <li>You receive an email with your live share link</li>
-                <li>Share the link — your recipient opens it to a beautiful experience</li>
+                <li>Share the link, and your recipient opens it to a beautiful experience</li>
               </ol>
             </div>
 

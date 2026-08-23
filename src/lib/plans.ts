@@ -58,7 +58,7 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
   orbit: {
     id: "orbit",
     name: "Buzz Orbit",
-    tagline: "For those who want to do it BIG — large families, content creators, high-performing executives, and fast-growing small teams.",
+    tagline: "For those who want to do it BIG: large families, content creators, high-performing executives, and fast-growing small teams.",
     perfectFor: "Families, executives, influencers, and small teams who never want to forget anyone.",
     monthlyPrice: 50000,
     annualPrice: round(50000 * (1 - ANNUAL_DISCOUNT)),
@@ -84,7 +84,7 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
     features: [
       "Custom monthly volume for both specialized voice calls and premium digital letters",
       "A dedicated Account Manager to fully manage your company's entire milestone calendar",
-      "Automated HR triggers that sync with your calendar — no employee birthday or anniversary ever missed",
+      "Automated HR triggers that sync with your calendar, so no employee birthday or anniversary is ever missed",
       "Custom scripts and branding featuring your company's brand voice",
       "Seamless corporate onboarding with invoiced billing, flexible contract terms, and direct team scheduling",
     ],

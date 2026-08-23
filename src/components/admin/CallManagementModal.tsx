@@ -204,9 +204,17 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate, s
                     className="w-full appearance-none p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-foreground/5 border border-foreground/10 text-sm font-black text-foreground outline-none focus:border-primary transition-all disabled:opacity-50 cursor-pointer"
                   >
                     <option value="">Unassigned</option>
+                    {/* The dropdown only lists callers, but a call assigned before that
+                        filter existed (or assigned straight to an admin) still needs to
+                        show its current assignee here rather than silently going blank. */}
+                    {call.assigned_staff && !staff.some((m) => m.id === call.assigned_staff.id) && (
+                      <option value={call.assigned_staff.id}>
+                        {call.assigned_staff.full_name} ({call.assigned_staff.role})
+                      </option>
+                    )}
                     {staff.map((member) => (
                       <option key={member.id} value={member.id}>
-                        {member.full_name} ({member.role})
+                        {member.full_name}
                       </option>
                     ))}
                   </select>

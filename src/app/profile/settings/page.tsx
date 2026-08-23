@@ -305,7 +305,7 @@ export default function SettingsPage() {
                         <p className="text-xs text-muted-foreground font-medium mb-6">We'll be sad to see you go. Your benefits continue until period end.</p>
                         <button
                           disabled
-                          title="Cancelling from here is coming soon — email support to cancel for now."
+                          title="Cancelling from here is coming soon. Email support to cancel for now."
                           className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500/50 flex items-center gap-2 cursor-not-allowed"
                         >
                           Manage Subscription <ChevronRight size={12} />

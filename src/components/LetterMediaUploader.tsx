@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { Upload, X, Loader2, Music, Mic, Video, Image as ImageIcon } from "lucide-react";
-import { LETTER_MEDIA_LIMITS } from "@/lib/letters";
+import { LETTER_MEDIA_LIMITS, isAcceptedLetterMedia } from "@/lib/letters";
 import { useAuth } from "@/context/AuthContext";
 
 type Kind = "music" | "voice" | "video" | "photo";
@@ -44,13 +44,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
     }
 
     // 2. Client-side type check
-    let acceptedTypes: readonly string[] = [];
-    if (kind === "music") acceptedTypes = LETTER_MEDIA_LIMITS.acceptedMusic;
-    else if (kind === "voice") acceptedTypes = LETTER_MEDIA_LIMITS.acceptedVoice;
-    else if (kind === "video") acceptedTypes = LETTER_MEDIA_LIMITS.acceptedVideo;
-    else if (kind === "photo") acceptedTypes = LETTER_MEDIA_LIMITS.acceptedPhoto;
-
-    if (file.type && !acceptedTypes.includes(file.type)) {
+    if (!isAcceptedLetterMedia(kind, file.type)) {
       setError(`Unsupported file type for ${meta.label.toLowerCase()}`);
       if (inputRef.current) inputRef.current.value = "";
       return;

@@ -211,7 +211,7 @@ export default function AdminEditLetterPage() {
           </div>
           <p className="text-xs text-foreground/60 font-medium">
             {letter.status === "processing"
-              ? "Once you've written the letter, added the voice recording, and reviewed everything — mark it complete to publish the live link and notify the sender."
+              ? "Once you've written the letter, added the voice recording, and reviewed everything, mark it complete to publish the live link and notify the sender."
               : "Everything looks good? Save your changes above, then hit publish to send the live link to the user."}
           </p>
           <button
@@ -323,7 +323,7 @@ export default function AdminEditLetterPage() {
           value={adminNotes}
           onChange={(e) => setAdminNotes(e.target.value)}
           rows={4}
-          placeholder="Internal notes — not visible to the recipient."
+          placeholder="Internal notes (not visible to the recipient)."
           className="w-full bg-foreground/5 border border-foreground/10 rounded-2xl py-3 px-4 text-sm font-medium outline-none focus:border-primary/40 resize-none"
         />
         <button

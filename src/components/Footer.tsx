@@ -3,7 +3,7 @@
 import { Phone, Mail } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { InstagramIcon, FacebookIcon, WhatsAppIcon } from "@/components/Icons";
+import { InstagramIcon, FacebookIcon, WhatsAppIcon, TikTokIcon } from "@/components/Icons";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 
@@ -48,9 +48,10 @@ export default function Footer() {
           {/* Social Icons (Circles as in mockup) */}
           <div className="flex items-center gap-4 mb-8">
             {[
-              { icon: <InstagramIcon size={18} />, label: "Instagram", href: "https://instagram.com/Buzzthrills" },
+              { icon: <InstagramIcon size={18} />, label: "Instagram", href: "https://www.instagram.com/buzzthrills" },
+              { icon: <TikTokIcon size={18} />, label: "TikTok", href: "https://www.tiktok.com/@callsurprisecompany" },
               { icon: <FacebookIcon size={18} />, label: "Facebook", href: "https://facebook.com/Buzzthrills" },
-              { icon: <WhatsAppIcon size={18} />, label: "WhatsApp", href: "https://wa.me/2349059388005" },
+              { icon: <WhatsAppIcon size={18} />, label: "WhatsApp", href: "https://wa.me/message/MSQYBT5WIQ4XM1" },
             ].map((social, i) => (
               <a
                 key={i}

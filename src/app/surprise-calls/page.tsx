@@ -96,7 +96,7 @@ export default function SurpriseCallsPage() {
               <div className="space-y-10">
                 {[
                   { step: "01", title: "Schedule Your Slot", desc: "Choose a date and time that would mean the most to your recipient. We handle the time-zone coordination." },
-                  { step: "02", title: "Select Voice Tone", desc: "From high-energy hype hosts to warm, soothing voices—pick the perfect match for the occasion." },
+                  { step: "02", title: "Select Voice Tone", desc: "From high-energy hype hosts to warm, soothing voices, pick the perfect match for the occasion." },
                   { step: "03", title: "Custom Scripting", desc: "Give us the heartfelt details. We'll handle the professional flow and delivery to ensure a core memory." },
                   { step: "04", title: "Professional Delivery", desc: "Our account agents make the call live, ensuring a unique, interactive and emotional experience." }
                 ].map((step, i) => (

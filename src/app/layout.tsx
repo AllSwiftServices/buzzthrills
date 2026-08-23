@@ -15,7 +15,7 @@ const inter = Inter({
 
 
 export const metadata: Metadata = {
-  title: "BuzzThrills Prime — Never Forget Any Special Day Again",
+  title: "BuzzThrills Prime | Never Forget Any Special Day Again",
   description: "Surprise calls, emotional messages, and corporate engagement. Never forget any special moment again.",
 };
 
