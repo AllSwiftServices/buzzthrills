@@ -84,7 +84,7 @@ export default function AdminNewsletterPage() {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40">Loading subscribers…</div>
+        <div className="text-[10px] font-black tracking-[0.3em] text-foreground/40">Loading subscribers…</div>
       </div>
     );
   }
@@ -93,8 +93,8 @@ export default function AdminNewsletterPage() {
     <div className="space-y-8 sm:space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter uppercase">Newsletter</h1>
-          <p className="text-muted-foreground font-bold uppercase text-[9px] sm:text-[10px] tracking-widest">
+          <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter">Newsletter</h1>
+          <p className="text-muted-foreground font-medium text-[9px] sm:text-[10px] tracking-widest">
             {subscribers.length} total &middot; {activeCount} active
           </p>
         </div>
@@ -113,7 +113,7 @@ export default function AdminNewsletterPage() {
           <button
             onClick={exportCsv}
             disabled={filtered.length === 0}
-            className="px-6 py-3 rounded-2xl gradient-bg text-white font-black text-[10px] uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:pointer-events-none"
+            className="px-6 py-3 rounded-2xl gradient-bg text-white font-black text-[10px] tracking-widest shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:pointer-events-none"
           >
             <Download size={14} />
             Export CSV
@@ -128,10 +128,10 @@ export default function AdminNewsletterPage() {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-border bg-foreground/2">
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Email</th>
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Status</th>
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Subscribed</th>
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Actions</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Email</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Status</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Subscribed</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border font-bold">
@@ -152,7 +152,7 @@ export default function AdminNewsletterPage() {
                     </div>
                   </td>
                   <td className="px-5 sm:px-10 py-4 sm:py-6">
-                    <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest inline-flex items-center gap-1.5 border ${
+                    <div className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest inline-flex items-center gap-1.5 border ${
                       s.is_active ? "bg-green-500/10 text-green-500 border-green-500/20" : "bg-foreground/5 text-foreground/40 border-foreground/10"
                     }`}>
                       {s.is_active ? <CheckCircle2 size={11} /> : <XCircle size={11} />}
@@ -184,7 +184,7 @@ export default function AdminNewsletterPage() {
             <div className="text-xl sm:text-2xl font-black mb-2 opacity-40">
               {subscribers.length === 0 ? "No subscribers yet" : "No subscribers match your search"}
             </div>
-            <div className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">
+            <div className="text-[10px] font-bold text-foreground/30 tracking-widest">
               {subscribers.length === 0 ? "New homepage sign-ups will appear here." : "Try a different search term."}
             </div>
           </div>

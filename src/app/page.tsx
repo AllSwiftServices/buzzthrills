@@ -75,8 +75,8 @@ export default function Home() {
           {/* Left Column: Heading and copy */}
           <div className="lg:col-span-7 flex flex-col items-start text-left">
             <Reveal>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-6 text-[10px] sm:text-xs font-bold text-primary uppercase tracking-[0.25em]">
-                REAL MOMENTS. REAL CONNECTIONS.
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-6 text-[10px] sm:text-xs font-bold text-primary tracking-[0.25em]">
+                Real Moments. Real Connections.
               </div>
             </Reveal>
 
@@ -169,7 +169,7 @@ export default function Home() {
                   <div className="text-3xl lg:text-4xl font-extrabold tracking-tight text-foreground mb-1">
                     {stat.value}
                   </div>
-                  <div className="text-[10px] font-bold text-foreground/40 uppercase tracking-wider">
+                  <div className="text-[10px] font-bold text-foreground/40 tracking-wider">
                     {stat.label}
                   </div>
                 </div>
@@ -189,8 +189,8 @@ export default function Home() {
           {/* Left Column: Digital letter text, checkboxes */}
           <div className="lg:col-span-7 text-left">
             <Reveal>
-              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-6 text-[10px] font-bold text-primary uppercase tracking-widest">
-                OUR SIGNATURE EXPERIENCE
+              <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 mb-6 text-[10px] font-bold text-primary tracking-widest">
+                Our Signature Experience
               </div>
               <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-6">
                 The Digital Scroll Letter
@@ -282,7 +282,7 @@ export default function Home() {
             <h2 className="text-3xl sm:text-5xl font-bold tracking-tight mb-3">
               How It Works
             </h2>
-            <p className="text-sm font-black text-primary uppercase tracking-[0.2em] mb-16">
+            <p className="text-sm font-medium text-primary tracking-[0.2em] mb-16">
               Thoughtful. Simple. Seamless.
             </p>
           </Reveal>
@@ -306,7 +306,7 @@ export default function Home() {
                     {step.step}
                   </div>
                   <h3 className="text-xl font-bold mb-3">{step.title}</h3>
-                  <p className="text-sm text-muted-foreground font-semibold max-w-[240px] leading-relaxed">
+                  <p className="text-sm text-muted-foreground font-medium max-w-[240px] leading-relaxed">
                     {step.desc}
                   </p>
                 </div>
@@ -351,7 +351,7 @@ export default function Home() {
                     <h3 className="text-base sm:text-lg font-bold text-foreground mb-1 truncate">
                       {card.title}
                     </h3>
-                    <p className="text-xs text-muted-foreground font-semibold line-clamp-2">
+                    <p className="text-xs text-muted-foreground font-medium line-clamp-2">
                       {card.desc}
                     </p>
                   </div>
@@ -401,7 +401,7 @@ export default function Home() {
                   someone&apos;s happy <br />
                   moment?
                 </h2>
-                <p className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed font-semibold max-w-xl">
+                <p className="text-base sm:text-lg text-muted-foreground mb-8 leading-relaxed font-medium max-w-xl">
                   Whether it&apos;s a call, a letter, or a full surprise experience, we&apos;ve got you covered.
                 </p>
                 <Link
@@ -428,7 +428,7 @@ export default function Home() {
               Real Moments, <br />
               <span className="gradient-text">Real Impact</span>
             </h2>
-            <p className="text-sm font-semibold text-muted-foreground mb-12">
+            <p className="text-sm font-medium text-muted-foreground mb-12">
               Here&apos;s what our amazing community has to say.
             </p>
           </Reveal>
@@ -465,7 +465,7 @@ export default function Home() {
                     </div>
 
                     {/* Quote text */}
-                    <p className="text-base sm:text-lg font-medium leading-relaxed font-serif italic text-foreground/90 mb-8">
+                    <p className="text-base sm:text-lg font-medium leading-relaxed font-serif text-foreground/90 mb-8">
                       &ldquo;{testimonials[testimonialIndex].quote}&ldquo;
                     </p>
                   </div>
@@ -479,7 +479,7 @@ export default function Home() {
                     </div>
                     <div>
                       <div className="font-bold text-sm">{testimonials[testimonialIndex].name}</div>
-                      <div className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mt-0.5">
+                      <div className="text-[10px] font-bold tracking-wider text-muted-foreground mt-0.5">
                         {testimonials[testimonialIndex].callType}
                       </div>
                     </div>
@@ -533,7 +533,7 @@ export default function Home() {
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight mb-2">
                 Join BuzzThrills Prime
               </h2>
-              <p className="text-sm font-semibold text-muted-foreground mb-8 leading-relaxed max-w-sm">
+              <p className="text-sm font-medium text-muted-foreground mb-8 leading-relaxed max-w-sm">
                 Unlock exclusive benefits and priority customer support.
               </p>
 

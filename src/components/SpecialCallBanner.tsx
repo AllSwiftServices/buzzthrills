@@ -100,24 +100,24 @@ export default function SpecialCallBanner() {
                   <div className="flex-1 text-center md:text-left">
                     {/* Badge row */}
                     <div className="flex flex-wrap items-center gap-2 justify-center md:justify-start mb-3">
-                      <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full gradient-bg text-white text-[9px] font-black uppercase tracking-[0.25em] shadow-lg shadow-primary/30">
+                      <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full gradient-bg text-white text-[9px] font-black tracking-[0.25em] shadow-lg shadow-primary/30">
                         <Sparkles size={10} className="fill-current" />
                         Special Occasion
                       </div>
                       {formattedDate && (
-                        <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-foreground/5 border border-foreground/10 text-[9px] font-black uppercase tracking-widest text-foreground/60">
+                        <div className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-foreground/5 border border-foreground/10 text-[9px] font-black tracking-widest text-foreground/60">
                           <Clock size={10} />
                           {formattedDate}
                         </div>
                       )}
                     </div>
 
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter italic mb-2 leading-tight">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tighter mb-2 leading-tight">
                       {specialCall.title}
                     </h2>
 
                     {specialCall.description && (
-                      <p className="text-muted-foreground font-medium text-sm sm:text-base italic font-serif leading-relaxed max-w-xl">
+                      <p className="text-muted-foreground font-medium text-sm sm:text-base font-serif leading-relaxed max-w-xl">
                         {specialCall.description}
                       </p>
                     )}
@@ -126,12 +126,12 @@ export default function SpecialCallBanner() {
                   {/* Price + CTA */}
                   <div className="flex flex-col items-center md:items-end gap-3 shrink-0">
                     <div className="text-center md:text-right">
-                      <div className="text-[9px] font-black uppercase tracking-widest text-foreground/30 mb-1">Fixed Price</div>
+                      <div className="text-[9px] font-black tracking-widest text-foreground/30 mb-1">Fixed Price</div>
                       <div className="text-3xl sm:text-4xl font-black tracking-tighter gradient-text">
                         ₦{specialCall.price.toLocaleString()}
                       </div>
                     </div>
-                    <div className="inline-flex items-center gap-3 px-7 py-3.5 rounded-2xl gradient-bg text-white font-black text-[10px] uppercase tracking-widest shadow-xl shadow-primary/30 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/40 transition-all duration-300">
+                    <div className="inline-flex items-center gap-3 px-7 py-3.5 rounded-2xl gradient-bg text-white font-black text-[10px] tracking-widest shadow-xl shadow-primary/30 group-hover:scale-105 group-hover:shadow-2xl group-hover:shadow-primary/40 transition-all duration-300">
                       Book This Call
                       <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                     </div>

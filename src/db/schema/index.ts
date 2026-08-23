@@ -9,7 +9,7 @@ import { relations, sql } from 'drizzle-orm';
 // ─────────────────────────────────────────────
 
 export const userRole = pgEnum('user_role', ['user', 'admin', 'caller']);
-export const callStatus = pgEnum('call_status', ['pending', 'scheduled', 'delivered', 'failed']);
+export const callStatus = pgEnum('call_status', ['pending', 'assigned', 'scheduled', 'delivered', 'failed']);
 export const callSlot = pgEnum('call_slot', ['morning', 'afternoon', 'evening', 'night']);
 export const planType = pgEnum('plan_type', ['lite', 'plus', 'orbit', 'corporate']);
 export const subscriptionStatus = pgEnum('subscription_status', ['active', 'expired', 'canceled']);

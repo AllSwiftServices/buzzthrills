@@ -18,7 +18,7 @@ export default function DigitalLettersPage() {
         
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>
-            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-accent/20 mb-8 text-[10px] font-bold text-accent uppercase tracking-[0.4em] italic">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-accent/20 mb-8 text-[10px] font-bold text-accent tracking-[0.4em]">
               <Sparkles size={14} className="fill-current" />
               Digital Experience Letters
             </div>
@@ -26,11 +26,11 @@ export default function DigitalLettersPage() {
           <Reveal delay={0.1}>
             <h1 className="text-4xl sm:text-6xl md:text-8xl font-medium mb-8 tracking-tight font-serif leading-none">
               Words That <br className="hidden sm:block" />
-              <span className="gradient-text italic">Live Forever</span>.
+              <span className="gradient-text">Live Forever</span>.
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-lg text-muted-foreground font-medium max-w-2xl mx-auto mb-12 font-serif italic text-xl">
+            <p className="text-lg text-muted-foreground font-medium max-w-2xl mx-auto mb-12 font-serif text-xl">
               The modern way to say something timeless. Combine beautiful typography, animated scroll technology, and personal voice recordings into a single digital letter.
             </p>
           </Reveal>
@@ -72,8 +72,8 @@ export default function DigitalLettersPage() {
           <Reveal>
             <div className="relative group">
               <div className="absolute inset-0 bg-primary/20 blur-[120px] rounded-full -z-10 animate-pulse" />
-              <h2 className="text-4xl md:text-5xl font-medium mb-8 tracking-tight font-serif italic text-center">Not Just a <span className="gradient-text italic">Message</span>. <br />A Digital Letter.</h2>
-              <p className="text-lg text-muted-foreground leading-relaxed font-serif italic mb-10 text-center">
+              <h2 className="text-4xl md:text-5xl font-medium mb-8 tracking-tight font-serif text-center">Not Just a <span className="gradient-text">Message</span>. <br />A Digital Letter.</h2>
+              <p className="text-lg text-muted-foreground leading-relaxed font-serif mb-10 text-center">
                 Standard texts vanish in the noise. Our digital letters are built to be kept. Every letter is a handcrafted experience that the recipient can revisit whenever they need a reminder of how much they mean to you.
               </p>
               
@@ -105,7 +105,7 @@ export default function DigitalLettersPage() {
           <div className="max-w-4xl mx-auto p-8 sm:p-16 rounded-[32px] sm:rounded-[64px] glass border border-border shadow-huge relative overflow-hidden group">
             <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity duration-1000" />
             <div className="absolute bottom-0 right-0 w-96 h-96 bg-accent/10 blur-[100px] rounded-full -mr-48 -mb-48" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-medium mb-12 relative z-10 tracking-tight font-serif italic">Words Mean <br className="hidden sm:block" /><span className="gradient-text italic">Everything.</span></h2>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-medium mb-12 relative z-10 tracking-tight font-serif">Words Mean <br className="hidden sm:block" /><span className="gradient-text">Everything.</span></h2>
             <Link href="/digital-letters/create" className="inline-block px-8 py-4 sm:px-12 sm:py-6 gradient-bg text-white font-bold text-base sm:text-xl rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge relative z-10">
               Pick Your Theme
             </Link>

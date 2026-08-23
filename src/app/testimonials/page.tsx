@@ -28,12 +28,12 @@ export default function TestimonialsPage() {
             </Link>
 
             <Reveal>
-              <h1 className="text-5xl md:text-8xl font-black italic uppercase tracking-tighter mb-6 leading-none">
-                The Full <span className="gradient-text italic">Wall of Joy</span>
+              <h1 className="text-5xl md:text-8xl font-black tracking-tighter mb-6 leading-none">
+                The Full <span className="gradient-text">Wall of Joy</span>
               </h1>
             </Reveal>
             <Reveal delay={0.1}>
-              <p className="text-xl text-muted-foreground max-w-2xl font-medium italic font-serif leading-relaxed">
+              <p className="text-xl text-muted-foreground max-w-2xl font-medium font-serif leading-relaxed">
                 Real reactions, real reviews. The reason we keep doing what we do.
               </p>
             </Reveal>
@@ -56,7 +56,7 @@ export default function TestimonialsPage() {
           <div className="mt-32 p-16 sm:p-24 rounded-[64px] gradient-bg text-white text-center shadow-huge relative overflow-hidden group">
             <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
             <div className="relative z-10">
-              <h2 className="text-4xl sm:text-6xl font-black italic uppercase tracking-tighter mb-12 leading-none">
+              <h2 className="text-4xl sm:text-6xl font-black tracking-tighter mb-12 leading-none">
                 Ready to create <br />the next <span className="text-white/40">Story?</span>
               </h2>
               <Link

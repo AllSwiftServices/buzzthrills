@@ -51,7 +51,7 @@ export default function AdminDashboard() {
     return (
       <div className="flex flex-col items-center justify-center h-[60vh] gap-8">
         <Loader2 className="text-primary animate-spin" size={64} />
-        <div className="text-sm font-black uppercase tracking-[0.5em] animate-pulse">Syncing Metrics...</div>
+        <div className="text-sm font-black tracking-[0.5em] animate-pulse">Syncing Metrics...</div>
       </div>
     );
   }
@@ -68,8 +68,8 @@ export default function AdminDashboard() {
   return (
     <div className="space-y-8 sm:space-y-12 pb-20">
       <header>
-        <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter uppercase text-foreground">Dashboard</h1>
-        <p className="text-foreground/40 font-bold tracking-tight">Overview of bookings, clients, and pending work.</p>
+        <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter text-foreground">Dashboard</h1>
+        <p className="text-foreground/40 font-medium tracking-tight">Overview of bookings, clients, and pending work.</p>
       </header>
 
       {/* Primary Metrics Grid */}
@@ -92,7 +92,7 @@ export default function AdminDashboard() {
 
             <div className="relative z-10">
               <div className="text-2xl sm:text-4xl font-black mb-1 tabular-nums tracking-tighter group-hover:scale-105 transition-transform origin-left">{stat.value}</div>
-              <div className="text-[9px] sm:text-[10px] font-black text-foreground/40 uppercase tracking-widest">{stat.label}</div>
+              <div className="text-[9px] sm:text-[10px] font-black text-foreground/40 tracking-widest">{stat.label}</div>
             </div>
           </motion.div>
         ))}
@@ -103,12 +103,12 @@ export default function AdminDashboard() {
         <div className="lg:col-span-12 p-5 sm:p-10 md:p-12 rounded-[28px] sm:rounded-[64px] glass border border-foreground/10 shadow-huge bg-foreground/5 relative overflow-hidden h-fit">
           <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-8 sm:mb-10">
             <div>
-              <h3 className="text-xl sm:text-2xl font-black tracking-tighter uppercase">Recent Calls</h3>
-              <p className="text-[10px] font-black uppercase tracking-widest text-foreground/40 mt-1">Latest call bookings and their status</p>
+              <h3 className="text-xl sm:text-2xl font-black tracking-tighter">Recent Calls</h3>
+              <p className="text-[10px] font-medium tracking-widest text-foreground/40 mt-1">Latest call bookings and their status</p>
             </div>
             <button
               onClick={() => router.push('/admin/calls')}
-              className="self-start sm:self-auto px-4 py-2 sm:px-6 sm:py-3 rounded-xl bg-foreground/5 border border-foreground/5 text-[9px] sm:text-[10px] font-black uppercase tracking-widest hover:bg-foreground/10 transition-all"
+              className="self-start sm:self-auto px-4 py-2 sm:px-6 sm:py-3 rounded-xl bg-foreground/5 border border-foreground/5 text-[9px] sm:text-[10px] font-black tracking-widest hover:bg-foreground/10 transition-all"
             >
                View all calls
             </button>
@@ -129,13 +129,13 @@ export default function AdminDashboard() {
                   </div>
                   <div>
                     <div className="font-black text-sm sm:text-lg tracking-tight group-hover:text-primary transition-colors">{call.recipient_name}</div>
-                    <div className="text-[9px] sm:text-[10px] text-foreground/40 font-bold uppercase tracking-widest mt-0.5">{call.recipient_phone}</div>
+                    <div className="text-[9px] sm:text-[10px] text-foreground/40 font-bold tracking-widest mt-0.5">{call.recipient_phone}</div>
                   </div>
                 </div>
 
                 <div className="flex items-center justify-between pt-4 sm:pt-6 border-t border-foreground/5">
                    <div className="flex flex-col gap-1">
-                      <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest flex items-center gap-2">
+                      <div className="text-[10px] font-black text-foreground/40 tracking-widest flex items-center gap-2">
                          <Clock size={12} />
                          {call.scheduled_slot}
                       </div>
@@ -143,7 +143,7 @@ export default function AdminDashboard() {
                         <div className="text-xs font-black text-primary/60">{call.occasion_type}</div>
                       )}
                    </div>
-                   <div className={`px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border border-foreground/5 ${
+                   <div className={`px-4 py-1.5 rounded-full text-[9px] font-black tracking-widest border border-foreground/5 ${
                     call.status === 'delivered' ? 'bg-green-500/10 text-green-500 border-green-500/20' :
                     call.status === 'pending' ? 'bg-amber-500/10 text-amber-500 border-amber-500/20' : 'bg-primary/10 text-primary border-primary/20 hover:animate-pulse'
                   }`}>
@@ -154,7 +154,7 @@ export default function AdminDashboard() {
             )) : (
               <div className="lg:col-span-3 text-center py-20 bg-foreground/2 border-2 border-dashed border-foreground/5 rounded-[48px]">
                 <ShieldCheck size={64} className="mx-auto text-foreground/10 mb-6" />
-                <div className="text-sm font-black text-foreground/30 uppercase tracking-widest">No calls booked yet.</div>
+                <div className="text-sm font-black text-foreground/30 tracking-widest">No calls booked yet.</div>
               </div>
             )}
           </div>
@@ -165,7 +165,7 @@ export default function AdminDashboard() {
            <div className="absolute top-0 left-0 w-96 h-96 bg-secondary/2 blur-[100px] rounded-full -ml-48 -mt-48" />
            <div className="flex items-center gap-4 mb-8 sm:mb-10 relative z-10">
               <Globe className="text-secondary" size={24} />
-              <h3 className="text-xl sm:text-2xl font-black tracking-tighter uppercase leading-none">Client Regions</h3>
+              <h3 className="text-xl sm:text-2xl font-black tracking-tighter leading-none">Client Regions</h3>
            </div>
 
            {analytics.geoSummary && analytics.geoSummary.length > 0 ? (
@@ -177,7 +177,7 @@ export default function AdminDashboard() {
                 return (
                   <div key={i} className="group">
                     <div className="flex justify-between items-center mb-4">
-                      <div className="flex items-center gap-4 text-sm font-black uppercase tracking-[0.2em] text-foreground/80">
+                      <div className="flex items-center gap-4 text-sm font-black tracking-[0.2em] text-foreground/80">
                         {i === 0 ? <Globe size={18} /> : <MapPin size={18} />}
                         {seg.label}
                       </div>
@@ -201,7 +201,7 @@ export default function AdminDashboard() {
            ) : (
              <div className="text-center py-16 relative z-10">
                <MapPin size={40} className="mx-auto text-foreground/10 mb-4" />
-               <div className="text-sm font-black text-foreground/30 uppercase tracking-widest">No client location data yet.</div>
+               <div className="text-sm font-black text-foreground/30 tracking-widest">No client location data yet.</div>
              </div>
            )}
         </div>
@@ -217,9 +217,9 @@ export default function AdminDashboard() {
                  <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-[28px] sm:rounded-[32px] bg-foreground/20 flex items-center justify-center mx-auto mb-6 sm:mb-8 shadow-huge backdrop-blur-xl group-hover:rotate-12 transition-transform">
                     <Tag size={32} className="text-foreground fill-current opacity-80" />
                  </div>
-                 <h3 className="text-2xl sm:text-4xl font-black mb-3 sm:mb-4 tracking-tighter uppercase leading-none">Promotions</h3>
-                 <p className="text-foreground/70 font-bold text-[10px] mb-6 sm:mb-8 leading-relaxed max-w-[200px] mx-auto uppercase tracking-widest">Create and manage discounts and campaigns.</p>
-                 <div className="inline-flex items-center gap-3 px-6 py-3 bg-foreground text-background font-black rounded-2xl text-[10px] uppercase tracking-[0.2em] shadow-huge">
+                 <h3 className="text-2xl sm:text-4xl font-black mb-3 sm:mb-4 tracking-tighter leading-none">Promotions</h3>
+                 <p className="text-foreground/70 font-medium text-[10px] mb-6 sm:mb-8 leading-relaxed max-w-[200px] mx-auto tracking-widest">Create and manage discounts and campaigns.</p>
+                 <div className="inline-flex items-center gap-3 px-6 py-3 bg-foreground text-background font-black rounded-2xl text-[10px] tracking-[0.2em] shadow-huge">
                     Open Promotions <ChevronRight size={18} />
                  </div>
               </div>
@@ -235,8 +235,8 @@ export default function AdminDashboard() {
                     <Users size={24} />
                  </div>
                  <div>
-                    <div className="text-lg sm:text-2xl font-black tracking-tighter uppercase leading-none">Clients</div>
-                    <div className="text-[9px] font-black text-foreground/40 uppercase tracking-widest mt-1">Every registered member</div>
+                    <div className="text-lg sm:text-2xl font-black tracking-tighter leading-none">Clients</div>
+                    <div className="text-[9px] font-black text-foreground/40 tracking-widest mt-1">Every registered member</div>
                  </div>
               </div>
               <ChevronRight size={24} className="text-foreground/20 group-hover:text-foreground group-hover:translate-x-1 transition-all shrink-0" />

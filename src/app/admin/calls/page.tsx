@@ -67,6 +67,7 @@ export default function AdminCalls() {
     switch (status) {
       case 'delivered': return <CheckCircle2 className="text-green-500" size={12} />;
       case 'failed': return <XCircle className="text-red-500" size={12} />;
+      case 'assigned': return <UserCheck className="text-blue-500" size={12} />;
       default: return <AlertCircle className="text-amber-500" size={12} />;
     }
   };
@@ -75,7 +76,7 @@ export default function AdminCalls() {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40">Loading calls…</div>
+        <div className="text-[10px] font-black tracking-[0.3em] text-foreground/40">Loading calls…</div>
       </div>
     );
   }
@@ -84,8 +85,8 @@ export default function AdminCalls() {
     <div className="space-y-8 sm:space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 text-foreground uppercase tracking-tighter">Calls</h1>
-          <p className="text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.2em]">Every call booking and its delivery status.</p>
+          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 text-foreground tracking-tighter">Calls</h1>
+          <p className="text-foreground/40 font-medium text-[8px] sm:text-[10px] tracking-[0.2em]">Every call booking and its delivery status.</p>
         </div>
 
         <div className="flex flex-col sm:flex-row w-full md:w-auto gap-3">
@@ -101,7 +102,7 @@ export default function AdminCalls() {
           </div>
           <button
             onClick={() => setUnassignedOnly((v) => !v)}
-            className={`px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black uppercase tracking-widest transition-all border whitespace-nowrap ${
+            className={`px-5 py-2.5 sm:py-3 rounded-xl sm:rounded-2xl text-[10px] sm:text-xs font-black tracking-widest transition-all border whitespace-nowrap ${
               unassignedOnly
                 ? "bg-primary text-white border-primary"
                 : "bg-foreground/5 border-foreground/10 text-foreground/40 hover:text-foreground"
@@ -130,10 +131,11 @@ export default function AdminCalls() {
                 </div>
                 <div>
                    <div className="flex flex-wrap items-center gap-3 mb-2">
-                      <h3 className="text-xl sm:text-2xl font-black text-foreground uppercase tracking-tighter">{call.recipient_name}</h3>
-                      <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 ${
-                        call.status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' : 
-                        call.status === 'failed' ? 'bg-red-500/10 text-red-500 border border-red-500/20' : 
+                      <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tighter">{call.recipient_name}</h3>
+                      <div className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest flex items-center gap-1.5 ${
+                        call.status === 'delivered' ? 'bg-green-500/10 text-green-500 border border-green-500/20' :
+                        call.status === 'failed' ? 'bg-red-500/10 text-red-500 border border-red-500/20' :
+                        call.status === 'assigned' ? 'bg-blue-500/10 text-blue-500 border border-blue-500/20' :
                         'bg-amber-500/10 text-amber-500 border border-amber-500/20'
                       }`}>
                          {getStatusIcon(call.status)}
@@ -141,15 +143,15 @@ export default function AdminCalls() {
                       </div>
                    </div>
                     <div className="flex flex-wrap items-center gap-x-4 sm:gap-x-6 gap-y-2 sm:gap-y-3">
-                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest">
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black text-[8px] sm:text-[10px] tracking-widest">
                           <Phone size={12} className="sm:size-[14px] text-primary/60" />
                           {call.recipient_phone}
                        </div>
-                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest border-l border-foreground/5 pl-4 sm:pl-6">
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black text-[8px] sm:text-[10px] tracking-widest border-l border-foreground/5 pl-4 sm:pl-6">
                           <Calendar size={12} className="sm:size-[14px] text-secondary/60" />
                           {new Date(call.occasion_date).toLocaleDateString()}
                        </div>
-                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-widest border-l border-foreground/5 pl-4 sm:pl-6">
+                       <div className="flex items-center gap-1.5 sm:gap-2 text-foreground/40 font-black text-[8px] sm:text-[10px] tracking-widest border-l border-foreground/5 pl-4 sm:pl-6">
                           <Clock size={12} className="sm:size-[14px] text-primary/60" />
                           {call.scheduled_slot} Slot
                        </div>
@@ -163,7 +165,7 @@ export default function AdminCalls() {
                         <UserCheck size={16} className="sm:size-[18px]" />
                      </div>
                      <div>
-                        <div className="text-[8px] sm:text-[9px] font-black text-foreground/20 uppercase tracking-widest">Booked By</div>
+                        <div className="text-[8px] sm:text-[9px] font-black text-foreground/20 tracking-widest">Booked By</div>
                         <div className="text-[11px] sm:text-xs font-black text-foreground">{call.profiles?.full_name || "Anonymous"}</div>
                      </div>
                   </div>
@@ -176,7 +178,7 @@ export default function AdminCalls() {
                         <UserCog size={16} className="sm:size-[18px]" />
                      </div>
                      <div>
-                        <div className="text-[8px] sm:text-[9px] font-black text-foreground/20 uppercase tracking-widest">Assigned To</div>
+                        <div className="text-[8px] sm:text-[9px] font-black text-foreground/20 tracking-widest">Assigned To</div>
                         <div className={`text-[11px] sm:text-xs font-black ${call.assigned_staff ? "text-foreground" : "text-foreground/30"}`}>
                           {call.assigned_staff?.full_name || "Unassigned"}
                         </div>
@@ -184,7 +186,7 @@ export default function AdminCalls() {
                   </div>
                   <button
                     onClick={() => setSelectedCall(call)}
-                    className="w-full sm:w-auto px-6 py-4 sm:px-10 sm:py-5 rounded-2xl bg-primary text-white font-black text-[9px] sm:text-[10px] uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 sm:gap-3"
+                    className="w-full sm:w-auto px-6 py-4 sm:px-10 sm:py-5 rounded-2xl bg-primary text-white font-black text-[9px] sm:text-[10px] tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 sm:gap-3"
                   >
                     View & Manage
                     <ChevronRight size={16} className="sm:size-[18px]" />
@@ -195,10 +197,10 @@ export default function AdminCalls() {
         )) : (
           <div className="flex flex-col items-center justify-center py-20 px-8 rounded-[40px] border-2 border-dashed border-foreground/5 bg-foreground/[0.02] text-center">
              <ShieldCheck size={48} className="text-foreground/10 mb-4" />
-             <div className="text-xl font-black text-foreground uppercase tracking-tighter">
+             <div className="text-xl font-black text-foreground tracking-tighter">
                {calls.length === 0 ? "No calls yet" : unassignedOnly ? "No unassigned calls" : "No calls match your search"}
              </div>
-             <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mt-2">
+             <div className="text-[10px] font-black text-foreground/40 tracking-widest mt-2">
                {calls.length === 0 ? "Scheduled calls will appear here." : unassignedOnly ? "Every call has been assigned to a staff member." : "Try a different name or phone number."}
              </div>
           </div>

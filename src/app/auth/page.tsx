@@ -35,7 +35,7 @@ export default function AuthPage() {
   }, [verified, user, router]);
 
   return (
-    <main className="min-h-screen bg-background flex flex-col justify-center items-center px-6 relative overflow-hidden transition-colors duration-500 font-outfit">
+    <main className="min-h-screen bg-background flex flex-col justify-center items-center px-4 sm:px-6 relative overflow-hidden transition-colors duration-500 font-outfit">
       <Header />
       
       {/* Background Orbs */}

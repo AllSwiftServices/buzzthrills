@@ -63,7 +63,7 @@ function TestimonialCard({ item }: { item: Testimonial }) {
         ))}
       </div>
 
-      <p className="text-base sm:text-lg font-medium font-serif italic leading-relaxed text-foreground/85 mb-6 flex-grow">
+      <p className="text-base sm:text-lg font-medium font-serif leading-relaxed text-foreground/85 mb-6 flex-grow">
         &ldquo;{item.quote}&rdquo;
       </p>
 
@@ -75,7 +75,7 @@ function TestimonialCard({ item }: { item: Testimonial }) {
         </div>
         <div className="min-w-0">
           <div className="font-bold text-sm truncate">{item.name}</div>
-          <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary/70 mt-0.5">
+          <div className="text-[10px] font-bold tracking-[0.2em] text-primary/70 mt-0.5">
             {item.callType}
           </div>
         </div>
@@ -94,18 +94,18 @@ export default function WallOfJoy() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16 px-4">
           <Reveal>
-            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold uppercase tracking-[0.4em] mb-8">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold tracking-[0.4em] mb-8">
               <Heart size={14} className="fill-current" />
               Real Moments
             </div>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="text-4xl sm:text-5xl md:text-7xl font-medium mb-6 font-serif">
-              The <span className="gradient-text italic">Wall of Joy</span>
+              The <span className="gradient-text">Wall of Joy</span>
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-muted-foreground text-lg sm:text-xl font-medium max-w-2xl mx-auto tracking-tight font-serif italic">
+            <p className="text-muted-foreground text-lg sm:text-xl font-medium max-w-2xl mx-auto tracking-tight font-serif">
               Authentic reactions from our community. These are the hearts we&apos;ve touched along the way.
             </p>
           </Reveal>
@@ -128,7 +128,7 @@ export default function WallOfJoy() {
         <div className="mt-16 text-center">
           <Link
             href="/testimonials"
-            className="inline-flex items-center gap-3 px-10 py-5 rounded-3xl glass border-primary/20 text-primary font-black uppercase tracking-[0.2em] text-xs hover:scale-105 active:scale-95 transition-all"
+            className="inline-flex items-center gap-3 px-10 py-5 rounded-3xl glass border-primary/20 text-primary font-black tracking-[0.2em] text-xs hover:scale-105 active:scale-95 transition-all"
           >
             The Full Wall of Joy
             <Star size={16} />
@@ -137,7 +137,7 @@ export default function WallOfJoy() {
 
         <Reveal delay={0.4}>
           <div className="mt-20 text-center">
-            <p className="text-muted-foreground font-medium mb-3 font-serif italic text-lg">
+            <p className="text-muted-foreground font-medium mb-3 font-serif text-lg">
               Next up: Your own unforgettable moment.
             </p>
             <Link

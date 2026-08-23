@@ -69,10 +69,10 @@ export default function LiveStatsWidget() {
               {item.icon}
             </div>
             <div className="text-center lg:text-left">
-              <div className="text-3xl lg:text-4xl font-black tracking-tighter tabular-nums mb-1 italic font-serif gradient-text">
+              <div className="text-3xl lg:text-4xl font-black tracking-tighter tabular-nums mb-1 font-serif gradient-text">
                 {item.value}
               </div>
-              <div className="text-[10px] font-black text-foreground/40 uppercase tracking-[0.2em] italic font-serif">
+              <div className="text-[10px] font-black text-foreground/40 tracking-[0.2em] font-serif">
                 {item.label}
               </div>
             </div>

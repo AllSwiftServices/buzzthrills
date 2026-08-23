@@ -57,10 +57,11 @@ export async function POST(request: Request) {
       );
     }
 
-    // 4. "Choose your preferred caller" is an Orbit-only perk — re-check plan and
-    // caller identity server-side rather than trusting the client's request body.
+    // 4. "Choose your preferred caller" is available to any active subscriber —
+    // still re-verify the caller identity server-side rather than trusting the
+    // client's request body.
     let assignedTo: string | null = null;
-    if (preferredCallerId && subscription.plan === "orbit") {
+    if (preferredCallerId) {
       const { data: caller } = await supabaseAdmin
         .from("profiles")
         .select("id")
@@ -84,7 +85,7 @@ export async function POST(request: Request) {
       scheduled_slot: r.time || "morning",
       is_express: !!isExpress,
       is_international: !!isInternational,
-      status: "pending",
+      status: assignedTo ? "assigned" : "pending",
       metadata: {
         ...bookingMetadata,
         recipient: bookingMetadata?.recipients?.[idx] ?? null,

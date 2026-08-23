@@ -98,11 +98,11 @@ export default function SettingsPage() {
             <motion.h1 
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 uppercase tracking-tighter"
+              className="text-3xl sm:text-4xl md:text-5xl font-black mb-2 tracking-tighter"
             >
               Account <span className="gradient-text">Settings</span>
             </motion.h1>
-            <p className="text-muted-foreground text-[10px] font-black uppercase tracking-widest pl-1">Manage your account credentials.</p>
+            <p className="text-muted-foreground text-[10px] font-medium tracking-widest pl-1">Manage your account credentials.</p>
           </div>
         </div>
 
@@ -166,7 +166,7 @@ export default function SettingsPage() {
                         <button
                           disabled
                           title="Custom avatars are coming soon."
-                          className="text-[10px] font-black uppercase tracking-widest text-primary/50 cursor-not-allowed"
+                          className="text-[10px] font-black tracking-widest text-primary/50 cursor-not-allowed"
                         >
                           Change Profile Avatar
                         </button>
@@ -174,7 +174,7 @@ export default function SettingsPage() {
 
                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Full Name</label>
+                           <label className="text-[10px] font-black tracking-widest text-muted-foreground">Full Name</label>
                           <input
                             type="text"
                             value={fullName}
@@ -183,7 +183,7 @@ export default function SettingsPage() {
                           />
                        </div>
                         <div className="space-y-2">
-                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Email Address</label>
+                           <label className="text-[10px] font-black tracking-widest text-muted-foreground">Email Address</label>
                           <input
                             type="email" 
                             value={email}
@@ -192,7 +192,7 @@ export default function SettingsPage() {
                           />
                        </div>
                         <div className="space-y-2">
-                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Phone Number</label>
+                           <label className="text-[10px] font-black tracking-widest text-muted-foreground">Phone Number</label>
                           <input 
                             type="tel" 
                             value={phone}
@@ -216,14 +216,14 @@ export default function SettingsPage() {
                     <div className="p-6 rounded-3xl bg-primary/5 border border-primary/20 flex items-center gap-4 mb-8">
                         <Shield size={24} className="text-primary" />
                         <div>
-                            <div className="font-black text-[10px] uppercase tracking-tight">Password Protected</div>
-                            <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Your password is hashed and never stored in plain text.</div>
+                            <div className="font-black text-[10px] tracking-tight">Password Protected</div>
+                            <div className="text-[10px] font-bold text-muted-foreground tracking-widest">Your password is hashed and never stored in plain text.</div>
                         </div>
                     </div>
 
                     <div className="space-y-6">
                        <div className="space-y-2">
-                          <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Current Password</label>
+                          <label className="text-[10px] font-black tracking-widest text-muted-foreground">Current Password</label>
                           <input 
                             type="password" 
                             value={currentPassword}
@@ -233,7 +233,7 @@ export default function SettingsPage() {
                           />
                        </div>
                         <div className="space-y-2">
-                           <label className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">New Password</label>
+                           <label className="text-[10px] font-black tracking-widest text-muted-foreground">New Password</label>
                            <input 
                              type="password" 
                              value={newPassword}
@@ -259,8 +259,8 @@ export default function SettingsPage() {
                       
                       <div className="flex justify-between items-start mb-8 relative z-10">
                         <div>
-                          <div className="text-[10px] font-black uppercase tracking-[0.3em] opacity-80 mb-2">Current Active Plan</div>
-                          <h3 className="text-4xl font-black uppercase tracking-tighter">
+                          <div className="text-[10px] font-black tracking-[0.3em] opacity-80 mb-2">Current Active Plan</div>
+                          <h3 className="text-4xl font-black tracking-tighter">
                             {subscription?.plan ? subscription.plan : 'No Active Plan'}
                           </h3>
                         </div>
@@ -271,11 +271,11 @@ export default function SettingsPage() {
 
                       <div className="grid grid-cols-2 gap-8 relative z-10">
                         <div>
-                          <div className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">Status</div>
-                          <div className="text-sm font-bold uppercase">{subscription?.status || 'Inactive'}</div>
+                          <div className="text-[10px] font-black tracking-widest opacity-60 mb-1">Status</div>
+                          <div className="text-sm font-bold">{subscription?.status || 'Inactive'}</div>
                         </div>
                         <div>
-                          <div className="text-[10px] font-black uppercase tracking-widest opacity-60 mb-1">Calls Remaining</div>
+                          <div className="text-[10px] font-black tracking-widest opacity-60 mb-1">Calls Remaining</div>
                           <div className="text-sm font-bold">{(subscription?.total_calls || 0) - (subscription?.calls_made || 0)} / {subscription?.total_calls || 0}</div>
                         </div>
                       </div>
@@ -287,10 +287,10 @@ export default function SettingsPage() {
                           <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Star size={20} />
                           </div>
-                          <div className="font-black text-[10px] uppercase tracking-widest">Upgrade Account</div>
+                          <div className="font-black text-[10px] tracking-widest">Upgrade Account</div>
                         </div>
                         <p className="text-xs text-muted-foreground font-medium mb-6">Unlock premium voices, more calls, and extended letters.</p>
-                        <Link href="/pricing" className="text-[10px] font-black uppercase tracking-[0.2em] text-primary flex items-center gap-2 hover:gap-3 transition-all w-fit">
+                        <Link href="/pricing" className="text-[10px] font-black tracking-[0.2em] text-primary flex items-center gap-2 hover:gap-3 transition-all w-fit">
                           View Plans <ChevronRight size={12} />
                         </Link>
                       </div>
@@ -300,13 +300,13 @@ export default function SettingsPage() {
                           <div className="w-10 h-10 rounded-xl bg-red-500/10 text-red-500 flex items-center justify-center group-hover:scale-110 transition-transform">
                             <Sparkles size={20} />
                           </div>
-                          <div className="font-black text-[10px] uppercase tracking-widest">Cancel Plan</div>
+                          <div className="font-black text-[10px] tracking-widest">Cancel Plan</div>
                         </div>
                         <p className="text-xs text-muted-foreground font-medium mb-6">We'll be sad to see you go. Your benefits continue until period end.</p>
                         <button
                           disabled
                           title="Cancelling from here is coming soon. Email support to cancel for now."
-                          className="text-[10px] font-black uppercase tracking-[0.2em] text-red-500/50 flex items-center gap-2 cursor-not-allowed"
+                          className="text-[10px] font-black tracking-[0.2em] text-red-500/50 flex items-center gap-2 cursor-not-allowed"
                         >
                           Manage Subscription <ChevronRight size={12} />
                         </button>

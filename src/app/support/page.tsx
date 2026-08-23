@@ -61,7 +61,7 @@ export default function SupportPage() {
                 <div className="w-14 h-14 rounded-2xl bg-foreground/5 flex items-center justify-center mb-6 shadow-inner group-hover:bg-foreground/10 transition-colors">
                   {opt.icon}
                 </div>
-                <div className="text-sm font-bold uppercase tracking-widest text-muted-foreground mb-2">{opt.title}</div>
+                <div className="text-sm font-bold tracking-widest text-muted-foreground mb-2">{opt.title}</div>
                 <div className="font-bold text-lg">{opt.value}</div>
               </a>
             </Reveal>
@@ -83,7 +83,7 @@ export default function SupportPage() {
               <div className="space-y-12">
                 {faqs.map((cat, catIdx) => (
                   <div key={catIdx}>
-                    <div className="text-xs font-bold uppercase tracking-[0.2em] text-muted-foreground mb-6 pl-4 border-l-2 border-primary">
+                    <div className="text-xs font-bold tracking-[0.2em] text-muted-foreground mb-6 pl-4 border-l-2 border-primary">
                       {cat.category}
                     </div>
                     <div className="space-y-4">
@@ -130,8 +130,8 @@ export default function SupportPage() {
             <Reveal direction="right">
               <div className="p-10 rounded-[40px] glass border border-border shadow-2xl relative overflow-hidden">
                 <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 blur-[100px] rounded-full -mr-32 -mt-32" />
-                <h3 className="text-2xl font-black mb-2 relative z-10 italic uppercase tracking-tighter italic">Send us a <span className="gradient-text italic">Message</span></h3>
-                <p className="text-muted-foreground mb-8 text-[10px] font-black uppercase tracking-widest relative z-10">Our support team responds promptly to all inquiries.</p>
+                <h3 className="text-2xl font-black mb-2 relative z-10 tracking-tighter">Send us a <span className="gradient-text">Message</span></h3>
+                <p className="text-muted-foreground mb-8 text-[10px] font-medium tracking-widest relative z-10">Our support team responds promptly to all inquiries.</p>
                 
                 <form className="space-y-6 relative z-10">
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">

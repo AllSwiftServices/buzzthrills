@@ -49,14 +49,26 @@ export async function PATCH(req: Request) {
     if (failureReason !== undefined) updates.failure_reason = failureReason;
     if (assignedTo !== undefined) updates.assigned_to = assignedTo || null;
 
+    // Assigning/unassigning a staff member moves status along the lifecycle
+    // automatically, unless this same request already set status explicitly.
+    if (assignedTo !== undefined && status === undefined) {
+      if (assignedTo && call.status === "pending") {
+        updates.status = "assigned";
+      } else if (!assignedTo && call.status === "assigned") {
+        updates.status = "pending";
+      }
+    }
+
     if (Object.keys(updates).length === 0) {
       return NextResponse.json({ error: "No fields to update" }, { status: 400 });
     }
 
-    const { error: updateError } = await supabaseAdmin
+    const { data: updatedCall, error: updateError } = await supabaseAdmin
       .from("calls")
       .update(updates)
-      .eq("id", callId);
+      .eq("id", callId)
+      .select()
+      .single();
 
     if (updateError) throw updateError;
 
@@ -92,7 +104,7 @@ export async function PATCH(req: Request) {
       }
     }
 
-    return NextResponse.json({ message: "Call updated successfully" });
+    return NextResponse.json({ message: "Call updated successfully", call: updatedCall });
   } catch (error: any) {
     console.error("Call update error:", error);
     return NextResponse.json({ error: "Failed to update call" }, { status: 500 });

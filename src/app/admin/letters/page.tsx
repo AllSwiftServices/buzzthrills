@@ -63,7 +63,7 @@ export default function AdminLettersPage() {
     <div className="max-w-6xl mx-auto">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div>
-          <div className="flex items-center gap-3 text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-3">
+          <div className="flex items-center gap-3 text-[10px] font-black tracking-[0.3em] text-primary mb-3">
             <Mail size={14} />
             Digital Letters
           </div>
@@ -76,7 +76,7 @@ export default function AdminLettersPage() {
         </div>
         <Link
           href="/admin/letters/new"
-          className="px-6 py-4 rounded-2xl gradient-bg text-white font-black text-[10px] uppercase tracking-[0.2em] flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
+          className="px-6 py-4 rounded-2xl gradient-bg text-white font-black text-[10px] tracking-[0.2em] flex items-center gap-2 hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/20"
         >
           <Plus size={16} />
           New Letter
@@ -99,7 +99,7 @@ export default function AdminLettersPage() {
             <button
               key={s}
               onClick={() => setStatusFilter(s)}
-              className={`px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest transition-all ${
+              className={`px-4 py-2 rounded-full text-[10px] font-black tracking-widest transition-all ${
                 statusFilter === s
                   ? "bg-primary text-white"
                   : "bg-foreground/5 text-foreground/40 hover:text-white"
@@ -132,32 +132,32 @@ export default function AdminLettersPage() {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2 mb-1.5">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-[9px] font-black tracking-widest border ${
                         statusStyles[l.status] || statusStyles.draft
                       }`}
                     >
                       {l.status}
                     </span>
-                    <span className="text-[10px] font-black uppercase tracking-widest text-foreground/40">
+                    <span className="text-[10px] font-black tracking-widest text-foreground/40">
                       {l.tier} · {l.theme}
                     </span>
                     {l.created_by_admin && (
-                      <span className="text-[9px] font-black uppercase tracking-widest text-primary">
+                      <span className="text-[9px] font-black tracking-widest text-primary">
                         Admin-created
                       </span>
                     )}
                     {l.request_admin_letter && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border bg-amber-500/10 text-amber-400 border-amber-500/20">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black tracking-widest border bg-amber-500/10 text-amber-400 border-amber-500/20">
                         ✨ Needs writing
                       </span>
                     )}
                     {l.request_admin_voice && (
-                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border bg-amber-500/10 text-amber-400 border-amber-500/20">
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black tracking-widest border bg-amber-500/10 text-amber-400 border-amber-500/20">
                         🎙 Needs voice
                       </span>
                     )}
                     {l.wants_scannable && (
-                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${
+                      <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[9px] font-black tracking-widest border ${
                         l.scannable_status === "shipped"
                           ? "bg-green-500/10 text-green-400 border-green-500/20"
                           : l.scannable_status === "printed"
@@ -182,7 +182,7 @@ export default function AdminLettersPage() {
                       href={`/letter/${l.qr_identifier}`}
                       target="_blank"
                       rel="noreferrer"
-                      className="px-4 py-2 rounded-xl border border-foreground/10 hover:bg-foreground/5 text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
+                      className="px-4 py-2 rounded-xl border border-foreground/10 hover:bg-foreground/5 text-[10px] font-black tracking-widest flex items-center gap-2"
                     >
                       <Eye size={12} />
                       View
@@ -191,7 +191,7 @@ export default function AdminLettersPage() {
                   )}
                   <Link
                     href={`/admin/letters/${l.id}`}
-                    className="px-4 py-2 rounded-xl gradient-bg text-white text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all"
+                    className="px-4 py-2 rounded-xl gradient-bg text-white text-[10px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all"
                   >
                     Edit
                   </Link>

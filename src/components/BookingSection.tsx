@@ -24,15 +24,15 @@ export default function BookingSection() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold uppercase tracking-[0.4em] mb-8"
+            className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold tracking-[0.4em] mb-8"
           >
             <Sparkles size={14} className="fill-current" />
             Our Service Catalog
           </motion.div>
           <h2 className="text-4xl sm:text-6xl font-medium mb-6 font-serif tracking-tight">
-            Share a <span className="gradient-text italic">Heartfelt Moment</span>
+            Share a <span className="gradient-text">Heartfelt Moment</span>
           </h2>
-          <p className="text-muted-foreground font-medium text-lg max-w-2xl mx-auto tracking-tight leading-relaxed italic font-serif">
+          <p className="text-muted-foreground font-medium text-lg max-w-2xl mx-auto tracking-tight leading-relaxed font-serif">
             Choose the perfect experience to brighten someone's day. Each service is crafted with genuine care and emotion.
           </p>
         </div>

@@ -49,7 +49,7 @@ export default function PricingCard({
       {/* Popular Badge */}
       {isPopular && (
         <div className="absolute top-8 right-8 z-20">
-          <div className="flex items-center gap-1 px-4 py-2 rounded-full bg-primary/10 text-primary text-[10px] font-bold uppercase tracking-[0.2em] shadow-sm backdrop-blur-md border border-primary/20">
+          <div className="flex items-center gap-1 px-4 py-2 rounded-full bg-primary/10 text-primary text-[10px] font-bold tracking-[0.2em] shadow-sm backdrop-blur-md border border-primary/20">
             <Star size={12} className="fill-current" />
             Most Loved
           </div>
@@ -61,7 +61,7 @@ export default function PricingCard({
         <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-2xl sm:rounded-3xl bg-foreground/5 flex items-center justify-center mb-4 sm:mb-6 shadow-xl ${isPopular ? "text-primary" : "text-foreground/40"}`}>
           {icon}
         </div>
-        <h3 className="text-2xl sm:text-3xl font-medium mb-2 sm:mb-3 tracking-tight font-serif italic text-primary">{name}</h3>
+        <h3 className="text-2xl sm:text-3xl font-medium mb-2 sm:mb-3 tracking-tight font-serif text-primary">{name}</h3>
         <p className="text-muted-foreground font-medium text-xs sm:text-sm tracking-tight leading-relaxed">{description}</p>
       </div>
 
@@ -69,7 +69,7 @@ export default function PricingCard({
       <div className="mb-10 relative z-10">
         <div className="flex items-baseline gap-1">
           <span className="text-4xl sm:text-5xl font-medium tracking-tight font-serif">₦{price}</span>
-          <span className="text-muted-foreground font-semibold text-[10px] sm:text-xs uppercase tracking-widest">/ Month</span>
+          <span className="text-muted-foreground font-semibold text-[10px] sm:text-xs tracking-widest">/ Month</span>
         </div>
       </div>
 

@@ -34,8 +34,8 @@ export default function CallerLayout({ children }: { children: React.ReactNode }
               <PhoneCall className="text-foreground" size={20} />
             </div>
             <div>
-              <div className="text-sm font-black tracking-tighter gradient-text uppercase">Buzz Caller</div>
-              <div className="text-[10px] font-bold text-foreground/40 uppercase tracking-widest">{user.fullName}</div>
+              <div className="text-sm font-black tracking-tighter gradient-text">Buzz Caller</div>
+              <div className="text-[10px] font-bold text-foreground/40 tracking-widest">{user.fullName}</div>
             </div>
           </div>
           <div className="flex items-center gap-2">

@@ -105,7 +105,7 @@ function CheckoutContent() {
     return (
       <div className="min-h-screen bg-background flex flex-col items-center justify-center gap-6">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <div className="text-sm font-black uppercase tracking-widest animate-pulse">Authenticating Checkout...</div>
+        <div className="text-sm font-black tracking-widest animate-pulse">Authenticating Checkout...</div>
       </div>
     );
   }
@@ -127,21 +127,21 @@ function CheckoutContent() {
               <Icon size={24} />
             </div>
             <div>
-              <h1 className="text-2xl font-black italic uppercase tracking-tighter leading-none">{planData.name}</h1>
-              <p className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mt-2">{cycle} Billing Cycle · {planData.totalCalls} calls / mo</p>
+              <h1 className="text-2xl font-black tracking-tighter leading-none">{planData.name}</h1>
+              <p className="text-[10px] font-medium tracking-widest text-muted-foreground mt-2">{cycle} Billing Cycle · {planData.totalCalls} calls / mo</p>
             </div>
           </div>
 
           <div className="space-y-6 pt-10 border-t border-border">
             <div className="flex justify-between items-center text-sm">
-              <span className="text-muted-foreground font-bold uppercase tracking-widest">Base Subscription</span>
+              <span className="text-muted-foreground font-bold tracking-widest">Base Subscription</span>
               <span className="font-black">₦{amount.toLocaleString()} / mo</span>
             </div>
             <div className="flex justify-between items-center pt-6 border-t border-border mt-8">
-              <span className="text-sm font-black uppercase tracking-[0.2em] italic">Total Due Now</span>
+              <span className="text-sm font-black tracking-[0.2em]">Total Due Now</span>
               <div className="text-right">
                 <div className="text-3xl font-black gradient-text tracking-tighter">₦{totalDue.toLocaleString()}</div>
-                {cycle === 'annual' && <div className="text-[9px] font-black text-green-500 uppercase tracking-widest mt-1">Includes 5% Yearly Discount ✨</div>}
+                {cycle === 'annual' && <div className="text-[9px] font-black text-green-500 tracking-widest mt-1">Includes 5% Yearly Discount ✨</div>}
               </div>
             </div>
           </div>
@@ -149,7 +149,7 @@ function CheckoutContent() {
           <button
             onClick={handlePayment}
             disabled={loading}
-            className="w-full mt-12 py-6 rounded-[32px] gradient-bg text-white font-black text-sm uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 group"
+            className="w-full mt-12 py-6 rounded-[32px] gradient-bg text-white font-black text-sm tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 group"
           >
             {loading ? <Loader2 className="animate-spin" size={20} /> : (
               <>
@@ -160,7 +160,7 @@ function CheckoutContent() {
             )}
           </button>
           
-          <p className="mt-8 text-center text-[9px] font-black uppercase tracking-widest text-muted-foreground opacity-40">
+          <p className="mt-8 text-center text-[9px] font-medium tracking-widest text-muted-foreground opacity-40">
             Secured by Paystack • 256-Bit Encryption
           </p>
         </motion.div>

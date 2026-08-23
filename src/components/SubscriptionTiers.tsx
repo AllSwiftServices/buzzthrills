@@ -43,7 +43,7 @@ export default function SubscriptionTiers() {
             <button
               key={c}
               onClick={() => setCycle(c)}
-              className={`px-6 py-3 rounded-full text-[10px] font-black uppercase tracking-[0.2em] transition-all ${
+              className={`px-6 py-3 rounded-full text-[10px] font-black tracking-[0.2em] transition-all ${
                 cycle === c
                   ? "gradient-bg text-white shadow-xl shadow-primary/20"
                   : "text-muted-foreground hover:text-foreground"
@@ -76,17 +76,17 @@ export default function SubscriptionTiers() {
               } ${isActive ? "border-primary ring-2 ring-primary/50" : ""} ${isExpired ? "border-red-500/50" : ""}`}
             >
               {plan.popular && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-bg px-4 py-1.5 rounded-full text-[9px] font-black text-white uppercase tracking-[0.2em] shadow-lg shadow-primary/20">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 gradient-bg px-4 py-1.5 rounded-full text-[9px] font-black text-white tracking-[0.2em] shadow-lg shadow-primary/20">
                   Most Popular
                 </div>
               )}
               {isActive && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-lg whitespace-nowrap">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-green-500 text-white px-4 py-1.5 rounded-full text-[9px] font-black tracking-[0.2em] shadow-lg whitespace-nowrap">
                   Current Plan
                 </div>
               )}
               {isExpired && (
-                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white px-4 py-1.5 rounded-full text-[9px] font-black uppercase tracking-[0.2em] shadow-lg whitespace-nowrap">
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-red-500 text-white px-4 py-1.5 rounded-full text-[9px] font-black tracking-[0.2em] shadow-lg whitespace-nowrap">
                   Plan Expired
                 </div>
               )}
@@ -96,8 +96,8 @@ export default function SubscriptionTiers() {
                   <Icon size={24} />
                 </div>
                 <div>
-                  <h3 className="text-xl font-black uppercase tracking-tight italic">{plan.name}</h3>
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-1">
+                  <h3 className="text-xl font-black tracking-tight">{plan.name}</h3>
+                  <p className="text-[10px] font-medium text-muted-foreground tracking-widest mt-1">
                     {plan.totalCalls} calls / month
                   </p>
                 </div>
@@ -112,12 +112,12 @@ export default function SubscriptionTiers() {
                   <span className="text-4xl font-black gradient-text tracking-tighter">
                     ₦{price.toLocaleString()}
                   </span>
-                  <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">
+                  <span className="text-[10px] font-black text-muted-foreground tracking-widest">
                     / month
                   </span>
                 </div>
                 {cycle === "annual" && (
-                  <p className="text-[9px] font-black text-green-500 uppercase tracking-widest mt-2">
+                  <p className="text-[9px] font-medium text-green-500 tracking-widest mt-2">
                     Billed ₦{(price * 12).toLocaleString()} yearly · 5% saved ✨
                   </p>
                 )}
@@ -134,7 +134,7 @@ export default function SubscriptionTiers() {
 
               {isActive ? (
                 <div
-                  className="w-full py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 transition-all bg-green-500/10 text-green-500 cursor-default"
+                  className="w-full py-5 rounded-2xl font-black text-xs tracking-[0.2em] flex items-center justify-center gap-2 transition-all bg-green-500/10 text-green-500 cursor-default"
                 >
                   <Check size={16} />
                   Active Plan
@@ -142,7 +142,7 @@ export default function SubscriptionTiers() {
               ) : (
                 <Link
                   href={`/checkout?plan=${plan.id}&cycle=${cycle}`}
-                  className={`w-full py-5 rounded-2xl font-black text-xs uppercase tracking-[0.2em] flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 ${
+                  className={`w-full py-5 rounded-2xl font-black text-xs tracking-[0.2em] flex items-center justify-center gap-2 transition-all hover:scale-[1.02] active:scale-95 ${
                     isExpired
                       ? "bg-red-500 text-white shadow-xl shadow-red-500/20"
                       : plan.popular
@@ -155,7 +155,7 @@ export default function SubscriptionTiers() {
                 </Link>
               )}
 
-              <p className="mt-6 text-[10px] font-bold text-muted-foreground italic text-center leading-relaxed">
+              <p className="mt-6 text-[10px] font-medium text-muted-foreground text-center leading-relaxed">
                 {plan.perfectFor}
               </p>
             </motion.div>
@@ -177,7 +177,7 @@ export default function SubscriptionTiers() {
           >
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/5 blur-[100px] rounded-full -mr-48 -mt-48 pointer-events-none" />
             {isCurrentPlan && (
-              <div className="absolute top-0 right-0 bg-green-500 text-white px-6 py-2 rounded-bl-3xl text-[9px] font-black uppercase tracking-[0.2em] shadow-lg z-20">
+              <div className="absolute top-0 right-0 bg-green-500 text-white px-6 py-2 rounded-bl-3xl text-[9px] font-black tracking-[0.2em] shadow-lg z-20">
                 Current Plan
               </div>
             )}
@@ -187,8 +187,8 @@ export default function SubscriptionTiers() {
                   <Icon size={24} />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-black uppercase tracking-tight italic">{corporate.name}</h3>
-                  <p className="text-[10px] font-black text-muted-foreground uppercase tracking-widest mt-1">
+                  <h3 className="text-2xl font-black tracking-tight">{corporate.name}</h3>
+                  <p className="text-[10px] font-medium text-muted-foreground tracking-widest mt-1">
                     Custom Pricing from ₦100,000 / month
                   </p>
                 </div>
@@ -207,7 +207,7 @@ export default function SubscriptionTiers() {
             </div>
             {isCurrentPlan ? (
               <div
-                className="shrink-0 px-10 py-5 font-black text-xs uppercase tracking-[0.2em] rounded-2xl flex items-center gap-3 relative z-10 bg-green-500/10 text-green-500 cursor-default"
+                className="shrink-0 px-10 py-5 font-black text-xs tracking-[0.2em] rounded-2xl flex items-center gap-3 relative z-10 bg-green-500/10 text-green-500 cursor-default"
               >
                 <Check size={18} />
                 Active Plan
@@ -215,7 +215,7 @@ export default function SubscriptionTiers() {
             ) : (
               <Link
                 href="/corporate"
-                className="shrink-0 px-10 py-5 bg-foreground text-background font-black text-xs uppercase tracking-[0.2em] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center gap-3 relative z-10"
+                className="shrink-0 px-10 py-5 bg-foreground text-background font-black text-xs tracking-[0.2em] rounded-2xl hover:scale-105 active:scale-95 transition-all shadow-huge flex items-center gap-3 relative z-10"
               >
                 Talk to Sales
                 <ArrowRight size={18} />

@@ -104,7 +104,7 @@ export default function AdminBottomTabNav() {
               className="fixed bottom-0 left-0 right-0 z-[120] rounded-t-[32px] bg-background border-t border-border p-6 pb-10 lg:hidden"
             >
               <div className="flex items-center justify-between mb-6">
-                <h2 className="text-sm font-bold uppercase tracking-widest text-foreground/60">More pages</h2>
+                <h2 className="text-sm font-bold tracking-widest text-foreground/60">More pages</h2>
                 <button
                   onClick={() => setShowMore(false)}
                   className="p-2 rounded-full bg-foreground/5 text-foreground/50"

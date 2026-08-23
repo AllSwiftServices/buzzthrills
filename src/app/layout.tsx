@@ -14,9 +14,35 @@ const inter = Inter({
 });
 
 
+const SITE_TITLE = "BuzzThrills - Best Surprise Call Agency In Nigeria";
+const SITE_DESCRIPTION = "From birthdays and anniversaries to apologies, appreciation, encouragement and “just because” moments, we turn what you feel into personalized surprise calls, scannable audio/visual letters and memorable experiences designed to make every recipient feel truly special.";
+
 export const metadata: Metadata = {
-  title: "BuzzThrills Prime | Never Forget Any Special Day Again",
-  description: "Surprise calls, emotional messages, and corporate engagement. Never forget any special moment again.",
+  metadataBase: new URL("https://buzzthrills.com"),
+  title: SITE_TITLE,
+  description: SITE_DESCRIPTION,
+  openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "https://buzzthrills.com",
+    siteName: "BuzzThrills",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: SITE_TITLE,
+      },
+    ],
+    locale: "en_NG",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: ["/og-image.jpg"],
+  },
 };
 
 export default function RootLayout({

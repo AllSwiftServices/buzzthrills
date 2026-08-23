@@ -164,10 +164,10 @@ function BookingContent() {
     checkSubscription();
   }, [user]);
 
-  // Only the Orbit plan advertises "choose your preferred caller" — fetch the
-  // caller list lazily, only once we know that's actually the active plan.
+  // Fetch the caller list lazily, only once we know there's an active
+  // subscription to book against — available to every plan tier.
   useEffect(() => {
-    if (subscription?.status !== 'active' || subscription?.plan !== 'orbit') return;
+    if (subscription?.status !== 'active') return;
     fetch("/api/callers/list")
       .then((r) => r.json())
       .then((data) => setCallers(data.callers || []))
@@ -469,7 +469,7 @@ function BookingContent() {
   }, [user]);
 
   return (
-    <div className="w-full max-w-4xl mx-auto glass p-6 sm:p-8 md:p-12 min-h-[500px] sm:min-h-[600px] flex flex-col border border-border shadow-2xl relative overflow-hidden">
+    <div className="w-full max-w-4xl mx-auto glass p-4 sm:p-8 md:p-12 min-h-[500px] sm:min-h-[600px] flex flex-col border border-border shadow-2xl relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-1 gradient-bg opacity-50" />
       
       {/* Progress Stepper */}
@@ -505,13 +505,13 @@ function BookingContent() {
           >
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
               <div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Select <span className="gradient-text italic">Experience</span></h2>
-                <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">What kind of thrill are we booking today?</p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter">Select <span className="gradient-text">Experience</span></h2>
+                <p className="text-muted-foreground font-medium text-[10px] tracking-widest">What kind of thrill are we booking today?</p>
               </div>
               {isSubscriber && remainingCalls !== null && (
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 self-start sm:self-auto">
                   <Sparkles size={12} className="text-primary" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                  <span className="text-[10px] font-black tracking-widest text-primary">
                     {remainingCalls} {remainingCalls === 1 ? "call" : "calls"} left this cycle
                   </span>
                 </div>
@@ -540,9 +540,9 @@ function BookingContent() {
                 },
               ].map((cat) => (
                 <div key={cat.key} className="space-y-3">
-                  <div className="flex items-baseline justify-between gap-3 px-1">
-                    <h3 className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/70">{cat.title}</h3>
-                    <span className="text-[9px] font-bold italic text-muted-foreground/70">{cat.caption}</span>
+                  <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-1 sm:gap-3 px-1">
+                    <h3 className="text-[10px] font-black tracking-[0.3em] text-foreground/70">{cat.title}</h3>
+                    <span className="text-[9px] font-bold text-muted-foreground/70">{cat.caption}</span>
                   </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {cat.ids.map((id) => {
@@ -591,13 +591,13 @@ function BookingContent() {
                               <Icon size={20} className="sm:size-[22px]" />
                             </div>
                             <div className="flex-grow min-w-0 pr-6">
-                              <h4 className="font-black text-xs sm:text-sm uppercase tracking-tight truncate">{s.name}</h4>
+                              <h4 className="font-black text-xs sm:text-sm tracking-tight truncate">{s.name}</h4>
                               <p className="text-[10px] sm:text-[11px] text-muted-foreground font-medium line-clamp-2 mt-1.5 leading-relaxed">
                                 {s.description}
                               </p>
                               <div className="flex items-center gap-2 mt-3 flex-wrap">
                                 <span
-                                  className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full ${
+                                  className={`text-[9px] font-black tracking-widest px-2.5 py-1 rounded-full ${
                                     isCorporate
                                       ? "bg-foreground/10 text-foreground/80"
                                       : isSubscriber
@@ -608,12 +608,12 @@ function BookingContent() {
                                   {priceLabel}
                                 </span>
                                 {onlyMonthly && !isCorporate && (
-                                  <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-secondary/15 text-secondary">
+                                  <span className="text-[9px] font-black tracking-widest px-2.5 py-1 rounded-full bg-secondary/15 text-secondary">
                                     Monthly
                                   </span>
                                 )}
                                 {!onlyMonthly && !isCorporate && s.tiers.length > 1 && (
-                                  <span className="text-[9px] font-bold italic text-muted-foreground">
+                                  <span className="text-[9px] font-bold text-muted-foreground">
                                     {s.tiers.length} packages
                                   </span>
                                 )}
@@ -643,11 +643,11 @@ function BookingContent() {
               <div className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-primary/10 border border-primary/20">
                 <span className="text-2xl">{searchParams.get("occasion")?.match(/\p{Emoji}/u)?.[0] || "🎉"}</span>
                 <div>
-                  <div className="text-[9px] font-black text-primary uppercase tracking-[0.3em] mb-0.5">Special Occasion Call</div>
+                  <div className="text-[9px] font-black text-primary tracking-[0.3em] mb-0.5">Special Occasion Call</div>
                   <div className="font-black text-sm tracking-tight">{specialCallOccasion}</div>
                 </div>
                 <div className="ml-auto text-right">
-                  <div className="text-[9px] font-black text-foreground/30 uppercase tracking-widest">Fixed Price</div>
+                  <div className="text-[9px] font-black text-foreground/30 tracking-widest">Fixed Price</div>
                   <div className="text-xl font-black gradient-text tracking-tighter">₦{(specialCallPrice as number).toLocaleString()}</div>
                 </div>
               </div>
@@ -658,10 +658,10 @@ function BookingContent() {
                   <Star size={20} />
                </div>
                <div>
-                  <h2 className="text-2xl sm:text-3xl font-black tracking-tighter uppercase italic leading-none">
+                  <h2 className="text-2xl sm:text-3xl font-black tracking-tighter leading-none">
                     {isSpecialCall ? specialCallOccasion : service.name}
                   </h2>
-                  <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest mt-1">
+                  <p className="text-muted-foreground font-medium text-[10px] tracking-widest mt-1">
                     {isSpecialCall ? `Fixed price: ₦${(specialCallPrice as number).toLocaleString()}` : `Starting from ₦${service.basePrice.toLocaleString()}`}
                   </p>
                </div>
@@ -669,7 +669,7 @@ function BookingContent() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Your Full Name</label>
+                <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">Your Full Name</label>
                 <div className="relative group">
                   <User size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <input
@@ -682,7 +682,7 @@ function BookingContent() {
                 </div>
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Email Address</label>
+                <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">Email Address</label>
                 <div className="relative group">
                   <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <input
@@ -695,8 +695,8 @@ function BookingContent() {
                 </div>
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                  Phone Number <span className="text-muted-foreground/60 normal-case font-bold italic">(optional, for feedback)</span>
+                <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">
+                  Phone Number <span className="text-muted-foreground/60 normal-case font-bold">(optional, for feedback)</span>
                 </label>
                 <div className="relative group">
                   <Phone size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -710,8 +710,8 @@ function BookingContent() {
                 </div>
               </div>
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                  Gender <span className="text-muted-foreground/60 normal-case font-bold italic">(optional)</span>
+                <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">
+                  Gender <span className="text-muted-foreground/60 normal-case font-bold">(optional)</span>
                 </label>
                 <div className="relative">
                   <select
@@ -727,7 +727,7 @@ function BookingContent() {
                 </div>
               </div>
               <div className="space-y-3 md:col-span-2">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Your Location <span className="text-muted-foreground/60 normal-case font-bold italic">(state / country)</span></label>
+                <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">Your Location <span className="text-muted-foreground/60 normal-case font-bold">(state / country)</span></label>
                 <div className="relative group">
                   <Globe size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <input
@@ -753,13 +753,13 @@ function BookingContent() {
           >
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
               <div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Choose <span className="gradient-text italic">Package</span></h2>
-                <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Pick the level of thrill; every package keeps the heartfelt core.</p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter">Choose <span className="gradient-text">Package</span></h2>
+                <p className="text-muted-foreground font-medium text-[10px] tracking-widest">Pick the level of thrill; every package keeps the heartfelt core.</p>
               </div>
               {isSubscriber && (
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 self-start sm:self-auto">
                   <Sparkles size={12} className="text-primary" />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                  <span className="text-[10px] font-black tracking-widest text-primary">
                     All packages included with {subscriberPlan?.name || "your plan"}
                   </span>
                 </div>
@@ -792,7 +792,7 @@ function BookingContent() {
                       </div>
                     )}
                     {!selected && isRecommended && (
-                      <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-secondary/20 text-secondary text-[9px] font-black uppercase tracking-widest">
+                      <div className="absolute top-4 right-4 px-3 py-1 rounded-full bg-secondary/20 text-secondary text-[9px] font-black tracking-widest">
                         Most Loved
                       </div>
                     )}
@@ -808,9 +808,9 @@ function BookingContent() {
                         <Icon size={24} />
                       </div>
                       <div className="flex-grow min-w-0 pr-8">
-                        <h4 className="font-black text-sm sm:text-base uppercase tracking-tight leading-tight">{tier.label}</h4>
+                        <h4 className="font-black text-sm sm:text-base tracking-tight leading-tight">{tier.label}</h4>
                         {meta?.blurb && (
-                          <p className="text-[11px] text-muted-foreground font-medium leading-relaxed mt-1.5 italic">
+                          <p className="text-[11px] text-muted-foreground font-medium leading-relaxed mt-1.5">
                             {meta.blurb}
                           </p>
                         )}
@@ -820,14 +820,14 @@ function BookingContent() {
                     <div className="mt-auto pt-4 border-t border-border/60 flex items-end justify-between gap-3">
                       {isSubscriber ? (
                         <div>
-                          <div className="text-[9px] font-black uppercase tracking-widest text-primary">Included</div>
+                          <div className="text-[9px] font-black tracking-widest text-primary">Included</div>
                           <div className="text-sm font-bold line-through text-muted-foreground/50 mt-0.5">
                             ₦{tier.price.toLocaleString()}
                           </div>
                         </div>
                       ) : (
                         <div>
-                          <div className="text-[9px] font-black uppercase tracking-widest text-muted-foreground">Price</div>
+                          <div className="text-[9px] font-black tracking-widest text-muted-foreground">Price</div>
                           <div className="text-2xl sm:text-[26px] font-black tracking-tighter mt-0.5">
                             ₦{tier.price.toLocaleString()}
                           </div>
@@ -835,7 +835,7 @@ function BookingContent() {
                       )}
                       {!isSubscriber && (
                         <span
-                          className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full whitespace-nowrap ${
+                          className={`text-[9px] font-black tracking-widest px-2.5 py-1 rounded-full whitespace-nowrap ${
                             isBase
                               ? "bg-foreground/5 text-foreground/60"
                               : "bg-primary/15 text-primary"
@@ -862,14 +862,14 @@ function BookingContent() {
           >
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
               <div>
-                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Recipient <span className="gradient-text italic">Details</span></h2>
-                <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Who are we celebrating today?</p>
+                <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter">Recipient <span className="gradient-text">Details</span></h2>
+                <p className="text-muted-foreground font-medium text-[10px] tracking-widest">Who are we celebrating today?</p>
               </div>
               {selectedVariant !== 'monthly' && (
                 <button
                   onClick={addRecipient}
                   disabled={isSubscriber && remainingCalls !== null && recipients.length >= remainingCalls}
-                  className="flex items-center gap-3 px-6 py-4 rounded-2xl glass border-primary/20 text-primary text-xs font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
+                  className="flex items-center gap-3 px-6 py-4 rounded-2xl glass border-primary/20 text-primary text-xs font-black tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl shadow-primary/5 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:scale-100"
                 >
                   <Plus size={16} />
                   Add Recipient
@@ -890,7 +890,7 @@ function BookingContent() {
                     <Star size={18} />
                   </div>
                   <div>
-                    <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground">Subscription Balance</div>
+                    <div className="text-[10px] font-black tracking-widest text-muted-foreground">Subscription Balance</div>
                     <div className="text-sm font-black mt-1">
                       {overQuota
                         ? `Only ${remainingCalls} call${remainingCalls === 1 ? "" : "s"} left this cycle. Remove ${recipients.length - remainingCalls} recipient${recipients.length - remainingCalls === 1 ? "" : "s"} to continue.`
@@ -913,11 +913,11 @@ function BookingContent() {
                     </button>
                   )}
 
-                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70 mb-4">Recipient #{i + 1}</div>
+                  <div className="text-[10px] font-black tracking-[0.3em] text-primary/70 mb-4">Recipient #{i + 1}</div>
 
                   <div className="grid grid-cols-1 md:grid-cols-12 gap-4">
                     <div className="space-y-2 md:col-span-3">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Title</label>
+                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Title</label>
                       <select
                         value={r.title}
                         onChange={(e) => handleRecipientChange(i, 'title', e.target.value)}
@@ -930,7 +930,7 @@ function BookingContent() {
                       </select>
                     </div>
                     <div className="space-y-2 md:col-span-9">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Full Name</label>
+                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Full Name</label>
                       <input
                         type="text"
                         value={r.name}
@@ -941,7 +941,7 @@ function BookingContent() {
                     </div>
 
                     <div className="space-y-2 md:col-span-6">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Phone Number</label>
+                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Phone Number</label>
                       <input
                         type="tel"
                         value={r.phone}
@@ -951,8 +951,8 @@ function BookingContent() {
                       />
                     </div>
                     <div className="space-y-2 md:col-span-6">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">
-                        Gender <span className="text-muted-foreground/50 normal-case font-bold italic">(optional)</span>
+                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">
+                        Gender <span className="text-muted-foreground/50 normal-case font-bold">(optional)</span>
                       </label>
                       <select
                         value={r.gender}
@@ -967,7 +967,7 @@ function BookingContent() {
                     </div>
 
                     <div className="space-y-2 md:col-span-6">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Location <span className="text-muted-foreground/50 normal-case font-bold italic">(state / country)</span></label>
+                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Location <span className="text-muted-foreground/50 normal-case font-bold">(state / country)</span></label>
                       <input
                         type="text"
                         value={r.location}
@@ -977,7 +977,7 @@ function BookingContent() {
                       />
                     </div>
                     <div className="space-y-2 md:col-span-6">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Your Relationship</label>
+                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Your Relationship</label>
                       <select
                         value={r.relationship}
                         onChange={(e) => handleRecipientChange(i, 'relationship', e.target.value)}
@@ -990,7 +990,7 @@ function BookingContent() {
                     </div>
 
                     <div className="space-y-2 md:col-span-6">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Preferred Date</label>
+                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Preferred Date</label>
                       <input
                         type="date"
                         value={r.date}
@@ -999,7 +999,7 @@ function BookingContent() {
                       />
                     </div>
                     <div className="space-y-2 md:col-span-6">
-                      <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">Service Type</label>
+                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Service Type</label>
                       <div className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 text-sm font-bold text-foreground/60">
                         {selectedVariant === 'monthly' ? "Monthly Subscription" : "One-Time Surprise"}
                       </div>
@@ -1007,10 +1007,10 @@ function BookingContent() {
                   </div>
 
                   <div className="mt-6 pt-6 border-t border-border/50">
-                    <div className="text-[10px] font-black uppercase tracking-[0.3em] text-secondary/70 mb-3">Personal Connection <span className="text-muted-foreground/50 normal-case italic">(optional, helps us sound natural)</span></div>
+                    <div className="text-[10px] font-black tracking-[0.3em] text-secondary/70 mb-3">Personal Connection <span className="text-muted-foreground/50 normal-case">(optional, helps us sound natural)</span></div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">What you call them</label>
+                        <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">What you call them</label>
                         <input
                           type="text"
                           value={r.youCallThem}
@@ -1020,7 +1020,7 @@ function BookingContent() {
                         />
                       </div>
                       <div className="space-y-2">
-                        <label className="text-[10px] font-black text-muted-foreground uppercase tracking-widest ml-1">What they call you</label>
+                        <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">What they call you</label>
                         <input
                           type="text"
                           value={r.theyCallYou}
@@ -1046,14 +1046,14 @@ function BookingContent() {
             className="flex-grow space-y-8"
           >
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Tell Us About <span className="gradient-text italic">The Call</span></h2>
-              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">A few quick details so we sound like you. Every field is optional unless marked.</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter">Tell Us About <span className="gradient-text">The Call</span></h2>
+              <p className="text-muted-foreground font-medium text-[10px] tracking-widest">A few quick details so we sound like you. Every field is optional unless marked.</p>
             </div>
 
             <div className="space-y-6 max-h-[560px] overflow-y-auto pr-4 custom-scrollbar">
               {showsCelebratoryQs && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Your Message</div>
+                  <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Your Message</div>
                   <div className="space-y-2">
                     <label className="text-[11px] font-bold text-muted-foreground ml-1">What would you love to tell them?</label>
                     <textarea
@@ -1065,7 +1065,7 @@ function BookingContent() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any fun or special moments you&apos;ve shared? <span className="italic text-muted-foreground/60">(optional)</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any fun or special moments you&apos;ve shared? <span className="text-muted-foreground/60">(optional)</span></label>
                     <textarea
                       value={callMessage.sharedMoments}
                       onChange={(e) => updateMessage("sharedMoments", e.target.value)}
@@ -1079,7 +1079,7 @@ function BookingContent() {
 
               {showsRequestQ && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Your Request</div>
+                  <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Your Request</div>
                   <div className="space-y-2">
                     <label className="text-[11px] font-bold text-muted-foreground ml-1">What would you like us to help you ask or say on your behalf?</label>
                     <textarea
@@ -1091,7 +1091,7 @@ function BookingContent() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Has this person ever shown up for you in a special way you&apos;d like mentioned? <span className="italic text-muted-foreground/60">(optional)</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Has this person ever shown up for you in a special way you&apos;d like mentioned? <span className="text-muted-foreground/60">(optional)</span></label>
                     <textarea
                       value={callMessage.requestSpecial}
                       onChange={(e) => updateMessage("requestSpecial", e.target.value)}
@@ -1105,9 +1105,9 @@ function BookingContent() {
 
               {showsSupportQs && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Support Context</div>
+                  <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Support Context</div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">What&apos;s been going on, and how can we best support them? <span className="italic text-muted-foreground/60">(gentle wording, optional)</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">What&apos;s been going on, and how can we best support them? <span className="text-muted-foreground/60">(gentle wording, optional)</span></label>
                     <textarea
                       value={callMessage.supportContext}
                       onChange={(e) => updateMessage("supportContext", e.target.value)}
@@ -1117,7 +1117,7 @@ function BookingContent() {
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Should this call be more: <span className="italic text-muted-foreground/60">(pick any)</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Should this call be more: <span className="text-muted-foreground/60">(pick any)</span></label>
                     <div className="flex flex-wrap gap-2">
                       {SUPPORT_TONES.map((tone) => {
                         const active = callMessage.supportTone.includes(tone);
@@ -1126,7 +1126,7 @@ function BookingContent() {
                             key={tone}
                             type="button"
                             onClick={() => toggleSupportTone(tone)}
-                            className={`px-4 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest border-2 transition-all ${
+                            className={`px-4 py-2.5 rounded-full text-[11px] font-black tracking-widest border-2 transition-all ${
                               active
                                 ? "bg-primary/10 border-primary text-primary"
                                 : "border-border text-foreground/60 hover:border-primary/40"
@@ -1144,7 +1144,7 @@ function BookingContent() {
 
               {showsShootQs && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Your Shot</div>
+                  <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Your Shot</div>
                   <div className="space-y-2">
                     <label className="text-[11px] font-bold text-muted-foreground ml-1">What are you hoping to ask or express?</label>
                     <textarea
@@ -1165,7 +1165,7 @@ function BookingContent() {
                             key={opt}
                             type="button"
                             onClick={() => updateMessage("shootBoldness", opt)}
-                            className={`px-4 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest border-2 transition-all ${
+                            className={`px-4 py-2.5 rounded-full text-[11px] font-black tracking-widest border-2 transition-all ${
                               active
                                 ? "bg-primary/10 border-primary text-primary"
                                 : "border-border text-foreground/60 hover:border-primary/40"
@@ -1182,7 +1182,7 @@ function BookingContent() {
 
               {showsSelfLoveQs && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Self Love</div>
+                  <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Self Love</div>
                   <div className="space-y-3">
                     <label className="text-[11px] font-bold text-muted-foreground ml-1">Is this for you or someone else?</label>
                     <div className="flex flex-wrap gap-2">
@@ -1193,7 +1193,7 @@ function BookingContent() {
                             key={opt}
                             type="button"
                             onClick={() => updateMessage("selfLoveFor", opt)}
-                            className={`px-4 py-2.5 rounded-full text-[11px] font-black uppercase tracking-widest border-2 transition-all ${
+                            className={`px-4 py-2.5 rounded-full text-[11px] font-black tracking-widest border-2 transition-all ${
                               active
                                 ? "bg-primary/10 border-primary text-primary"
                                 : "border-border text-foreground/60 hover:border-primary/40"
@@ -1206,7 +1206,7 @@ function BookingContent() {
                     </div>
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">What kind of affirmations would you love to hear? <span className="italic text-muted-foreground/60">(optional)</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">What kind of affirmations would you love to hear? <span className="text-muted-foreground/60">(optional)</span></label>
                     <textarea
                       value={callMessage.selfLoveAffirmations}
                       onChange={(e) => updateMessage("selfLoveAffirmations", e.target.value)}
@@ -1220,9 +1220,9 @@ function BookingContent() {
 
               {showsLullabyQ && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Lullaby Vibe</div>
+                  <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Lullaby Vibe</div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any preferred song, hymn, or vibe? <span className="italic text-muted-foreground/60">(soft / humming / spoken words)</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any preferred song, hymn, or vibe? <span className="text-muted-foreground/60">(soft / humming / spoken words)</span></label>
                     <textarea
                       value={callMessage.lullabyVibe}
                       onChange={(e) => updateMessage("lullabyVibe", e.target.value)}
@@ -1236,7 +1236,7 @@ function BookingContent() {
 
               {showsVideoQs && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                  <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Video Shoutout</div>
+                  <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Video Shoutout</div>
                   <div className="space-y-2">
                     <label className="text-[11px] font-bold text-muted-foreground ml-1">What&apos;s the occasion?</label>
                     <input
@@ -1248,7 +1248,7 @@ function BookingContent() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any words or names that must be mentioned? <span className="italic text-muted-foreground/60">(optional)</span></label>
+                    <label className="text-[11px] font-bold text-muted-foreground ml-1">Any words or names that must be mentioned? <span className="text-muted-foreground/60">(optional)</span></label>
                     <textarea
                       value={callMessage.videoMustMention}
                       onChange={(e) => updateMessage("videoMustMention", e.target.value)}
@@ -1262,11 +1262,11 @@ function BookingContent() {
 
               {showsMusicQ && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-secondary/5 border border-secondary/20 space-y-3">
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-secondary">
+                  <div className="flex items-center gap-2 text-[10px] font-black tracking-[0.3em] text-secondary">
                     <Music size={14} />
                     Music Thrills Selected
                   </div>
-                  <label className="text-[11px] font-bold text-muted-foreground ml-1 block">What song would you like us to sing or play? <span className="italic text-muted-foreground/60">(song title + artist)</span></label>
+                  <label className="text-[11px] font-bold text-muted-foreground ml-1 block">What song would you like us to sing or play? <span className="text-muted-foreground/60">(song title + artist)</span></label>
                   <input
                     type="text"
                     value={callMessage.songRequest}
@@ -1279,11 +1279,11 @@ function BookingContent() {
 
               {showsPrankQ && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-amber-400/5 border border-amber-400/20 space-y-3">
-                  <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.3em] text-amber-500">
+                  <div className="flex items-center gap-2 text-[10px] font-black tracking-[0.3em] text-amber-500">
                     <Laugh size={14} />
                     Prank Thrills Selected
                   </div>
-                  <label className="text-[11px] font-bold text-muted-foreground ml-1 block">Any prank boundaries we should respect? <span className="italic text-muted-foreground/60">(keeps trust)</span></label>
+                  <label className="text-[11px] font-bold text-muted-foreground ml-1 block">Any prank boundaries we should respect? <span className="text-muted-foreground/60">(keeps trust)</span></label>
                   <textarea
                     value={callMessage.prankBoundaries}
                     onChange={(e) => updateMessage("prankBoundaries", e.target.value)}
@@ -1295,7 +1295,7 @@ function BookingContent() {
               )}
 
               <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary/70">Final Notes <span className="italic text-muted-foreground/60 normal-case">(optional)</span></div>
+                <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Final Notes <span className="text-muted-foreground/60 normal-case">(optional)</span></div>
                 <div className="space-y-2">
                   <label className="text-[11px] font-bold text-muted-foreground ml-1">Is there anything you&apos;d like us to avoid or be extra mindful of?</label>
                   <textarea
@@ -1330,13 +1330,13 @@ function BookingContent() {
             className="flex-grow space-y-12"
           >
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">Service <span className="gradient-text italic">Preferences</span></h2>
-              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">Customize the timing and delivery details.</p>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter">Service <span className="gradient-text">Preferences</span></h2>
+              <p className="text-muted-foreground font-medium text-[10px] tracking-widest">Customize the timing and delivery details.</p>
             </div>
 
             <div className="grid grid-cols-1 gap-10">
               <div className="space-y-6">
-                <label className="text-xs font-black text-primary uppercase tracking-[0.2em]">Best Time of Day for the Call</label>
+                <label className="text-xs font-black text-primary tracking-[0.2em]">Best Time of Day for the Call</label>
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
                   {[
                     { id: 'morning', label: 'Morning', note: '07:00 - 11:00' },
@@ -1352,18 +1352,18 @@ function BookingContent() {
                       }`}
                     >
                       <Clock size={18} className={recipients[0].time === slot.id ? 'text-primary' : 'text-foreground/20'} />
-                      <div className="mt-3 font-black text-sm uppercase tracking-tighter">{slot.label}</div>
-                      <div className="text-[10px] text-muted-foreground font-bold italic">{slot.note}</div>
+                      <div className="mt-3 font-black text-sm tracking-tighter">{slot.label}</div>
+                      <div className="text-[10px] text-muted-foreground font-bold">{slot.note}</div>
                     </button>
                   ))}
                 </div>
-                <p className="text-[10px] font-bold italic text-muted-foreground/70 ml-1">
+                <p className="text-[10px] font-medium text-muted-foreground/70 ml-1">
                   Calls are made between 7:00am – 10:00pm.
                 </p>
               </div>
 
               <div className="space-y-3">
-                <label className="text-xs font-black text-primary uppercase tracking-[0.2em]">Time Zone</label>
+                <label className="text-xs font-black text-primary tracking-[0.2em]">Time Zone</label>
                 <div className="relative group">
                   <Globe size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
                   <input
@@ -1374,7 +1374,7 @@ function BookingContent() {
                     placeholder="Africa/Lagos"
                   />
                 </div>
-                <p className="text-[10px] font-bold italic text-muted-foreground/70 ml-1">
+                <p className="text-[10px] font-medium text-muted-foreground/70 ml-1">
                   Auto-detected from your device. Edit if you&apos;re booking for a different region.
                 </p>
               </div>
@@ -1390,12 +1390,12 @@ function BookingContent() {
                       <Zap size={24} className="sm:w-8 sm:h-8" />
                    </div>
                    <div>
-                      <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight uppercase italic ${isExpress ? 'text-primary' : 'text-foreground'}`}>Priority <span className="gradient-text italic">Express</span>Delivery ✨</div>
-                      <div className="text-muted-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Skip the queue. Recipient contacted within 4 hours.</div>
+                      <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight ${isExpress ? 'text-primary' : 'text-foreground'}`}>Priority <span className="gradient-text">Express</span>Delivery ✨</div>
+                      <div className="text-muted-foreground font-black tracking-widest text-[9px] sm:text-[10px]">Skip the queue. Recipient contacted within 4 hours.</div>
                    </div>
                 </div>
                 <div className="flex items-center gap-6">
-                   <span className={`text-xl font-black italic transition-colors ${isExpress ? 'text-primary' : 'text-foreground/20'}`}>
+                   <span className={`text-xl font-black transition-colors ${isExpress ? 'text-primary' : 'text-foreground/20'}`}>
                      {isSubscriber ? "Included" : "+₦2,000"}
                    </span>
                    <div className={`w-14 h-8 rounded-full transition-all relative p-1 ${isExpress ? 'bg-primary' : 'bg-foreground/10'}`}>
@@ -1418,12 +1418,12 @@ function BookingContent() {
                       <Globe size={24} className="sm:w-8 sm:h-8" />
                    </div>
                    <div>
-                      <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight uppercase italic ${isInternational ? 'text-primary' : 'text-foreground'}`}>International <span className="gradient-text italic">Recipient</span> 🌍</div>
-                      <div className="text-muted-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Recipient is outside Nigeria; international calls are double the local price.</div>
+                      <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight ${isInternational ? 'text-primary' : 'text-foreground'}`}>International <span className="gradient-text">Recipient</span> 🌍</div>
+                      <div className="text-muted-foreground font-black tracking-widest text-[9px] sm:text-[10px]">Recipient is outside Nigeria; international calls are double the local price.</div>
                    </div>
                 </div>
                 <div className="flex items-center gap-6">
-                   <span className={`text-xl font-black italic transition-colors ${isInternational ? 'text-primary' : 'text-foreground/20'}`}>
+                   <span className={`text-xl font-black transition-colors ${isInternational ? 'text-primary' : 'text-foreground/20'}`}>
                      {isSubscriber ? "Included" : "2x Price"}
                    </span>
                    <div className={`w-14 h-8 rounded-full transition-all relative p-1 ${isInternational ? 'bg-primary' : 'bg-foreground/10'}`}>
@@ -1435,15 +1435,15 @@ function BookingContent() {
                 </div>
               </div>
 
-              {isSubscriber && subscriberPlan?.id === 'orbit' && (
+              {isSubscriber && (
                 <div className="p-4 sm:p-8 rounded-2xl sm:rounded-[40px] border-2 border-border glass space-y-4">
                   <div className="flex items-center gap-4 sm:gap-6">
                      <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[32px] flex items-center justify-center bg-primary/10 text-primary">
                         <UserCog size={24} className="sm:w-8 sm:h-8" />
                      </div>
                      <div>
-                        <div className="font-black text-lg sm:text-xl mb-1 tracking-tight uppercase italic">Preferred <span className="gradient-text italic">Caller</span></div>
-                        <div className="text-muted-foreground font-black uppercase tracking-widest text-[9px] sm:text-[10px]">An Orbit perk: pick who delivers this call.</div>
+                        <div className="font-black text-lg sm:text-xl mb-1 tracking-tight">Preferred <span className="gradient-text">Caller</span></div>
+                        <div className="text-muted-foreground font-black tracking-widest text-[9px] sm:text-[10px]">Pick who delivers this call.</div>
                      </div>
                   </div>
                   <select
@@ -1474,10 +1474,10 @@ function BookingContent() {
                <div className="absolute inset-0 bg-primary blur-[40px] opacity-20" />
                {isSubscriber ? <Sparkles size={36} className="text-white relative z-10" /> : <CreditCard size={36} className="text-white relative z-10" />}
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black mb-4 tracking-tighter uppercase italic">
-              {isSubscriber ? <>Confirm Your <span className="gradient-text italic">Booking</span></> : <>Ready to <span className="gradient-text italic">Proceed?</span></>}
+            <h2 className="text-3xl sm:text-4xl font-black mb-4 tracking-tighter">
+              {isSubscriber ? <>Confirm Your <span className="gradient-text">Booking</span></> : <>Ready to <span className="gradient-text">Proceed?</span></>}
             </h2>
-            <p className="text-muted-foreground font-bold mb-8 sm:mb-12 max-w-sm leading-relaxed uppercase text-[9px] sm:text-[10px] tracking-[0.2em]">
+            <p className="text-muted-foreground font-medium mb-8 sm:mb-12 max-w-sm leading-relaxed text-[9px] sm:text-[10px] tracking-[0.2em]">
               {isSubscriber
                 ? `These calls will be deducted from your ${subscriberPlan?.name || "subscription"}. We'll email you a confirmation.`
                 : "Redirecting to Paystack for secure payment. You will receive an order confirmation email instantly."}
@@ -1490,37 +1490,37 @@ function BookingContent() {
                   {isSubscriber ? (
                     <>
                       <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Plan</span>
+                        <span className="text-muted-foreground font-bold tracking-widest text-[9px] sm:text-[10px]">Plan</span>
                         <span className="font-black text-base sm:text-lg">{subscriberPlan?.name || "Subscription"}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Service</span>
+                        <span className="text-muted-foreground font-bold tracking-widest text-[9px] sm:text-[10px]">Service</span>
                         <span className="font-black text-base sm:text-lg">{service.name}</span>
                       </div>
                       <div className="flex justify-between items-center">
-                        <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Recipients</span>
+                        <span className="text-muted-foreground font-bold tracking-widest text-[9px] sm:text-[10px]">Recipients</span>
                         <span className="font-black text-base sm:text-lg">{recipients.length}</span>
                       </div>
                       {isExpress && (
                         <div className="flex justify-between items-center text-primary">
-                          <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Express Delivery</span>
+                          <span className="font-black tracking-widest text-[9px] sm:text-[10px]">Express Delivery</span>
                           <span className="font-black text-base sm:text-lg">Included</span>
                         </div>
                       )}
                       {isInternational && (
                         <div className="flex justify-between items-center text-primary">
-                          <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">International Recipient</span>
+                          <span className="font-black tracking-widest text-[9px] sm:text-[10px]">International Recipient</span>
                           <span className="font-black text-base sm:text-lg">Included</span>
                         </div>
                       )}
                       {preferredCallerId && (
                         <div className="flex justify-between items-center text-primary">
-                          <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Preferred Caller</span>
+                          <span className="font-black tracking-widest text-[9px] sm:text-[10px]">Preferred Caller</span>
                           <span className="font-black text-base sm:text-lg">{callers.find((c) => c.id === preferredCallerId)?.full_name || "Selected"}</span>
                         </div>
                       )}
                       <div className="pt-6 border-t border-border flex justify-between items-center bg-foreground/2 -mx-5 -mb-5 p-5 sm:p-10 sm:-mx-10 sm:-mb-10 mt-6 sm:mt-8">
-                        <span className="text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] italic">Calls Deducted</span>
+                        <span className="text-[10px] sm:text-sm font-black tracking-[0.2em]">Calls Deducted</span>
                         <span className="text-xl sm:text-3xl font-black gradient-text tracking-tighter">
                           {recipients.length} of {subscription?.total_calls}
                         </span>
@@ -1530,30 +1530,30 @@ function BookingContent() {
                     <>
                       {isSpecialCall && (
                         <div className="flex justify-between items-center">
-                          <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">Occasion</span>
+                          <span className="text-muted-foreground font-bold tracking-widest text-[9px] sm:text-[10px]">Occasion</span>
                           <span className="font-black text-base sm:text-lg">{specialCallOccasion}</span>
                         </div>
                       )}
                       <div className="flex justify-between items-center group">
-                        <span className="text-muted-foreground font-bold uppercase tracking-widest text-[9px] sm:text-[10px]">
+                        <span className="text-muted-foreground font-bold tracking-widest text-[9px] sm:text-[10px]">
                           {isSpecialCall ? "Special Call" : `Package (${selectedTier.label})`}
                         </span>
                         <span className="font-black text-base sm:text-lg">₦{basePrice.toLocaleString()}</span>
                       </div>
                       {isInternational && !isSpecialCall && (
                         <div className="flex justify-between items-center text-primary">
-                          <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">International Recipient (2x)</span>
+                          <span className="font-black tracking-widest text-[9px] sm:text-[10px]">International Recipient (2x)</span>
                           <span className="font-black text-base sm:text-lg">+₦{internationalSurcharge.toLocaleString()}</span>
                         </div>
                       )}
                       {isExpress && !isSpecialCall && (
                         <div className="flex justify-between items-center text-primary">
-                          <span className="font-black uppercase tracking-widest text-[9px] sm:text-[10px]">Express Service</span>
+                          <span className="font-black tracking-widest text-[9px] sm:text-[10px]">Express Service</span>
                           <span className="font-black text-base sm:text-lg">+₦2,000</span>
                         </div>
                       )}
                       <div className="pt-6 border-t border-border flex justify-between items-center bg-foreground/2 -mx-5 -mb-5 p-5 sm:p-10 sm:-mx-10 sm:-mb-10 mt-6 sm:mt-8">
-                        <span className="text-[10px] sm:text-sm font-black uppercase tracking-[0.2em] italic">Total Amount</span>
+                        <span className="text-[10px] sm:text-sm font-black tracking-[0.2em]">Total Amount</span>
                         <span className="text-xl sm:text-3xl font-black gradient-text tracking-tighter">₦{totalPrice.toLocaleString()}</span>
                       </div>
                     </>
@@ -1568,7 +1568,7 @@ function BookingContent() {
           <button 
             onClick={prevStep}
             disabled={step === "type"}
-            className={`flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-4 sm:py-5 rounded-[32px] font-black text-[9px] sm:text-[10px] uppercase tracking-widest transition-all ${step === "type" ? 'opacity-0 pointer-events-none' : 'glass border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground hover:scale-105 active:scale-95'}`}
+            className={`flex items-center gap-2 sm:gap-3 px-6 sm:px-8 py-4 sm:py-5 rounded-[32px] font-black text-[9px] sm:text-[10px] tracking-widest transition-all ${step === "type" ? 'opacity-0 pointer-events-none' : 'glass border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground hover:scale-105 active:scale-95'}`}
           >
             <ChevronLeft size={18} className="sm:w-5 sm:h-5" />
             <span className="hidden xs:inline">Previous Step</span>
@@ -1577,7 +1577,7 @@ function BookingContent() {
           <button
             onClick={nextStep}
             disabled={loading || overQuota}
-            className="flex items-center gap-2 sm:gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-[32px] gradient-bg text-white font-black text-[9px] sm:text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+            className="flex items-center gap-2 sm:gap-3 px-8 sm:px-12 py-4 sm:py-5 rounded-[32px] gradient-bg text-white font-black text-[9px] sm:text-[10px] tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
           >
             <span className="group-hover:mr-2 transition-all">
               {loading ? "Processing..." : overQuota ? "Quota Exceeded" : step === "payment" ? (isSubscriber ? "Confirm Booking" : "Complete Payment") : "Next Step"}
@@ -1591,7 +1591,7 @@ function BookingContent() {
 
 export default function BookingForm() {
   return (
-    <Suspense fallback={<div className="p-12 text-center font-black animate-pulse uppercase tracking-widest text-primary">Preparing Your Experience...</div>}>
+    <Suspense fallback={<div className="p-12 text-center font-black animate-pulse tracking-widest text-primary">Preparing Your Experience...</div>}>
       <BookingContent />
     </Suspense>
   );

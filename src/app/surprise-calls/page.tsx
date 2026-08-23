@@ -24,7 +24,7 @@ export default function SurpriseCallsPage() {
         
         <div className="max-w-5xl mx-auto text-center relative z-10">
           <Reveal>
-            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary tracking-[0.4em]">
               <Sparkles size={14} className="fill-current" />
               Our Signature Experience
             </div>
@@ -32,11 +32,11 @@ export default function SurpriseCallsPage() {
           <Reveal delay={0.1}>
             <h1 className="text-5xl md:text-8xl font-medium mb-8 tracking-tight leading-none font-serif">
               The Magic of a <br className="hidden sm:block" />
-              <span className="gradient-text italic">Surprise Call</span>.
+              <span className="gradient-text">Surprise Call</span>.
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12 italic font-serif">
+            <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl mx-auto mb-12 font-serif">
               Transform distance into lasting core memories with a voice that cares. Our expert team delivers genuine emotions, not just messages.
             </p>
           </Reveal>
@@ -84,15 +84,15 @@ export default function SurpriseCallsPage() {
                 </div>
               </div>
               <div className="absolute top-10 left-10 right-10 p-8 glass rounded-[40px] border-border text-center shadow-2xl">
-                <div className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-3">Live Demo</div>
-                <div className="text-xl font-medium font-serif italic tracking-tight text-primary">Listen to a Sample Professional Greeting</div>
+                <div className="text-[10px] font-black tracking-[0.4em] text-primary mb-3">Live Demo</div>
+                <div className="text-xl font-medium font-serif tracking-tight text-primary">Listen to a Sample Professional Greeting</div>
               </div>
             </div>
           </Reveal>
           
           <div className="space-y-12">
             <Reveal direction="right">
-              <h2 className="text-4xl md:text-5xl font-medium mb-12 font-serif italic tracking-tight">The Service <span className="gradient-text italic">Journey</span></h2>
+              <h2 className="text-4xl md:text-5xl font-medium mb-12 font-serif tracking-tight">The Service <span className="gradient-text">Journey</span></h2>
               <div className="space-y-10">
                 {[
                   { step: "01", title: "Schedule Your Slot", desc: "Choose a date and time that would mean the most to your recipient. We handle the time-zone coordination." },
@@ -101,7 +101,7 @@ export default function SurpriseCallsPage() {
                   { step: "04", title: "Professional Delivery", desc: "Our account agents make the call live, ensuring a unique, interactive and emotional experience." }
                 ].map((step, i) => (
                   <div key={i} className="flex gap-8 group">
-                    <div className="text-4xl font-black text-primary/10 group-hover:text-primary/100 transition-colors duration-500 font-serif italic">{step.step}</div>
+                    <div className="text-4xl font-black text-primary/10 group-hover:text-primary/100 transition-colors duration-500 font-serif">{step.step}</div>
                     <div className="pt-2">
                       <div className="text-2xl font-bold mb-2 tracking-tight">{step.title}</div>
                       <div className="text-muted-foreground font-medium leading-relaxed">{step.desc}</div>
@@ -119,7 +119,7 @@ export default function SurpriseCallsPage() {
         <div className="max-w-4xl mx-auto p-6 sm:p-12 sm:p-16 glass border border-primary/10 rounded-[32px] sm:rounded-[64px] text-center shadow-huge relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 blur-[80px] rounded-full -mr-32 -mt-32" />
           <Reveal>
-            <h3 className="text-3xl font-medium mb-16 font-serif italic tracking-tight">Why People <span className="gradient-text">Trust Us</span></h3>
+            <h3 className="text-3xl font-medium mb-16 font-serif tracking-tight">Why People <span className="gradient-text">Trust Us</span></h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 sm:gap-12 md:gap-20">
               {[
                 { label: "Successful Deliveries", value: "98.4%" },
@@ -128,7 +128,7 @@ export default function SurpriseCallsPage() {
               ].map((stat, i) => (
                 <div key={i} className="relative">
                   <div className="text-5xl font-black gradient-text mb-4 tracking-tighter">{stat.value}</div>
-                  <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground italic px-4">{stat.label}</div>
+                  <div className="text-[10px] font-black tracking-widest text-muted-foreground px-4">{stat.label}</div>
                   {i < 2 && <div className="hidden md:block absolute top-1/2 right-[-40px] w-px h-12 bg-border -translate-y-1/2" />}
                 </div>
               ))}
@@ -143,7 +143,7 @@ export default function SurpriseCallsPage() {
           <div className="max-w-4xl mx-auto p-8 sm:p-16 rounded-[32px] sm:rounded-[64px] glass border border-border shadow-huge relative overflow-hidden group">
             <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity duration-1000" />
             <div className="absolute top-0 left-0 w-96 h-96 bg-primary/10 blur-[100px] rounded-full -ml-48 -mt-48" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-medium mb-12 relative z-10 tracking-tight font-serif italic">Make Someone Smile <br className="hidden sm:block" />Today.</h2>
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-medium mb-12 relative z-10 tracking-tight font-serif">Make Someone Smile <br className="hidden sm:block" />Today.</h2>
             <Link href="/book" className="inline-flex px-8 py-4 sm:px-12 sm:py-6 gradient-bg text-white font-bold text-base sm:text-xl rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge relative z-10">
               Book a Surprise
             </Link>

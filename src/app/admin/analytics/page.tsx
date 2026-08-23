@@ -58,8 +58,8 @@ export default function AdminAnalytics() {
   return (
     <div className="space-y-8 sm:space-y-12">
       <header>
-        <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter uppercase">Analytics</h1>
-        <p className="text-muted-foreground text-sm font-semibold tracking-tight">Platform totals and where your clients are.</p>
+        <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter">Analytics</h1>
+        <p className="text-muted-foreground text-sm font-medium tracking-tight">Platform totals and where your clients are.</p>
       </header>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
@@ -78,7 +78,7 @@ export default function AdminAnalytics() {
                 {metric.icon}
               </div>
                <div className="text-2xl sm:text-4xl font-black mb-1 tabular-nums group-hover:scale-110 transition-transform origin-left">{metric.value}</div>
-                <div className="text-[9px] sm:text-[10px] font-black text-foreground/40 uppercase tracking-widest">{metric.label}</div>
+                <div className="text-[9px] sm:text-[10px] font-black text-foreground/40 tracking-widest">{metric.label}</div>
             </div>
           </motion.div>
         ))}
@@ -92,7 +92,7 @@ export default function AdminAnalytics() {
           <div className="flex justify-between items-center mb-8 sm:mb-10 relative z-10">
              <div>
                 <h2 className="text-xl sm:text-2xl font-black mb-1">Client Regions</h2>
-                <p className="text-xs text-muted-foreground font-bold uppercase tracking-widest">Where your registered clients are located.</p>
+                <p className="text-xs text-muted-foreground font-medium tracking-widest">Where your registered clients are located.</p>
              </div>
              <Globe className="text-secondary/20 hidden sm:block" size={32} />
           </div>
@@ -104,7 +104,7 @@ export default function AdminAnalytics() {
                  return (
                     <div key={geo.label} className="w-40 sm:w-44 shrink-0 p-4 sm:p-6 rounded-3xl bg-foreground/5 border border-border group hover:border-secondary/20 transition-all text-center">
                        <div className="text-lg sm:text-xl font-black mb-1">{pct}%</div>
-                       <div className="text-[9px] sm:text-[10px] font-black text-foreground/40 uppercase tracking-widest truncate" title={geo.label}>{geo.label}</div>
+                       <div className="text-[9px] sm:text-[10px] font-black text-foreground/40 tracking-widest truncate" title={geo.label}>{geo.label}</div>
                        <div className="mt-4 w-full h-1 bg-foreground/5 rounded-full overflow-hidden">
                          <motion.div
                            initial={{ width: 0 }}
@@ -120,7 +120,7 @@ export default function AdminAnalytics() {
           ) : (
             <div className="text-center py-16 relative z-10">
               <MapPin size={40} className="mx-auto text-foreground/10 mb-4" />
-              <div className="text-sm font-black text-foreground/30 uppercase tracking-widest">No client location data yet.</div>
+              <div className="text-sm font-black text-foreground/30 tracking-widest">No client location data yet.</div>
             </div>
           )}
         </div>
@@ -129,9 +129,9 @@ export default function AdminAnalytics() {
         <div className="lg:col-span-12 p-5 sm:p-10 rounded-[28px] sm:rounded-[48px] glass border border-border shadow-huge bg-background/40 h-full">
             <div className="flex items-center gap-4 mb-8 sm:mb-10">
                <TrendingUp className="text-primary" size={24} />
-               <h2 className="text-xl sm:text-2xl font-black uppercase tracking-tighter">Call Volume</h2>
+               <h2 className="text-xl sm:text-2xl font-black tracking-tighter">Call Volume</h2>
             </div>
-            <div className="h-48 sm:h-64 flex items-center justify-center border border-dashed border-border rounded-[24px] sm:rounded-[32px] bg-foreground/2 text-foreground/30 font-bold tracking-widest uppercase text-xs sm:text-sm text-center px-6">
+            <div className="h-48 sm:h-64 flex items-center justify-center border border-dashed border-border rounded-[24px] sm:rounded-[32px] bg-foreground/2 text-foreground/30 font-bold tracking-widest text-xs sm:text-sm text-center px-6">
                Chart coming soon
             </div>
         </div>

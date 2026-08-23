@@ -89,8 +89,8 @@ export default function AdminCRM() {
     <div className="space-y-8 sm:space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter uppercase">Clients</h1>
-          <p className="text-muted-foreground font-bold uppercase text-[9px] sm:text-[10px] tracking-widest">Every registered member and their account status.</p>
+          <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter">Clients</h1>
+          <p className="text-muted-foreground font-medium text-[9px] sm:text-[10px] tracking-widest">Every registered member and their account status.</p>
         </div>
 
         <div className="flex flex-col sm:flex-row w-full md:w-auto gap-3">
@@ -107,7 +107,7 @@ export default function AdminCRM() {
            <select
              value={roleFilter}
              onChange={(e) => setRoleFilter(e.target.value)}
-             className="px-6 py-3 rounded-2xl glass border border-border text-[10px] font-black uppercase tracking-widest outline-none cursor-pointer hover:border-primary/40 transition-all appearance-none"
+             className="px-6 py-3 rounded-2xl glass border border-border text-[10px] font-black tracking-widest outline-none cursor-pointer hover:border-primary/40 transition-all appearance-none"
            >
               <option className="bg-background text-foreground" value="all">Every role</option>
               <option className="bg-background text-foreground" value="user">Clients</option>
@@ -124,11 +124,11 @@ export default function AdminCRM() {
           <table className="w-full text-left">
             <thead>
               <tr className="border-b border-border bg-foreground/2">
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Member</th>
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Status</th>
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Region & plan</th>
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Joined</th>
-                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40 whitespace-nowrap">Actions</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Member</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Status</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Region & plan</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Joined</th>
+                <th className="px-5 sm:px-10 py-6 sm:py-8 text-[10px] font-black tracking-[0.3em] text-foreground/40 whitespace-nowrap">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-border font-bold">
@@ -154,7 +154,7 @@ export default function AdminCRM() {
                     </div>
                   </td>
                   <td className="px-5 sm:px-10 py-4 sm:py-6">
-                    <div className={`px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest inline-flex items-center gap-1.5 border border-border ${
+                    <div className={`px-4 py-1.5 rounded-full text-[10px] font-black tracking-widest inline-flex items-center gap-1.5 border border-border ${
                       profile.role === 'admin' ? 'bg-primary/10 text-primary border-primary/20' :
                       profile.role === 'caller' ? 'bg-secondary/10 text-secondary border-secondary/20' : 'bg-foreground/5 text-foreground/40'
                     }`}>
@@ -168,7 +168,7 @@ export default function AdminCRM() {
                            <Globe size={14} className="text-foreground/40" />
                            {profile.location || '—'}
                         </div>
-                        <div className="text-[10px] font-black uppercase tracking-widest text-primary/60">
+                        <div className="text-[10px] font-black tracking-widest text-primary/60">
                            {profile.subscriptions?.[0]?.status === 'active'
                              ? `${profile.subscriptions[0].plan} plan`
                              : profile.subscriptions?.[0]?.plan
@@ -185,7 +185,7 @@ export default function AdminCRM() {
                        <select
                          value={profile.role}
                          onChange={(e) => handleUpdateUser(profile.id, { role: e.target.value })}
-                         className="px-3 py-2 rounded-xl bg-foreground/5 border border-border text-[10px] font-black uppercase outline-none hover:border-primary/20 transition-all cursor-pointer"
+                         className="px-3 py-2 rounded-xl bg-foreground/5 border border-border text-[10px] font-black outline-none hover:border-primary/20 transition-all cursor-pointer"
                        >
                           <option className="bg-background" value="user">Client</option>
                           <option className="bg-background" value="caller">Caller</option>
@@ -222,7 +222,7 @@ export default function AdminCRM() {
         {loading && (
           <div className="p-20 sm:p-32 flex flex-col items-center justify-center gap-6">
             <Loader2 className="animate-spin text-primary" size={64} />
-            <div className="text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">Loading clients…</div>
+            <div className="text-[10px] font-black tracking-[0.4em] animate-pulse">Loading clients…</div>
           </div>
         )}
 
@@ -232,7 +232,7 @@ export default function AdminCRM() {
              <div className="text-xl sm:text-2xl font-black mb-2 opacity-40">
                {profiles.length === 0 ? "No members yet" : "No members match your search"}
              </div>
-             <div className="text-[10px] font-bold text-foreground/30 uppercase tracking-widest">
+             <div className="text-[10px] font-bold text-foreground/30 tracking-widest">
                {profiles.length === 0 ? "New sign-ups will appear here." : "Try a different name, email, or role."}
              </div>
           </div>

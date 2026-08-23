@@ -109,7 +109,7 @@ export default function AdminEditLetterPage() {
   if (error) {
     return (
       <div className="max-w-3xl mx-auto py-12 text-center">
-        <p className="text-red-400 font-bold">{error}</p>
+        <p className="text-red-400 font-medium">{error}</p>
         <Link href="/admin/letters" className="mt-4 inline-block text-primary text-sm font-bold">
           Back to list
         </Link>
@@ -142,7 +142,7 @@ export default function AdminEditLetterPage() {
             </h1>
             <p className="text-foreground/40 mt-2 font-medium text-xs">
               Status:{" "}
-              <span className={`font-black uppercase ${
+              <span className={`font-black ${
                 letter.status === "published" ? "text-green-400" :
                 letter.status === "processing" ? "text-amber-400" :
                 "text-primary"
@@ -154,7 +154,7 @@ export default function AdminEditLetterPage() {
             <div className="flex gap-2 flex-wrap">
               <button
                 onClick={copyLink}
-                className="px-4 py-3 rounded-2xl border border-foreground/10 hover:bg-foreground/5 text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
+                className="px-4 py-3 rounded-2xl border border-foreground/10 hover:bg-foreground/5 text-[10px] font-black tracking-widest flex items-center gap-2"
               >
                 {copied ? <Check size={14} /> : <Copy size={14} />}
                 {copied ? "Copied" : "Copy share URL"}
@@ -163,7 +163,7 @@ export default function AdminEditLetterPage() {
                 href={shareUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="px-4 py-3 rounded-2xl bg-foreground/5 hover:bg-foreground/10 text-[10px] font-black uppercase tracking-widest flex items-center gap-2"
+                className="px-4 py-3 rounded-2xl bg-foreground/5 hover:bg-foreground/10 text-[10px] font-black tracking-widest flex items-center gap-2"
               >
                 Open
                 <ExternalLink size={12} />
@@ -173,7 +173,7 @@ export default function AdminEditLetterPage() {
                   href={`https://wa.me/${letter.recipient_phone.replace(/\D/g, "")}?text=${encodeURIComponent(`Hi ${letter.recipient_name}! Someone has sent you a special digital letter 💜\n\n${shareUrl}`)}`}
                   target="_blank"
                   rel="noreferrer"
-                  className="px-4 py-3 rounded-2xl bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-black uppercase tracking-widest flex items-center gap-2 hover:bg-green-500/20 transition-colors"
+                  className="px-4 py-3 rounded-2xl bg-green-500/10 border border-green-500/20 text-green-400 text-[10px] font-black tracking-widest flex items-center gap-2 hover:bg-green-500/20 transition-colors"
                 >
                   <MessageCircle size={14} />
                   Send via WhatsApp
@@ -205,7 +205,7 @@ export default function AdminEditLetterPage() {
         }`}>
           <div className="flex items-center gap-2">
             <Rocket size={18} className="text-primary" />
-            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+            <div className="text-[10px] font-black tracking-[0.3em] text-primary">
               {letter.status === "processing" ? "Ready to Publish?" : "Publish Letter"}
             </div>
           </div>
@@ -217,7 +217,7 @@ export default function AdminEditLetterPage() {
           <button
             onClick={publishLetter}
             disabled={publishing}
-            className="w-full py-4 rounded-2xl gradient-bg text-white font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
+            className="w-full py-4 rounded-2xl gradient-bg text-white font-black text-sm tracking-widest flex items-center justify-center gap-2 hover:scale-[1.02] active:scale-95 transition-all disabled:opacity-50"
           >
             {publishing ? <Loader2 size={16} className="animate-spin" /> : <Rocket size={16} />}
             {publishing ? "Publishing…" : "Mark Complete & Publish"}
@@ -231,7 +231,7 @@ export default function AdminEditLetterPage() {
               />
               <button
                 onClick={() => { navigator.clipboard.writeText(publishShareUrl); }}
-                className="px-4 py-2 rounded-xl bg-foreground/5 hover:bg-foreground/10 text-[10px] font-black uppercase tracking-widest flex items-center gap-1"
+                className="px-4 py-2 rounded-xl bg-foreground/5 hover:bg-foreground/10 text-[10px] font-black tracking-widest flex items-center gap-1"
               >
                 <Copy size={12} /> Copy
               </button>
@@ -245,23 +245,23 @@ export default function AdminEditLetterPage() {
         <div className="p-6 rounded-3xl border border-amber-500/20 bg-amber-500/5 space-y-4">
           <div className="flex items-center gap-2">
             <Mic size={16} className="text-amber-400" />
-            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-amber-400">User Instructions</div>
+            <div className="text-[10px] font-black tracking-[0.3em] text-amber-400">User Instructions</div>
           </div>
           {letter.request_admin_letter && (
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
               <span className="text-lg shrink-0">✨</span>
-              <p className="text-xs font-bold text-amber-300">This user has requested BuzzThrills to <span className="underline">write the letter</span> on their behalf. See their occasion notes below.</p>
+              <p className="text-xs font-medium text-amber-300">This user has requested BuzzThrills to <span className="underline">write the letter</span> on their behalf. See their occasion notes below.</p>
             </div>
           )}
           {letter.request_admin_voice && (
             <div className="flex items-center gap-3 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
               <Mic size={16} className="text-amber-400 shrink-0" />
-              <p className="text-xs font-bold text-amber-300">This user has requested a BuzzThrills voice recording for their letter.</p>
+              <p className="text-xs font-medium text-amber-300">This user has requested a BuzzThrills voice recording for their letter.</p>
             </div>
           )}
           {letter.additional_comments && (
             <div className="space-y-1">
-              <div className="text-[9px] font-black uppercase tracking-widest text-foreground/40">Their Comments / Occasion Brief</div>
+              <div className="text-[9px] font-black tracking-widest text-foreground/40">Their Comments / Occasion Brief</div>
               <p className="text-sm text-foreground/80 font-medium leading-relaxed whitespace-pre-wrap">{letter.additional_comments}</p>
             </div>
           )}
@@ -273,7 +273,7 @@ export default function AdminEditLetterPage() {
         <div className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
           <div className="flex items-center gap-2">
             <QrCode size={16} className="text-primary" />
-            <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+            <div className="text-[10px] font-black tracking-[0.3em] text-primary">
               Scannable Physical Copy
             </div>
           </div>
@@ -300,7 +300,7 @@ export default function AdminEditLetterPage() {
                   ) : (
                     <Package size={14} />
                   )}
-                  <span className="text-[10px] font-black uppercase tracking-widest">{step.label}</span>
+                  <span className="text-[10px] font-black tracking-widest">{step.label}</span>
                   <span className="text-[9px] opacity-60">{step.desc}</span>
                 </button>
               );
@@ -308,8 +308,8 @@ export default function AdminEditLetterPage() {
           </div>
 
           <div className="flex items-center gap-2 pt-1">
-            <span className="text-[9px] text-foreground/30 font-bold uppercase tracking-widest">Current status:</span>
-            <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-widest border ${scannableColors[scannableStatus]}`}>
+            <span className="text-[9px] text-foreground/30 font-bold tracking-widest">Current status:</span>
+            <span className={`inline-flex px-2.5 py-0.5 rounded-full text-[9px] font-black tracking-widest border ${scannableColors[scannableStatus]}`}>
               {scannableStatus}
             </span>
           </div>
@@ -318,7 +318,7 @@ export default function AdminEditLetterPage() {
 
       {/* Admin Notes */}
       <div className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-3">
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Admin Notes</div>
+        <div className="text-[10px] font-black tracking-[0.3em] text-primary">Admin Notes</div>
         <textarea
           value={adminNotes}
           onChange={(e) => setAdminNotes(e.target.value)}
@@ -329,7 +329,7 @@ export default function AdminEditLetterPage() {
         <button
           onClick={saveNotes}
           disabled={savingNotes}
-          className="px-5 py-2.5 rounded-xl bg-primary text-white text-[10px] font-black uppercase tracking-widest hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
+          className="px-5 py-2.5 rounded-xl bg-primary text-white text-[10px] font-black tracking-widest hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
         >
           {savingNotes ? "Saving…" : "Save Notes"}
         </button>

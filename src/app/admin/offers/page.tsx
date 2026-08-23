@@ -41,14 +41,14 @@ export default function AdminOffers() {
     <div className="space-y-8 sm:space-y-12">
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter uppercase">Promotions</h1>
-          <p className="text-muted-foreground font-bold uppercase text-[9px] sm:text-[10px] tracking-widest">Discounts and seasonal packages shown to clients.</p>
+          <h1 className="text-3xl sm:text-4xl font-black mb-2 tracking-tighter">Promotions</h1>
+          <p className="text-muted-foreground font-medium text-[9px] sm:text-[10px] tracking-widest">Discounts and seasonal packages shown to clients.</p>
         </div>
 
         <button
           disabled
           title="Creating promotions from the dashboard is coming soon. Ask engineering to add one directly for now."
-          className="w-full md:w-auto px-8 py-4 rounded-2xl gradient-bg text-white font-black text-xs uppercase tracking-[0.2em] shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
+          className="w-full md:w-auto px-8 py-4 rounded-2xl gradient-bg text-white font-black text-xs tracking-[0.2em] shadow-xl shadow-primary/20 transition-all flex items-center justify-center gap-2 opacity-50 cursor-not-allowed"
         >
           <Plus size={20} />
           Create promotion (coming soon)
@@ -74,7 +74,7 @@ export default function AdminOffers() {
                  />
                ) : (
                   <div className="absolute inset-0 gradient-bg opacity-10 group-hover:opacity-20 transition-opacity flex items-center justify-center">
-                     <div className="text-foreground/10 font-black text-4xl uppercase tracking-tighter">No image</div>
+                     <div className="text-foreground/10 font-black text-4xl tracking-tighter">No image</div>
                   </div>
                )}
                
@@ -83,7 +83,7 @@ export default function AdminOffers() {
                    <div className="p-3 rounded-2xl glass border border-border text-foreground/40 hover:text-primary hover:border-primary/40 transition-all cursor-pointer shadow-xl">
                       <ImageIcon size={18} />
                    </div>
-                  <div className={`px-5 py-2 rounded-full text-[10px] font-black uppercase tracking-widest flex items-center gap-2 shadow-xl border ${
+                  <div className={`px-5 py-2 rounded-full text-[10px] font-black tracking-widest flex items-center gap-2 shadow-xl border ${
                     offer.is_active ? 'bg-green-500/10 text-green-500 border-green-500/20' : 'bg-red-500/10 text-red-500 border-red-500/20'
                   }`}>
                     <Zap size={12} className={offer.is_active ? 'animate-pulse' : ''} />
@@ -97,7 +97,7 @@ export default function AdminOffers() {
                   <div className="flex justify-between items-start gap-4 mb-6">
                      <div className="min-w-0">
                        <h3 className="text-xl sm:text-3xl font-black mb-2 tracking-tighter group-hover:text-primary transition-colors truncate">{offer.title}</h3>
-                       <p className="text-foreground/40 text-sm font-bold line-clamp-2 max-w-sm leading-relaxed">{offer.description}</p>
+                       <p className="text-foreground/40 text-sm font-medium line-clamp-2 max-w-sm leading-relaxed">{offer.description}</p>
                      </div>
                      <div className="w-16 h-12 sm:w-20 sm:h-14 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-black text-lg sm:text-2xl shadow-huge tabular-nums shrink-0">
                        {offer.discount_percent}%
@@ -130,8 +130,8 @@ export default function AdminOffers() {
         {!loading && offers.length === 0 && (
           <div className="lg:col-span-2 p-12 sm:p-24 rounded-[48px] glass border border-dashed border-border flex flex-col items-center justify-center text-center bg-background/10">
               <Tag size={64} className="text-foreground/10 mb-6" />
-              <h3 className="text-xl sm:text-2xl font-black mb-2 opacity-40 uppercase tracking-tighter">No promotions yet</h3>
-              <p className="text-foreground/30 font-black tracking-widest text-[9px] uppercase">Promotions you create will appear here.</p>
+              <h3 className="text-xl sm:text-2xl font-black mb-2 opacity-40 tracking-tighter">No promotions yet</h3>
+              <p className="text-foreground/30 font-medium tracking-widest text-[9px]">Promotions you create will appear here.</p>
           </div>
         )}
       </div>

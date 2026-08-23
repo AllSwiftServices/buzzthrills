@@ -356,7 +356,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
     : ["compose", "recipient", "media", "pay"];
 
   return (
-    <div className="w-full max-w-3xl mx-auto glass p-6 sm:p-8 md:p-12 min-h-[500px] flex flex-col border border-border shadow-2xl relative overflow-hidden rounded-[40px]">
+    <div className="w-full max-w-3xl mx-auto glass p-4 sm:p-8 md:p-12 min-h-[500px] flex flex-col border border-border shadow-2xl relative overflow-hidden rounded-[40px]">
       <div className="absolute top-0 left-0 w-full h-1 gradient-bg opacity-50" />
 
       <div className="flex items-center justify-between mb-8 relative px-1">
@@ -393,10 +393,10 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             className="flex-grow space-y-6"
           >
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">
-                Write Your <span className="gradient-text italic">Letter</span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter">
+                Write Your <span className="gradient-text">Letter</span>
               </h2>
-              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">
+              <p className="text-muted-foreground font-medium text-[10px] tracking-widest">
                 Pour it out. They'll see the words animate to life on the other end.
               </p>
             </div>
@@ -412,7 +412,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                     : "border-border hover:border-primary/40"
                 }`}
               >
-                <div className={`text-xs font-black uppercase tracking-widest mb-1 ${!draft.requestAdminLetter ? "text-primary" : "text-foreground/40"}`}>
+                <div className={`text-xs font-black tracking-widest mb-1 ${!draft.requestAdminLetter ? "text-primary" : "text-foreground/40"}`}>
                   ✍️ I'll write it
                 </div>
                 <p className="text-[10px] text-muted-foreground font-medium leading-snug">
@@ -428,7 +428,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                     : "border-border hover:border-primary/40"
                 }`}
               >
-                <div className={`text-xs font-black uppercase tracking-widest mb-1 ${draft.requestAdminLetter ? "text-primary" : "text-foreground/40"}`}>
+                <div className={`text-xs font-black tracking-widest mb-1 ${draft.requestAdminLetter ? "text-primary" : "text-foreground/40"}`}>
                   ✨ Write it for me
                 </div>
                 <p className="text-[10px] text-muted-foreground font-medium leading-snug">
@@ -445,7 +445,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                     Our team will craft a beautiful, personalised letter on your behalf. Just tell us a little about the occasion and recipient. We'll take care of the rest before your letter is published.
                   </p>
                 </div>
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
+                <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">
                   Tell us about the occasion
                 </label>
                 <textarea
@@ -458,7 +458,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
               </div>
             ) : (
               <div className="space-y-3">
-                <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
+                <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">
                   Your Message
                 </label>
                 <textarea
@@ -468,14 +468,14 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                   className="w-full bg-foreground/5 border border-border rounded-[24px] py-5 px-6 focus:border-primary outline-none font-medium text-base leading-relaxed resize-none"
                   placeholder="Dear ..., I want you to know..."
                 />
-                <p className="text-[10px] font-bold italic text-muted-foreground/70 ml-1">
+                <p className="text-[10px] font-medium text-muted-foreground/70 ml-1">
                   {draft.message.length} characters · keep it heartfelt and personal
                 </p>
               </div>
             )}
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">Theme</label>
+              <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">Theme</label>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 {LETTER_THEMES.map((t) => {
                   const active = draft.theme === t.id;
@@ -494,10 +494,10 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                         className="w-full h-16 rounded-xl mb-3 border border-black/10"
                         style={{ background: t.preview.paperBg, color: t.preview.paperText }}
                       >
-                        <div className="h-full flex items-center justify-center font-serif italic text-sm">Aa</div>
+                        <div className="h-full flex items-center justify-center font-serif text-sm">Aa</div>
                       </div>
-                      <span className="text-xs font-black uppercase tracking-widest">{t.name}</span>
-                      <p className="text-[10px] text-muted-foreground font-bold italic mt-1 leading-snug">{t.tagline}</p>
+                      <span className="text-xs font-black tracking-widest">{t.name}</span>
+                      <p className="text-[10px] text-muted-foreground font-medium mt-1 leading-snug">{t.tagline}</p>
                     </button>
                   );
                 })}
@@ -506,8 +506,8 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
 
             <div className="p-4 rounded-2xl bg-primary/5 border border-primary/20 flex items-center justify-between">
               <div>
-                <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Base price</div>
-                <p className="text-[11px] text-muted-foreground italic mt-1">Add voice/video and scannable copy in the next steps.</p>
+                <div className="text-[10px] font-black tracking-[0.3em] text-primary">Base price</div>
+                <p className="text-[11px] text-muted-foreground mt-1">Add voice/video and scannable copy in the next steps.</p>
               </div>
               <span className="text-2xl font-black gradient-text">₦{LETTER_PRICING.base.toLocaleString()}</span>
             </div>
@@ -523,16 +523,16 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             className="flex-grow space-y-6"
           >
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">
-                Who Is This <span className="gradient-text italic">For</span>?
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter">
+                Who Is This <span className="gradient-text">For</span>?
               </h2>
-              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">
+              <p className="text-muted-foreground font-medium text-[10px] tracking-widest">
                 The link you'll share opens to a letter addressed to them.
               </p>
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
+              <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">
                 Recipient&apos;s Name
               </label>
               <div className="relative group">
@@ -548,8 +548,8 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                Phone Number <span className="text-muted-foreground/60 normal-case font-bold italic">(optional, in case we WhatsApp them the link for you)</span>
+              <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">
+                Phone Number <span className="text-muted-foreground/60 normal-case font-bold">(optional, in case we WhatsApp them the link for you)</span>
               </label>
               <div className="relative group">
                 <Phone size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -564,8 +564,8 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             </div>
 
             <div className="space-y-3">
-              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                Email Address <span className="text-muted-foreground/60 normal-case font-bold italic">(optional, in case we email them the link for you)</span>
+              <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">
+                Email Address <span className="text-muted-foreground/60 normal-case font-bold">(optional, in case we email them the link for you)</span>
               </label>
               <div className="relative group">
                 <Mail size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-muted-foreground group-focus-within:text-primary transition-colors" />
@@ -598,10 +598,10 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             className="flex-grow space-y-6"
           >
             <div>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter uppercase italic">
-                Add A <span className="gradient-text italic">Soundtrack</span>
+              <h2 className="text-2xl sm:text-3xl md:text-4xl font-black mb-2 tracking-tighter">
+                Add A <span className="gradient-text">Soundtrack</span>
               </h2>
-              <p className="text-muted-foreground font-black uppercase text-[10px] tracking-widest">
+              <p className="text-muted-foreground font-medium text-[10px] tracking-widest">
                 Background music sets the mood. Add a voice note or video for a personal touch.
               </p>
             </div>
@@ -615,8 +615,8 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             />
 
             <div className="space-y-3">
-              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/70">
-                Personal Touch <span className="text-muted-foreground/50 normal-case italic">(pick one)</span>
+              <div className="text-[10px] font-black tracking-[0.3em] text-foreground/70">
+                Personal Touch <span className="text-muted-foreground/50 normal-case">(pick one)</span>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {([
@@ -644,7 +644,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                       }`}
                     >
                       <Icon size={18} className={active ? "text-primary" : "text-foreground/40"} />
-                      <span className="text-[10px] font-black uppercase tracking-widest">{opt.label}</span>
+                      <span className="text-[10px] font-black tracking-widest">{opt.label}</span>
                     </button>
                   );
                 })}
@@ -664,11 +664,11 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                   }`}
                 >
                   <Mic size={18} className={draft.requestAdminVoice ? "text-primary" : "text-foreground/40"} />
-                  <span className="text-[10px] font-black uppercase tracking-widest text-center leading-tight">BuzzThrills Voice</span>
+                  <span className="text-[10px] font-black tracking-widest text-center leading-tight">BuzzThrills Voice</span>
                 </button>
               </div>
               {draft.requestAdminVoice && (
-                <p className="text-[11px] text-primary/80 font-medium italic px-1">
+                <p className="text-[11px] text-primary/80 font-medium px-1">
                   ✓ We'll record a professional voice-over for your letter. Leave any instructions in the comments below.
                 </p>
               )}
@@ -706,12 +706,12 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
               </div>
               <div className="flex-grow">
                 <div className="flex items-center justify-between gap-3 mb-1">
-                  <span className="text-sm font-black uppercase tracking-tight">Scannable physical copy</span>
-                  <span className="text-[10px] font-black uppercase tracking-widest text-primary">
+                  <span className="text-sm font-black tracking-tight">Scannable physical copy</span>
+                  <span className="text-[10px] font-black tracking-widest text-primary">
                     +₦{LETTER_PRICING.scannableAddon.toLocaleString()}
                   </span>
                 </div>
-                <p className="text-[11px] text-muted-foreground font-medium italic leading-relaxed">
+                <p className="text-[11px] text-muted-foreground font-medium leading-relaxed">
                   We'll print a physical card with a QR that opens the letter. Our team coordinates delivery with you after checkout.
                 </p>
               </div>
@@ -719,8 +719,8 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
 
             {/* Additional comments */}
             <div className="space-y-2">
-              <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em] ml-1">
-                Additional Comments <span className="text-muted-foreground/60 normal-case font-bold italic">(optional)</span>
+              <label className="text-[10px] font-black text-primary tracking-[0.2em] ml-1">
+                Additional Comments <span className="text-muted-foreground/60 normal-case font-bold">(optional)</span>
               </label>
               <textarea
                 value={draft.additionalComments}
@@ -732,7 +732,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             </div>
 
             <div className="p-5 rounded-2xl bg-foreground/5 border border-border space-y-2">
-              <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary mb-2">Running total</div>
+              <div className="text-[10px] font-black tracking-[0.3em] text-primary mb-2">Running total</div>
               {priceBreakdown.lines.map((line) => (
                 <div key={line.label} className={`flex justify-between text-xs ${line.included ? "text-foreground" : "text-muted-foreground/40"}`}>
                   <span className="font-bold">{line.label}</span>
@@ -740,7 +740,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                 </div>
               ))}
               <div className="flex justify-between pt-3 border-t border-border text-sm">
-                <span className="font-black uppercase tracking-widest">Total</span>
+                <span className="font-black tracking-widest">Total</span>
                 <span className="font-black gradient-text">₦{priceBreakdown.total.toLocaleString()}</span>
               </div>
             </div>
@@ -758,20 +758,20 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
             <div className="w-20 h-20 rounded-[28px] gradient-bg flex items-center justify-center mb-8 shadow-huge animate-pulse">
               <CreditCard size={32} className="text-white" />
             </div>
-            <h2 className="text-3xl sm:text-4xl font-black mb-3 tracking-tighter uppercase italic">
-              Pay &amp; <span className="gradient-text italic">Publish</span>
+            <h2 className="text-3xl sm:text-4xl font-black mb-3 tracking-tighter">
+              Pay &amp; <span className="gradient-text">Publish</span>
             </h2>
-            <p className="text-muted-foreground font-bold mb-8 max-w-sm leading-relaxed uppercase text-[10px] tracking-[0.2em]">
+            <p className="text-muted-foreground font-medium mb-8 max-w-sm leading-relaxed text-[10px] tracking-[0.2em]">
               Secure checkout via Paystack. You'll receive your share link instantly after payment.
             </p>
 
             <div className="w-full max-w-md p-6 sm:p-8 rounded-[32px] glass border border-border text-left space-y-4">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">Recipient</span>
+                <span className="text-muted-foreground font-bold tracking-widest text-[10px]">Recipient</span>
                 <span className="font-black">{draft.recipientName}</span>
               </div>
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground font-bold uppercase tracking-widest text-[10px]">Theme</span>
+                <span className="text-muted-foreground font-bold tracking-widest text-[10px]">Theme</span>
                 <span className="font-black capitalize">{draft.theme}</span>
               </div>
 
@@ -788,7 +788,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
               </div>
 
               <div className="pt-3 border-t border-border flex justify-between items-center">
-                <span className="text-xs font-black uppercase tracking-[0.2em] italic">You pay now</span>
+                <span className="text-xs font-black tracking-[0.2em]">You pay now</span>
                 <span className="text-2xl font-black gradient-text">
                   ₦{amountToCharge.toLocaleString()}
                 </span>
@@ -802,7 +802,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
         <button
           onClick={prevStep}
           disabled={step === "compose"}
-          className={`flex items-center gap-2 px-6 py-4 rounded-[28px] font-black text-[10px] uppercase tracking-widest transition-all ${
+          className={`flex items-center gap-2 px-6 py-4 rounded-[28px] font-black text-[10px] tracking-widest transition-all ${
             step === "compose"
               ? "opacity-0 pointer-events-none"
               : "glass border border-border hover:border-foreground/20 text-foreground/60 hover:text-foreground hover:scale-105 active:scale-95"
@@ -814,7 +814,7 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
         <button
           onClick={nextStep}
           disabled={loading}
-          className="flex items-center gap-2 px-8 py-4 rounded-[28px] gradient-bg text-white font-black text-[10px] uppercase tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
+          className="flex items-center gap-2 px-8 py-4 rounded-[28px] gradient-bg text-white font-black text-[10px] tracking-[0.2em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
         >
           {loading ? (
             <Loader2 size={16} className="animate-spin" />

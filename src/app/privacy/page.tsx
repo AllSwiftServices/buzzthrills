@@ -15,7 +15,7 @@ export default function PrivacyPage() {
             <h1 className="text-4xl md:text-6xl font-black mb-8 tracking-tight">
               Privacy <span className="gradient-text">Policy</span>
             </h1>
-            <p className="text-muted-foreground mb-12 italic">Last Updated: April 4, 2026</p>
+            <p className="text-muted-foreground mb-12">Last Updated: April 4, 2026</p>
           </Reveal>
 
           <Reveal delay={0.1}>

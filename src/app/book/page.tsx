@@ -30,14 +30,14 @@ function BookingContent() {
   }
 
   return (
-    <main className="min-h-screen bg-background text-foreground pt-32 pb-20 px-6 transition-colors duration-500">
+    <main className="min-h-screen bg-background text-foreground pt-32 pb-20 px-4 sm:px-6 transition-colors duration-500">
       <Header />
       
       <div className="max-w-4xl mx-auto text-center mb-12">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-primary font-bold uppercase tracking-widest text-sm mb-4"
+          className="text-primary font-bold tracking-widest text-sm mb-4"
         >
           Securing Your Surprise
         </motion.div>

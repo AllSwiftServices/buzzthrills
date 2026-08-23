@@ -90,7 +90,7 @@ export async function sendBookingConfirmation(email: string, details: { serviceN
             </p>
             
             <div style="padding: 24px; background: #fdfaf6; border-radius: 16px; border: 1px solid #eee; margin-bottom: 32px;">
-              <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 16px;">Booking Details</h2>
+              <h2 style="font-size: 14px; font-weight: bold; letter-spacing: 1px; color: #999; margin-bottom: 16px;">Booking Details</h2>
               <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                 <span style="color: #666;">Service:</span>
                 <span style="font-weight: bold;">${details.serviceName}</span>
@@ -154,7 +154,7 @@ export async function sendSubscriptionConfirmation(email: string, details: {
             </p>
 
             <div style="padding: 24px; background: #fdfaf6; border-radius: 16px; border: 1px solid #eee; margin-bottom: 32px;">
-              <h2 style="font-size: 14px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 16px;">Subscription Details</h2>
+              <h2 style="font-size: 14px; font-weight: bold; letter-spacing: 1px; color: #999; margin-bottom: 16px;">Subscription Details</h2>
               <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
                 <span style="color: #666;">Plan:</span>
                 <span style="font-weight: bold;">${details.planName}</span>
@@ -223,7 +223,7 @@ export async function sendLetterReadyEmail(email: string, details: { recipientNa
             </div>
 
             <div style="padding: 16px; background: #fdfaf6; border-radius: 12px; border: 1px solid #eee; margin-bottom: 24px;">
-              <div style="font-size: 11px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 8px;">Share URL</div>
+              <div style="font-size: 11px; font-weight: bold; letter-spacing: 1px; color: #999; margin-bottom: 8px;">Share URL</div>
               <div style="font-size: 13px; font-family: monospace; word-break: break-all; color: #8b5cf6;">${details.shareUrl}</div>
             </div>
 
@@ -262,7 +262,7 @@ export async function sendLetterProcessingEmail(email: string, details: { recipi
             </p>
 
             <div style="padding: 24px; background: #f9f4ff; border-radius: 16px; border: 1px solid #e9d8ff; margin-bottom: 32px;">
-              <h2 style="font-size: 13px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #5A0C7E; margin-bottom: 12px;">What Happens Next</h2>
+              <h2 style="font-size: 13px; font-weight: bold; letter-spacing: 1px; color: #5A0C7E; margin-bottom: 12px;">What Happens Next</h2>
               <ol style="margin: 0; padding-left: 20px; color: #555; font-size: 14px; line-height: 1.8;">
                 <li>Our team reviews your brief and crafts your letter</li>
                 <li>We add the requested voice recording or other touches</li>
@@ -327,14 +327,14 @@ export async function sendCallStatusUpdate(email: string, details: {
 
             ${details.adminNotes ? `
             <div style="padding: 24px; background: #fdfaf6; border-radius: 16px; border: 1px solid #eee; margin-bottom: 32px;">
-              <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #999; margin-bottom: 12px;">Notes from our Agent</h2>
-              <p style="font-size: 14px; color: #444; font-style: italic; margin: 0;">"${details.adminNotes}"</p>
+              <h2 style="font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #999; margin-bottom: 12px;">Notes from our Agent</h2>
+              <p style="font-size: 14px; color: #444; margin: 0;">"${details.adminNotes}"</p>
             </div>
             ` : ''}
 
             ${details.failureReason ? `
             <div style="padding: 24px; background: #fff1f2; border-radius: 16px; border: 1px solid #fee2e2; margin-bottom: 32px;">
-              <h2 style="font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; color: #e11d48; margin-bottom: 12px;">Operational Reason</h2>
+              <h2 style="font-size: 12px; font-weight: bold; letter-spacing: 1px; color: #e11d48; margin-bottom: 12px;">Operational Reason</h2>
               <p style="font-size: 14px; color: #be123c; margin: 0;">${details.failureReason}</p>
             </div>
             ` : ''}

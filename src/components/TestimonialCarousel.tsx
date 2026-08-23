@@ -34,9 +34,9 @@ export default function TestimonialCarousel() {
       <div className="max-w-6xl mx-auto px-6 relative z-10">
         <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
             <div className="max-w-xl">
-               <h2 className="text-[10px] font-bold text-primary uppercase tracking-[0.4em] mb-4">Voices of Love</h2>
+               <h2 className="text-[10px] font-bold text-primary tracking-[0.4em] mb-4">Voices of Love</h2>
                <h3 className="text-4xl md:text-6xl font-medium tracking-tight leading-none mb-6 font-serif">
-                  Stories from our <span className="gradient-text italic">Community</span>.
+                  Stories from our <span className="gradient-text">Community</span>.
                </h3>
                <p className="text-muted-foreground font-medium text-lg tracking-tight">
                   Real moments from real people who have shared heartfelt surprises with those they love.
@@ -74,12 +74,12 @@ export default function TestimonialCarousel() {
                              {[...Array(testimonials[index].rating)].map((_, i) => (
                                <Star key={i} size={16} className="fill-primary text-primary" />
                              ))}
-                             <div className="ml-4 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary text-[10px] font-bold uppercase tracking-widest italic">
+                             <div className="ml-4 px-4 py-1.5 rounded-full bg-primary/5 border border-primary/10 text-primary text-[10px] font-bold tracking-widest">
                                 {testimonials[index].tag}
                              </div>
                           </div>
                           
-                          <p className="text-2xl md:text-3xl font-medium tracking-tight leading-snug mb-8 max-w-4xl italic font-serif">
+                          <p className="text-2xl md:text-3xl font-medium tracking-tight leading-snug mb-8 max-w-4xl font-serif">
                              "{testimonials[index].content}"
                           </p>
                           
@@ -91,7 +91,7 @@ export default function TestimonialCarousel() {
                              </div>
                              <div>
                                 <div className="font-semibold text-lg">{testimonials[index].name}</div>
-                                <div className="text-xs font-medium text-muted-foreground uppercase tracking-widest">{testimonials[index].role}</div>
+                                <div className="text-xs font-medium text-muted-foreground tracking-widest">{testimonials[index].role}</div>
                              </div>
                           </div>
                        </div>

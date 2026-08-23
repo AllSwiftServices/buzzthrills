@@ -4,7 +4,9 @@ import { verifyToken } from "@/lib/auth";
 import { cookies } from "next/headers";
 import { sendCallStatusUpdate } from "@/lib/email";
 
-const CALLER_EDITABLE_STATUSES = new Set(["scheduled", "delivered", "failed"]);
+// A caller only ever moves a call forward to one of these two outcomes —
+// "pending"/"assigned" are earlier states set before the call reaches them.
+const CALLER_EDITABLE_STATUSES = new Set(["delivered", "failed"]);
 
 export async function PATCH(req: Request) {
   try {

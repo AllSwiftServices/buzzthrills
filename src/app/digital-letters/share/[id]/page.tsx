@@ -35,7 +35,7 @@ export default function LetterSharePage() {
       <main className="min-h-screen bg-background pt-32 px-6">
         <Header />
         <div className="max-w-xl mx-auto text-center py-20">
-          <p className="text-red-400 font-bold">{error}</p>
+          <p className="text-red-400 font-medium">{error}</p>
           <Link href="/digital-letters/create" className="mt-6 inline-block text-primary font-bold text-sm">
             Start over
           </Link>
@@ -48,7 +48,7 @@ export default function LetterSharePage() {
     return (
       <main className="min-h-screen bg-background flex items-center justify-center gap-4">
         <Loader2 className="w-8 h-8 text-primary animate-spin" />
-        <span className="text-sm font-black uppercase tracking-widest text-muted-foreground">Loading…</span>
+        <span className="text-sm font-black tracking-widest text-muted-foreground">Loading…</span>
       </main>
     );
   }
@@ -71,9 +71,9 @@ export default function LetterSharePage() {
             <CheckCircle2 size={32} className="text-green-500" />
           </div>
           <h1 className="text-4xl sm:text-5xl font-medium tracking-tight font-serif leading-none mb-3">
-            Your Letter is <span className="gradient-text italic">Live</span>
+            Your Letter is <span className="gradient-text">Live</span>
           </h1>
-          <p className="text-muted-foreground font-medium italic font-serif">
+          <p className="text-muted-foreground font-medium font-serif">
             Share this link with {letter.recipient_name}. They'll see your message animate to life.
           </p>
         </motion.div>
@@ -81,7 +81,7 @@ export default function LetterSharePage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
           <div className="bg-foreground/5 p-8 rounded-[40px] border border-border space-y-6">
             <div>
-              <div className="text-[10px] font-black uppercase tracking-widest text-muted-foreground mb-2">
+              <div className="text-[10px] font-black tracking-widest text-muted-foreground mb-2">
                 Share URL
               </div>
               <div className="font-mono text-sm break-all text-primary bg-background/40 rounded-2xl p-4 border border-border">
@@ -94,7 +94,7 @@ export default function LetterSharePage() {
                 href={`https://wa.me/?text=${whatsappText}`}
                 target="_blank"
                 rel="noreferrer"
-                className="w-full py-4 rounded-2xl bg-green-500 text-white font-black text-xs uppercase tracking-[0.2em] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-2xl bg-green-500 text-white font-black text-xs tracking-[0.2em] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-2"
               >
                 Send via WhatsApp
                 <ExternalLink size={14} />
@@ -102,7 +102,7 @@ export default function LetterSharePage() {
               <Link
                 href={`/letter/${letter.qr_identifier}`}
                 target="_blank"
-                className="w-full py-4 rounded-2xl glass border border-border font-black text-xs uppercase tracking-[0.2em] hover:bg-foreground/5 transition-all flex items-center justify-center gap-2"
+                className="w-full py-4 rounded-2xl glass border border-border font-black text-xs tracking-[0.2em] hover:bg-foreground/5 transition-all flex items-center justify-center gap-2"
               >
                 Preview the Letter
                 <ExternalLink size={14} />

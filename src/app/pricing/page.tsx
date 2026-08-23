@@ -35,7 +35,7 @@ export default function PricingPage() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold uppercase tracking-[0.4em] mb-8"
+              className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold tracking-[0.4em] mb-8"
             >
               <Sparkles size={14} className="fill-current" />
               Plans & Pricing
@@ -46,7 +46,7 @@ export default function PricingPage() {
               transition={{ delay: 0.1 }}
               className="text-4xl sm:text-6xl md:text-8xl font-medium mb-8 tracking-tight font-serif leading-none"
             >
-              Choose Your <span className="gradient-text italic">Buzzthrills</span> Plan
+              Choose Your <span className="gradient-text">Buzzthrills</span> Plan
             </motion.h1>
             <motion.p
               initial={{ opacity: 0, y: 20 }}
@@ -69,12 +69,12 @@ export default function PricingPage() {
             className="mt-24 mb-16"
           >
             <div className="text-center mb-12">
-              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold uppercase tracking-[0.4em] mb-8">
+              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold tracking-[0.4em] mb-8">
                 <PhoneCall size={14} />
                 Pay-As-You-Go
               </div>
-              <h2 className="text-3xl sm:text-5xl font-medium font-serif italic tracking-tight leading-none mb-4">
-                One-off <span className="gradient-text italic">Call Options</span>
+              <h2 className="text-3xl sm:text-5xl font-medium font-serif tracking-tight leading-none mb-4">
+                One-off <span className="gradient-text">Call Options</span>
               </h2>
               <p className="text-muted-foreground font-medium max-w-xl mx-auto leading-relaxed">
                 No commitment needed. Book a single heartfelt call for any occasion, any time.
@@ -94,11 +94,11 @@ export default function PricingPage() {
                   <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
                     <PhoneCall size={20} />
                   </div>
-                  <h3 className="font-black text-lg uppercase tracking-tight mb-1">{call.name}</h3>
+                  <h3 className="font-black text-lg tracking-tight mb-1">{call.name}</h3>
                   <p className="text-sm text-muted-foreground font-medium mb-4 leading-relaxed">{call.desc}</p>
                   <div className="flex items-baseline gap-1">
                     <span className="text-2xl font-black gradient-text tracking-tighter">₦{call.from.toLocaleString()}</span>
-                    <span className="text-[10px] font-black text-muted-foreground uppercase tracking-widest">from</span>
+                    <span className="text-[10px] font-black text-muted-foreground tracking-widest">from</span>
                   </div>
                 </motion.div>
               ))}
@@ -128,8 +128,8 @@ export default function PricingPage() {
               <div className="w-16 h-16 rounded-3xl bg-accent/10 text-accent flex items-center justify-center mx-auto lg:mx-0 mb-8 shadow-xl">
                 <FileText size={32} />
               </div>
-              <h2 className="text-4xl md:text-5xl font-medium mb-4 tracking-tight font-serif italic">
-                Premium <span className="gradient-text italic">Digital Letters</span>
+              <h2 className="text-4xl md:text-5xl font-medium mb-4 tracking-tight font-serif">
+                Premium <span className="gradient-text">Digital Letters</span>
               </h2>
               <p className="text-muted-foreground font-medium text-lg max-w-xl tracking-tight leading-relaxed">
                 Beautifully formatted, emotionally resonant digital scrolls with optional voice narration. Available as a standalone purchase or as part of any subscription plan.
@@ -181,7 +181,7 @@ export default function PricingPage() {
           >
             <AlertCircle size={20} className="text-amber-500 shrink-0 mt-0.5" />
             <div>
-              <div className="font-black text-sm uppercase tracking-widest text-amber-600 mb-2">Refund Policy</div>
+              <div className="font-black text-sm tracking-widest text-amber-600 mb-2">Refund Policy</div>
               <p className="text-foreground/70 font-medium text-sm leading-relaxed">
                 Due to the live, human-led nature of our services, <strong>full refunds are not provided</strong> if a recipient is unavailable or does not answer. In these instances, we issue a <strong>partial refund of up to 60%</strong>. Refunds are only applicable where the fault does not originate from the client&apos;s end.
               </p>

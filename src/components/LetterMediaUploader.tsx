@@ -123,11 +123,11 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
   return (
     <div className="space-y-2">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-[11px] font-black uppercase tracking-[0.2em] text-foreground/70">
+        <div className="flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-foreground/70">
           <Icon size={14} className="text-primary" />
           {meta.label}
         </div>
-        {hint && <span className="text-[10px] text-muted-foreground italic">{hint}</span>}
+        {hint && <span className="text-[10px] text-muted-foreground">{hint}</span>}
       </div>
 
       {value ? (
@@ -157,7 +157,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
               {kind !== "video" ? (
                 <audio src={value} controls className="h-8 max-w-[140px] sm:max-w-[200px]" />
               ) : (
-                <a href={value} target="_blank" rel="noreferrer" className="text-[10px] font-black uppercase tracking-widest text-primary">
+                <a href={value} target="_blank" rel="noreferrer" className="text-[10px] font-black tracking-widest text-primary">
                   Preview
                 </a>
               )}
@@ -185,10 +185,10 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
           ) : (
             <Upload size={22} className="text-primary" />
           )}
-          <span className="text-xs font-black uppercase tracking-widest text-foreground/70">
+          <span className="text-xs font-black tracking-widest text-foreground/70">
             {uploading ? "Uploading…" : `Upload ${meta.label.toLowerCase()}`}
           </span>
-          <span className="text-[10px] text-muted-foreground italic">Max 20MB</span>
+          <span className="text-[10px] text-muted-foreground">Max 20MB</span>
         </button>
       )}
 
@@ -200,7 +200,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
         className="hidden"
       />
 
-      {error && <p className="text-[10px] font-bold text-red-400 mt-1">{error}</p>}
+      {error && <p className="text-[10px] font-medium text-red-400 mt-1">{error}</p>}
     </div>
   );
 }

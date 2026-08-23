@@ -144,7 +144,7 @@ export default function AdminSpecialCallsPage() {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/20">Loading Special Calls...</div>
+        <div className="text-[10px] font-black tracking-[0.3em] text-foreground/20">Loading Special Calls...</div>
       </div>
     );
   }
@@ -154,16 +154,16 @@ export default function AdminSpecialCallsPage() {
       {/* Header */}
       <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
-          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 text-foreground uppercase tracking-tighter">
+          <h1 className="text-2xl sm:text-4xl font-black mb-1 sm:mb-2 text-foreground tracking-tighter">
             Special Calls
           </h1>
-          <p className="text-foreground/40 font-black uppercase text-[8px] sm:text-[10px] tracking-[0.2em]">
+          <p className="text-foreground/40 font-medium text-[8px] sm:text-[10px] tracking-[0.2em]">
             Create occasion-based call banners shown on the homepage.
           </p>
         </div>
         <button
           onClick={openCreate}
-          className="flex items-center gap-3 px-6 py-3 rounded-2xl gradient-bg text-white font-black text-[10px] uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
+          className="flex items-center gap-3 px-6 py-3 rounded-2xl gradient-bg text-white font-black text-[10px] tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] active:scale-[0.98] transition-all"
         >
           <Plus size={16} />
           New Special Call
@@ -190,8 +190,8 @@ export default function AdminSpecialCallsPage() {
                 </div>
                 <div>
                   <div className="flex flex-wrap items-center gap-3 mb-1.5">
-                    <h3 className="text-xl sm:text-2xl font-black text-foreground uppercase tracking-tighter">{call.title}</h3>
-                    <div className={`px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest flex items-center gap-1.5 ${
+                    <h3 className="text-xl sm:text-2xl font-black text-foreground tracking-tighter">{call.title}</h3>
+                    <div className={`px-3 py-1 rounded-full text-[9px] font-black tracking-widest flex items-center gap-1.5 ${
                       call.active
                         ? "bg-green-500/10 text-green-500 border border-green-500/20"
                         : "bg-foreground/5 text-foreground/30 border border-foreground/10"
@@ -202,11 +202,11 @@ export default function AdminSpecialCallsPage() {
                   </div>
                   <p className="text-sm text-foreground/50 font-medium max-w-md">{call.description}</p>
                   <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-2">
-                    <span className="text-[10px] font-black text-foreground/40 uppercase tracking-widest">
+                    <span className="text-[10px] font-black text-foreground/40 tracking-widest">
                       ₦{call.price.toLocaleString()} {call.currency}
                     </span>
                     {call.call_date && (
-                      <span className="flex items-center gap-1.5 text-[10px] font-black text-foreground/40 uppercase tracking-widest">
+                      <span className="flex items-center gap-1.5 text-[10px] font-black text-foreground/40 tracking-widest">
                         <Calendar size={10} className="text-primary/60" />
                         {new Date(call.call_date).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" })}
                       </span>
@@ -220,7 +220,7 @@ export default function AdminSpecialCallsPage() {
                 {/* Toggle active */}
                 <button
                   onClick={() => toggleActive(call)}
-                  className={`px-5 py-2.5 rounded-2xl font-black text-[9px] uppercase tracking-widest border transition-all hover:scale-[1.02] active:scale-[0.98] ${
+                  className={`px-5 py-2.5 rounded-2xl font-black text-[9px] tracking-widest border transition-all hover:scale-[1.02] active:scale-[0.98] ${
                     call.active
                       ? "bg-green-500/10 border-green-500/20 text-green-500 hover:bg-red-500/10 hover:border-red-500/20 hover:text-red-500"
                       : "bg-foreground/5 border-foreground/10 text-foreground/40 hover:bg-green-500/10 hover:border-green-500/20 hover:text-green-500"
@@ -249,13 +249,13 @@ export default function AdminSpecialCallsPage() {
         )) : (
           <div className="flex flex-col items-center justify-center py-24 px-8 rounded-[40px] border-2 border-dashed border-foreground/5 bg-foreground/[0.02] text-center">
             <Sparkles size={48} className="text-foreground/10 mb-4" />
-            <div className="text-xl font-black text-foreground uppercase tracking-tighter">No special calls yet</div>
-            <div className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mt-2 mb-8">
+            <div className="text-xl font-black text-foreground tracking-tighter">No special calls yet</div>
+            <div className="text-[10px] font-black text-foreground/40 tracking-widest mt-2 mb-8">
               Create your first occasion banner for Valentine's, Mother's Day, and more.
             </div>
             <button
               onClick={openCreate}
-              className="flex items-center gap-3 px-8 py-4 rounded-2xl gradient-bg text-white font-black text-[10px] uppercase tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] transition-all"
+              className="flex items-center gap-3 px-8 py-4 rounded-2xl gradient-bg text-white font-black text-[10px] tracking-widest shadow-2xl shadow-primary/40 hover:scale-[1.02] transition-all"
             >
               <Plus size={16} />
               Create First Special Call
@@ -289,10 +289,10 @@ export default function AdminSpecialCallsPage() {
                     {editingCall ? <Pencil size={18} className="text-white" /> : <Plus size={18} className="text-white" />}
                   </div>
                   <div>
-                    <div className="font-black text-sm uppercase tracking-widest">
+                    <div className="font-black text-sm tracking-widest">
                       {editingCall ? "Edit Special Call" : "New Special Call"}
                     </div>
-                    <div className="text-[9px] font-bold text-foreground/30 uppercase tracking-[0.2em]">
+                    <div className="text-[9px] font-bold text-foreground/30 tracking-[0.2em]">
                       {editingCall ? "Update occasion banner details" : "Create a new occasion banner"}
                     </div>
                   </div>
@@ -310,7 +310,7 @@ export default function AdminSpecialCallsPage() {
                 {/* Emoji + Title Row */}
                 <div className="flex gap-4">
                   <div className="space-y-2 w-24 shrink-0">
-                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Emoji</label>
+                    <label className="text-[10px] font-black text-primary tracking-[0.2em]">Emoji</label>
                     <input
                       type="text"
                       value={form.occasion_emoji}
@@ -321,7 +321,7 @@ export default function AdminSpecialCallsPage() {
                     />
                   </div>
                   <div className="space-y-2 flex-1">
-                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Title *</label>
+                    <label className="text-[10px] font-black text-primary tracking-[0.2em]">Title *</label>
                     <input
                       type="text"
                       value={form.title}
@@ -334,7 +334,7 @@ export default function AdminSpecialCallsPage() {
 
                 {/* Description */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Description</label>
+                  <label className="text-[10px] font-black text-primary tracking-[0.2em]">Description</label>
                   <textarea
                     value={form.description}
                     onChange={e => setForm({ ...form, description: e.target.value })}
@@ -347,7 +347,7 @@ export default function AdminSpecialCallsPage() {
                 {/* Price + Currency */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Price (₦) *</label>
+                    <label className="text-[10px] font-black text-primary tracking-[0.2em]">Price (₦) *</label>
                     <input
                       type="number"
                       min="0"
@@ -358,7 +358,7 @@ export default function AdminSpecialCallsPage() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Currency</label>
+                    <label className="text-[10px] font-black text-primary tracking-[0.2em]">Currency</label>
                     <input
                       type="text"
                       value={form.currency}
@@ -372,7 +372,7 @@ export default function AdminSpecialCallsPage() {
 
                 {/* Call Date */}
                 <div className="space-y-2">
-                  <label className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">
+                  <label className="text-[10px] font-black text-primary tracking-[0.2em]">
                     Occasion Date <span className="text-foreground/30 normal-case font-bold">(optional)</span>
                   </label>
                   <div className="relative">
@@ -389,8 +389,8 @@ export default function AdminSpecialCallsPage() {
                 {/* Active Toggle */}
                 <div className="flex items-center justify-between p-5 rounded-2xl bg-foreground/5 border border-foreground/10">
                   <div>
-                    <div className="font-black text-sm uppercase tracking-widest">Set as Active</div>
-                    <div className="text-[10px] text-foreground/40 font-bold uppercase tracking-widest mt-0.5">
+                    <div className="font-black text-sm tracking-widest">Set as Active</div>
+                    <div className="text-[10px] text-foreground/40 font-bold tracking-widest mt-0.5">
                       Only one active call is shown on the homepage at a time.
                     </div>
                   </div>
@@ -407,14 +407,14 @@ export default function AdminSpecialCallsPage() {
               <div className="p-6 sm:p-8 border-t border-border shrink-0 flex gap-4">
                 <button
                   onClick={() => setShowForm(false)}
-                  className="flex-1 py-4 rounded-2xl bg-foreground/5 border border-foreground/10 font-black text-[10px] uppercase tracking-widest hover:bg-foreground/10 transition-all"
+                  className="flex-1 py-4 rounded-2xl bg-foreground/5 border border-foreground/10 font-black text-[10px] tracking-widest hover:bg-foreground/10 transition-all"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={handleSave}
                   disabled={saving}
-                  className="flex-1 py-4 rounded-2xl gradient-bg text-white font-black text-[10px] uppercase tracking-widest shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-60 flex items-center justify-center gap-2"
+                  className="flex-1 py-4 rounded-2xl gradient-bg text-white font-black text-[10px] tracking-widest shadow-xl shadow-primary/30 hover:scale-[1.02] active:scale-[0.98] transition-all disabled:opacity-60 flex items-center justify-center gap-2"
                 >
                   {saving ? <Loader2 size={16} className="animate-spin" /> : <Save size={16} />}
                   {saving ? "Saving..." : editingCall ? "Update Call" : "Create Call"}

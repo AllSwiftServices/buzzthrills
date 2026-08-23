@@ -35,7 +35,7 @@ export default function CallerCalls() {
 
   const filteredCalls = useMemo(() => {
     return calls.filter((call) => {
-      if (pendingOnly && call.status !== 'scheduled') return false;
+      if (pendingOnly && (call.status === 'delivered' || call.status === 'failed')) return false;
       if (!query.trim()) return true;
       const q = query.toLowerCase();
       return (
@@ -50,6 +50,7 @@ export default function CallerCalls() {
     switch (status) {
       case 'delivered': return <CheckCircle2 className="text-green-500" size={12} />;
       case 'failed': return <XCircle className="text-red-500" size={12} />;
+      case 'assigned': return <AlertCircle className="text-blue-500" size={12} />;
       default: return <AlertCircle className="text-amber-500" size={12} />;
     }
   };
@@ -58,7 +59,7 @@ export default function CallerCalls() {
     return (
       <div className="flex flex-col items-center justify-center py-20 space-y-4">
         <Loader2 className="w-12 h-12 text-primary animate-spin" />
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-foreground/40">Loading your calls…</div>
+        <div className="text-[10px] font-black tracking-[0.3em] text-foreground/40">Loading your calls…</div>
       </div>
     );
   }
@@ -67,12 +68,12 @@ export default function CallerCalls() {
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-black uppercase tracking-tighter text-foreground">My Calls</h1>
-          <p className="text-[10px] font-black text-foreground/40 uppercase tracking-widest mt-1">Calls assigned to you</p>
+          <h1 className="text-2xl font-black tracking-tighter text-foreground">My Calls</h1>
+          <p className="text-[10px] font-medium text-foreground/40 tracking-widest mt-1">Calls assigned to you</p>
         </div>
         <button
           onClick={() => setPendingOnly((v) => !v)}
-          className={`px-5 py-3 rounded-2xl font-black text-[10px] uppercase tracking-widest border transition-all ${
+          className={`px-5 py-3 rounded-2xl font-black text-[10px] tracking-widest border transition-all ${
             pendingOnly ? 'bg-primary text-white border-primary' : 'bg-foreground/5 border-foreground/10 text-foreground/40'
           }`}
         >
@@ -93,7 +94,7 @@ export default function CallerCalls() {
       {filteredCalls.length === 0 ? (
         <div className="py-20 flex flex-col items-center justify-center text-center space-y-4">
           <PhoneCall size={40} className="text-foreground/10" />
-          <div className="text-sm font-black text-foreground/40 uppercase tracking-widest">No calls assigned yet</div>
+          <div className="text-sm font-black text-foreground/40 tracking-widest">No calls assigned yet</div>
         </div>
       ) : (
         <div className="space-y-3">
@@ -111,14 +112,14 @@ export default function CallerCalls() {
                 </div>
                 <div className="min-w-0">
                   <div className="text-sm font-black text-foreground truncate">{call.recipient_name}</div>
-                  <div className="flex items-center gap-3 mt-1 text-[10px] font-bold text-foreground/40 uppercase tracking-widest">
+                  <div className="flex items-center gap-3 mt-1 text-[10px] font-bold text-foreground/40 tracking-widest">
                     <span className="flex items-center gap-1"><Calendar size={10} />{new Date(call.occasion_date).toLocaleDateString()}</span>
                     <span className="flex items-center gap-1"><Clock size={10} />{call.scheduled_slot}</span>
                   </div>
                 </div>
               </div>
               <div className="flex items-center gap-3 shrink-0">
-                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-black uppercase tracking-widest border bg-foreground/5 border-foreground/10">
+                <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[9px] font-black tracking-widest border bg-foreground/5 border-foreground/10">
                   {getStatusIcon(call.status)}
                   {call.status}
                 </div>

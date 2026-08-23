@@ -48,11 +48,11 @@ export default function HistoryPage() {
             <motion.h1
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="text-2xl sm:text-4xl md:text-5xl font-black mb-2 tracking-tighter uppercase"
+              className="text-2xl sm:text-4xl md:text-5xl font-black mb-2 tracking-tighter"
             >
               Call <span className="gradient-text">History</span>
             </motion.h1>
-            <p className="text-muted-foreground font-black uppercase text-[9px] sm:text-xs tracking-widest pl-1 leading-none">Every call you've booked, in one place.</p>
+            <p className="text-muted-foreground font-medium text-[9px] sm:text-xs tracking-widest pl-1 leading-none">Every call you've booked, in one place.</p>
           </div>
 
           <div className="relative w-full md:w-72">
@@ -71,7 +71,7 @@ export default function HistoryPage() {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20 gap-4">
                <div className="w-12 h-12 border-4 border-primary/20 border-t-primary rounded-full animate-spin" />
-              <div className="text-[10px] font-black uppercase tracking-widest opacity-40">Retrieving Logs...</div>
+              <div className="text-[10px] font-black tracking-widest opacity-40">Retrieving Logs...</div>
             </div>
           ) : filteredHistory.length > 0 ? filteredHistory.map((item, i) => (
             <div key={item.id} className="relative">
@@ -94,13 +94,13 @@ export default function HistoryPage() {
                       <Phone size={20} className="sm:size-6" />
                     </div>
                     <div>
-                      <div className="font-black text-lg sm:text-2xl tracking-tighter uppercase leading-tight group-hover:text-primary transition-colors">{item.occasion_type}</div>
+                      <div className="font-black text-lg sm:text-2xl tracking-tighter leading-tight group-hover:text-primary transition-colors">{item.occasion_type}</div>
                       <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mt-1">
-                        <div className="text-[10px] text-muted-foreground font-black uppercase tracking-widest flex items-center gap-1.5">
+                        <div className="text-[10px] text-muted-foreground font-black tracking-widest flex items-center gap-1.5">
                            <User size={12} className="text-primary/60" />
                            To: {item.recipient_name}
                         </div>
-                        <div className="text-[10px] text-muted-foreground font-black uppercase tracking-widest flex items-center gap-1.5 pl-4 border-l border-border">
+                        <div className="text-[10px] text-muted-foreground font-black tracking-widest flex items-center gap-1.5 pl-4 border-l border-border">
                            <Calendar size={12} className="text-secondary/60" />
                            {new Date(item.created_at).toLocaleDateString()}
                         </div>
@@ -109,7 +109,7 @@ export default function HistoryPage() {
                   </div>
 
                   <div className="flex items-center justify-between sm:justify-end gap-4">
-                    <div className={`px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-black uppercase tracking-widest border ${
+                    <div className={`px-4 py-1.5 sm:px-5 sm:py-2 rounded-full text-[8px] sm:text-[10px] font-black tracking-widest border ${
                       item.status === 'delivered' ? 'bg-green-500/10 text-green-500 border-green-500/20' : 
                       item.status === 'failed' ? 'bg-red-500/10 text-red-500 border-red-500/20' :
                       'bg-amber-500/10 text-amber-500 border-amber-500/20'
@@ -134,7 +134,7 @@ export default function HistoryPage() {
                          {/* Outcome Section */}
                          <div className="space-y-6">
                             <div className="space-y-3">
-                               <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
+                               <label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground flex items-center gap-2">
                                   <FileText size={12} className="text-primary" />
                                   Call Outcome
                                </label>
@@ -148,7 +148,7 @@ export default function HistoryPage() {
                                            <a
                                               href={item.recording_url}
                                               target="_blank"
-                                              className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-primary text-white font-black text-xs uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-105 transition-all"
+                                              className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl bg-primary text-white font-black text-xs tracking-widest shadow-xl shadow-primary/20 hover:scale-105 transition-all"
                                               onClick={(e) => e.stopPropagation()}
                                            >
                                               <Play size={18} />
@@ -162,7 +162,7 @@ export default function HistoryPage() {
                                      <div className="space-y-3">
                                         <div className="flex items-center gap-2 text-red-500">
                                            <AlertTriangle size={16} />
-                                           <span className="text-[10px] font-black uppercase tracking-widest">Delivery Failed</span>
+                                           <span className="text-[10px] font-black tracking-widest">Delivery Failed</span>
                                         </div>
                                         <div className="text-sm font-medium text-red-500/80 leading-relaxed">
                                            {item.failure_reason || "Unfortunately, we weren't able to complete this call as scheduled."}
@@ -171,7 +171,7 @@ export default function HistoryPage() {
                                   ) : (
                                      <div className="flex flex-col items-center justify-center py-6 text-center">
                                         <Loader2 size={24} className="text-amber-500 animate-spin mb-3" />
-                                        <div className="text-xs font-black uppercase tracking-widest text-amber-500/60">Preparation in Progress...</div>
+                                        <div className="text-xs font-black tracking-widest text-amber-500/60">Preparation in Progress...</div>
                                      </div>
                                   )}
                                </div>
@@ -182,7 +182,7 @@ export default function HistoryPage() {
                          <div className="space-y-6">
                             {item.admin_notes && (
                                <div className="space-y-3">
-                                  <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground flex items-center gap-2">
+                                  <label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground flex items-center gap-2">
                                      <MessageSquare size={12} className="text-secondary" />
                                      Notes from our team
                                   </label>
@@ -195,7 +195,7 @@ export default function HistoryPage() {
                             )}
 
                             <div className="space-y-3">
-                               <label className="text-[10px] font-black uppercase tracking-[0.2em] text-muted-foreground">Original Booking Message</label>
+                               <label className="text-[10px] font-black tracking-[0.2em] text-muted-foreground">Original Booking Message</label>
                                <div className="p-6 rounded-[32px] bg-foreground/2 border border-border">
                                   <p className="text-xs font-medium text-muted-foreground/60 leading-relaxed">
                                      "{item.custom_message || "No specific message provided."}"
@@ -212,7 +212,7 @@ export default function HistoryPage() {
           )) : (
             <div className="py-20 flex flex-col items-center justify-center border-2 border-dashed border-border rounded-[48px] bg-foreground/2">
                <Calendar size={48} className="text-foreground/5 mb-4" />
-               <div className="text-xs font-black uppercase tracking-widest opacity-40">
+               <div className="text-xs font-black tracking-widest opacity-40">
                  {history.length === 0 ? "You haven't booked any calls yet." : "No calls match your search."}
                </div>
             </div>

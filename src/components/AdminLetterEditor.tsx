@@ -67,14 +67,14 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
     <div className="space-y-6">
       {/* ── Letter Content ── */}
       <section className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+        <div className="text-[10px] font-black tracking-[0.3em] text-primary">
           Letter Content
         </div>
 
         {letter.request_admin_letter && (
           <div className="flex gap-3 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
             <span className="text-base shrink-0">✍️</span>
-            <p className="text-xs font-bold text-amber-300">
+            <p className="text-xs font-medium text-amber-300">
               This user asked BuzzThrills to write this letter.
               {letter.additional_comments && (
                 <>
@@ -99,7 +99,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
 
       {/* ── Theme ── */}
       <section className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">Theme</div>
+        <div className="text-[10px] font-black tracking-[0.3em] text-primary">Theme</div>
         <div className="grid grid-cols-3 gap-3">
           {LETTER_THEMES.map((t) => {
             const active = form.theme === t.id;
@@ -113,12 +113,12 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
                 }`}
               >
                 <div
-                  className="w-full h-12 rounded-xl mb-2 border border-black/10 flex items-center justify-center font-serif italic text-sm"
+                  className="w-full h-12 rounded-xl mb-2 border border-black/10 flex items-center justify-center font-serif text-sm"
                   style={{ background: t.preview.paperBg, color: t.preview.paperText }}
                 >
                   Aa
                 </div>
-                <span className="text-[10px] font-black uppercase tracking-widest text-foreground/70">
+                <span className="text-[10px] font-black tracking-widest text-foreground/70">
                   {t.name}
                 </span>
               </button>
@@ -131,7 +131,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
       <section className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
         <div className="flex items-center gap-2">
           <Music size={14} className="text-primary" />
-          <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+          <div className="text-[10px] font-black tracking-[0.3em] text-primary">
             Background Music
           </div>
         </div>
@@ -146,14 +146,14 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
 
       {/* ── Voice / Video ── */}
       <section className="p-6 rounded-3xl border border-foreground/10 bg-foreground/[0.02] space-y-4">
-        <div className="text-[10px] font-black uppercase tracking-[0.3em] text-primary">
+        <div className="text-[10px] font-black tracking-[0.3em] text-primary">
           Voice / Video
         </div>
 
         {letter.request_admin_voice && (
           <div className="flex items-center gap-3 p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
             <Mic size={15} className="text-amber-400 shrink-0" />
-            <p className="text-xs font-bold text-amber-300">
+            <p className="text-xs font-medium text-amber-300">
               User requested a BuzzThrills voice recording. Upload it below.
             </p>
           </div>
@@ -178,7 +178,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
                 }`}
               >
                 <Icon size={14} className={active ? "text-primary" : "text-foreground/40"} />
-                <span className="text-[10px] font-black uppercase tracking-widest capitalize text-foreground/70">
+                <span className="text-[10px] font-black tracking-widest capitalize text-foreground/70">
                   {kind}
                 </span>
               </button>
@@ -211,7 +211,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
       {saved && (
         <div className="flex items-center gap-3 p-4 rounded-2xl bg-green-500/10 border border-green-500/30 text-green-400">
           <CheckCircle2 size={16} className="shrink-0" />
-          <span className="text-xs font-black uppercase tracking-widest">
+          <span className="text-xs font-black tracking-widest">
             Changes saved. Ready to publish when you're done.
           </span>
         </div>
@@ -219,7 +219,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
       {saveError && (
         <div className="flex items-center gap-3 p-4 rounded-2xl bg-red-500/10 border border-red-500/30 text-red-400">
           <AlertCircle size={16} className="shrink-0" />
-          <span className="text-xs font-black uppercase tracking-widest">{saveError}</span>
+          <span className="text-xs font-black tracking-widest">{saveError}</span>
         </div>
       )}
 
@@ -227,7 +227,7 @@ export default function AdminLetterEditor({ letter, onSaved }: AdminLetterEditor
       <button
         onClick={save}
         disabled={saving}
-        className="w-full py-4 rounded-2xl border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary font-black text-sm uppercase tracking-widest flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-50"
+        className="w-full py-4 rounded-2xl border border-primary/30 bg-primary/10 hover:bg-primary/20 text-primary font-black text-sm tracking-widest flex items-center justify-center gap-2 transition-all hover:scale-[1.01] active:scale-95 disabled:opacity-50"
       >
         {saving ? (
           <Loader2 size={16} className="animate-spin" />

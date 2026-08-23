@@ -185,12 +185,12 @@ export default function AuthForm() {
 
   return (
     <div className="w-full max-w-md mx-auto">
-      <div className="p-8 rounded-[32px] glass border border-border shadow-2xl relative overflow-hidden bg-background/50 backdrop-blur-xl">
+      <div className="p-5 sm:p-8 rounded-[32px] glass border border-border shadow-2xl relative overflow-hidden bg-background/50 backdrop-blur-xl">
         <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 blur-[60px] rounded-full -mr-16 -mt-16" />
         
         <div className="text-center mb-8 relative z-10">
-          <h2 className="text-3xl font-black mb-2 italic uppercase tracking-tighter">
-            {mode === 'login' ? <><span className="gradient-text italic">Sign</span> In</> : mode === 'signup' ? <>Create <span className="gradient-text italic">Account</span></> : mode === 'forgot' ? <>Recover <span className="gradient-text italic">Account</span></> : mode === 'reset' ? <>Set <span className="gradient-text italic">New Password</span></> : <>Verify <span className="gradient-text italic">Email</span></>}
+          <h2 className="text-3xl font-black mb-2 tracking-tighter">
+            {mode === 'login' ? <><span className="gradient-text">Sign</span> In</> : mode === 'signup' ? <>Create <span className="gradient-text">Account</span></> : mode === 'forgot' ? <>Recover <span className="gradient-text">Account</span></> : mode === 'reset' ? <>Set <span className="gradient-text">New Password</span></> : <>Verify <span className="gradient-text">Email</span></>}
           </h2>
           <p className="text-muted-foreground text-sm">
             {mode === 'login' 

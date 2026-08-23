@@ -41,7 +41,7 @@ export default function Footer() {
         
         {/* Top Centered Section: Tagline, Socials, Contacts */}
         <div className="flex flex-col items-center text-center pb-16 border-b border-border/40">
-          <p className="text-foreground/80 font-medium text-base mb-6 font-serif italic">
+          <p className="text-foreground/80 font-medium text-base mb-6 font-serif">
             Spreading positive vibes since 2022.
           </p>
           
@@ -96,7 +96,7 @@ export default function Footer() {
                 <div className="h-8 w-[150px]" />
               )}
             </Link>
-            <p className="text-foreground/50 text-xs font-serif italic">
+            <p className="text-foreground/50 text-xs font-serif">
               Real moments. Real connections.
             </p>
           </div>
@@ -105,7 +105,7 @@ export default function Footer() {
           <div className="md:col-span-6 grid grid-cols-2 gap-8 text-center md:text-left">
             {footerLinks.map((column, i) => (
               <div key={i} className="flex flex-col items-center md:items-start">
-                <h4 className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary/80 mb-6 font-serif italic">
+                <h4 className="text-[10px] font-bold tracking-[0.3em] text-primary/80 mb-6 font-serif">
                   {column.title}
                 </h4>
                 <ul className="space-y-3.5">
@@ -127,10 +127,10 @@ export default function Footer() {
 
         {/* Bottom Section: Highlight Quote and Copyright */}
         <div className="pt-8 border-t border-border/40 flex flex-col items-center gap-6">
-          <div className="flex items-center gap-2 text-[10px] font-black tracking-[0.3em] text-accent uppercase font-serif italic text-center">
-            ✦ NO DISTANCE TOO FAR. HUMAN VOICE. REAL IMPACT. ✦
+          <div className="flex items-center gap-2 text-[10px] font-black tracking-[0.3em] text-accent font-serif text-center">
+            ✦ No Distance Too Far. Human Voice. Real Impact. ✦
           </div>
-          <div className="text-[10px] font-medium text-foreground/40 uppercase tracking-[0.1em] font-serif italic">
+          <div className="text-[10px] font-medium text-foreground/40 tracking-[0.1em] font-serif">
             &copy; {currentYear} BuzzThrills. All rights reserved.
           </div>
         </div>

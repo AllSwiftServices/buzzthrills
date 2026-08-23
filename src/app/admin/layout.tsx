@@ -41,7 +41,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="w-10 h-10 rounded-xl gradient-bg flex items-center justify-center shadow-lg shadow-primary/20">
               <ShieldCheck className="text-foreground" size={24} />
             </div>
-            <div className="text-sm font-black tracking-tighter gradient-text uppercase">Buzz Admin</div>
+            <div className="text-sm font-black tracking-tighter gradient-text">Buzz Admin</div>
           </div>
           <ThemeToggle />
         </div>
@@ -68,15 +68,15 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
         <div className="mt-auto space-y-4">
           <div className="p-5 rounded-[28px] border border-primary/20 bg-primary/5">
-            <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em] mb-2">System Status</div>
-            <p className="text-xs text-muted-foreground leading-relaxed font-bold tracking-tight">
+            <div className="text-[10px] font-black text-primary tracking-[0.2em] mb-2">System Status</div>
+            <p className="text-xs text-muted-foreground leading-relaxed font-medium tracking-tight">
               All systems operational. Admin access confirmed.
             </p>
           </div>
 
           <button
             onClick={() => router.push("/profile")}
-            className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl border border-primary/20 text-primary hover:bg-primary/10 transition-all font-black text-[10px] uppercase tracking-widest"
+            className="w-full flex items-center gap-4 px-5 py-4 rounded-2xl border border-primary/20 text-primary hover:bg-primary/10 transition-all font-black text-[10px] tracking-widest"
           >
             <User size={18} />
             Switch to Client View

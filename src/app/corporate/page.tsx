@@ -66,7 +66,7 @@ export default function CorporatePage() {
 
         <div className="max-w-5xl mx-auto relative z-10">
           <Reveal>
-            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary tracking-[0.4em]">
               <Sparkles size={14} className="fill-current" />
               Workplace Culture & Client Loyalty at Scale
             </div>
@@ -74,11 +74,11 @@ export default function CorporatePage() {
           <Reveal delay={0.1}>
             <h1 className="text-4xl sm:text-5xl md:text-8xl font-medium mb-8 tracking-tight font-serif leading-none">
               Buzz for <br className="hidden sm:block" />
-              <span className="gradient-text italic">Business</span>.
+              <span className="gradient-text">Business</span>.
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-lg md:text-2xl text-muted-foreground font-serif italic max-w-3xl mx-auto mb-4 opacity-80 leading-relaxed">
+            <p className="text-lg md:text-2xl text-muted-foreground font-serif max-w-3xl mx-auto mb-4 opacity-80 leading-relaxed">
               Foster employee retention and build deep client loyalty through professional, human-led voice experiences and digital letters.
             </p>
             <p className="text-base md:text-lg text-muted-foreground font-medium max-w-3xl mx-auto mb-12 leading-relaxed">
@@ -105,7 +105,7 @@ export default function CorporatePage() {
             </div>
           </Reveal>
           <Reveal delay={0.4}>
-            <p className="text-[10px] font-black text-foreground/30 uppercase tracking-[0.3em] mt-6">
+            <p className="text-[10px] font-medium text-foreground/30 tracking-[0.3em] mt-6">
               Custom Pricing from ₦100,000 / month
             </p>
           </Reveal>
@@ -117,12 +117,12 @@ export default function CorporatePage() {
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold uppercase tracking-[0.4em] mb-6">
+              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-border text-primary text-[10px] font-bold tracking-[0.4em] mb-6">
                 <Zap size={14} />
                 Our B2B Solutions
               </div>
-              <h2 className="text-3xl sm:text-5xl font-medium font-serif italic tracking-tight leading-none">
-                Built for <span className="gradient-text italic">Modern Teams</span>
+              <h2 className="text-3xl sm:text-5xl font-medium font-serif tracking-tight leading-none">
+                Built for <span className="gradient-text">Modern Teams</span>
               </h2>
             </div>
           </Reveal>
@@ -150,14 +150,14 @@ export default function CorporatePage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-20 items-start">
           <Reveal direction="left">
             <div className="space-y-10">
-              <h2 className="text-4xl md:text-5xl font-medium mb-6 font-serif italic tracking-tight leading-tight">
-                The Power of <span className="gradient-text italic">Emotional Intelligence</span>
+              <h2 className="text-4xl md:text-5xl font-medium mb-6 font-serif tracking-tight leading-tight">
+                The Power of <span className="gradient-text">Emotional Intelligence</span>
               </h2>
 
               {/* Quote block */}
               <div className="relative p-8 rounded-[28px] glass border border-border bg-background/40">
                 <Quote size={40} className="text-primary/20 absolute top-6 left-6" />
-                <p className="text-lg font-serif italic leading-relaxed text-foreground/80 pl-8 pt-6">
+                <p className="text-lg font-serif leading-relaxed text-foreground/80 pl-8 pt-6">
                   Traditional corporate perks are common, easily forgotten, and rarely drive retention. What builds loyalty is an unexpected, personalized phone call or premium digital letter from our professional Thrillers, thanking an employee for their hard work on a project launch.
                 </p>
               </div>
@@ -185,7 +185,7 @@ export default function CorporatePage() {
                 <div className="w-24 h-24 mb-8 text-primary shadow-huge flex items-center justify-center bg-white/10 backdrop-blur-3xl rounded-full border border-white/20">
                   <Briefcase size={40} />
                 </div>
-                <h3 className="text-3xl font-medium mb-4 font-serif italic tracking-tight">Enterprise <span className="gradient-text italic">Tiers</span></h3>
+                <h3 className="text-3xl font-medium mb-4 font-serif tracking-tight">Enterprise <span className="gradient-text">Tiers</span></h3>
                 <p className="text-sm text-muted-foreground font-medium max-w-xs mx-auto mb-8 leading-relaxed">
                   Customizable contract-based packages for teams of 50 to 5,000+ employees.
                 </p>
@@ -212,12 +212,12 @@ export default function CorporatePage() {
       <section className="py-24 px-6 bg-muted/20 border-y border-border">
         <div className="max-w-4xl mx-auto text-center">
           <Reveal>
-            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary tracking-[0.4em]">
               <Calendar size={14} className="fill-current" />
               Schedule a Call
             </div>
-            <h2 className="text-4xl sm:text-5xl font-medium mb-6 font-serif italic tracking-tight">
-              Modernize Your <span className="gradient-text italic">Culture</span> Today.
+            <h2 className="text-4xl sm:text-5xl font-medium mb-6 font-serif tracking-tight">
+              Modernize Your <span className="gradient-text">Culture</span> Today.
             </h2>
             <p className="text-muted-foreground font-medium text-lg max-w-2xl mx-auto mb-12 leading-relaxed">
               Pick a convenient time below for a quick 15-minute strategy call with our culture team to map out your organization&apos;s milestone calendar.
@@ -228,7 +228,7 @@ export default function CorporatePage() {
               <div className="w-20 h-20 rounded-3xl bg-primary/10 text-primary flex items-center justify-center">
                 <Calendar size={36} />
               </div>
-              <div className="text-[10px] font-black text-primary uppercase tracking-[0.4em]">
+              <div className="text-[10px] font-black text-primary tracking-[0.4em]">
                 Scheduling Widget
               </div>
               <p className="text-foreground/40 font-medium text-sm max-w-sm text-center leading-relaxed">
@@ -238,7 +238,7 @@ export default function CorporatePage() {
                 href={CALENDLY_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl gradient-bg text-white font-bold text-sm uppercase tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl gradient-bg text-white font-bold text-sm tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <Calendar size={16} />
                 Open Scheduling Page
@@ -254,7 +254,7 @@ export default function CorporatePage() {
         <Reveal>
           <div className="max-w-4xl mx-auto p-8 sm:p-16 rounded-[32px] sm:rounded-[64px] glass border border-border shadow-huge relative overflow-hidden group">
             <div className="absolute top-0 right-0 w-96 h-96 bg-primary/10 blur-[100px] rounded-full -mr-48 -mt-48" />
-            <h2 className="text-4xl sm:text-6xl font-medium mb-6 relative z-10 tracking-tight font-serif italic leading-tight">
+            <h2 className="text-4xl sm:text-6xl font-medium mb-6 relative z-10 tracking-tight font-serif leading-tight">
               Ready to Elevate <br className="hidden sm:block" />Your Team Culture?
             </h2>
             <p className="text-muted-foreground font-medium text-lg mb-12 max-w-xl mx-auto relative z-10 leading-relaxed">

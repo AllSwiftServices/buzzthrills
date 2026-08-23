@@ -68,7 +68,7 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           className="fixed top-24 right-6 z-50 p-4 rounded-2xl glass border border-primary/20 bg-primary/5 text-primary shadow-2xl hover:scale-110 active:scale-95 transition-all group flex items-center gap-3"
         >
           <ShieldCheck size={20} className="group-hover:rotate-12 transition-transform" />
-          <span className="text-[10px] font-black uppercase tracking-widest pr-2 hidden sm:block">Admin Console</span>
+          <span className="text-[10px] font-black tracking-widest pr-2 hidden sm:block">Admin Console</span>
         </Link>
       )}
 

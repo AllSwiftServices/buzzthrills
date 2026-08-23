@@ -52,7 +52,7 @@ export default function BottomTabNav() {
                   />
                 )}
                 
-                <span className={`text-[8px] font-black uppercase tracking-tight ${isActive ? 'text-primary opacity-100' : 'text-muted-foreground opacity-60'} transition-all`}>
+                <span className={`text-[8px] font-black tracking-tight ${isActive ? 'text-primary opacity-100' : 'text-muted-foreground opacity-60'} transition-all`}>
                   {tab.label}
                 </span>
               </Link>

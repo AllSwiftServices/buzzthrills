@@ -36,7 +36,7 @@ export default function NewsletterSignup() {
                <h3 className="text-4xl md:text-6xl font-black tracking-tighter leading-none mb-6">
                   Join the <span className="gradient-text tracking-tighter">Superheroes.</span>
                </h3>
-               <p className="text-muted-foreground font-bold text-xl tracking-tight leading-relaxed">
+               <p className="text-muted-foreground font-medium text-xl tracking-tight leading-relaxed">
                   Never miss a moment worth celebrating. Enjoy timely reminders, heartfelt stories, exclusive community perks, and member-only surprises.
                </p>
             </div>
@@ -72,7 +72,7 @@ export default function NewsletterSignup() {
                     </div>
                     <button
                       disabled={status === "loading"}
-                      className="w-full py-5 rounded-[24px] gradient-bg text-white font-black text-[10px] uppercase tracking-[0.3em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
+                      className="w-full py-5 rounded-[24px] gradient-bg text-white font-black text-[10px] tracking-[0.3em] shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all flex items-center justify-center gap-3 disabled:opacity-50"
                     >
                       {status === "loading" ? <Loader2 size={18} className="animate-spin" /> : (
                         <>

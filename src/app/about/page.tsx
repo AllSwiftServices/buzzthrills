@@ -81,7 +81,7 @@ export default function AboutPage() {
 
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <Reveal>
-            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary tracking-[0.4em]">
               <Star size={14} className="fill-current" />
               Our Story
             </div>
@@ -89,11 +89,11 @@ export default function AboutPage() {
           <Reveal delay={0.1}>
             <h1 className="text-4xl sm:text-6xl md:text-8xl font-medium mb-8 tracking-tight font-serif leading-none">
               A Culture of <br />
-              <span className="gradient-text italic">Connection</span>.
+              <span className="gradient-text">Connection</span>.
             </h1>
           </Reveal>
           <Reveal delay={0.2}>
-            <p className="text-xl sm:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto italic font-serif opacity-80">
+            <p className="text-xl sm:text-2xl text-muted-foreground leading-relaxed max-w-2xl mx-auto font-serif opacity-80">
               &ldquo;We started BuzzThrills because life gets busy, but the people we love shouldn&apos;t pay the price for our schedules.&rdquo;
             </p>
           </Reveal>
@@ -104,13 +104,13 @@ export default function AboutPage() {
       <section className="py-24 px-6 bg-muted/20 border-y border-border">
         <div className="max-w-4xl mx-auto">
           <Reveal>
-            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+            <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary tracking-[0.4em]">
               <Heart size={14} className="fill-current" />
               Our Mission
             </div>
           </Reveal>
           <Reveal delay={0.1}>
-            <blockquote className="text-xl sm:text-2xl md:text-3xl font-medium font-serif italic leading-relaxed text-foreground/90 border-l-4 border-primary pl-8">
+            <blockquote className="text-xl sm:text-2xl md:text-3xl font-medium font-serif leading-relaxed text-foreground/90 border-l-4 border-primary pl-8">
               &ldquo;We are on a mission to deliver personalized, emotion-filled and memorable phone calls and digital letter experiences that uplift, celebrate, and connect people deeply to at least 1 billion people&apos;s faces, one call at a time, one digital experience at a time. Every message and voice is designed to make someone feel seen, loved, appreciated, valued and cherished.&rdquo;
             </blockquote>
           </Reveal>
@@ -123,8 +123,8 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
           <Reveal direction="left">
             <div>
-              <h2 className="text-4xl md:text-5xl font-medium mb-10 font-serif italic tracking-tight leading-tight">
-                Our <span className="gradient-text italic">Connection</span> Journey
+              <h2 className="text-4xl md:text-5xl font-medium mb-10 font-serif tracking-tight leading-tight">
+                Our <span className="gradient-text">Connection</span> Journey
               </h2>
               <div className="space-y-6 text-lg text-muted-foreground leading-relaxed font-medium">
                 <p>
@@ -150,8 +150,8 @@ export default function AboutPage() {
                 <Sparkles size={120} className="text-primary opacity-10 animate-pulse" />
               </div>
               <div className="absolute bottom-10 left-10 right-10 p-8 glass rounded-[40px] border-border bg-background/50 text-center shadow-2xl">
-                <div className="text-[10px] font-black uppercase tracking-[0.4em] text-primary mb-3">Our Vision</div>
-                <div className="text-xl font-medium font-serif italic text-primary leading-snug">
+                <div className="text-[10px] font-black tracking-[0.4em] text-primary mb-3">Our Vision</div>
+                <div className="text-xl font-medium font-serif text-primary leading-snug">
                   To turn every notification into a core memory.
                 </div>
               </div>
@@ -165,12 +165,12 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary tracking-[0.4em]">
                 <Sparkles size={14} className="fill-current" />
                 Core Values
               </div>
-              <h2 className="text-4xl sm:text-6xl font-medium font-serif italic tracking-tight leading-none">
-                We Give <span className="gradient-text italic">L.I.F.E.</span>
+              <h2 className="text-4xl sm:text-6xl font-medium font-serif tracking-tight leading-none">
+                We Give <span className="gradient-text">L.I.F.E.</span>
               </h2>
               <p className="text-muted-foreground text-lg font-medium max-w-2xl mx-auto mt-6 leading-relaxed">
                 Every experience we engineer, whether for an individual or an entire corporate team, is executed under our original core values.
@@ -188,13 +188,13 @@ export default function AboutPage() {
                 transition={{ delay: i * 0.1 }}
                 className="p-8 rounded-[32px] glass border border-border hover:border-primary/30 transition-all group bg-background/40"
               >
-                <div className="text-6xl font-black gradient-text tracking-tighter font-serif italic mb-4 group-hover:scale-110 transition-transform origin-left">
+                <div className="text-6xl font-black gradient-text tracking-tighter font-serif mb-4 group-hover:scale-110 transition-transform origin-left">
                   {v.letter}
                 </div>
                 <div className={`w-12 h-12 rounded-2xl ${v.bg} ${v.color} flex items-center justify-center mb-4`}>
                   {v.icon}
                 </div>
-                <h3 className="text-xl font-black uppercase tracking-tight mb-3">{v.word}</h3>
+                <h3 className="text-xl font-black tracking-tight mb-3">{v.word}</h3>
                 <p className="text-sm text-muted-foreground font-medium leading-relaxed">{v.desc}</p>
               </motion.div>
             ))}
@@ -207,12 +207,12 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary tracking-[0.4em]">
                 <Mic2 size={14} />
                 How We Deliver
               </div>
-              <h2 className="text-4xl sm:text-5xl font-medium font-serif italic tracking-tight leading-none">
-                Our Communication <span className="gradient-text italic">Mediums</span>
+              <h2 className="text-4xl sm:text-5xl font-medium font-serif tracking-tight leading-none">
+                Our Communication <span className="gradient-text">Mediums</span>
               </h2>
               <p className="text-muted-foreground text-lg font-medium max-w-2xl mx-auto mt-6 leading-relaxed">
                 We have stripped away automated AI scripts and robotic recordings. Instead, Buzzthrills utilizes a real, trained team of Callers (our Thrillers) to execute impact across two core delivery systems.
@@ -226,7 +226,7 @@ export default function AboutPage() {
                 <div className="w-16 h-16 rounded-[20px] bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
                   <Phone size={28} />
                 </div>
-                <h3 className="text-2xl font-black uppercase tracking-tight italic mb-4">
+                <h3 className="text-2xl font-black tracking-tight mb-4">
                   Specialized Voice Experiences
                 </h3>
                 <p className="text-muted-foreground font-medium leading-relaxed">
@@ -239,7 +239,7 @@ export default function AboutPage() {
                 <div className="w-16 h-16 rounded-[20px] bg-accent/10 text-accent flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg">
                   <FileText size={28} />
                 </div>
-                <h3 className="text-2xl font-black uppercase tracking-tight italic mb-4">
+                <h3 className="text-2xl font-black tracking-tight mb-4">
                   Premium Digital Letters
                 </h3>
                 <p className="text-muted-foreground font-medium leading-relaxed">
@@ -256,12 +256,12 @@ export default function AboutPage() {
         <div className="max-w-6xl mx-auto">
           <Reveal>
             <div className="text-center mb-16">
-              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary uppercase tracking-[0.4em]">
+              <div className="inline-flex items-center gap-2 px-6 py-2 rounded-full glass border border-primary/20 mb-8 text-[10px] font-bold text-primary tracking-[0.4em]">
                 <Users size={14} />
                 Our Community
               </div>
-              <h2 className="text-4xl sm:text-5xl font-medium font-serif italic tracking-tight leading-none">
-                Who We <span className="gradient-text italic">Serve</span>
+              <h2 className="text-4xl sm:text-5xl font-medium font-serif tracking-tight leading-none">
+                Who We <span className="gradient-text">Serve</span>
               </h2>
             </div>
           </Reveal>
@@ -279,7 +279,7 @@ export default function AboutPage() {
                 <div className="w-12 h-12 rounded-2xl bg-primary/10 text-primary flex items-center justify-center mb-5 group-hover:scale-110 transition-transform">
                   {a.icon}
                 </div>
-                <h3 className="font-black text-lg uppercase tracking-tight mb-3">{a.title}</h3>
+                <h3 className="font-black text-lg tracking-tight mb-3">{a.title}</h3>
                 <p className="text-sm text-muted-foreground font-medium leading-relaxed">{a.desc}</p>
               </motion.div>
             ))}
@@ -292,10 +292,10 @@ export default function AboutPage() {
         <Reveal>
           <div className="max-w-4xl mx-auto p-8 sm:p-16 rounded-[32px] sm:rounded-[64px] glass border border-border bg-foreground/2 relative overflow-hidden group shadow-huge">
             <div className="absolute inset-0 gradient-bg opacity-5 group-hover:opacity-10 transition-opacity duration-1000" />
-            <h2 className="text-4xl sm:text-6xl font-medium mb-4 font-serif italic relative z-10">
+            <h2 className="text-4xl sm:text-6xl font-medium mb-4 font-serif relative z-10">
               Spread Positive Vibes
             </h2>
-            <p className="text-xl text-muted-foreground font-serif italic mb-12 relative z-10">
+            <p className="text-xl text-muted-foreground font-serif mb-12 relative z-10">
               Book a Surprise Call today.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center relative z-10">

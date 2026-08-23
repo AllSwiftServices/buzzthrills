@@ -59,9 +59,9 @@ export default function DigitalLetterPage() {
   if (error) {
     return (
       <div className="min-h-screen bg-[#050505] flex flex-col items-center justify-center text-white text-center p-8">
-        <h1 className="text-3xl font-serif italic mb-3">We couldn't find this letter</h1>
+        <h1 className="text-3xl font-serif mb-3">We couldn't find this letter</h1>
         <p className="text-white/40 text-sm mb-6">The link may have expired or been mistyped.</p>
-        <Link href="/digital-letters" className="text-xs font-bold uppercase tracking-widest text-primary">
+        <Link href="/digital-letters" className="text-xs font-bold tracking-widest text-primary">
           Send your own →
         </Link>
       </div>
@@ -72,7 +72,7 @@ export default function DigitalLetterPage() {
     return (
       <div className="min-h-screen bg-[#050505] flex items-center justify-center gap-4 text-white">
         <Loader2 className="w-8 h-8 animate-spin" />
-        <span className="text-sm font-black uppercase tracking-widest">Loading your letter…</span>
+        <span className="text-sm font-black tracking-widest">Loading your letter…</span>
       </div>
     );
   }
@@ -147,7 +147,7 @@ export default function DigitalLetterPage() {
               transition={{ delay: 0.8, duration: 0.8 }}
             >
               <div
-                className="font-serif text-sm uppercase tracking-widest mb-8 font-bold opacity-50"
+                className="font-serif text-sm tracking-widest mb-8 font-bold opacity-50"
                 style={{ color: theme.preview.paperText }}
               >
                 {letter.recipient_photo_url && (
@@ -165,7 +165,7 @@ export default function DigitalLetterPage() {
               </div>
 
               <div
-                className="font-serif text-xl md:text-2xl italic leading-relaxed mb-12 whitespace-pre-wrap"
+                className="font-serif text-xl md:text-2xl leading-relaxed mb-12 whitespace-pre-wrap"
                 style={{ color: theme.preview.paperText }}
               >
                 {letter.message}
@@ -178,7 +178,7 @@ export default function DigitalLetterPage() {
               )}
 
               <div className="flex flex-col items-end gap-2 pr-4 border-t border-black/10 pt-8">
-                <span className="font-serif text-base italic opacity-60">With love from,</span>
+                <span className="font-serif text-base opacity-60">With love from,</span>
                 <span className="font-serif text-2xl font-black">
                   {letter.sender_first_name || "Someone who cares"}
                 </span>

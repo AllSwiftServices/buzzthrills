@@ -39,7 +39,7 @@ export default function Sidebar() {
                 <div className={`transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`}>
                   {item.icon}
                 </div>
-                <span className="text-[11px] font-black uppercase tracking-widest">
+                <span className="text-[11px] font-black tracking-widest">
                   {item.label}
                 </span>
                 
@@ -64,7 +64,7 @@ export default function Sidebar() {
           className="w-full flex items-center gap-4 px-6 py-4 rounded-2xl text-red-500/60 hover:text-red-500 hover:bg-red-500/5 transition-all duration-300 group"
         >
           <LogOut size={20} className="group-hover:scale-110 transition-transform" />
-          <span className="text-[11px] font-black uppercase tracking-widest">Logout</span>
+          <span className="text-[11px] font-black tracking-widest">Logout</span>
         </button>
       </div>
     </aside>

@@ -54,7 +54,7 @@ export default function LetterProcessingPage() {
         >
           <h1 className="text-3xl sm:text-4xl font-serif font-bold tracking-tight text-foreground">
             Your Letter is Being{" "}
-            <span className="gradient-text italic">Crafted</span>
+            <span className="gradient-text">Crafted</span>
           </h1>
           <p className="text-muted-foreground text-base leading-relaxed max-w-sm mx-auto">
             Payment confirmed 🎉 Our team is personalising your letter
