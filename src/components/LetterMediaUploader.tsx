@@ -7,11 +7,16 @@ import { useAuth } from "@/context/AuthContext";
 
 type Kind = "music" | "voice" | "video" | "photo";
 
+// iOS Safari/WebKit (which every iOS browser is built on, Brave included) is
+// unreliable with a bare "audio/*"/"video/*" MIME wildcard — it often skips
+// offering the Files "Browse" option entirely and falls back to just Photos,
+// which has no audio in it. Pairing the wildcard with explicit extensions
+// fixes this and reliably surfaces the real file browser on iOS.
 const KIND_META: Record<Kind, { label: string; accept: string; icon: any }> = {
-  music: { label: "Background Music", accept: "audio/*", icon: Music },
-  voice: { label: "Voice Note", accept: "audio/*", icon: Mic },
-  video: { label: "Video Message", accept: "video/*", icon: Video },
-  photo: { label: "Recipient Photo", accept: "image/*", icon: ImageIcon },
+  music: { label: "Background Music", accept: "audio/*,.mp3,.wav,.m4a,.aac,.ogg,.caf,.flac", icon: Music },
+  voice: { label: "Voice Note", accept: "audio/*,.mp3,.wav,.m4a,.aac,.ogg,.caf,.flac", icon: Mic },
+  video: { label: "Video Message", accept: "video/*,.mp4,.mov,.m4v,.webm", icon: Video },
+  photo: { label: "Recipient Photo", accept: "image/*,.jpg,.jpeg,.png,.heic,.webp", icon: ImageIcon },
 };
 
 interface Props {
