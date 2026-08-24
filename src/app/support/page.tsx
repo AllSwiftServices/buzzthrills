@@ -50,7 +50,7 @@ export default function SupportPage() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
             { title: "Direct WhatsApp", value: "Chat with us", href: "https://wa.me/message/MSQYBT5WIQ4XM1", icon: <WhatsAppIcon className="text-green-500" /> },
-            { title: "Email Support", value: "buzzthrills941@gmail.com", href: "mailto:buzzthrills941@gmail.com", icon: <Mail className="text-primary" /> },
+            { title: "Email Support", value: "hello@buzzthrills.com", href: "mailto:hello@buzzthrills.com", icon: <Mail className="text-primary" /> },
             { title: "Voice Support", value: "09059388005", href: "tel:+2349059388005", icon: <Phone className="text-accent" /> }
           ].map((opt, i) => (
             <Reveal key={i} delay={i * 0.1}>

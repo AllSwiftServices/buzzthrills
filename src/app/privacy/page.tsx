@@ -42,7 +42,7 @@ export default function PrivacyPage() {
 
               <section className="p-8 rounded-3xl glass border border-primary/20 bg-primary/5">
                 <h2 className="text-xl font-bold mb-4 text-primary">5. Contact Us</h2>
-                <p className="mb-0">If you have any questions about this Privacy Policy, please contact our Support Team at <a href="mailto:buzzthrills941@gmail.com" className="font-bold underline">buzzthrills941@gmail.com</a>.</p>
+                <p className="mb-0">If you have any questions about this Privacy Policy, please contact our Support Team at <a href="mailto:hello@buzzthrills.com" className="font-bold underline">hello@buzzthrills.com</a>.</p>
               </section>
             </div>
           </Reveal>

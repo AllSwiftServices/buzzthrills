@@ -245,7 +245,7 @@ export default function CheckoutSuccess() {
           </table>
 
           <p className="text-xs text-neutral-500 mt-12">
-            Thank you for booking with Buzzthrills. For questions about this receipt, contact us at hello@buzzthrillsprime.com.
+            Thank you for booking with Buzzthrills. For questions about this receipt, contact us at hello@buzzthrills.com.
           </p>
         </div>
       </div>

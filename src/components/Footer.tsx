@@ -72,9 +72,9 @@ export default function Footer() {
               <Phone size={14} className="text-primary/70" />
               09059388005
             </a>
-            <a href="mailto:buzzthrills041@gmail.com" className="flex items-center gap-2 hover:text-primary transition-colors">
+            <a href="mailto:hello@buzzthrills.com" className="flex items-center gap-2 hover:text-primary transition-colors">
               <Mail size={14} className="text-primary/70" />
-              buzzthrills041@gmail.com
+              hello@buzzthrills.com
             </a>
           </div>
         </div>
