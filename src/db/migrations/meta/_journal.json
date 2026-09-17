@@ -43,6 +43,34 @@
       "when": 1787487153086,
       "tag": "0005_woozy_toro",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1789626594470,
+      "tag": "0006_next_songbird",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1789627102635,
+      "tag": "0007_stiff_jack_murdock",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1789627607418,
+      "tag": "0008_milky_iron_monger",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1789628057823,
+      "tag": "0009_redundant_warhawk",
+      "breakpoints": true
     }
   ]
 }

@@ -24,12 +24,14 @@ interface Props {
   value: string | null;
   letterId?: string | null;
   onChange: (url: string | null) => void;
+  label?: string;
   hint?: string;
   disabled?: boolean;
 }
 
-export default function LetterMediaUploader({ kind, value, letterId, onChange, hint, disabled }: Props) {
+export default function LetterMediaUploader({ kind, value, letterId, onChange, label, hint, disabled }: Props) {
   const meta = KIND_META[kind];
+  const displayLabel = label || meta.label;
   const Icon = meta.icon;
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -50,7 +52,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
 
     // 2. Client-side type check
     if (!isAcceptedLetterMedia(kind, file.type)) {
-      setError(`Unsupported file type for ${meta.label.toLowerCase()}`);
+      setError(`Unsupported file type for ${displayLabel.toLowerCase()}`);
       if (inputRef.current) inputRef.current.value = "";
       return;
     }
@@ -130,7 +132,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2 text-[11px] font-black tracking-[0.2em] text-foreground/70">
           <Icon size={14} className="text-primary" />
-          {meta.label}
+          {displayLabel}
         </div>
         {hint && <span className="text-[10px] text-muted-foreground">{hint}</span>}
       </div>
@@ -156,7 +158,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
               <div className="w-9 h-9 rounded-xl gradient-bg flex items-center justify-center text-white shrink-0">
                 <Icon size={16} />
               </div>
-              <span className="text-xs font-bold truncate">{meta.label} uploaded</span>
+              <span className="text-xs font-bold truncate">{label ? `${label} uploaded` : `${meta.label} uploaded`}</span>
             </div>
             <div className="flex items-center gap-2">
               {kind !== "video" ? (
@@ -183,7 +185,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
           type="button"
           onClick={() => inputRef.current?.click()}
           disabled={disabled || uploading}
-          className="w-full p-6 rounded-2xl border-2 border-dashed border-border hover:border-primary/40 hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full p-6 rounded-2xl border-2 border-dashed border-border hover:border-primary/40 hover:bg-primary/5 transition-all flex flex-col items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed text-center"
         >
           {uploading ? (
             <Loader2 size={22} className="text-primary animate-spin" />
@@ -191,7 +193,7 @@ export default function LetterMediaUploader({ kind, value, letterId, onChange, h
             <Upload size={22} className="text-primary" />
           )}
           <span className="text-xs font-black tracking-widest text-foreground/70">
-            {uploading ? "Uploading…" : `Upload ${meta.label.toLowerCase()}`}
+            {uploading ? "Uploading…" : (label ? label : `Upload ${meta.label.toLowerCase()}`)}
           </span>
           <span className="text-[10px] text-muted-foreground">Max 20MB</span>
         </button>

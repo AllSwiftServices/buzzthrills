@@ -1,0 +1,1 @@
+ALTER TABLE "special_calls" ADD COLUMN "custom_questions" jsonb;

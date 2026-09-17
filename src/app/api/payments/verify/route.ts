@@ -138,22 +138,29 @@ export async function GET(request: Request) {
 
           // 2. Handle One-Off Bookings (Calls)
           if (recipients && Array.isArray(recipients)) {
-            const bookingMetadata = metadata?.booking && typeof metadata.booking === 'object' ? metadata.booking : {};
+            const bookingMetadata = (metadata?.booking && typeof metadata.booking === 'object' ? metadata.booking : {}) as Record<string, unknown>;
+            const metaRecord = (metadata && typeof metadata === 'object' ? metadata : {}) as Record<string, unknown>;
+            const messageObj = (bookingMetadata?.message && typeof bookingMetadata.message === 'object' ? bookingMetadata.message : {}) as Record<string, unknown>;
+            const voiceRecordingUrl = (typeof bookingMetadata?.voiceRecordingUrl === 'string' ? bookingMetadata.voiceRecordingUrl : null) ||
+              (typeof messageObj?.voiceRecordingUrl === 'string' ? messageObj.voiceRecordingUrl : null) ||
+              (typeof metaRecord?.voiceRecordingUrl === 'string' ? metaRecord.voiceRecordingUrl : null);
+            const metaRecipients = Array.isArray(bookingMetadata.recipients) ? bookingMetadata.recipients : [];
             const callInserts = recipients.map((r: any, idx: number) => ({
               user_id: user_id || null,
               recipient_name: r.name,
               recipient_phone: r.phone,
               relationship: r.relationship || null,
               occasion_type: r.occasion || service || 'General',
-              occasion_date: r.date,
+              occasion_date: r.date || new Date().toISOString().split('T')[0],
               call_type: variant || 'standard',
               scheduled_slot: r.time || 'morning',
               is_express: !!is_express,
               is_international: !!is_international,
+              voice_recording_url: voiceRecordingUrl,
               status: 'pending',
               metadata: {
                 ...bookingMetadata,
-                recipient: bookingMetadata?.recipients?.[idx] ?? null,
+                recipient: metaRecipients[idx] ?? null,
               },
             }));
 

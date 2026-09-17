@@ -46,3 +46,15 @@ BEGIN
       USING ((SELECT role FROM profiles WHERE id = auth.uid()) = 'admin');
   END IF;
 END$$;
+
+-- Add image_url column for flyer or banner image
+ALTER TABLE special_calls ADD COLUMN IF NOT EXISTS image_url TEXT;
+
+-- Add price_options JSONB column for multiple package pricing options
+ALTER TABLE special_calls ADD COLUMN IF NOT EXISTS price_options JSONB DEFAULT '[]'::jsonb;
+
+-- Add voice_recording_url column on calls for client's voice recording to be played to recipient
+ALTER TABLE calls ADD COLUMN IF NOT EXISTS voice_recording_url TEXT;
+
+-- Add custom_questions JSONB column for admin-configured questions for special calls
+ALTER TABLE special_calls ADD COLUMN IF NOT EXISTS custom_questions JSONB DEFAULT '[]'::jsonb;

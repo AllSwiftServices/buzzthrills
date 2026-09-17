@@ -72,7 +72,11 @@ export async function POST(request: Request) {
     }
 
     // 5. Create Call Records
-    const bookingMetadata = metadata && typeof metadata === "object" ? metadata : {};
+    const bookingMetadata = (metadata && typeof metadata === "object" ? metadata : {}) as Record<string, unknown>;
+    const messageObj = (bookingMetadata?.message && typeof bookingMetadata.message === "object" ? bookingMetadata.message : {}) as Record<string, unknown>;
+    const voiceRecordingUrl = (typeof bookingMetadata?.voiceRecordingUrl === "string" ? bookingMetadata.voiceRecordingUrl : null) ||
+      (typeof messageObj?.voiceRecordingUrl === "string" ? messageObj.voiceRecordingUrl : null);
+    const metaRecipients = Array.isArray(bookingMetadata.recipients) ? bookingMetadata.recipients : [];
     const callEntries = recipients.map((r: any, idx: number) => ({
       user_id: payload.id,
       assigned_to: assignedTo,
@@ -80,15 +84,16 @@ export async function POST(request: Request) {
       recipient_phone: r.phone,
       relationship: r.relationship || null,
       occasion_type: r.occasion || service || "General",
-      occasion_date: r.date,
+      occasion_date: r.date || new Date().toISOString().split("T")[0],
       call_type: variant || "standard",
       scheduled_slot: r.time || "morning",
       is_express: !!isExpress,
       is_international: !!isInternational,
+      voice_recording_url: voiceRecordingUrl,
       status: assignedTo ? "assigned" : "pending",
       metadata: {
         ...bookingMetadata,
-        recipient: bookingMetadata?.recipients?.[idx] ?? null,
+        recipient: metaRecipients[idx] ?? null,
       },
     }));
 

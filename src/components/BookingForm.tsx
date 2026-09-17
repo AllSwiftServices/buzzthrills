@@ -3,7 +3,7 @@
 import { useState, Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Sparkles, Loader2, Star, Zap, PhoneCall, Globe, Heart, Music, Laugh, Crown, Calendar, Wand2, UserCog } from "lucide-react";
+import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, CreditCard, Plus, Trash2, Sparkles, Loader2, Star, Zap, PhoneCall, Globe, Heart, Music, Laugh, Crown, Calendar, Wand2, UserCog, UploadCloud, Mic } from "lucide-react";
 import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
 import { useAuth } from "@/context/AuthContext";
 import { CALL_SERVICES, CallService, CallVariant, ICON_MAP } from "@/lib/pricing_config";
@@ -121,8 +121,49 @@ function BookingContent() {
   // Special call params (from admin-created special call banner)
   const specialCallId = searchParams.get("specialCallId");
   const specialCallOccasion = searchParams.get("occasion");
-  const specialCallPrice = searchParams.get("price") ? Number(searchParams.get("price")) : null;
-  const isSpecialCall = !!specialCallId && specialCallPrice !== null;
+  const paramPrice = searchParams.get("price") ? Number(searchParams.get("price")) : null;
+  const paramPackage = searchParams.get("package");
+
+  const [specialCallOptions, setSpecialCallOptions] = useState<Array<{ title: string; price: number }>>([]);
+  const [selectedSpecialPackage, setSelectedSpecialPackage] = useState<string>(paramPackage || "");
+  const [selectedSpecialPrice, setSelectedSpecialPrice] = useState<number | null>(paramPrice);
+  const [specialCallDate, setSpecialCallDate] = useState<string | null>(null);
+
+  const effectiveSpecialPrice = selectedSpecialPrice ?? paramPrice;
+  const isSpecialCall = !!specialCallId && effectiveSpecialPrice !== null;
+
+  useEffect(() => {
+    if (!specialCallId) return;
+    async function loadSpecialCall() {
+      try {
+        const res = await fetch(`/api/special-calls?id=${specialCallId}`);
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.specialCall?.call_date) {
+          setSpecialCallDate(data.specialCall.call_date);
+          setRecipients((prev) =>
+            prev.map((r) => ({ ...r, date: r.date || data.specialCall.call_date }))
+          );
+        }
+        if (data.specialCall?.price_options && Array.isArray(data.specialCall.price_options) && data.specialCall.price_options.length > 0) {
+          setSpecialCallOptions(data.specialCall.price_options);
+          if (!paramPackage) {
+            setSelectedSpecialPackage(data.specialCall.price_options[0].title);
+            setSelectedSpecialPrice(data.specialCall.price_options[0].price);
+          }
+        }
+        if (data.specialCall?.custom_questions && Array.isArray(data.specialCall.custom_questions)) {
+          const activeQuestions = data.specialCall.custom_questions
+            .filter((q: unknown) => typeof q === "string" && q.trim().length > 0)
+            .map((q: string) => q.trim());
+          setSpecialCallQuestions(activeQuestions);
+        }
+      } catch (err) {
+        console.error("Failed to load special call options:", err);
+      }
+    }
+    loadSpecialCall();
+  }, [specialCallId, paramPackage]);
 
   const [step, setStep] = useState<Step>(
     // If arriving from special call banner, skip type selection
@@ -147,6 +188,11 @@ function BookingContent() {
   )]);
   const [callMessage, setCallMessage] = useState<CallMessage>(emptyCallMessage());
   const [timezone, setTimezone] = useState<string>(defaultTimezone());
+  const [voiceRecordingUrl, setVoiceRecordingUrl] = useState<string | null>(null);
+  const [audioUploading, setAudioUploading] = useState<boolean>(false);
+  const [audioUploadError, setAudioUploadError] = useState<string | null>(null);
+  const [specialCallQuestions, setSpecialCallQuestions] = useState<string[]>([]);
+  const [customQuestionAnswers, setCustomQuestionAnswers] = useState<Record<string, string>>({});
 
   useEffect(() => {
     async function checkSubscription() {
@@ -188,7 +234,7 @@ function BookingContent() {
   const subscriberPlan = isSubscriber ? getPlan(subscription?.plan) : null;
 
   const selectedTier = service.tiers.find(t => t.variant === selectedVariant) || service.tiers[0];
-  const basePrice = isSpecialCall ? (specialCallPrice as number) : selectedTier.price;
+  const basePrice = isSpecialCall ? (effectiveSpecialPrice as number) : selectedTier.price;
   // International calls are double the regular local price — same non-subscriber-only
   // treatment as the express fee, since subscribers pay via quota, not per-call price.
   const internationalSurcharge = !isSubscriber && isInternational && !isSpecialCall ? basePrice : 0;
@@ -236,6 +282,47 @@ function BookingContent() {
   const showsLullabyQ = currentServiceId === "lullaby";
   const showsVideoQs = currentServiceId === "video_shoutout";
 
+  const handleAudioUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("audio/") && !file.name.match(/\.(mp3|wav|m4a|aac|ogg|weba|flac)$/i)) {
+      setAudioUploadError("Please select a valid audio file (.mp3, .wav, .m4a, .aac, .ogg)");
+      return;
+    }
+
+    if (file.size > 25 * 1024 * 1024) {
+      setAudioUploadError("Audio file exceeds maximum size of 25MB.");
+      return;
+    }
+
+    setAudioUploading(true);
+    setAudioUploadError(null);
+
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/bookings/upload-audio", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to upload audio file.");
+      }
+
+      setVoiceRecordingUrl(data.url);
+    } catch (err: unknown) {
+      console.error("Audio upload error:", err);
+      const message = err instanceof Error ? err.message : "Failed to upload audio recording.";
+      setAudioUploadError(message);
+    } finally {
+      setAudioUploading(false);
+    }
+  };
+
   const buildBookingMetadata = () => ({
     sender: {
       name: clientData.name,
@@ -253,15 +340,23 @@ function BookingContent() {
       youCallThem: r.youCallThem,
       theyCallYou: r.theyCallYou,
       phone: r.phone,
-      date: r.date,
+      date: r.date || (isSpecialCall ? specialCallDate || new Date().toISOString().split("T")[0] : ""),
       time: r.time,
       occasion: r.occasion,
     })),
     timezone,
-    message: callMessage,
+    message: {
+      ...callMessage,
+      voiceRecordingUrl,
+    },
+    voiceRecordingUrl,
+    customQuestions: specialCallQuestions.map((q) => ({
+      question: q,
+      answer: customQuestionAnswers[q] || "",
+    })),
     serviceId: service.id,
     variant: selectedVariant,
-    isExpress,
+    isExpress: isSpecialCall ? false : isExpress,
     isInternational,
     preferredCallerId: preferredCallerId || null,
   });
@@ -283,10 +378,10 @@ function BookingContent() {
             name: r.name,
             phone: r.phone,
             occasion: r.occasion,
-            date: r.date,
+            date: r.date || (isSpecialCall ? specialCallDate || new Date().toISOString().split("T")[0] : ""),
             time: r.time,
           })),
-          isExpress,
+          isExpress: isSpecialCall ? false : isExpress,
           isInternational,
           createdAt: new Date().toISOString(),
         })
@@ -298,7 +393,7 @@ function BookingContent() {
 
   const handleSubscriberBooking = async () => {
     for (const r of recipients) {
-      if (!r.name || !r.phone || !r.date) {
+      if (!r.name || !r.phone || (!isSpecialCall && !r.date)) {
         alert("Please complete all recipient details.");
         setStep("recipients");
         return;
@@ -313,10 +408,14 @@ function BookingContent() {
         body: JSON.stringify({
           service: service.id,
           variant: selectedVariant,
-          recipients,
-          isExpress,
+          recipients: recipients.map((r) => ({
+            ...r,
+            date: r.date || (isSpecialCall ? specialCallDate || new Date().toISOString().split("T")[0] : ""),
+          })),
+          isExpress: isSpecialCall ? false : isExpress,
           isInternational,
           preferredCallerId: preferredCallerId || null,
+          voiceRecordingUrl,
           metadata: buildBookingMetadata(),
         }),
       });
@@ -357,7 +456,7 @@ function BookingContent() {
 
     // Basic Validation
     for (const r of recipients) {
-      if (!r.name || !r.phone || !r.date) {
+      if (!r.name || !r.phone || (!isSpecialCall && !r.date)) {
         alert("Please complete all recipient details.");
         setStep("recipients");
         return;
@@ -370,12 +469,16 @@ function BookingContent() {
       amount: totalPrice * 100, // Amount in kobo
       metadata: {
         service: service.id,
-        variant: selectedVariant,
+        variant: isSpecialCall ? (selectedSpecialPackage || "Special Call") : selectedVariant,
         user_id: user?.id,
-        is_express: isExpress,
+        is_express: isSpecialCall ? false : isExpress,
         is_international: isInternational,
         client_name: clientData.name,
-        recipients: recipients,
+        recipients: recipients.map((r) => ({
+          ...r,
+          date: r.date || (isSpecialCall ? specialCallDate || new Date().toISOString().split("T")[0] : ""),
+        })),
+        voiceRecordingUrl: voiceRecordingUrl,
         booking: buildBookingMetadata(),
       },
       callback: function(response: any) {
@@ -386,8 +489,8 @@ function BookingContent() {
               persistBookingSummary({
                 reference: response.reference,
                 isSubscription: false,
-                serviceName: service.name,
-                variantLabel: selectedTier.label,
+                serviceName: isSpecialCall ? specialCallOccasion || "Special Call" : service.name,
+                variantLabel: isSpecialCall ? (selectedSpecialPackage || "Special Package") : selectedTier.label,
                 amount: totalPrice,
               });
               router.push("/checkout/success");
@@ -423,8 +526,12 @@ function BookingContent() {
     else if (step === "variant") setStep("recipients");
     else if (step === "recipients") {
       for (const r of recipients) {
-        if (!r.name || !r.phone || !r.date || !r.relationship) {
-          alert("Please fill in name, phone, relationship, and date for every recipient.");
+        if (!r.name || !r.phone || (!isSpecialCall && !r.date) || !r.relationship) {
+          alert(
+            isSpecialCall
+              ? "Please fill in name, phone, and relationship for every recipient."
+              : "Please fill in name, phone, relationship, and date for every recipient."
+          );
           return;
         }
       }
@@ -640,16 +747,58 @@ function BookingContent() {
           >
             {/* Special call badge */}
             {isSpecialCall && (
-              <div className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-primary/10 border border-primary/20">
-                <span className="text-2xl">{searchParams.get("occasion")?.match(/\p{Emoji}/u)?.[0] || "🎉"}</span>
-                <div>
-                  <div className="text-[9px] font-black text-primary tracking-[0.3em] mb-0.5">Special Occasion Call</div>
-                  <div className="font-black text-sm tracking-tight">{specialCallOccasion}</div>
+              <div className="space-y-4 p-5 sm:p-6 rounded-3xl bg-primary/10 border border-primary/20">
+                <div className="flex items-center gap-3">
+                  <span className="text-2xl">{searchParams.get("occasion")?.match(/\p{Emoji}/u)?.[0] || "🎉"}</span>
+                  <div>
+                    <div className="text-[9px] font-black text-primary tracking-[0.3em] mb-0.5">Special Occasion Call</div>
+                    <div className="font-black text-sm sm:text-base tracking-tight">{specialCallOccasion}</div>
+                  </div>
+                  <div className="ml-auto text-right">
+                    <div className="text-[9px] font-black text-foreground/40 tracking-widest uppercase">
+                      {selectedSpecialPackage || (specialCallOptions.length > 1 ? "Selected Tier" : "Fixed Price")}
+                    </div>
+                    <div className="text-xl sm:text-2xl font-black gradient-text tracking-tighter">
+                      ₦{(effectiveSpecialPrice as number).toLocaleString()}
+                    </div>
+                  </div>
                 </div>
-                <div className="ml-auto text-right">
-                  <div className="text-[9px] font-black text-foreground/30 tracking-widest">Fixed Price</div>
-                  <div className="text-xl font-black gradient-text tracking-tighter">₦{(specialCallPrice as number).toLocaleString()}</div>
-                </div>
+
+                {specialCallOptions.length > 1 && (
+                  <div className="pt-3 border-t border-primary/20">
+                    <div className="text-[9px] font-black tracking-widest uppercase text-primary mb-2 flex items-center gap-1.5">
+                      <Sparkles size={11} />
+                      <span>Choose Package Tier:</span>
+                    </div>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                      {specialCallOptions.map((opt, oIdx) => {
+                        const isSelected = selectedSpecialPackage === opt.title || (!selectedSpecialPackage && oIdx === 0);
+                        return (
+                          <button
+                            type="button"
+                            key={oIdx}
+                            onClick={() => {
+                              setSelectedSpecialPackage(opt.title);
+                              setSelectedSpecialPrice(opt.price);
+                            }}
+                            className={`p-3 rounded-2xl border transition-all text-left flex flex-col justify-between gap-1 relative ${
+                              isSelected
+                                ? "bg-primary/20 border-primary shadow-md shadow-primary/20"
+                                : "bg-background/40 border-primary/10 hover:border-primary/30"
+                            }`}
+                          >
+                            <div className="text-xs font-black tracking-tight text-foreground line-clamp-1">
+                              {opt.title}
+                            </div>
+                            <div className="text-sm font-black gradient-text">
+                              ₦{opt.price.toLocaleString()}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
 
@@ -662,7 +811,9 @@ function BookingContent() {
                     {isSpecialCall ? specialCallOccasion : service.name}
                   </h2>
                   <p className="text-muted-foreground font-medium text-[10px] tracking-widest mt-1">
-                    {isSpecialCall ? `Fixed price: ₦${(specialCallPrice as number).toLocaleString()}` : `Starting from ₦${service.basePrice.toLocaleString()}`}
+                    {isSpecialCall
+                      ? `${selectedSpecialPackage ? selectedSpecialPackage + ": " : ""}₦${(effectiveSpecialPrice as number).toLocaleString()}`
+                      : `Starting from ₦${service.basePrice.toLocaleString()}`}
                   </p>
                </div>
             </div>
@@ -989,19 +1140,23 @@ function BookingContent() {
                       </select>
                     </div>
 
-                    <div className="space-y-2 md:col-span-6">
-                      <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Preferred Date</label>
-                      <input
-                        type="date"
-                        value={r.date}
-                        onChange={(e) => handleRecipientChange(i, 'date', e.target.value)}
-                        className="w-full min-w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold block appearance-none"
-                      />
-                    </div>
-                    <div className="space-y-2 md:col-span-6">
+                    {!isSpecialCall && (
+                      <div className="space-y-2 md:col-span-6">
+                        <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Preferred Date</label>
+                        <input
+                          type="date"
+                          value={r.date}
+                          onChange={(e) => handleRecipientChange(i, 'date', e.target.value)}
+                          className="w-full min-w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold block appearance-none"
+                        />
+                      </div>
+                    )}
+                    <div className={`space-y-2 ${isSpecialCall ? 'md:col-span-12' : 'md:col-span-6'}`}>
                       <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Service Type</label>
                       <div className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 text-sm font-bold text-foreground/60">
-                        {selectedVariant === 'monthly' ? "Monthly Subscription" : "One-Time Surprise"}
+                        {isSpecialCall
+                          ? (specialCallOccasion ? `${specialCallOccasion} (Special Call)` : "Special Occasion Call")
+                          : (selectedVariant === 'monthly' ? "Monthly Subscription" : "One-Time Surprise")}
                       </div>
                     </div>
                   </div>
@@ -1051,6 +1206,115 @@ function BookingContent() {
             </div>
 
             <div className="space-y-6 max-h-[560px] overflow-y-auto pr-4 custom-scrollbar">
+              {isSpecialCall && (
+                <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-gradient-to-br from-primary/10 via-card to-secondary/10 border-2 border-primary/30 shadow-lg space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary shrink-0 shadow-inner">
+                      <Mic size={20} />
+                    </div>
+                    <div>
+                      <h3 className="text-sm sm:text-base font-black tracking-tight text-foreground">
+                        Upload Voice recording to be played to recipient
+                      </h3>
+                      <p className="text-[11px] font-medium text-muted-foreground">
+                        Upload an audio message (.mp3, .wav, .m4a, .aac) that our caller will play directly to the recipient during the call.
+                      </p>
+                    </div>
+                  </div>
+
+                  {voiceRecordingUrl ? (
+                    <div className="space-y-3 bg-card/80 backdrop-blur-sm p-4 rounded-2xl border border-border/80 shadow-sm">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 text-xs font-black text-emerald-500">
+                          <Check size={14} strokeWidth={3} />
+                          Voice Recording Ready
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setVoiceRecordingUrl(null)}
+                          className="text-[11px] font-bold text-destructive hover:underline flex items-center gap-1 transition-colors"
+                        >
+                          <Trash2 size={12} />
+                          Remove / Replace
+                        </button>
+                      </div>
+                      <audio controls src={voiceRecordingUrl} className="w-full h-11 rounded-xl" />
+                    </div>
+                  ) : (
+                    <div>
+                      <label
+                        htmlFor="voice-recording-upload"
+                        className={`relative flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-2xl cursor-pointer transition-all ${
+                          audioUploading
+                            ? "border-primary/50 bg-primary/5 cursor-wait"
+                            : "border-border hover:border-primary/60 bg-foreground/5 hover:bg-foreground/[0.08]"
+                        }`}
+                      >
+                        {audioUploading ? (
+                          <div className="flex flex-col items-center gap-2 text-primary py-2">
+                            <Loader2 size={28} className="animate-spin" />
+                            <span className="text-xs font-black tracking-wider uppercase">Uploading recording...</span>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col items-center gap-2 text-center py-2">
+                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary mb-1">
+                              <UploadCloud size={20} />
+                            </div>
+                            <span className="text-xs font-black tracking-wider text-foreground">
+                              Click to select or drag audio file
+                            </span>
+                            <span className="text-[10px] text-muted-foreground font-semibold">
+                              MP3, WAV, M4A, AAC or OGG (Max 25MB)
+                            </span>
+                          </div>
+                        )}
+                        <input
+                          id="voice-recording-upload"
+                          type="file"
+                          accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg"
+                          disabled={audioUploading}
+                          onChange={handleAudioUpload}
+                          className="sr-only"
+                        />
+                      </label>
+                      {audioUploadError && (
+                        <p className="text-[11px] font-bold text-destructive mt-2">{audioUploadError}</p>
+                      )}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {isSpecialCall && specialCallQuestions.length > 0 && (
+                <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
+                  <div className="flex items-center gap-2 text-[10px] font-black tracking-[0.3em] text-primary/70">
+                    <Sparkles size={14} />
+                    Special Occasion Questions
+                  </div>
+                  <div className="space-y-4">
+                    {specialCallQuestions.map((q, qIdx) => (
+                      <div key={qIdx} className="space-y-1.5">
+                        <label className="text-[11px] font-bold text-muted-foreground ml-1">
+                          {q}
+                        </label>
+                        <textarea
+                          rows={2}
+                          value={customQuestionAnswers[q] || ""}
+                          onChange={(e) =>
+                            setCustomQuestionAnswers((prev) => ({
+                              ...prev,
+                              [q]: e.target.value,
+                            }))
+                          }
+                          className="w-full bg-foreground/5 border border-border rounded-2xl py-3 px-4 focus:border-primary outline-none text-sm font-medium resize-none"
+                          placeholder="Your answer…"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {showsCelebratoryQs && (
                 <div className="p-5 sm:p-6 rounded-2xl sm:rounded-[28px] bg-foreground/5 border border-border space-y-5">
                   <div className="text-[10px] font-black tracking-[0.3em] text-primary/70">Your Message</div>
@@ -1379,33 +1643,35 @@ function BookingContent() {
                 </p>
               </div>
 
-              <div 
-                onClick={() => setIsExpress(!isExpress)}
-                className={`p-4 sm:p-8 rounded-2xl sm:rounded-[40px] border-2 cursor-pointer transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 group ${
-                  isExpress ? 'bg-primary/10 border-primary shadow-2xl shadow-primary/20' : 'glass border-border hover:border-foreground/10'
-                }`}
-              >
-                <div className="flex items-center gap-4 sm:gap-6">
-                   <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[32px] flex items-center justify-center transition-all ${isExpress ? 'bg-primary text-white scale-110 sm:rotate-12' : 'bg-foreground/5 text-foreground/20'}`}>
-                      <Zap size={24} className="sm:w-8 sm:h-8" />
-                   </div>
-                   <div>
-                      <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight ${isExpress ? 'text-primary' : 'text-foreground'}`}>Priority <span className="gradient-text">Express</span>Delivery ✨</div>
-                      <div className="text-muted-foreground font-black tracking-widest text-[9px] sm:text-[10px]">Skip the queue. Recipient contacted within 4 hours.</div>
-                   </div>
+              {!isSpecialCall && (
+                <div 
+                  onClick={() => setIsExpress(!isExpress)}
+                  className={`p-4 sm:p-8 rounded-2xl sm:rounded-[40px] border-2 cursor-pointer transition-all flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-6 group ${
+                    isExpress ? 'bg-primary/10 border-primary shadow-2xl shadow-primary/20' : 'glass border-border hover:border-foreground/10'
+                  }`}
+                >
+                  <div className="flex items-center gap-4 sm:gap-6">
+                     <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[32px] flex items-center justify-center transition-all ${isExpress ? 'bg-primary text-white scale-110 sm:rotate-12' : 'bg-foreground/5 text-foreground/20'}`}>
+                        <Zap size={24} className="sm:w-8 sm:h-8" />
+                     </div>
+                     <div>
+                        <div className={`font-black text-lg sm:text-xl mb-1 transition-colors tracking-tight ${isExpress ? 'text-primary' : 'text-foreground'}`}>Priority <span className="gradient-text">Express</span>Delivery ✨</div>
+                        <div className="text-muted-foreground font-black tracking-widest text-[9px] sm:text-[10px]">Skip the queue. Recipient contacted within 4 hours.</div>
+                     </div>
+                  </div>
+                  <div className="flex items-center gap-6">
+                     <span className={`text-xl font-black transition-colors ${isExpress ? 'text-primary' : 'text-foreground/20'}`}>
+                       {isSubscriber ? "Included" : "+₦2,000"}
+                     </span>
+                     <div className={`w-14 h-8 rounded-full transition-all relative p-1 ${isExpress ? 'bg-primary' : 'bg-foreground/10'}`}>
+                        <motion.div
+                          animate={{ x: isExpress ? 24 : 0 }}
+                          className="w-6 h-6 rounded-full bg-white shadow-xl"
+                        />
+                     </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-6">
-                   <span className={`text-xl font-black transition-colors ${isExpress ? 'text-primary' : 'text-foreground/20'}`}>
-                     {isSubscriber ? "Included" : "+₦2,000"}
-                   </span>
-                   <div className={`w-14 h-8 rounded-full transition-all relative p-1 ${isExpress ? 'bg-primary' : 'bg-foreground/10'}`}>
-                      <motion.div
-                        animate={{ x: isExpress ? 24 : 0 }}
-                        className="w-6 h-6 rounded-full bg-white shadow-xl"
-                      />
-                   </div>
-                </div>
-              </div>
+              )}
 
               <div
                 onClick={() => setIsInternational(!isInternational)}
@@ -1536,7 +1802,9 @@ function BookingContent() {
                       )}
                       <div className="flex justify-between items-center group">
                         <span className="text-muted-foreground font-bold tracking-widest text-[9px] sm:text-[10px]">
-                          {isSpecialCall ? "Special Call" : `Package (${selectedTier.label})`}
+                          {isSpecialCall
+                            ? (selectedSpecialPackage ? `Special (${selectedSpecialPackage})` : "Special Call")
+                            : `Package (${selectedTier.label})`}
                         </span>
                         <span className="font-black text-base sm:text-lg">₦{basePrice.toLocaleString()}</span>
                       </div>

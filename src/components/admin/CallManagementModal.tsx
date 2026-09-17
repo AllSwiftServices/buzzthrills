@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Upload, CheckCircle2, AlertCircle, Loader2, Play, Trash2, User, Heart, MessageSquare, Phone, Calendar, Clock, UserCheck, AlertTriangle, UserCog } from "lucide-react";
+import { X, Upload, CheckCircle2, AlertCircle, Loader2, Play, Trash2, User, Heart, MessageSquare, Phone, Calendar, Clock, UserCheck, AlertTriangle, UserCog, Volume2, HelpCircle } from "lucide-react";
 
 interface StaffMember {
   id: string;
@@ -54,14 +54,15 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate, s
     }
   };
 
-  const handleUpload = async () => {
-    if (!file) return;
+  const uploadAudioFile = async (fileToUpload?: File): Promise<string | null> => {
+    const targetFile = fileToUpload || file;
+    if (!targetFile) return null;
     
     setUploading(true);
     setError(null);
     try {
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", targetFile);
       formData.append("callId", call.id);
 
       const res = await fetch("/api/admin/calls/upload", {
@@ -69,20 +70,31 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate, s
         body: formData,
       });
 
-      if (!res.ok) throw new Error("Upload failed");
       const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Upload failed");
       setRecordingUrl(data.recordingUrl);
       setFile(null);
-    } catch (err) {
+      return data.recordingUrl;
+    } catch (err: any) {
       console.error("Upload error:", err);
-      setError("Failed to upload recording. Please try again.");
+      setError(err?.message || "Failed to upload recording. Please try again.");
+      return null;
     } finally {
       setUploading(false);
     }
   };
 
+  const handleUpload = () => uploadAudioFile();
+
   const handleSave = async () => {
-    if (status === 'delivered' && !recordingUrl) {
+    let currentRecording = recordingUrl;
+    if (!currentRecording && file) {
+      const uploadedUrl = await uploadAudioFile(file);
+      if (!uploadedUrl) return;
+      currentRecording = uploadedUrl;
+    }
+
+    if (status === 'delivered' && !currentRecording) {
       setError("A recording upload is required to mark this call as delivered.");
       return;
     }
@@ -101,18 +113,19 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate, s
         body: JSON.stringify({
           callId: call.id,
           status,
-          recordingUrl,
+          recordingUrl: currentRecording,
           adminNotes,
           failureReason: status === 'failed' ? failureReason : null,
         }),
       });
 
-      if (!res.ok) throw new Error("Update failed");
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Update failed");
       onUpdate();
       onClose();
-    } catch (err) {
+    } catch (err: any) {
       console.error("Update error:", err);
-      setError("Failed to update call. Please check your connection.");
+      setError(err?.message || "Failed to update call. Please check your connection.");
     } finally {
       setUploading(false);
     }
@@ -261,15 +274,50 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate, s
                 </div>
               </div>
 
+              {(call.voice_recording_url || call.metadata?.voiceRecordingUrl || call.metadata?.message?.voiceRecordingUrl) && (
+                <div className="space-y-3 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-primary/10 border-2 border-primary/30">
+                  <div className="flex items-center justify-between">
+                    <label className="text-[10px] font-black tracking-[0.2em] text-primary flex items-center gap-2">
+                      <Volume2 size={14} />
+                      Client Voice Recording (Play to Recipient)
+                    </label>
+                    <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-primary/20 text-primary">Special Call</span>
+                  </div>
+                  <p className="text-[11px] text-foreground/80 font-medium">
+                    The customer uploaded this recording to be played directly to the recipient:
+                  </p>
+                  <audio controls src={call.voice_recording_url || call.metadata?.voiceRecordingUrl || call.metadata?.message?.voiceRecordingUrl} className="w-full h-10 rounded-xl" />
+                </div>
+              )}
+
               <div className="space-y-4">
                 <label className="text-[10px] font-black tracking-[0.2em] text-foreground/40">Message</label>
                 <div className="p-6 rounded-3xl bg-foreground/5 border border-foreground/10 relative overflow-hidden group min-h-[120px]">
                   <MessageSquare size={40} className="absolute -bottom-4 -right-4 text-foreground/[0.02] group-hover:scale-110 transition-transform duration-500" />
                   <div className="text-xs font-medium text-foreground/80 leading-relaxed relative z-10">
-                    "{call.custom_message || "No custom message provided."}"
+                    &quot;{call.custom_message || "No custom message provided."}&quot;
                   </div>
                 </div>
               </div>
+
+              {call.metadata?.customQuestions && Array.isArray(call.metadata.customQuestions) && call.metadata.customQuestions.length > 0 && (
+                <div className="space-y-3 p-4 sm:p-5 rounded-2xl sm:rounded-3xl bg-foreground/5 border border-foreground/10">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-primary flex items-center gap-2">
+                    <HelpCircle size={14} />
+                    Special Call Custom Q&amp;A
+                  </label>
+                  <div className="space-y-2.5">
+                    {call.metadata.customQuestions.map((qa: { question: string; answer: string }, idx: number) => (
+                      <div key={idx} className="p-3.5 rounded-xl bg-foreground/5 border border-foreground/5 space-y-1">
+                        <div className="text-[10px] font-bold text-foreground/50">Q: {qa.question}</div>
+                        <div className="text-xs font-semibold text-foreground">
+                          {qa.answer ? qa.answer : <span className="italic text-foreground/30">No answer provided</span>}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
            </div>
 
            {/* Column 3: Admin actions (notes & proof) */}
@@ -286,40 +334,83 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate, s
 
               <div className="space-y-4">
                 <label className="text-[10px] font-black tracking-[0.2em] text-foreground/40 flex items-center gap-2">
-                  <Upload size={10} />
+                  <Volume2 size={12} className="text-primary" />
                   Voice Proof {status === 'delivered' && <span className="text-primary font-black">*REQUIRED</span>}
                 </label>
                 
                 {recordingUrl ? (
-                  <div className="p-5 rounded-[24px] bg-green-500/10 border border-green-500/20 flex items-center justify-between">
-                    <div className="flex items-center gap-4 overflow-hidden">
-                      <div className="w-10 h-10 rounded-xl bg-green-500 flex items-center justify-center text-white shadow-lg">
-                        <Play size={16} />
+                  <div className="p-4 sm:p-5 rounded-[24px] bg-green-500/10 border border-green-500/20 space-y-3">
+                    <div className="flex items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 size={16} className="text-green-500 shrink-0" />
+                        <span className="text-[10px] font-black tracking-widest text-green-500 uppercase">
+                          Voice Proof Uploaded
+                        </span>
                       </div>
-                      <div className="overflow-hidden">
-                        <div className="text-[9px] font-black tracking-widest text-green-500">Audio Ready</div>
-                        <div className="text-[8px] font-bold text-foreground/30 truncate">Proof_Linked.mp3</div>
-                      </div>
+                      <button
+                        type="button"
+                        onClick={() => { setRecordingUrl(""); setFile(null); }}
+                        className="text-[10px] font-bold text-foreground/40 hover:text-red-500 transition-colors flex items-center gap-1 shrink-0"
+                      >
+                        <Trash2 size={12} />
+                        Replace
+                      </button>
                     </div>
-                    <button onClick={() => setRecordingUrl("")} className="p-2 text-foreground/20 hover:text-red-500 transition-colors">
-                      <Trash2 size={14} />
-                    </button>
+                    <audio controls src={recordingUrl} className="w-full h-10 rounded-xl" />
                   </div>
                 ) : (
                   <div className="relative">
-                    <input type="file" accept="audio/*" onChange={(e) => setFile(e.target.files?.[0] || null)} className="hidden" id="recording-upload" />
-                    <label htmlFor="recording-upload" className={`flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-[32px] transition-all cursor-pointer group ${
-                      error && status === 'delivered' && !recordingUrl ? 'border-red-500/50 bg-red-500/5' : 'border-foreground/10 hover:border-primary/40 hover:bg-primary/5'
-                    }`}>
-                      <Upload size={24} className={`mb-2 transition-all ${file ? 'text-primary' : 'text-foreground/10 group-hover:text-primary group-hover:scale-110'}`} />
-                      <div className="text-[9px] font-black tracking-widest text-foreground/40 text-center truncate w-full px-4">
-                        {file ? file.name : "Select Voice Proof"}
-                      </div>
+                    <input
+                      type="file"
+                      accept="audio/*,.mp3,.wav,.m4a,.aac,.ogg,.opus,.webm,audio/mpeg,audio/mp3,audio/wav,audio/x-m4a,audio/aac,audio/ogg"
+                      disabled={uploading}
+                      onChange={(e) => {
+                        const selected = e.target.files?.[0];
+                        if (selected) {
+                          setFile(selected);
+                          uploadAudioFile(selected);
+                        }
+                      }}
+                      className="sr-only"
+                      id="recording-upload"
+                    />
+                    <label
+                      htmlFor="recording-upload"
+                      className={`flex flex-col items-center justify-center p-6 border-2 border-dashed rounded-[32px] transition-all cursor-pointer group ${
+                        uploading
+                          ? "border-primary/50 bg-primary/5 cursor-wait"
+                          : error && status === 'delivered' && !recordingUrl
+                          ? "border-red-500/50 bg-red-500/5"
+                          : "border-foreground/10 hover:border-primary/40 hover:bg-primary/5"
+                      }`}
+                    >
+                      {uploading ? (
+                        <div className="flex flex-col items-center gap-2 text-primary py-2">
+                          <Loader2 size={24} className="animate-spin" />
+                          <span className="text-[10px] font-black tracking-widest uppercase">Uploading Recording...</span>
+                        </div>
+                      ) : (
+                        <div className="flex flex-col items-center gap-2 text-center py-1">
+                          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
+                            <Upload size={18} />
+                          </div>
+                          <span className="text-xs font-black tracking-wider text-foreground">
+                            {file ? file.name : "Select MP3 / Voice Recording"}
+                          </span>
+                          <span className="text-[9px] text-muted-foreground font-semibold">
+                            Tap to choose MP3, M4A, WAV from your device (Max 50MB)
+                          </span>
+                        </div>
+                      )}
                     </label>
-                    {file && (
-                      <button onClick={handleUpload} disabled={uploading} className="mt-3 w-full py-3 rounded-xl bg-secondary text-white font-black text-[9px] tracking-widest flex items-center justify-center gap-2">
-                        {uploading ? <Loader2 size={12} className="animate-spin" /> : <Upload size={12} />}
-                        Confirm Upload
+                    {file && !uploading && (
+                      <button
+                        type="button"
+                        onClick={() => uploadAudioFile(file)}
+                        className="mt-3 w-full py-3 rounded-xl bg-secondary text-white font-black text-[9px] tracking-widest flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                      >
+                        <Upload size={12} />
+                        Retry Upload ({file.name})
                       </button>
                     )}
                   </div>

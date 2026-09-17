@@ -79,11 +79,11 @@ export default function CheckoutSuccess() {
           </motion.div>
 
           <h1 className="text-4xl md:text-6xl font-medium mb-4 tracking-tight font-serif leading-none">
-            Booking <br className="xs:hidden" />
-            <span className="gradient-text">Confirmed.</span>
+            Call Booking <br className="xs:hidden" />
+            <span className="gradient-text">Confirmed!</span>
           </h1>
           <p className="text-muted-foreground font-medium font-serif text-base md:text-lg mb-8 md:mb-12 max-w-sm mx-auto leading-relaxed">
-            We&apos;ve got it from here. Your surprise is being prepared with love.
+            We&apos;re on it. Your call request is now being processed.
           </p>
 
           <div className="grid grid-cols-1 gap-3 mb-10 md:mb-12">
@@ -95,7 +95,7 @@ export default function CheckoutSuccess() {
               <div className="text-[9px] md:text-[10px] font-black text-muted-foreground tracking-widest mb-1 md:mb-2">Status</div>
               <div className="font-black text-lg md:text-xl flex items-center gap-2 group-hover:translate-x-2 transition-transform text-secondary">
                 <Zap size={18} className="fill-current animate-pulse text-amber-400" />
-                Preparing Your Surprise
+                Processing Your Call
               </div>
             </div>
             {summary && (

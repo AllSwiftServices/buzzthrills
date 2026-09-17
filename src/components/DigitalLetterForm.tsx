@@ -84,10 +84,10 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
     recipientPhotoUrl: existing?.recipient_photo_url || null,
     theme: (existing?.theme as LetterTheme) || "parchment",
     tier: "standard",
-    backgroundMusicUrl: existing?.background_music_url || null,
+    backgroundMusicUrl: existing?.background_music_url || existing?.voice_note_url || null,
     voiceNoteUrl: existing?.voice_note_url || null,
     videoUrl: existing?.video_url || null,
-    extraKind: existing?.video_url ? "video" : existing?.voice_note_url ? "voice" : "none",
+    extraKind: existing?.video_url ? "video" : "none",
     wantsScannable: !!existing?.wants_scannable,
     requestAdminVoice: !!existing?.request_admin_voice,
     additionalComments: existing?.additional_comments || "",
@@ -602,27 +602,27 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                 Add A <span className="gradient-text">Soundtrack</span>
               </h2>
               <p className="text-muted-foreground font-medium text-[10px] tracking-widest">
-                Background music sets the mood. Add a voice note or video for a personal touch.
+                Upload a voice recording or background music to play when your letter is opened.
               </p>
             </div>
 
             <LetterMediaUploader
               kind="music"
+              label="Upload voice recording or background music"
               value={draft.backgroundMusicUrl}
               letterId={draft.id}
               onChange={(url) => setDraft({ ...draft, backgroundMusicUrl: url })}
-              hint="Plays softly when they open the letter"
+              hint="Plays when they open the letter"
             />
 
             <div className="space-y-3">
               <div className="text-[10px] font-black tracking-[0.3em] text-foreground/70">
-                Personal Touch <span className="text-muted-foreground/50 normal-case">(pick one)</span>
+                Personal Touch <span className="text-muted-foreground/50 normal-case">(optional)</span>
               </div>
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
                 {([
                   { id: "none", label: "None", icon: Sparkles },
-                  { id: "voice", label: "My Voice", icon: Mic },
-                  { id: "video", label: "Video", icon: Video },
+                  { id: "video", label: "Video Message", icon: Video },
                 ] as { id: Draft["extraKind"]; label: string; icon: any }[]).map((opt) => {
                   const active = draft.extraKind === opt.id && !draft.requestAdminVoice;
                   const Icon = opt.icon;
@@ -635,7 +635,6 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                           ...draft,
                           extraKind: opt.id,
                           requestAdminVoice: false,
-                          voiceNoteUrl: opt.id === "voice" ? draft.voiceNoteUrl : null,
                           videoUrl: opt.id === "video" ? draft.videoUrl : null,
                         })
                       }
@@ -656,7 +655,6 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                       ...draft,
                       requestAdminVoice: !draft.requestAdminVoice,
                       extraKind: !draft.requestAdminVoice ? "none" : draft.extraKind,
-                      voiceNoteUrl: null,
                     })
                   }
                   className={`p-3 rounded-2xl border-2 transition-all flex flex-col items-center gap-2 ${
@@ -673,16 +671,6 @@ function DigitalLetterFormContent({ mode = "user", existing }: FormProps) {
                 </p>
               )}
             </div>
-
-            {draft.extraKind === "voice" && (
-              <LetterMediaUploader
-                kind="voice"
-                value={draft.voiceNoteUrl}
-                letterId={draft.id}
-                onChange={(url) => setDraft({ ...draft, voiceNoteUrl: url })}
-                hint={draft.tier === "premium" ? "Up to 3 min" : "Up to 60 sec"}
-              />
-            )}
 
             {draft.extraKind === "video" && (
               <LetterMediaUploader
