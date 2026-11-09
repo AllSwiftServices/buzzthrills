@@ -34,7 +34,6 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       "Custom messages tailored entirely to your recipient's story",
       "100% full access to all specialized call types (including Apologies & Period Care)",
       "Complimentary add-ons (Prank & Music Thrills) included on request",
-      "Choose your preferred caller",
     ],
     iconName: "Star",
   },
@@ -52,7 +51,6 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       "Deeply customized messaging scripts managed by our expert Thrillers",
       "Faster order processing & priority high-tier call scheduling slots",
       "Complimentary add-ons (Prank & Music Thrills) included automatically on request",
-      "Choose your preferred caller",
     ],
     iconName: "Zap",
     popular: true,
@@ -88,6 +86,7 @@ export const SUBSCRIPTION_PLANS: Record<PlanId, SubscriptionPlan> = {
       "A dedicated Account Manager to fully manage your company's entire milestone calendar",
       "Automated HR triggers that sync with your calendar, so no employee birthday or anniversary is ever missed",
       "Custom scripts and branding featuring your company's brand voice",
+      "Bulk digital letters with your company logo and a design made around your brand",
       "Seamless corporate onboarding with invoiced billing, flexible contract terms, and direct team scheduling",
     ],
     iconName: "Briefcase",
@@ -103,6 +102,12 @@ export const PLAN_LIST: SubscriptionPlan[] = [
   SUBSCRIPTION_PLANS.orbit,
   SUBSCRIPTION_PLANS.corporate,
 ];
+
+// Only the top plans let subscribers pick which caller delivers their call.
+export const CALLER_CHOICE_PLANS: PlanId[] = ["orbit", "corporate"];
+export function canChooseCaller(planId: string | null | undefined): boolean {
+  return !!planId && (CALLER_CHOICE_PLANS as string[]).includes(planId);
+}
 
 export function getPlan(id: string | null | undefined): SubscriptionPlan | null {
   if (!id) return null;

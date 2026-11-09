@@ -358,7 +358,7 @@ export default function CallerCallModal({ call, isOpen, onClose, onUpdate }: Cal
                 value={failureReason}
                 onChange={(e) => setFailureReason(e.target.value)}
                 disabled={isFinalized}
-                placeholder="Why did this engagement fail?"
+                placeholder="Why did this call fail?"
                 className="w-full h-24 bg-red-500/5 border border-red-500/20 rounded-2xl p-4 text-xs text-foreground outline-none focus:border-red-500 transition-all resize-none font-medium placeholder:text-red-500/20 disabled:opacity-60"
               />
             </div>

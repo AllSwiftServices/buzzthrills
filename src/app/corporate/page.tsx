@@ -9,10 +9,9 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { CORPORATE_CALENDLY_URL } from "@/lib/links";
 
-// ─── Replace this URL with your real Calendly/scheduling link ───────────────
-const CALENDLY_URL = "https://calendly.com/buzzthrills"; // TODO: update with real link
-// ────────────────────────────────────────────────────────────────────────────
+const CALENDLY_URL = CORPORATE_CALENDLY_URL;
 
 const b2bSolutions = [
   {
@@ -223,28 +222,25 @@ export default function CorporatePage() {
               Pick a convenient time below for a quick 15-minute strategy call with our culture team to map out your organization&apos;s milestone calendar.
             </p>
 
-            {/* Calendly embed placeholder */}
-            <div className="w-full min-h-[400px] rounded-[32px] glass border-2 border-dashed border-primary/20 flex flex-col items-center justify-center p-12 bg-background/40 gap-6">
-              <div className="w-20 h-20 rounded-3xl bg-primary/10 text-primary flex items-center justify-center">
-                <Calendar size={36} />
-              </div>
-              <div className="text-[10px] font-black text-primary tracking-[0.4em]">
-                Scheduling Widget
-              </div>
-              <p className="text-foreground/40 font-medium text-sm max-w-sm text-center leading-relaxed">
-                Calendly embed will appear here once the booking link is configured.
-              </p>
-              <a
-                href={CALENDLY_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-3 px-8 py-4 rounded-2xl gradient-bg text-white font-bold text-sm tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
-              >
-                <Calendar size={16} />
-                Open Scheduling Page
-                <ArrowRight size={16} />
-              </a>
+            {/* Calendly inline embed */}
+            <div className="w-full rounded-[32px] overflow-hidden border border-border bg-background/40">
+              <iframe
+                src={`${CALENDLY_URL}?hide_gdpr_banner=1`}
+                title="Schedule a call with BuzzThrills"
+                className="w-full h-[700px] border-0"
+                loading="lazy"
+              />
             </div>
+            <a
+              href={CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 mt-6 px-8 py-4 rounded-2xl gradient-bg text-white font-bold text-sm tracking-widest shadow-xl shadow-primary/20 hover:scale-[1.02] active:scale-[0.98] transition-all"
+            >
+              <Calendar size={16} />
+              Open in a new tab
+              <ArrowRight size={16} />
+            </a>
           </Reveal>
         </div>
       </section>

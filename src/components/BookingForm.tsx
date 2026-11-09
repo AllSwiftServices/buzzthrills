@@ -7,7 +7,7 @@ import { Check, ChevronRight, ChevronLeft, User, Phone, Mail, Gift, Clock, Credi
 import { PAYSTACK_PUBLIC_KEY } from "@/lib/paystack";
 import { useAuth } from "@/context/AuthContext";
 import { CALL_SERVICES, CallService, CallVariant, ICON_MAP } from "@/lib/pricing_config";
-import { getPlan } from "@/lib/plans";
+import { getPlan, canChooseCaller } from "@/lib/plans";
 
 declare global {
   interface Window {
@@ -44,8 +44,15 @@ type Recipient = {
   gender: string;
   location: string;
   relationship: string;
+  relationshipOtherSelected?: boolean;
   youCallThem: string;
   theyCallYou: string;
+};
+
+// Today's date (YYYY-MM-DD) in the user's local time, used to block past booking dates.
+const todayStr = () => {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
 };
 
 const emptyRecipient = (occasion: string): Recipient => ({
@@ -183,6 +190,22 @@ function BookingContent() {
     gender: "",
     location: "",
   });
+  const [blockedDates, setBlockedDates] = useState<Record<string, string | null>>({});
+  useEffect(() => {
+    fetch("/api/blocked-dates")
+      .then((r) => r.json())
+      .then((d) => {
+        const map: Record<string, string | null> = {};
+        for (const b of d.blocked || []) map[b.blocked_date] = b.reason || null;
+        setBlockedDates(map);
+      })
+      .catch(() => {});
+  }, []);
+  const blockedMessage = (date: string) =>
+    date in blockedDates
+      ? `We're not taking bookings on that day${blockedDates[date] ? ` (${blockedDates[date]})` : ""}. Please pick another date.`
+      : null;
+
   const [recipients, setRecipients] = useState<Recipient[]>([emptyRecipient(
     specialCallOccasion || service.name
   )]);
@@ -211,9 +234,9 @@ function BookingContent() {
   }, [user]);
 
   // Fetch the caller list lazily, only once we know there's an active
-  // subscription to book against — available to every plan tier.
+  // subscription to book against — only for plans that include caller choice.
   useEffect(() => {
-    if (subscription?.status !== 'active') return;
+    if (subscription?.status !== 'active' || !canChooseCaller(subscription?.plan)) return;
     fetch("/api/callers/list")
       .then((r) => r.json())
       .then((data) => setCallers(data.callers || []))
@@ -227,6 +250,7 @@ function BookingContent() {
   }, [currentServiceId, service.name]);
 
   const isSubscriber = subscription?.status === 'active';
+  const showCallerChoice = isSubscriber && canChooseCaller(subscription?.plan);
   const remainingCalls = isSubscriber
     ? Math.max(0, (subscription?.total_calls ?? 0) - (subscription?.calls_made ?? 0))
     : null;
@@ -534,6 +558,14 @@ function BookingContent() {
           );
           return;
         }
+        if (!isSpecialCall && blockedMessage(r.date)) {
+          alert(blockedMessage(r.date));
+          return;
+        }
+        if (!isSpecialCall && r.date < todayStr()) {
+          alert("That date has already passed. Please pick today or a future date.");
+          return;
+        }
       }
       setStep("message");
     }
@@ -600,6 +632,17 @@ function BookingContent() {
           );
         })}
       </div>
+
+      {searchParams.get("welcome") === "subscription" && isSubscriber && remainingCalls !== null && remainingCalls > 0 && (
+        <div className="mb-6 md:mb-10 p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-primary/10 border border-primary/30 space-y-1">
+          <div className="flex items-center gap-2 text-primary font-black text-xs sm:text-sm tracking-widest">
+            <Sparkles size={14} /> You&apos;re subscribed!
+          </div>
+          <p className="text-xs sm:text-sm font-medium text-foreground/80 leading-relaxed">
+            Add all the special dates you have for this month now, and we&apos;ll take care of the rest. You have {remainingCalls} {remainingCalls === 1 ? "call" : "calls"} to schedule. You can add one at a time or several recipients in a single booking, and come back later for any extras.
+          </p>
+        </div>
+      )}
 
       <AnimatePresence mode="wait">
         {step === "type" && (
@@ -1130,14 +1173,29 @@ function BookingContent() {
                     <div className="space-y-2 md:col-span-6">
                       <label className="text-[10px] font-black text-muted-foreground tracking-widest ml-1">Your Relationship</label>
                       <select
-                        value={r.relationship}
-                        onChange={(e) => handleRecipientChange(i, 'relationship', e.target.value)}
+                        value={r.relationshipOtherSelected ? "Other" : r.relationship}
+                        onChange={(e) => {
+                          const v = e.target.value;
+                          setRecipients((prev) => prev.map((rec, idx) => idx !== i ? rec : v === "Other"
+                            ? { ...rec, relationshipOtherSelected: true, relationship: "" }
+                            : { ...rec, relationshipOtherSelected: false, relationship: v }));
+                        }}
                         className="w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold appearance-none cursor-pointer"
                       >
                         {RELATIONSHIP_OPTIONS.map((opt) => (
                           <option key={opt} value={opt}>{opt}</option>
                         ))}
                       </select>
+                      {r.relationshipOtherSelected && (
+                        <input
+                          type="text"
+                          value={r.relationship}
+                          onChange={(e) => handleRecipientChange(i, 'relationship', e.target.value)}
+                          maxLength={60}
+                          className="w-full mt-2 bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold"
+                          placeholder="Please specify (e.g. Colleague, Neighbour)"
+                        />
+                      )}
                     </div>
 
                     {!isSpecialCall && (
@@ -1146,9 +1204,13 @@ function BookingContent() {
                         <input
                           type="date"
                           value={r.date}
+                          min={todayStr()}
                           onChange={(e) => handleRecipientChange(i, 'date', e.target.value)}
                           className="w-full min-w-full bg-foreground/5 border border-border rounded-2xl py-4 px-6 focus:border-primary outline-none text-sm font-bold block appearance-none"
                         />
+                        {blockedMessage(r.date) && (
+                          <p className="text-[11px] font-medium text-red-400 ml-1">{blockedMessage(r.date)}</p>
+                        )}
                       </div>
                     )}
                     <div className={`space-y-2 ${isSpecialCall ? 'md:col-span-12' : 'md:col-span-6'}`}>
@@ -1701,7 +1763,7 @@ function BookingContent() {
                 </div>
               </div>
 
-              {isSubscriber && (
+              {showCallerChoice && (
                 <div className="p-4 sm:p-8 rounded-2xl sm:rounded-[40px] border-2 border-border glass space-y-4">
                   <div className="flex items-center gap-4 sm:gap-6">
                      <div className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl sm:rounded-[32px] flex items-center justify-center bg-primary/10 text-primary">
@@ -1779,7 +1841,7 @@ function BookingContent() {
                           <span className="font-black text-base sm:text-lg">Included</span>
                         </div>
                       )}
-                      {preferredCallerId && (
+                      {showCallerChoice && preferredCallerId && (
                         <div className="flex justify-between items-center text-primary">
                           <span className="font-black tracking-widest text-[9px] sm:text-[10px]">Preferred Caller</span>
                           <span className="font-black text-base sm:text-lg">{callers.find((c) => c.id === preferredCallerId)?.full_name || "Selected"}</span>

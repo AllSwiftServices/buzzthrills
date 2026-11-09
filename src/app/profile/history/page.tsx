@@ -3,7 +3,7 @@
 import { useAuth } from "@/context/AuthContext";
 import DashboardLayout from "@/components/DashboardLayout";
 import { motion, AnimatePresence } from "framer-motion";
-import { Phone, Calendar, Search, Loader2, Play, FileText, AlertTriangle, User, MessageSquare, ChevronDown } from "lucide-react";
+import { Phone, Calendar, Search, Loader2, Play, Download, FileText, AlertTriangle, User, MessageSquare, ChevronDown } from "lucide-react";
 import { useState, useEffect } from "react";
 
 export default function HistoryPage() {
@@ -153,6 +153,15 @@ export default function HistoryPage() {
                                            >
                                               <Play size={18} />
                                               Play Voice Proof
+                                           </a>
+                                           <a
+                                              href={`${item.recording_url}${String(item.recording_url).includes("?") ? "&" : "?"}download=${encodeURIComponent(`BuzzThrills-${String(item.recipient_name || "call").replace(/[^a-z0-9]+/gi, "-")}-call-recording`)}`}
+                                              download
+                                              className="inline-flex items-center gap-3 px-6 py-4 rounded-2xl border border-primary/40 text-primary font-black text-xs tracking-widest hover:bg-primary/10 transition-all sm:ml-3"
+                                              onClick={(e) => e.stopPropagation()}
+                                           >
+                                              <Download size={18} />
+                                              Download
                                            </a>
                                         </div>
                                      ) : (

@@ -129,6 +129,14 @@ export default function ProfilePage() {
                       : `${Math.max((subscription?.total_calls || 0) - (subscription?.calls_made || 0), 0)}/${subscription?.total_calls || 0} calls remaining this month`
                     }
                   </p>
+                  {subscription?.status === 'active' && (subscription?.calls_made ?? 0) === 0 && (subscription?.total_calls ?? 0) > 0 && (
+                    <Link
+                      href="/book"
+                      className="mt-4 inline-block px-4 py-3 rounded-2xl bg-white/15 border border-white/25 text-xs sm:text-sm font-bold leading-snug hover:bg-white/25 transition-all"
+                    >
+                      You haven&apos;t scheduled any calls yet. Tap here to add your dates for this month.
+                    </Link>
+                  )}
                 </div>
                 <div className="grid grid-cols-1 gap-4 w-full lg:flex lg:flex-row lg:w-auto shrink-0 justify-start lg:justify-end">
                   <Link 

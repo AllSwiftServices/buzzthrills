@@ -448,7 +448,7 @@ export default function CallManagementModal({ call, isOpen, onClose, onUpdate, s
                     <textarea 
                       value={failureReason}
                       onChange={(e) => setFailureReason(e.target.value)}
-                      placeholder="Why did this engagement fail?"
+                      placeholder="Why did this call fail?"
                       className="w-full h-24 bg-red-500/5 border border-red-500/20 rounded-2xl p-4 text-xs text-white outline-none focus:border-red-500 transition-all resize-none font-medium placeholder:text-red-500/20"
                     />
                   </motion.div>

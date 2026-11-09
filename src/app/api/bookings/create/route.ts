@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { supabaseAdmin } from "@/lib/supabase";
 import { verifyToken } from "@/lib/auth";
 import { cookies } from "next/headers";
+import { canChooseCaller } from "@/lib/plans";
 
 export async function POST(request: Request) {
   try {
@@ -61,7 +62,7 @@ export async function POST(request: Request) {
     // still re-verify the caller identity server-side rather than trusting the
     // client's request body.
     let assignedTo: string | null = null;
-    if (preferredCallerId) {
+    if (preferredCallerId && canChooseCaller(subscription.plan)) {
       const { data: caller } = await supabaseAdmin
         .from("profiles")
         .select("id")
@@ -69,6 +70,23 @@ export async function POST(request: Request) {
         .eq("role", "caller")
         .single();
       if (caller) assignedTo = caller.id;
+    }
+
+    // Reject bookings for dates that have already passed (Nigeria time).
+    const todayLagos = new Intl.DateTimeFormat("en-CA", { timeZone: "Africa/Lagos" }).format(new Date());
+    if (recipients.some((r: any) => r?.date && String(r.date) < todayLagos)) {
+      return NextResponse.json({ error: "One or more booking dates have already passed." }, { status: 400 });
+    }
+
+    const requestedDates = recipients.map((r: any) => r?.date).filter(Boolean);
+    if (requestedDates.length > 0) {
+      const { data: blocked } = await supabaseAdmin
+        .from("blocked_dates")
+        .select("blocked_date")
+        .in("blocked_date", requestedDates);
+      if (blocked && blocked.length > 0) {
+        return NextResponse.json({ error: `We're not taking bookings on ${blocked[0].blocked_date}. Please pick another date.` }, { status: 400 });
+      }
     }
 
     // 5. Create Call Records

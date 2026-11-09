@@ -90,7 +90,7 @@ export default function Home() {
 
             <Reveal delay={0.2}>
               <p className="text-base sm:text-lg text-muted-foreground max-w-xl mb-8 leading-relaxed font-medium">
-                Imagine never missing a special moment or date again, because we won&apos;t let you. We handle the remembering and the delivery of heartfelt surprise calls, scannable audio/visual letters, and beautiful love experiences, so your favorite people always feel deeply cherished.
+                Imagine never missing a special moment or date again because we won&apos;t let you. We handle the remembering and the delivery of heartfelt surprise calls, scannable audio/visual letters, and beautiful experiences, so the people who matter to you always feel remembered, appreciated, and celebrated.
               </p>
             </Reveal>
 

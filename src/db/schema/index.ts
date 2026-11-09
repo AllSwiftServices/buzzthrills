@@ -229,6 +229,7 @@ export const subscriptions = pgTable('subscriptions', {
   totalCalls: integer('total_calls').notNull(),
   startDate: timestamp('start_date', { withTimezone: true, mode: 'string' }).defaultNow(),
   nextBillingDate: timestamp('next_billing_date', { withTimezone: true, mode: 'string' }),
+  lastReminderAt: timestamp('last_reminder_at', { withTimezone: true, mode: 'string' }),
   createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).defaultNow(),
 }, (table) => [
   foreignKey({ columns: [table.userId], foreignColumns: [profiles.id], name: 'subscriptions_user_id_fkey' }).onDelete('cascade'),
@@ -270,6 +271,17 @@ export const specialOffers = pgTable('special_offers', {
   createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).defaultNow(),
 }, () => [
   pgPolicy('Public read access to special offers', { as: 'permissive', for: 'select', to: ['public'], using: sql`true` }),
+]);
+
+// Days admins have closed for bookings (holidays, days off). Read via API routes.
+export const blockedDates = pgTable('blocked_dates', {
+  id: uuid().defaultRandom().primaryKey().notNull(),
+  blockedDate: date('blocked_date', { mode: 'string' }).notNull(),
+  reason: text(),
+  createdAt: timestamp('created_at', { withTimezone: true, mode: 'string' }).defaultNow(),
+}, (table) => [
+  unique('blocked_dates_blocked_date_key').on(table.blockedDate),
+  pgPolicy('Public read access to blocked dates', { as: 'permissive', for: 'select', to: ['public'], using: sql`true` }),
 ]);
 
 export const newsletterSubscribers = pgTable('newsletter_subscribers', {

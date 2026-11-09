@@ -1,4 +1,4 @@
-import { LayoutDashboard, PhoneCall, Users, Tag, BarChart3, Mail, Sparkles, Send } from "lucide-react";
+import { LayoutDashboard, PhoneCall, Users, Tag, BarChart3, Mail, Sparkles, Send, CalendarOff } from "lucide-react";
 
 export type AdminNavItem = {
   href: string;
@@ -16,5 +16,6 @@ export const adminNavItems: AdminNavItem[] = [
   { href: "/admin/crm",           icon: <Users size={18} />,           label: "Clients" },
   { href: "/admin/offers",        icon: <Tag size={18} />,             label: "Promotions" },
   { href: "/admin/newsletter",    icon: <Send size={18} />,            label: "Newsletter" },
+  { href: "/admin/blocked-dates",   icon: <CalendarOff size={18} />,     label: "Blocked Dates" },
   { href: "/admin/analytics",     icon: <BarChart3 size={18} />,       label: "Analytics" },
 ];

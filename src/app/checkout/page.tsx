@@ -80,7 +80,8 @@ function CheckoutContent() {
             .then(res => res.json())
             .then(data => {
               if (data.success) {
-                router.push("/profile?success=true");
+                // Send new subscribers straight into booking so they schedule this month's dates now.
+                router.push("/book?welcome=subscription");
               } else {
                 alert("Verification failed.");
               }

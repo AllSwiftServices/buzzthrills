@@ -280,7 +280,14 @@ export default function DigitalLetterPage() {
               {/* 3. Video (if uploaded by admin or user) */}
               {letter.video_url && (
                 <div className="mb-8 rounded-2xl overflow-hidden border border-black/10 shadow-xl">
-                  <video src={letter.video_url} controls className="w-full" />
+                  {/* #t=0.1 + preload=metadata makes iOS Safari render a real frame as the thumbnail instead of a blank box */}
+                  <video
+                    src={`${letter.video_url}#t=0.1`}
+                    controls
+                    playsInline
+                    preload="metadata"
+                    className="w-full bg-black min-h-48"
+                  />
                 </div>
               )}
 

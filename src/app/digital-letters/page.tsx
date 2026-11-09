@@ -6,6 +6,7 @@ import Reveal from "@/components/Reveal";
 import { Mail, Volume2, QrCode, Heart, Star, Sparkles, Send, Zap, MessageSquareQuote } from "lucide-react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { CORPORATE_CALENDLY_URL } from "@/lib/links";
 
 export default function DigitalLettersPage() {
   return (
@@ -40,6 +41,9 @@ export default function DigitalLettersPage() {
                 Create a Letter
                 <Send size={24} />
               </Link>
+              <a href={CORPORATE_CALENDLY_URL} target="_blank" rel="noopener noreferrer" className="px-8 py-4 sm:px-12 sm:py-6 rounded-3xl glass border border-primary/30 text-foreground font-bold text-base sm:text-xl hover:scale-105 transition-all flex items-center justify-center gap-3 active:scale-95">
+                Bulk or Corporate Order
+              </a>
             </div>
           </Reveal>
         </div>
@@ -97,6 +101,31 @@ export default function DigitalLettersPage() {
             </div>
           </Reveal>
         </div>
+      </section>
+
+      {/* Bulk / corporate orders */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6">
+        <Reveal>
+          <div className="max-w-4xl mx-auto p-6 sm:p-14 rounded-[32px] sm:rounded-[56px] border border-primary/20 bg-primary/5 text-center">
+            <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass border border-primary/20 mb-6 text-[10px] font-bold text-primary tracking-[0.3em]">
+              Buzz Corporate
+            </div>
+            <h2 className="text-3xl sm:text-5xl font-medium mb-5 tracking-tight font-serif leading-tight">
+              Ordering for a <span className="gradient-text">team or event</span>?
+            </h2>
+            <p className="text-muted-foreground font-medium text-base sm:text-lg max-w-2xl mx-auto mb-8 leading-relaxed">
+              Need 40 or 100 letters, your company logo, or a design made around your brand? Book a quick call with us and tell us what you have in mind. We will set it up properly for you.
+            </p>
+            <a
+              href={CORPORATE_CALENDLY_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-4 sm:px-12 sm:py-5 gradient-bg text-white font-bold text-base sm:text-lg rounded-3xl hover:scale-105 active:scale-95 transition-all shadow-huge"
+            >
+              Book a Bulk Order Call
+            </a>
+          </div>
+        </Reveal>
       </section>
 
       {/* CTA */}

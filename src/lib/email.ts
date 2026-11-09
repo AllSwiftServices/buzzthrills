@@ -1,13 +1,64 @@
 import { BrevoClient } from "@getbrevo/brevo";
+import nodemailer from "nodemailer";
 
 const BREVO_API_KEY = process.env.BREVO_API_KEY;
-const SENDER_EMAIL = process.env.BREVO_SENDER_EMAIL || "hello@buzzthrillsprime.com";
-const SENDER_NAME = "BuzzThrills";
+const SMTP_HOST = process.env.SMTP_HOST;
+const SMTP_PORT = Number(process.env.SMTP_PORT || 465);
+const SMTP_USER = process.env.SMTP_USER;
+const SMTP_PASS = process.env.SMTP_PASS;
+const USE_SMTP = !!(SMTP_HOST && SMTP_USER && SMTP_PASS);
 
-// Initialize Brevo Client
-const brevo = BREVO_API_KEY ? new BrevoClient({
-  apiKey: BREVO_API_KEY,
-}) : null;
+// With SMTP (Hostinger) the From address must be the authenticated mailbox
+// (or an alias on the same domain), otherwise the server rejects the message.
+const SENDER_EMAIL = USE_SMTP
+  ? process.env.SMTP_FROM || SMTP_USER!
+  : process.env.BREVO_SENDER_EMAIL || "hello@buzzthrillsprime.com";
+const SENDER_NAME = "BuzzThrills";
+// Explicit reply-to so replies reach the support inbox instead of any account default.
+const REPLY_TO_EMAIL = process.env.BREVO_REPLY_TO_EMAIL || "hello@buzzthrills.com";
+
+type MailParams = {
+  subject: string;
+  sender: { name: string; email: string };
+  replyTo?: { name?: string; email: string };
+  to: { email: string; name?: string }[];
+  htmlContent: string;
+};
+
+const brevoClient = BREVO_API_KEY ? new BrevoClient({ apiKey: BREVO_API_KEY }) : null;
+
+const smtpTransport = USE_SMTP
+  ? nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: SMTP_PORT,
+      secure: SMTP_PORT === 465, // 465 = implicit TLS, 587 = STARTTLS
+      auth: { user: SMTP_USER, pass: SMTP_PASS },
+    })
+  : null;
+
+// Facade keeping the existing `brevo.transactionalEmails.sendTransacEmail(...)`
+// call sites unchanged while routing through SMTP when it is configured.
+const brevo = (smtpTransport || brevoClient)
+  ? {
+      transactionalEmails: {
+        async sendTransacEmail(params: MailParams): Promise<{ messageId?: string }> {
+          if (smtpTransport) {
+            const info = await smtpTransport.sendMail({
+              from: `"${params.sender.name}" <${params.sender.email}>`,
+              replyTo: params.replyTo
+                ? `"${params.replyTo.name ?? params.sender.name}" <${params.replyTo.email}>`
+                : undefined,
+              to: params.to.map((t) => (t.name ? `"${t.name}" <${t.email}>` : t.email)),
+              subject: params.subject,
+              html: params.htmlContent,
+            });
+            return { messageId: info.messageId };
+          }
+          return (await brevoClient!.transactionalEmails.sendTransacEmail(params as any)) as any;
+        },
+      },
+    }
+  : null;
 
 export async function sendOTPEmail(email: string, otp: string) {
   if (!brevo) {
@@ -19,6 +70,7 @@ export async function sendOTPEmail(email: string, otp: string) {
     const data = await brevo.transactionalEmails.sendTransacEmail({
       subject: "Your BuzzThrills Activation Code 🎁",
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email: email }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; text-align: center; background: #fff; color: #000;">
@@ -51,6 +103,7 @@ export async function sendResetOTPEmail(email: string, otp: string) {
     const data = await brevo.transactionalEmails.sendTransacEmail({
       subject: "Reset Your BuzzThrills Password 🔑",
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email: email }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; text-align: center; background: #fff; color: #000;">
@@ -80,6 +133,7 @@ export async function sendBookingConfirmation(email: string, details: { serviceN
     const data = await brevo.transactionalEmails.sendTransacEmail({
       subject: `Booking Confirmed: ${details.serviceName} 🎊`,
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email: email }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
@@ -144,6 +198,7 @@ export async function sendSubscriptionConfirmation(email: string, details: {
     const data = await brevo.transactionalEmails.sendTransacEmail({
       subject: `${details.planName} Activated 🎉`,
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
@@ -207,6 +262,7 @@ export async function sendLetterReadyEmail(email: string, details: { recipientNa
     const data = await brevo.transactionalEmails.sendTransacEmail({
       subject: `Your Digital Letter for ${details.recipientName} is Ready 💌`,
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
@@ -251,6 +307,7 @@ export async function sendLetterProcessingEmail(email: string, details: { recipi
     await brevo.transactionalEmails.sendTransacEmail({
       subject: `Your Letter is Being Crafted 💜`,
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
@@ -283,6 +340,14 @@ export async function sendLetterProcessingEmail(email: string, details: { recipi
   }
 }
 
+// Supabase public storage URLs serve the file as a download (Content-Disposition:
+// attachment) when given a ?download=<filename> query param.
+function recordingDownloadUrl(url: string, recipientName: string) {
+  const safe = recipientName.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "") || "call";
+  const sep = url.includes("?") ? "&" : "?";
+  return `${url}${sep}download=${encodeURIComponent(`BuzzThrills-${safe}-call-recording`)}`;
+}
+
 export async function sendCallStatusUpdate(email: string, details: {
   status: string; 
   recipientName: string; 
@@ -297,23 +362,24 @@ export async function sendCallStatusUpdate(email: string, details: {
 
   const isDelivered = details.status === 'delivered';
   const subject = isDelivered 
-    ? `Engagement Delivered: For ${details.recipientName} ❤️` 
-    : `Update: Your Engagement for ${details.recipientName} ⚠️`;
+    ? `Call Delivered: For ${details.recipientName} ❤️` 
+    : `Update: Your Call for ${details.recipientName} ⚠️`;
 
   try {
     await brevo.transactionalEmails.sendTransacEmail({
       subject,
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
           <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
             <h1 style="color: ${isDelivered ? '#8b5cf6' : '#f59e0b'}; font-size: 28px; font-weight: 900; margin-bottom: 24px;">
-              ${isDelivered ? 'Engagement Completed! 🎉' : 'Engagement Update 📋'}
+              ${isDelivered ? 'Call Completed! 🎉' : 'Booking Update 📋'}
             </h1>
             
             <p style="font-size: 16px; color: #444; line-height: 1.6; margin-bottom: 32px;">
-              Your scheduled engagement for <strong>${details.recipientName}</strong> has been marked as <strong>${details.status.toUpperCase()}</strong>.
+              Your scheduled call for <strong>${details.recipientName}</strong> has been marked as <strong>${details.status.toUpperCase()}</strong>.
             </p>
 
             ${isDelivered && details.recordingUrl ? `
@@ -322,6 +388,11 @@ export async function sendCallStatusUpdate(email: string, details: {
               <a href="${details.recordingUrl}" style="display: inline-block; padding: 16px 32px; background: #8b5cf6; color: #fff; text-decoration: none; border-radius: 16px; font-weight: 900; box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);">
                 Play Voice Proof 🎧
               </a>
+              <p style="margin: 16px 0 0;">
+                <a href="${recordingDownloadUrl(details.recordingUrl, details.recipientName)}" style="color: #8b5cf6; font-size: 14px; font-weight: 700; text-decoration: underline;">
+                  Download recording ⬇️
+                </a>
+              </p>
             </div>
             ` : ''}
 
@@ -368,6 +439,7 @@ export async function sendCallAssignmentEmail(email: string, details: {
     await brevo.transactionalEmails.sendTransacEmail({
       subject: `New Call Assigned: ${details.recipientName}`,
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
@@ -408,6 +480,7 @@ export async function sendAdminAlertEmail(subject: string, message: string, cont
     await brevo.transactionalEmails.sendTransacEmail({
       subject: `⚠️ ${subject}`,
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email: SENDER_EMAIL }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fff;">
@@ -441,11 +514,12 @@ export async function sendAdminCallNotification(callDetails: any[]) {
     await brevo.transactionalEmails.sendTransacEmail({
       subject: `🚨 NEW BOOKING: ${callDetails.length} New Call(s) Scheduled!`,
       sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
       to: [{ email: adminEmail }],
       htmlContent: `
         <div style="font-family: sans-serif; padding: 40px; background: #fff;">
           <h1 style="color: #000; font-size: 24px; font-weight: 900; margin-bottom: 20px;">New Order Received! 💰</h1>
-          <p style="font-size: 16px; color: #666; margin-bottom: 30px;">The following engagements have been booked and are awaiting assignment:</p>
+          <p style="font-size: 16px; color: #666; margin-bottom: 30px;">The following calls have been booked and are awaiting assignment:</p>
           <ul style="padding: 0;">
             ${callListHtml}
           </ul>
@@ -459,5 +533,76 @@ export async function sendAdminCallNotification(callDetails: any[]) {
     });
   } catch (error) {
     console.error("Failed to send admin notification email:", error);
+  }
+}
+
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://buzzthrills.com";
+
+export async function sendSubscriptionRenewalEmail(email: string, details: {
+  name?: string;
+  planName: string;
+  totalCalls: number;
+  nextBillingDate: string;
+}) {
+  if (!brevo) return;
+  try {
+    await brevo.transactionalEmails.sendTransacEmail({
+      subject: `Your ${details.planName} plan has renewed: schedule your calls 🎉`,
+      sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
+      to: [{ email }],
+      htmlContent: `
+        <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
+          <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px;">
+            <h1 style="color: #8b5cf6; font-size: 28px; margin-bottom: 16px;">Your plan has renewed 🎉</h1>
+            <p style="font-size: 16px; color: #444; line-height: 1.6;">
+              Hi${details.name ? ` ${details.name}` : ""}, your <strong>${details.planName}</strong> plan is active again with <strong>${details.totalCalls} calls</strong> for this cycle (next renewal: ${details.nextBillingDate}).
+            </p>
+            <p style="font-size: 16px; color: #444; line-height: 1.6;">
+              Send us all the dates you want covered this month now, and we will handle the remembering and the calling for you.
+            </p>
+            <div style="text-align: center; margin: 32px 0;">
+              <a href="${SITE_URL}/book" style="display: inline-block; padding: 16px 32px; background: #8b5cf6; color: #fff; text-decoration: none; border-radius: 16px; font-weight: 900;">Schedule my calls</a>
+            </div>
+          </div>
+        </div>
+      `,
+    });
+  } catch (error) {
+    console.error("Renewal email failed:", error);
+  }
+}
+
+export async function sendScheduleCallsReminder(email: string, details: {
+  name?: string;
+  planName: string;
+  callsLeft: number;
+}) {
+  if (!brevo) return;
+  try {
+    await brevo.transactionalEmails.sendTransacEmail({
+      subject: `You have ${details.callsLeft} calls waiting to be scheduled 📅`,
+      sender: { name: SENDER_NAME, email: SENDER_EMAIL },
+      replyTo: { name: SENDER_NAME, email: REPLY_TO_EMAIL },
+      to: [{ email }],
+      htmlContent: `
+        <div style="font-family: sans-serif; padding: 40px; background: #fafafa;">
+          <div style="max-width: 600px; margin: 0 auto; background: #fff; border-radius: 24px; padding: 40px;">
+            <h1 style="color: #8b5cf6; font-size: 28px; margin-bottom: 16px;">Don't let the dates slip by 📅</h1>
+            <p style="font-size: 16px; color: #444; line-height: 1.6;">
+              Hi${details.name ? ` ${details.name}` : ""}, your <strong>${details.planName}</strong> plan is active, but you haven't scheduled any calls yet. You have <strong>${details.callsLeft}</strong> waiting for you.
+            </p>
+            <p style="font-size: 16px; color: #444; line-height: 1.6;">
+              Add all the special dates you can think of for this month in one go, and we will take care of the rest.
+            </p>
+            <div style="text-align: center; margin: 32px 0;">
+              <a href="${SITE_URL}/book" style="display: inline-block; padding: 16px 32px; background: #8b5cf6; color: #fff; text-decoration: none; border-radius: 16px; font-weight: 900;">Schedule my calls</a>
+            </div>
+          </div>
+        </div>
+      `,
+    });
+  } catch (error) {
+    console.error("Schedule reminder email failed:", error);
   }
 }
